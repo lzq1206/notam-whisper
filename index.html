@@ -218,12 +218,20 @@
         animation: false, timeline: false, infoBox: false, selectionIndicator: false,
         navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false
       });
-      // Enable high-resolution satellite imagery
+      // Enable high-resolution satellite imagery (Async init for Cesium 1.107+)
       cesiumViewer.imageryLayers.removeAll();
-      cesiumViewer.imageryLayers.addImageryProvider(new Cesium.ArcGisMapServerImageryProvider({
-        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
-        enablePickFeatures: false
-      }));
+      Cesium.ArcGisMapServerImageryProvider.fromUrl(
+        'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
+        { enablePickFeatures: false }
+      ).then(provider => {
+        cesiumViewer.imageryLayers.addImageryProvider(provider);
+      }).catch(err => {
+        console.error('ArcGIS Imagery failed:', err);
+        // Fallback to OSM
+        cesiumViewer.imageryLayers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({
+          url: 'https://a.tile.openstreetmap.org/'
+        }));
+      });
       // Quality settings
       cesiumViewer.scene.globe.depthTestAgainstTerrain = false;
       if (Cesium.FeatureDetection.supportsImageRenderingPixelated()) {
