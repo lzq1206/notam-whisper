@@ -30,7 +30,9 @@ def parse_msi_cancel_time(text):
     if m:
         day, hhmm, mon, yr = m.groups()
         try:
-            return datetime.datetime(2000+int(yr), MONTHS_MAP.get(mon.upper(),1), int(day), int(hhmm[:2]), int(hhmm[2:]))
+            h = int(hhmm[:2]) if len(hhmm)>=2 else 0
+            m_val = int(hhmm[2:4]) if len(hhmm)>=4 else 0
+            return datetime.datetime(2000+int(yr), MONTHS_MAP.get(mon.upper(),1), int(day), h, m_val)
         except:
             pass
     return None
@@ -59,74 +61,91 @@ def make_msi_headers():
         "Connection": "keep-alive"
     }
 
+LOG_FILE = 'msi_fetch_log.txt'
+def log_to_file(msg):
+    with open(LOG_FILE, 'a', encoding='utf-8') as f:
+        f.write(f"[{datetime.datetime.utcnow().isoformat()}] {msg}\n")
+    print(msg)
+
+# Initialize log file
+with open(LOG_FILE, 'w', encoding='utf-8') as f:
+    f.write("MSI Fetch Log\n")
+
 def fetch_msi_single(nav_area):
     url = f"https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&output=xml"
+    log_to_file(f"[FETCH] Area {nav_area} URL: {url}")
     MAX_RETRIES = 4
     RETRY_BACKOFF = 2.0
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             resp = requests.get(url, headers=make_msi_headers(), timeout=60, verify=False)
-            resp.raise_for_status()
+            status = resp.status_code
             text = resp.text.strip()
-            if text.startswith("<") and "<html" not in text[:200].lower():
-                root = ET.fromstring(text)
-                entries = []
-                for entity in root.findall('smapsActiveEntity'):
-                    entries.append({
-                        'msgID': entity.findtext('msgID'),
-                        'msgText': entity.findtext('msgText'),
-                        'category': entity.findtext('category'),
-                        'msgType': entity.findtext('msgType')
-                    })
-                return entries
-            print(f"[MSI] Non-XML response for Area {nav_area} (Attempt {attempt}/{MAX_RETRIES})")
+            log_to_file(f"  Attempt {attempt}: Status {status}, Length {len(text)}")
+            
+            if status == 200 and text.startswith("<"):
+                if "<smapsActiveEntity" in text:
+                    root = ET.fromstring(text)
+                    entities = root.findall('smapsActiveEntity')
+                    log_to_file(f"  Found {len(entities)} smapsActiveEntity nodes.")
+                    res = []
+                    for entity in entities:
+                        res.append({
+                            'msgID': entity.findtext('msgID'),
+                            'msgText': entity.findtext('msgText'),
+                            'category': entity.findtext('category'),
+                            'msgType': entity.findtext('msgType')
+                        })
+                    return res
+                else:
+                    log_to_file("  No smapsActiveEntity nodes in XML.")
+                    return []
+            else:
+                log_to_file(f"  Unexpected response snippet: {text[:200]}")
         except Exception as e:
-            print(f"[MSI] Request error for Area {nav_area} (Attempt {attempt}/{MAX_RETRIES}): {e}")
+            log_to_file(f"  Request error: {e}")
 
         if attempt < MAX_RETRIES:
             time.sleep(RETRY_BACKOFF ** attempt)
-
     return []
 
 def fetch_msi():
-    print("[MSI] Starting sequential fetch for NAVAREAs...")
+    log_to_file("[MSI] Starting sequential fetch...")
     nav_areas = ['4', '12', 'A', 'P', 'C', '1', '2', '3', '5', '6', '7', '8', '9', '10', '11']
-
     all_smaps = []
     for na in nav_areas:
         res = fetch_msi_single(na)
-        if res:
-            all_smaps.extend(res)
-            print(f"      - Area {na}: {len(res)} messages fetched.")
-        time.sleep(5)
-
-    print(f"[MSI] Total raw warnings fetched: {len(all_smaps)}")
+        all_smaps.extend(res)
+        time.sleep(2)
+    
+    log_to_file(f"[MSI] Total raw warnings: {len(all_smaps)}")
     return process_msi_data(all_smaps)
 
 def parse_msi_active_times(text):
+    # Pattern: 261122Z TO 261604Z MAR 26
     m = re.search(r'(\d{2})(\d{4})Z\s*(?:[A-Z]{3}\s*)?TO\s*(\d{2})(\d{4})Z\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text)
     if m:
         d1, t1, d2, t2, mon, yr = m.groups()
-        if yr is None:
-            yr = datetime.datetime.utcnow().year
+        if yr is None: yr = datetime.datetime.utcnow().year
         else:
             yr = int(yr)
             if yr < 100: yr += 2000
         month = MONTHS_MAP.get(mon.upper())
         if month:
             try:
-                to_dt = datetime.datetime(yr, month, int(d2), int(t2[:2]), int(t2[2:]))
+                h2 = int(t2[:2]) if len(t2)>=2 else 0
+                m2 = int(t2[2:4]) if len(t2)>=4 else 0
+                to_dt = datetime.datetime(yr, month, int(d2), h2, m2)
                 m1, y1 = month, yr
                 if int(d1) > int(d2):
                     m1 -= 1
-                    if m1 < 1:
-                        m1 = 12
-                        y1 -= 1
-                from_dt = datetime.datetime(y1, m1, int(d1), int(t1[:2]), int(t1[2:]))
+                    if m1 < 1: m1 = 12; y1 -= 1
+                h1 = int(t1[:2]) if len(t1)>=2 else 0
+                m1_t = int(t1[2:4]) if len(t1)>=4 else 0
+                from_dt = datetime.datetime(y1, m1, int(d1), h1, m1_t)
                 return from_dt, to_dt
-            except:
-                pass
+            except: pass
     return None, None
 
 def process_msi_data(all_smaps):
@@ -136,37 +155,25 @@ def process_msi_data(all_smaps):
 
     for s in all_smaps:
         msg_id = s.get('msgID', '')
-        if msg_id in seen:
-            continue
+        if not msg_id: msg_id = str(hash(s.get('msgText','')))[:10]
+        if msg_id in seen: continue
         seen.add(msg_id)
         msg_text = s.get('msgText', '')
-        if not msg_text:
-            continue
-
-        clean_text = msg_text.replace('\n', '  ').replace('\r', '').replace('"', "'")
-
-        cancel = parse_msi_cancel_time(msg_text)
-        if cancel and cancel < now_utc:
-            continue
+        if not msg_text: continue
 
         coords = parse_msi_coords(msg_text)
-        if not coords:
-            continue
+        if not coords: continue
 
         from_dt, to_dt = parse_msi_active_times(msg_text)
-        if to_dt and to_dt < now_utc:
-            continue
-        if from_dt and from_dt > five_days:
-            continue
+        if to_dt and to_dt < now_utc: continue
+        if from_dt and from_dt > five_days: continue
 
+        clean_text = msg_text.replace('\n', '  ').replace('\r', '').replace('"', "'")
         from_utc_str = from_dt.isoformat() + "Z" if from_dt else ""
         to_utc_str = to_dt.isoformat() + "Z" if to_dt else ""
 
-        msg_type = s.get('msgType', '')
-        code = msg_id if (msg_id and '/' in msg_id) else msg_type
-
         rows.append({
-            'notam_id': code,
+            'notam_id': msg_id,
             'raw': clean_text,
             'coords': coords,
             'source': 'MSI',
@@ -174,8 +181,7 @@ def process_msi_data(all_smaps):
             'from_utc': from_utc_str,
             'to_utc': to_utc_str
         })
-
-    print(f"[MSI] Found {len(rows)} valid maritime warnings after filtering/parsing.")
+    log_to_file(f"[MSI] Processed {len(rows)} rows.")
     return rows
 
 # ═══════════════════════════════════════════════════════════════
@@ -191,17 +197,25 @@ def _parse_coord_val(digits, hemi):
         else:
             int_part, dec = digits, ''
         if is_lon:
+            # Lon: DDDMM[SS]
             if len(int_part) <= 5:
-                d, m = int(int_part[:3]), int(int_part[3:5]) if len(int_part) >= 5 else int(int_part[3:])
+                d = int(int_part[:3]) if len(int_part)>=3 else 0
+                m = int(int_part[3:5]) if len(int_part)>=5 else (int(int_part[3:]) if len(int_part)>3 else 0)
                 s = 0
             else:
-                d, m, s = int(int_part[:3]), int(int_part[3:5]), int(int_part[5:7])
+                d = int(int_part[:3])
+                m = int(int_part[3:5])
+                s = int(int_part[5:7]) if len(int_part)>=7 else 0
         else:
+            # Lat: DDMM[SS]
             if len(int_part) <= 4:
-                d, m = int(int_part[:2]), int(int_part[2:4]) if len(int_part) >= 4 else int(int_part[2:])
+                d = int(int_part[:2]) if len(int_part)>=2 else 0
+                m = int(int_part[2:4]) if len(int_part)>=4 else (int(int_part[2:]) if len(int_part)>2 else 0)
                 s = 0
             else:
-                d, m, s = int(int_part[:2]), int(int_part[2:4]), int(int_part[4:6])
+                d = int(int_part[:2])
+                m = int(int_part[2:4])
+                s = int(int_part[4:6]) if len(int_part)>=6 else 0
         val = d + m / 60.0 + s / 3600.0
         if dec:
             val += float(f"0.{dec}") / 60.0
