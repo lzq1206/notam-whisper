@@ -1,0 +1,32 @@
+name: Update Rocket Launches
+
+on:
+  schedule:
+    - cron: '30 0 * * *'  # 每天 UTC 00:30 运行
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Run Launch Fetcher
+        run: python fetch_launches.py
+
+      - name: Commit and push if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[Auto] Update past_launches.csv"
+          file_pattern: "past_launches.csv"
+          branch: main
