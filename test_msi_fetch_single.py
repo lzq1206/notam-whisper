@@ -50,7 +50,7 @@ def test_fallback_used_when_primary_fails():
     xml = """<root><smapsActiveEntity><msgID>FB</msgID><msgText>Fallback</msgText><category>14</category><msgType>NW</msgType></smapsActiveEntity></root>"""
     old_get = fetch_msi.requests.get
     old_sleep = fetch_msi.time.sleep
-    old_template = fetch_msi.FALLBACK_MSI_URL_TEMPLATE
+    old_fallback_template = fetch_msi.FALLBACK_MSI_URL_TEMPLATE
     try:
         calls = []
         fetch_msi.time.sleep = lambda *_: None
@@ -70,7 +70,7 @@ def test_fallback_used_when_primary_fails():
     finally:
         fetch_msi.requests.get = old_get
         fetch_msi.time.sleep = old_sleep
-        fetch_msi.FALLBACK_MSI_URL_TEMPLATE = old_template
+        fetch_msi.FALLBACK_MSI_URL_TEMPLATE = old_fallback_template
 
 
 test_accepts_xml_and_extracts_entities()

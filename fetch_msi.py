@@ -120,10 +120,11 @@ def fetch_msi_single(nav_area, url_template=PRIMARY_MSI_URL_TEMPLATE, source_nam
     return []
 
 def fetch_msi_single_with_fallback(nav_area):
+    """Fetch one nav area from primary MSI source, then optional fallback on failure."""
     res = fetch_msi_single(nav_area, PRIMARY_MSI_URL_TEMPLATE, 'primary')
     if res:
         return res
-    if FALLBACK_MSI_URL_TEMPLATE and FALLBACK_MSI_URL_TEMPLATE != PRIMARY_MSI_URL_TEMPLATE:
+    if FALLBACK_MSI_URL_TEMPLATE:
         log_to_file(f"[FALLBACK] Area {nav_area} trying fallback source.")
         return fetch_msi_single(nav_area, FALLBACK_MSI_URL_TEMPLATE, 'fallback')
     return []
