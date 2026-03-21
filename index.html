@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NOTAM KML Viewer</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html, body, #map { height: 100%; margin: 0; }
+    .panel { position: absolute; z-index: 1000; top: 10px; left: 10px; background: #fff; padding: 8px 10px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,.2); font: 13px/1.4 sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <div><b>NOTAM Viewer</b></div>
+    <div>数据源: <code>latest.kml</code></div>
+  </div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
+  <script>
+    const map = L.map('map').setView([35.8, 104.2], 4);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const layer = omnivore.kml('./latest.kml').on('ready', function() {
+      try { map.fitBounds(layer.getBounds(), {padding: [20,20]}); } catch(e) {}
+    }).on('error', function(e){ console.error(e); alert('加载 latest.kml 失败'); }).addTo(map);
+  </script>
+</body>
+</html>
