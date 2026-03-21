@@ -31,6 +31,6 @@ jobs:
       - name: Commit and push if changed
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[Auto] Update latest.csv with new aerospace NOTAMs"
-          file_pattern: latest.csv
+          commit_message: "[Auto] Update latest.csv, latest.kml and weekly history"
+          file_pattern: "latest.csv latest.kml history/*"
           branch: main

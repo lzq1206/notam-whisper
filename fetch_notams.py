@@ -6,10 +6,13 @@ Supplementary: NGA MSI Maritime (msi.nga.mil)
 """
 import requests
 import re
+import os
+import glob
 import datetime
 from datetime import timedelta
 import csv
 import traceback
+import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ─── Keyword Filters ───
@@ -217,6 +220,192 @@ def fetch_msi():
 # ═══════════════════════════════════════════════════════════════
 # Main: Merge all sources into latest.csv
 # ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════
+# KML Generation
+# ═══════════════════════════════════════════════════════════════
+def csv_to_kml(csv_path, kml_path):
+    """Convert a latest.csv file into KML format."""
+    rows = []
+    with open(csv_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+
+    kml = ET.Element('kml', xmlns='http://www.opengis.net/kml/2.2')
+    doc = ET.SubElement(kml, 'Document')
+    ET.SubElement(doc, 'name').text = 'Aerospace NOTAMs'
+
+    # Define styles
+    for sid, color in [('polyStyle','7700ff00'), ('circleStyle','770000ff'), ('lineStyle','77ff0000')]:
+        style = ET.SubElement(doc, 'Style', id=sid)
+        ls = ET.SubElement(style, 'LineStyle')
+        ET.SubElement(ls, 'color').text = 'ff000000'
+        ET.SubElement(ls, 'width').text = '2'
+        ps = ET.SubElement(style, 'PolyStyle')
+        ET.SubElement(ps, 'color').text = color
+
+    for row in rows:
+        lat = row.get('lat', '').strip()
+        lon = row.get('lon', '').strip()
+        raw = row.get('raw', '')
+        notam_id = row.get('notam_id', '')
+        fir = row.get('fir', '')
+        radius = row.get('radius_nm', '').strip()
+
+        if not lat or not lon:
+            continue
+        try:
+            lat_f = float(lat)
+            lon_f = float(lon)
+        except:
+            continue
+
+        pm = ET.SubElement(doc, 'Placemark')
+        ET.SubElement(pm, 'name').text = notam_id or fir or 'NOTAM'
+        ET.SubElement(pm, 'description').text = raw[:500]
+
+        # Try to extract polygon coords from raw text
+        coord_regex = r'(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))'
+        cleaned = re.sub(r'Q\).*?(?=\s*A\))', '', raw, flags=re.DOTALL)
+        matches = list(re.finditer(coord_regex, cleaned, re.I))
+
+        if len(matches) >= 3:
+            # Polygon
+            ET.SubElement(pm, 'styleUrl').text = '#polyStyle'
+            poly = ET.SubElement(pm, 'Polygon')
+            outer = ET.SubElement(poly, 'outerBoundaryIs')
+            ring = ET.SubElement(outer, 'LinearRing')
+            coords_text = []
+            for m in matches:
+                if m.group(1):  # N/S first format
+                    mlat = _parse_coord_val(m.group(2), m.group(1))
+                    mlon = _parse_coord_val(m.group(4), m.group(3))
+                else:  # digits first format
+                    mlat = _parse_coord_val(m.group(5), m.group(6))
+                    mlon = _parse_coord_val(m.group(7), m.group(8))
+                coords_text.append(f"{mlon},{mlat},0")
+            coords_text.append(coords_text[0])  # close the ring
+            ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
+        elif radius and float(radius) > 0:
+            # Circle approximation as polygon
+            import math
+            ET.SubElement(pm, 'styleUrl').text = '#circleStyle'
+            poly = ET.SubElement(pm, 'Polygon')
+            outer = ET.SubElement(poly, 'outerBoundaryIs')
+            ring = ET.SubElement(outer, 'LinearRing')
+            r_deg = float(radius) / 60.0  # NM to degrees (approximate)
+            coords_text = []
+            for i in range(36):
+                angle = math.radians(i * 10)
+                cx = lon_f + r_deg * math.cos(angle) / math.cos(math.radians(lat_f))
+                cy = lat_f + r_deg * math.sin(angle)
+                coords_text.append(f"{cx},{cy},0")
+            coords_text.append(coords_text[0])
+            ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
+        else:
+            # Simple point
+            ET.SubElement(pm, 'styleUrl').text = '#circleStyle'
+            point = ET.SubElement(pm, 'Point')
+            ET.SubElement(point, 'coordinates').text = f"{lon_f},{lat_f},0"
+
+    tree = ET.ElementTree(kml)
+    ET.indent(tree, space='  ')
+    tree.write(kml_path, xml_declaration=True, encoding='UTF-8')
+    print(f"[KML] Written {len(rows)} placemarks to {kml_path}")
+
+def _parse_coord_val(digits, hemi):
+    """Parse DDMM or DDMMSS coordinate string with hemisphere letter to decimal degrees."""
+    digits = digits.replace(',', '.')
+    hemi = hemi.upper()
+    is_lon = hemi in ('E', 'W')
+    try:
+        if '.' in digits:
+            int_part, dec = digits.split('.')
+        else:
+            int_part, dec = digits, ''
+        if is_lon:
+            if len(int_part) <= 5:
+                d, m = int(int_part[:3]), int(int_part[3:5]) if len(int_part) >= 5 else int(int_part[3:])
+                s = 0
+            else:
+                d, m, s = int(int_part[:3]), int(int_part[3:5]), int(int_part[5:7])
+        else:
+            if len(int_part) <= 4:
+                d, m = int(int_part[:2]), int(int_part[2:4]) if len(int_part) >= 4 else int(int_part[2:])
+                s = 0
+            else:
+                d, m, s = int(int_part[:2]), int(int_part[2:4]), int(int_part[4:6])
+        val = d + m / 60.0 + s / 3600.0
+        if dec:
+            val += float(f"0.{dec}") / 60.0
+        if hemi in ('S', 'W'):
+            val = -val
+        return round(val, 6)
+    except:
+        return 0.0
+
+# ═══════════════════════════════════════════════════════════════
+# Weekly History Archiving
+# ═══════════════════════════════════════════════════════════════
+def archive_weekly(csv_path):
+    """Merge current CSV data into the weekly history file, de-duplicating by notam_id."""
+    history_dir = 'history'
+    os.makedirs(history_dir, exist_ok=True)
+
+    # Determine current ISO week: YYYY-WNN
+    today = datetime.date.today()
+    iso_year, iso_week, _ = today.isocalendar()
+    week_tag = f"{iso_year}-W{iso_week:02d}"
+    weekly_csv = os.path.join(history_dir, f"{week_tag}.csv")
+    weekly_kml = os.path.join(history_dir, f"{week_tag}.kml")
+
+    # Read current latest.csv
+    new_rows = []
+    with open(csv_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        headers = reader.fieldnames
+        new_rows = list(reader)
+
+    # Read existing weekly CSV if it exists
+    existing_rows = []
+    if os.path.exists(weekly_csv):
+        with open(weekly_csv, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            existing_rows = list(reader)
+
+    # Merge and de-duplicate by notam_id
+    seen = set()
+    merged = []
+    # New data takes priority (add first)
+    for r in new_rows:
+        nid = r.get('notam_id', '')
+        if nid and nid not in seen:
+            seen.add(nid)
+            merged.append(r)
+        elif not nid:
+            merged.append(r)
+    # Then add old data that wasn't in new
+    for r in existing_rows:
+        nid = r.get('notam_id', '')
+        if nid and nid not in seen:
+            seen.add(nid)
+            merged.append(r)
+        elif not nid:
+            merged.append(r)
+
+    # Write merged weekly CSV
+    with open(weekly_csv, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=headers)
+        writer.writeheader()
+        writer.writerows(merged)
+
+    # Generate weekly KML
+    csv_to_kml(weekly_csv, weekly_kml)
+
+    print(f"[HISTORY] {week_tag}: {len(merged)} records ({len(new_rows)} new + {len(existing_rows)} existing, {len(merged)} after dedup)")
+
+# ═══════════════════════════════════════════════════════════════
+# Main: Merge all sources into latest.csv + latest.kml + history
+# ═══════════════════════════════════════════════════════════════
 def main():
     print("=" * 60)
     print("Aerospace NOTAM Fetcher - Multi-Source Pipeline")
@@ -233,7 +422,7 @@ def main():
         traceback.print_exc()
         msi_rows = []
 
-    # ── Write CSV ──
+    # ── Write latest.csv ──
     with open('latest.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw'])
@@ -251,7 +440,7 @@ def main():
             lat = n.get('latitude', '')
             lon = n.get('longitude', '')
             radius = n.get('radius', '')
-            if radius == 999:  # Q-line 999 = "entire FIR / unknown", not a real radius
+            if radius == 999:
                 radius = ''
             from_utc = n.get('from', '')
             to_utc = n.get('to', '')
@@ -279,6 +468,13 @@ def main():
     print(f"\n{'='*60}")
     print(f"Pipeline complete: {total} records written to latest.csv")
     print(f"  notammap.org: {len(notammap_items)} | MSI: {len(msi_rows)}")
+
+    # ── Generate latest.kml ──
+    csv_to_kml('latest.csv', 'latest.kml')
+
+    # ── Archive into weekly history ──
+    archive_weekly('latest.csv')
+
     print(f"{'='*60}")
 
 if __name__ == '__main__':
