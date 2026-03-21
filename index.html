@@ -142,12 +142,22 @@
       const matches = [...raw.matchAll(regex)];
       if (matches.length < 3) return [];
       
-      const coords = [];
+      const groups = {};
+      
       for (const m of matches) {
+        let isHemiFirst = !!m[1];
         let latHemi = (m[1] || m[6]).toUpperCase();
         let latStr  = (m[2] || m[5]).replace(',', '.');
         let lonHemi = (m[3] || m[8]).toUpperCase();
         let lonStr  = (m[4] || m[7]).replace(',', '.');
+        
+        let latIntLen = latStr.split('.')[0].length;
+        let lonIntLen = lonStr.split('.')[0].length;
+        
+        // Q-line center point is always DDMM/DDDMM (<=4 / <=5). Polygons are often DDMMSS/DDDMMSS (>4 / >5).
+        let latType = (latIntLen > 4) ? 'SEC' : 'MIN';
+        let lonType = (lonIntLen > 5) ? 'SEC' : 'MIN';
+        let matchType = (isHemiFirst ? 'PRE' : 'SUF') + '_' + latType + '_' + lonType;
         
         let latObj = parseCoordinate(latStr, false);
         let lonObj = parseCoordinate(lonStr, true);
@@ -159,9 +169,20 @@
         let lon = lonObj;
         if (lonHemi === 'W') lon = -lon;
         
-        coords.push([lat, lon]);
+        if (!groups[matchType]) groups[matchType] = [];
+        groups[matchType].push([lat, lon]);
       }
-      return coords;
+      
+      let maxLen = 0;
+      let bestGroup = [];
+      for (const t in groups) {
+        if (groups[t].length > maxLen) {
+          bestGroup = groups[t];
+          maxLen = groups[t].length;
+        }
+      }
+      
+      return bestGroup.length >= 3 ? bestGroup : [];
     }
 
     function clearLayers() {
