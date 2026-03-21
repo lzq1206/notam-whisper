@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 NGA MSI Maritime Warning fetcher.
-Outputs: msi.csv, msi.kml, history/msi/YYYY-WNN.*
+Outputs: msi.csv, msi_raw.csv, msi.kml, history/msi/YYYY-WNN.*
 """
 import requests, re, os, datetime, csv, math, time, urllib3
 import xml.etree.ElementTree as ET
@@ -11,6 +11,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 now_utc = datetime.datetime.utcnow()
 
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
+RAW_CSV_HEADERS = ['notam_id','category','from_utc','to_utc','raw']
 
 MONTHS_MAP = {'JAN':1,'FEB':2,'MAR':3,'APR':4,'MAY':5,'JUN':6,
               'JUL':7,'AUG':8,'SEP':9,'OCT':10,'NOV':11,'DEC':12}
@@ -187,6 +188,19 @@ def process_msi_data(all_smaps):
     log_to_file(f"[MSI] Processed {len(rows)} rows.")
     return rows
 
+def write_msi_raw_csv(rows, csv_path='msi_raw.csv'):
+    with open(csv_path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(RAW_CSV_HEADERS)
+        for r in rows:
+            writer.writerow([
+                r.get('notam_id', ''),
+                r.get('category', ''),
+                r.get('from_utc', ''),
+                r.get('to_utc', ''),
+                r.get('raw', '')
+            ])
+
 # ═══════════════════════════════════════════════════════════════
 # KML Generation
 # ═══════════════════════════════════════════════════════════════
@@ -330,6 +344,8 @@ def main():
 
     msi_rows = fetch_msi()
 
+    write_msi_raw_csv(msi_rows, 'msi_raw.csv')
+
     # Write msi.csv
     with open('msi.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
@@ -347,7 +363,7 @@ def main():
                 r['raw']
             ])
 
-    print(f"\nPipeline complete: {len(msi_rows)} records written to msi.csv")
+    print(f"\nPipeline complete: {len(msi_rows)} records written to msi_raw.csv; filtered geocoded records written to msi.csv")
 
     csv_to_kml('msi.csv', 'msi.kml')
     archive_weekly('msi.csv', 'msi')
