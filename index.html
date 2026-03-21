@@ -108,31 +108,46 @@
     }
 
     function parseCoordinate(s, isLon) {
-      let d, m, sec = 0;
+      let parts = s.split('.');
+      let intPart = parts[0];
+      let decPart = parts.length > 1 ? '.' + parts[1] : '';
+      
+      let d, m, sec = '0';
       if (isLon) {
-        if (s.length === 5) { d = s.slice(0,3); m = s.slice(3,5); }
-        else if (s.length >= 7) { d = s.slice(0,3); m = s.slice(3,5); sec = s.slice(5, 7); }
-        else return null;
+        if (intPart.length === 4 || intPart.length === 5) {
+          m = intPart.slice(-2) + decPart;
+          d = intPart.slice(0, -2);
+        } else if (intPart.length === 6 || intPart.length === 7) {
+          sec = intPart.slice(-2) + decPart;
+          m = intPart.slice(-4, -2);
+          d = intPart.slice(0, -4);
+        } else return null;
       } else {
-        if (s.length === 4) { d = s.slice(0,2); m = s.slice(2,4); }
-        else if (s.length >= 6) { d = s.slice(0,2); m = s.slice(2,4); sec = s.slice(4, 6); }
-        else return null;
+        if (intPart.length === 3 || intPart.length === 4) {
+          m = intPart.slice(-2) + decPart;
+          d = intPart.slice(0, -2);
+        } else if (intPart.length === 5 || intPart.length === 6) {
+          sec = intPart.slice(-2) + decPart;
+          m = intPart.slice(-4, -2);
+          d = intPart.slice(0, -4);
+        } else return null;
       }
-      return parseInt(d, 10) + parseInt(m, 10)/60 + parseInt(sec, 10)/3600;
+      if (d === '') d = '0';
+      return parseFloat(d) + parseFloat(m)/60 + parseFloat(sec)/3600;
     }
 
     function extractPolygonFromRaw(raw) {
       if (!raw) return [];
-      const regex = /(\d{4}|\d{6})(N|S)\s*(\d{5}|\d{7})(E|W)/gi;
+      const regex = /(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))/gi;
       const matches = [...raw.matchAll(regex)];
       if (matches.length < 3) return [];
       
       const coords = [];
       for (const m of matches) {
-        let latStr = m[1];
-        let latHemi = m[2].toUpperCase();
-        let lonStr = m[3];
-        let lonHemi = m[4].toUpperCase();
+        let latHemi = (m[1] || m[6]).toUpperCase();
+        let latStr  = (m[2] || m[5]).replace(',', '.');
+        let lonHemi = (m[3] || m[8]).toUpperCase();
+        let lonStr  = (m[4] || m[7]).replace(',', '.');
         
         let latObj = parseCoordinate(latStr, false);
         let lonObj = parseCoordinate(lonStr, true);
