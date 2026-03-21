@@ -507,11 +507,14 @@
 
         // 2. Draw launch site markers (always show all sites)
         Object.entries(launchSites).forEach(([abbrev, site]) => {
-          const m = L.circleMarker([site.lat, site.lon], {
-            radius: 6, color: '#6b21a8', fillColor: '#a855f7',
-            fillOpacity: 0.7, weight: 2
+          const rocketIcon = L.divIcon({
+            html: '<div style="font-size: 18px; line-height: 1;">🚀</div>',
+            className: 'rocket-site-icon',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
           });
-          m.bindTooltip(`🚀 ${site.name}`, {permanent: false, direction: 'top'});
+          const m = L.marker([site.lat, site.lon], { icon: rocketIcon });
+          m.bindTooltip(site.name, {permanent: false, direction: 'top'});
           m.addTo(launchLayerGroup);
         });
 
