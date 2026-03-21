@@ -3,11 +3,12 @@
 NGA MSI Maritime Warning fetcher.
 Outputs: msi.csv, msi_raw.csv, msi.kml, history/msi/YYYY-WNN.*
 """
-import requests, re, os, datetime, csv, math, time, urllib3, hashlib, html
+import requests, re, os, datetime, csv, math, time, urllib3
 import xml.etree.ElementTree as ET
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+import urllib3, urllib.request
 
+import ssl
 now_utc = datetime.datetime.utcnow()
 
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
@@ -40,21 +41,6 @@ def parse_msi_cancel_time(text):
 
 def parse_msi_coords(text):
     coords = []
-
-    # 0) DMS style used by some web tables: 22°19'10.0"N, 120°37'48.0"E
-    pattern0 = r'(\d{1,2})\s*°\s*(\d{1,2})\s*\'?\s*(\d{1,2}(?:\.\d+)?)?\s*"?\s*([NS])\s*,?\s*(\d{1,3})\s*°\s*(\d{1,2})\s*\'?\s*(\d{1,2}(?:\.\d+)?)?\s*"?\s*([EW])'
-    for m in re.finditer(pattern0, text, re.I):
-        d1, m1, s1, h1, d2, m2, s2, h2 = m.groups()
-        s1 = float(s1 or 0.0)
-        s2 = float(s2 or 0.0)
-        lat = int(d1) + int(m1) / 60.0 + s1 / 3600.0
-        lon = int(d2) + int(m2) / 60.0 + s2 / 3600.0
-        if h1.upper() == 'S':
-            lat = -lat
-        if h2.upper() == 'W':
-            lon = -lon
-        coords.append((round(lat, 6), round(lon, 6)))
-
     # 1. Standard NGA format: DD-MM.mmN DDD-MM.mmW
     pattern1 = r'(\d{1,2})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([NS])\s*(\d{2,3})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([EW])'
     for m in re.finditer(pattern1, text):
@@ -69,16 +55,7 @@ def parse_msi_coords(text):
         for m in re.finditer(pattern2, text):
             d1, m1, h1, d2, m2, h2 = m.groups()
             coords.append((msi_coord_to_dd(d1, m1, '0', h1), msi_coord_to_dd(d2, m2, '0', h2)))
-
-    # deduplicate while preserving order
-    dedup = []
-    seen = set()
-    for c in coords:
-        key = (round(c[0], 6), round(c[1], 6))
-        if key not in seen:
-            seen.add(key)
-            dedup.append(key)
-    return dedup
+    return coords
 
 # ═══════════════════════════════════════════════════════════════
 # MSI Fetching (navwarns-style)
@@ -96,8 +73,69 @@ LOG_FILE = 'msi_fetch_log.txt'
 HTML_CHECK_PREFIX_LENGTH = 200
 PRIMARY_MSI_URL_TEMPLATE = "https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&output=xml"
 FALLBACK_MSI_URL_TEMPLATE = os.getenv("MSI_FALLBACK_URL_TEMPLATE", "").strip()
-# Secondary stable source (NAVAREA III XML mirror)
-NAVAREA3_XML_URL = os.getenv("MSI_NAVAREA3_XML_URL", "https://armada.defensa.gob.es/ihm/XML/Index_Navareas_eng.xml").strip()
+
+DAILY_MEMO_URLS = {
+    '4': 'https://msi.nga.mil/apology_objects/DailyMemIV.txt',
+    '12': 'https://msi.nga.mil/apology_objects/DailyMemXII.txt',
+    'A': 'https://msi.nga.mil/apology_objects/DailyMemLAN.txt',
+    'P': 'https://msi.nga.mil/apology_objects/DailyMemPAC.txt',
+    'C': 'https://msi.nga.mil/apology_objects/DailyMemARC.txt'
+}
+
+def parse_msi_text_memo(text):
+    """
+    Parses the Daily Memo text format into smapsActiveEntity-like nodes.
+    Each message is preceded by a timestamp line: DDHHMMZ MON YY
+    """
+    text = text.replace('\r\n', '\n')
+    # Split using lookahead to keep the timestamp line at the start of each block
+    blocks = re.split(r'\n(?=\d{6}Z [A-Z]{3} \d{2}\n)', text)
+    
+    res = []
+    for block in blocks:
+        block = block.strip()
+        if not block: continue
+        if not re.match(r'\d{6}Z [A-Z]{3} \d{2}', block):
+            continue
+            
+        lines = block.split('\n')
+        if len(lines) < 2: continue
+        
+        msg_id_line = lines[1].strip()
+        # Extract ID: e.g. NAVAREA XII 151/26
+        msg_id_match = re.search(r'^([A-Z]+(?:\s+[A-Z\d]+)?\s+\d+/\d+)', msg_id_line)
+        msg_id = msg_id_match.group(1) if msg_id_match else msg_id_line
+        
+        res.append({
+            'msgID': msg_id,
+            'msgText': block, # The existing processing pipeline expects coordinates/times in msgText
+            'category': 'MARITIME',
+            'msgType': 'Warning'
+        })
+    return res
+
+def fetch_msi_from_txt(nav_area):
+    url = DAILY_MEMO_URLS.get(nav_area)
+    if not url:
+        return []
+    
+    log_to_file(f"[FETCH] (text-memo) Area {nav_area} URL: {url}")
+    try:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        
+        req = urllib.request.Request(url, headers=make_msi_headers())
+        with urllib.request.urlopen(req, context=ctx, timeout=60) as response:
+            status = response.getcode()
+            text = response.read().decode('utf-8', errors='replace').strip()
+            log_to_file(f"  Attempt: Status {status}, Length {len(text)}")
+            if status == 200:
+                return parse_msi_text_memo(text)
+    except Exception as e:
+        log_to_file(f'  Text memo fetch error: {e}')
+    return []
+
 def log_to_file(msg):
     with open(LOG_FILE, 'a', encoding='utf-8') as f:
         f.write(f"[{datetime.datetime.utcnow().isoformat()}] {msg}\n")
@@ -113,33 +151,45 @@ def fetch_msi_single(nav_area, url_template=PRIMARY_MSI_URL_TEMPLATE, source_nam
     MAX_RETRIES = 4
     RETRY_BACKOFF = 2.0
 
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
+    # Force a very lenient SSL context
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            resp = requests.get(url, headers=make_msi_headers(), timeout=60)
-            resp.raise_for_status()
-            text = resp.text.strip()
-            log_to_file(f"  Attempt {attempt}: Status {resp.status_code}, Length {len(text)}")
-
-            if text.startswith("<") and "<html" not in text[:HTML_CHECK_PREFIX_LENGTH].lower():
-                root = ET.fromstring(text)
-                entities = root.findall('smapsActiveEntity')
-                log_to_file(f"  Found {len(entities)} smapsActiveEntity nodes.")
-                res = []
-                for entity in entities:
-                    res.append({
-                        'msgID': entity.findtext('msgID'),
-                        'msgText': entity.findtext('msgText'),
-                        'category': entity.findtext('category'),
-                        'msgType': entity.findtext('msgType')
-                    })
-                return res
-
-            log_to_file(
-                f"  Non-XML response (Content-Type: {resp.headers.get('content-type', 'unknown')})"
-            )
-            log_to_file(f"  Unexpected response snippet: {text[:200]}")
+            import urllib.request
+            req = urllib.request.Request(url, headers=make_msi_headers())
+            with urllib.request.urlopen(req, context=ctx, timeout=60) as response:
+                status = response.getcode()
+                text = response.read().decode('utf-8', errors='replace').strip()
+                log_to_file(f"  Attempt {attempt}: Status {status}, Length {len(text)}")
+                
+                if status == 200 and text.startswith('<') and "<html" not in text[:HTML_CHECK_PREFIX_LENGTH].lower():
+                    if '<smapsActiveEntity' in text:
+                        root = ET.fromstring(text)
+                        entities = root.findall('smapsActiveEntity')
+                        log_to_file(f'  Found {len(entities)} smapsActiveEntity nodes.')
+                        res = []
+                        for entity in entities:
+                            res.append({
+                                'msgID': entity.findtext('msgID'),
+                                'msgText': entity.findtext('msgText'),
+                                'category': entity.findtext('category'),
+                                'msgType': entity.findtext('msgType')
+                            })
+                        return res
+                    else:
+                        log_to_file('  No smapsActiveEntity nodes in XML.')
+                        return []
+                else:
+                    log_to_file(f"  Non-XML or blocked response snippet: {text[:200]}")
         except Exception as e:
-            log_to_file(f"  Request error: {e}")
+            log_to_file(f'  Request error: {e}')
 
         if attempt < MAX_RETRIES:
             time.sleep(RETRY_BACKOFF ** attempt)
@@ -150,97 +200,19 @@ def fetch_msi_single_with_fallback(nav_area):
     res = fetch_msi_single(nav_area, PRIMARY_MSI_URL_TEMPLATE, 'primary')
     if res:
         return res
+    
     if FALLBACK_MSI_URL_TEMPLATE:
-        log_to_file(f"[FALLBACK] Area {nav_area} trying fallback source.")
-        return fetch_msi_single(nav_area, FALLBACK_MSI_URL_TEMPLATE, 'fallback')
+        log_to_file(f"[FALLBACK] Area {nav_area} trying fallback XML source.")
+        res = fetch_msi_single(nav_area, FALLBACK_MSI_URL_TEMPLATE, 'fallback')
+        if res:
+            return res
+            
+    # Try text memo as secondary fallback
+    if nav_area in DAILY_MEMO_URLS:
+        log_to_file(f"[FALLBACK] Area {nav_area} trying text memo source.")
+        return fetch_msi_from_txt(nav_area)
+        
     return []
-
-
-def fetch_navarea3_xml(url=NAVAREA3_XML_URL):
-    """
-    Alternative source parser (NAVAREA III XML).
-    Returns smaps-like records with keys: msgID/msgText/category/msgType
-    """
-    if not url:
-        return []
-    log_to_file(f"[ALT] Fetch NAVAREA3 XML: {url}")
-    try:
-        resp = requests.get(url, timeout=60)
-        resp.raise_for_status()
-        text = resp.text
-        root = ET.fromstring(text)
-        out = []
-        for i, node in enumerate(root.findall('navarea')):
-            nid = node.attrib.get('id_nav', '').strip() or str(i + 1)
-            body = (node.text or '').replace('<br />', ' ').replace('<br/>', ' ')
-            body = re.sub(r'\s+', ' ', body).strip()
-            if not body:
-                continue
-            out.append({
-                'msgID': f"NAVAREA3-{nid}",
-                'msgText': body,
-                'category': 'NAVAREA-III',
-                'msgType': 'ALT-XML',
-            })
-        log_to_file(f"[ALT] NAVAREA3 parsed records: {len(out)}")
-        return out
-    except Exception as e:
-        log_to_file(f"[ALT] NAVAREA3 fetch error: {e}")
-        return []
-
-
-def _clean_html_text(s):
-    s = re.sub(r'<br\s*/?>', '\\n', s, flags=re.I)
-    s = re.sub(r'<[^>]+>', ' ', s)
-    s = html.unescape(s)
-    s = re.sub(r'\s+', ' ', s).strip()
-    return s
-
-
-def fetch_navwarnings_table(url='https://www.navwarnings.com/'):
-    """
-    Parse navwarnings.com home table as fallback adapter.
-    Returns smaps-like records with keys: msgID/msgText/category/msgType
-    """
-    log_to_file(f"[ALT] Fetch navwarnings table: {url}")
-    out = []
-    try:
-        resp = requests.get(url, timeout=60, headers={'User-Agent': make_msi_headers()['User-Agent']})
-        resp.raise_for_status()
-        html_text = resp.text
-        tbl = re.search(r'<table[^>]*>(.*?)</table>', html_text, re.I | re.S)
-        if not tbl:
-            log_to_file('[ALT] navwarnings: no table found')
-            return []
-
-        table_html = tbl.group(1)
-        rows = re.findall(r'<tr[^>]*>(.*?)</tr>', table_html, re.I | re.S)
-        for tr in rows:
-            cols = re.findall(r'<t[dh][^>]*>(.*?)</t[dh]>', tr, re.I | re.S)
-            if len(cols) < 3:
-                continue
-            # Skip header row
-            if re.search(r'NavArea', cols[0], re.I) and re.search(r'Year', cols[1], re.I):
-                continue
-            nav_area = _clean_html_text(cols[0])
-            date_txt = _clean_html_text(cols[1])
-            msg = _clean_html_text(cols[2])
-            if not msg:
-                continue
-            digest = hashlib.md5((nav_area + '|' + date_txt + '|' + msg[:200]).encode('utf-8')).hexdigest()[:10]
-            out.append({
-                'msgID': f"NAVWARN-{digest}",
-                'msgText': f"[{nav_area}] {date_txt} {msg}",
-                'category': nav_area or 'NAVWARNINGS',
-                'msgType': 'ALT-WEB',
-            })
-
-        log_to_file(f"[ALT] navwarnings parsed records: {len(out)}")
-        return out
-    except Exception as e:
-        log_to_file(f"[ALT] navwarnings fetch error: {e}")
-        return []
-
 
 def fetch_msi():
     log_to_file("[MSI] Starting sequential fetch...")
@@ -250,25 +222,7 @@ def fetch_msi():
         res = fetch_msi_single_with_fallback(na)
         all_smaps.extend(res)
         time.sleep(2)
-
-    # If NGA sources unstable, add alternative NAVAREA III feed
-    if len(all_smaps) < 5:
-        alt = fetch_navarea3_xml()
-        seen = {x.get('msgID') for x in all_smaps if x.get('msgID')}
-        for a in alt:
-            if a.get('msgID') not in seen:
-                all_smaps.append(a)
-                seen.add(a.get('msgID'))
-
-    # Additional fallback adapter: navwarnings.com table
-    navw = fetch_navwarnings_table()
-    if navw:
-        seen = {x.get('msgID') for x in all_smaps if x.get('msgID')}
-        for a in navw:
-            if a.get('msgID') not in seen:
-                all_smaps.append(a)
-                seen.add(a.get('msgID'))
-
+    
     log_to_file(f"[MSI] Total raw warnings: {len(all_smaps)}")
     return process_msi_data(all_smaps)
 

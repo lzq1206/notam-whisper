@@ -1,40 +1,94 @@
 MSI Fetch Log
-[2026-03-21T10:32:23.900367] [MSI] Starting sequential fetch...
-[2026-03-21T10:32:23.900489] [FETCH] (primary) Area 4 URL: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
-[2026-03-21T10:32:33.851975]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
-[2026-03-21T10:32:45.146108]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
-[2026-03-21T10:32:57.348834]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
-[2026-03-21T10:33:07.673811]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
-[2026-03-21T10:33:09.674850] [FETCH] (primary) Area 12 URL: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
-[2026-03-21T10:33:11.929235]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
-[2026-03-21T10:33:21.109608]   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Max retries exceeded with url: /api/publications/smaps?navArea=12&status=active&output=xml (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)')))
-[2026-03-21T10:33:27.557641]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
-[2026-03-21T10:33:36.962861]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
-[2026-03-21T10:33:38.965866] [FETCH] (primary) Area A URL: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
-[2026-03-21T10:33:40.209363]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
-[2026-03-21T10:33:43.514635]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
-[2026-03-21T10:33:48.814895]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
-[2026-03-21T10:33:58.162210]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
-[2026-03-21T10:34:00.164819] [FETCH] (primary) Area P URL: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
-[2026-03-21T10:34:02.548403]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
-[2026-03-21T10:34:05.824490]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
-[2026-03-21T10:34:19.029880]   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Max retries exceeded with url: /api/publications/smaps?navArea=P&status=active&output=xml (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)')))
-[2026-03-21T10:34:32.397739]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
-[2026-03-21T10:34:34.400452] [FETCH] (primary) Area C URL: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
-[2026-03-21T10:34:37.501211]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
-[2026-03-21T10:34:39.902165]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
-[2026-03-21T10:34:44.162859]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
-[2026-03-21T10:34:53.405849]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
-[2026-03-21T10:34:55.408050] [FETCH] (primary) Area 1 URL: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
-[2026-03-21T10:34:55.730086]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
-[2026-03-21T10:34:58.028981]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
-[2026-03-21T10:35:04.316195]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
-[2026-03-21T10:35:13.663538]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
-[2026-03-21T10:35:15.666388] [FETCH] (primary) Area 2 URL: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
-[2026-03-21T10:35:16.919165]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
-[2026-03-21T10:35:20.176738]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
-[2026-03-21T10:35:29.207862]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
-[2026-03-21T10:35:38.261338]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
-[2026-03-21T10:35:40.263984] [FETCH] (primary) Area 3 URL: https://msi.nga.mil/api/publications/smaps?navArea=3&status=active&output=xml
-[2026-03-21T10:35:40.500435]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=3&status=active&output=xml
-[2026-03-21T10:35:42.984304]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=3&status=active&output=xml
+[2026-03-21T11:22:40.259992] [MSI] Starting sequential fetch...
+[2026-03-21T11:22:40.260213] [FETCH] (primary) Area 4 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=4&status=active&output=xml
+[2026-03-21T11:22:41.568744]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:22:44.713821]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:22:49.855682]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:22:59.015467]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:22:59.024895] [FALLBACK] Area 4 trying text memo source.
+[2026-03-21T11:22:59.025145] [FETCH] (text-memo) Area 4 URL: https://msi.nga.mil/apology_objects/DailyMemIV.txt
+[2026-03-21T11:23:02.600513]   Attempt: Status 200, Length 32358
+[2026-03-21T11:23:04.601939] [FETCH] (primary) Area 12 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=12&status=active&output=xml
+[2026-03-21T11:23:05.844347]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:08.980558]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:14.151268]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:23.292047]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:23.292465] [FALLBACK] Area 12 trying text memo source.
+[2026-03-21T11:23:23.292761] [FETCH] (text-memo) Area 12 URL: https://msi.nga.mil/apology_objects/DailyMemXII.txt
+[2026-03-21T11:23:25.811863]   Attempt: Status 200, Length 11218
+[2026-03-21T11:23:27.812738] [FETCH] (primary) Area A URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=A&status=active&output=xml
+[2026-03-21T11:23:29.042808]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:32.192036]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:37.342640]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:46.487815]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:46.488198] [FALLBACK] Area A trying text memo source.
+[2026-03-21T11:23:46.488435] [FETCH] (text-memo) Area A URL: https://msi.nga.mil/apology_objects/DailyMemLAN.txt
+[2026-03-21T11:23:46.978401]   Attempt: Status 200, Length 27667
+[2026-03-21T11:23:48.979353] [FETCH] (primary) Area P URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=P&status=active&output=xml
+[2026-03-21T11:23:50.235161]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:53.394460]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:23:58.536056]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:07.684548]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:07.684956] [FALLBACK] Area P trying text memo source.
+[2026-03-21T11:24:07.685203] [FETCH] (text-memo) Area P URL: https://msi.nga.mil/apology_objects/DailyMemPAC.txt
+[2026-03-21T11:24:10.214531]   Attempt: Status 200, Length 43636
+[2026-03-21T11:24:12.215749] [FETCH] (primary) Area C URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=C&status=active&output=xml
+[2026-03-21T11:24:13.459848]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:16.601218]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:21.752254]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:30.904921]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:30.905382] [FALLBACK] Area C trying text memo source.
+[2026-03-21T11:24:30.905641] [FETCH] (text-memo) Area C URL: https://msi.nga.mil/apology_objects/DailyMemARC.txt
+[2026-03-21T11:24:32.361146]   Attempt: Status 200, Length 5345
+[2026-03-21T11:24:34.362111] [FETCH] (primary) Area 1 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=1&status=active&output=xml
+[2026-03-21T11:24:35.607971]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:39.750794]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:44.870388]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:54.021094]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:24:56.022143] [FETCH] (primary) Area 2 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=2&status=active&output=xml
+[2026-03-21T11:24:57.259435]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:00.414296]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:05.558228]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:14.710841]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:16.711550] [FETCH] (primary) Area 3 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=3&status=active&output=xml
+[2026-03-21T11:25:17.950799]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:21.093102]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:26.250814]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:35.391696]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:37.392809] [FETCH] (primary) Area 5 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=5&status=active&output=xml
+[2026-03-21T11:25:38.637564]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:41.809258]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:46.954278]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:56.106117]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:25:58.107135] [FETCH] (primary) Area 6 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=6&status=active&output=xml
+[2026-03-21T11:25:59.373365]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:02.513091]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:07.667698]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:16.810513]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:18.811135] [FETCH] (primary) Area 7 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=7&status=active&output=xml
+[2026-03-21T11:26:20.049890]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:23.205136]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:28.344784]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:37.490223]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:39.491392] [FETCH] (primary) Area 8 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=8&status=active&output=xml
+[2026-03-21T11:26:40.793929]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:43.930072]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:49.078640]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:26:58.226322]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:00.227297] [FETCH] (primary) Area 9 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=9&status=active&output=xml
+[2026-03-21T11:27:01.488695]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:04.629390]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:09.786167]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:19.018124]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:21.019448] [FETCH] (primary) Area 10 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=10&status=active&output=xml
+[2026-03-21T11:27:22.294416]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:25.427846]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:30.572695]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:39.725563]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:41.726613] [FETCH] (primary) Area 11 URL: https://invalid-api-nga-msi.local/api/publications/smaps?navArea=11&status=active&output=xml
+[2026-03-21T11:27:42.976231]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:46.119402]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:27:51.265931]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:28:00.405940]   Request error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>
+[2026-03-21T11:28:02.406965] [MSI] Total raw warnings: 357
+[2026-03-21T11:28:02.420365] [MSI] Processed 357 rows.
