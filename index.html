@@ -785,6 +785,21 @@
       return `rgb(${r},${g},${b})`;
     }
 
+    function parseDescriptionDate(desc) {
+      if (!desc) return null;
+      // Matches "March 22, 2026 at 3:45 PM (UTC)"
+      const m = desc.match(/([A-Z][a-z]+)\s+(\d{1,2}),\s+(\d{4})\s+at\s+(\d{1,2}):(\d{2})\s+([AP]M)/i);
+      if (!m) return null;
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      const monStr = m[1].substring(0, 3).toUpperCase();
+      const month = months.indexOf(monStr);
+      if (month === -1) return null;
+      let hr = parseInt(m[4]);
+      if (m[6].toUpperCase() === 'PM' && hr < 12) hr += 12;
+      if (m[6].toUpperCase() === 'AM' && hr === 12) hr = 0;
+      return new Date(Date.UTC(parseInt(m[3]), month, parseInt(m[2]), hr, parseInt(m[5])));
+    }
+
     function coordsForRllLoc(padLoc) {
       if (!padLoc) return null;
       const slug = (padLoc.slug || '').toLowerCase();
@@ -846,9 +861,12 @@
           const list = rllData.result || [];
           upcomingLaunches = [];
 
-          const upcomingTimes = list.map(l => l.win_open ? new Date(l.win_open).getTime() : null).filter(t => t);
+          const upcomingTimes = list.map(l => {
+            const d = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
+            return (d && isFinite(d.getTime())) ? d.getTime() : null;
+          }).filter(t => t);
           const minLaunchTs = upcomingTimes.length ? Math.min(...upcomingTimes) : now.getTime();
-          const maxLaunchTs = upcomingTimes.length ? Math.max(...upcomingTimes) : now.getTime() + 86400000; // Default to 1 day if no upcoming launches
+          const maxLaunchTs = upcomingTimes.length ? Math.max(...upcomingTimes) : now.getTime() + 86400000;
 
           list.forEach((l, idx) => {
             const loc = l.pad?.location;
@@ -864,7 +882,7 @@
             const vehicleName = l.vehicle?.name || '';
             const locName = loc?.name || '';
             const padName = l.pad?.name || '';
-            const t0 = l.win_open ? new Date(l.win_open) : null;
+            const t0 = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
             const dateStr = t0 ? t0.toISOString().replace('T', ' ').slice(0, 16) + ' UTC' : '时间待定';
             const weather = l.weather_temp ? ` (${l.weather_temp}°C ${l.weather_condition || ''})` : '';
             const desc = l.launch_description || '';
