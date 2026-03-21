@@ -138,8 +138,11 @@
 
     function extractPolygonFromRaw(raw) {
       if (!raw) return [];
+      // Remove Q-line to avoid mistakenly parsing the center coordinate
+      const cleanedRaw = raw.replace(/Q\).*?(?=\s*A\))/s, '');
+
       const regex = /(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))/gi;
-      const matches = [...raw.matchAll(regex)];
+      const matches = [...cleanedRaw.matchAll(regex)];
       if (matches.length < 3) return [];
       
       const groups = {};
@@ -170,19 +173,39 @@
         if (lonHemi === 'W') lon = -lon;
         
         if (!groups[matchType]) groups[matchType] = [];
-        groups[matchType].push([lat, lon]);
+        groups[matchType].push({ lat: lat, lon: lon, index: m.index });
       }
       
       let maxLen = 0;
       let bestGroup = [];
       for (const t in groups) {
-        if (groups[t].length > maxLen) {
-          bestGroup = groups[t];
-          maxLen = groups[t].length;
+        let currentSubGroup = [];
+        let lastIndex = -1;
+        
+        for (const pt of groups[t]) {
+          // If distance between start of coordinates is too large (> 150 chars), they are likely unrelated scattered points
+          if (lastIndex === -1 || (pt.index - lastIndex) < 150) {
+            currentSubGroup.push(pt);
+          } else {
+            if (currentSubGroup.length > maxLen) {
+              bestGroup = currentSubGroup;
+              maxLen = currentSubGroup.length;
+            }
+            currentSubGroup = [pt];
+          }
+          lastIndex = pt.index;
+        }
+        
+        if (currentSubGroup.length > maxLen) {
+          bestGroup = currentSubGroup;
+          maxLen = currentSubGroup.length;
         }
       }
       
-      return bestGroup.length >= 3 ? bestGroup : [];
+      if (bestGroup.length >= 3) {
+        return bestGroup.map(pt => [pt.lat, pt.lon]);
+      }
+      return [];
     }
 
     function clearLayers() {
