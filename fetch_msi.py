@@ -37,9 +37,13 @@ def parse_msi_cancel_time(text):
 
 def parse_msi_coords(text):
     coords = []
-    for m in re.finditer(r'(\d{1,2})-(\d{2})\.(\d{2})([NS])\s+(\d{2,3})-(\d{2})\.(\d{2})([EW])', text):
-        lat = msi_coord_to_dd(m.group(1), m.group(2), m.group(3), m.group(4))
-        lon = msi_coord_to_dd(m.group(5), m.group(6), m.group(7), m.group(8))
+    pattern = r'(\d{1,2})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([NS])\s*(\d{2,3})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([EW])'
+    for m in re.finditer(pattern, text):
+        deg1, min1, dec1, hemi1, deg2, min2, dec2, hemi2 = m.groups()
+        dec1 = dec1 if dec1 else '0'
+        dec2 = dec2 if dec2 else '0'
+        lat = msi_coord_to_dd(deg1, min1, dec1, hemi1)
+        lon = msi_coord_to_dd(deg2, min2, dec2, hemi2)
         coords.append((lat, lon))
     return coords
 
@@ -100,9 +104,36 @@ def fetch_msi():
     print(f"[MSI] Total raw warnings fetched: {len(all_smaps)}")
     return process_msi_data(all_smaps)
 
+def parse_msi_active_times(text):
+    m = re.search(r'(\d{2})(\d{4})Z\s*(?:[A-Z]{3}\s*)?TO\s*(\d{2})(\d{4})Z\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text)
+    if m:
+        d1, t1, d2, t2, mon, yr = m.groups()
+        if yr is None:
+            yr = datetime.datetime.utcnow().year
+        else:
+            yr = int(yr)
+            if yr < 100: yr += 2000
+        month = MONTHS_MAP.get(mon.upper())
+        if month:
+            try:
+                to_dt = datetime.datetime(yr, month, int(d2), int(t2[:2]), int(t2[2:]))
+                m1, y1 = month, yr
+                if int(d1) > int(d2):
+                    m1 -= 1
+                    if m1 < 1:
+                        m1 = 12
+                        y1 -= 1
+                from_dt = datetime.datetime(y1, m1, int(d1), int(t1[:2]), int(t1[2:]))
+                return from_dt, to_dt
+            except:
+                pass
+    return None, None
+
 def process_msi_data(all_smaps):
     rows = []
     seen = set()
+    five_days = now_utc + datetime.timedelta(days=5)
+
     for s in all_smaps:
         msg_id = s.get('msgID', '')
         if msg_id in seen:
@@ -119,8 +150,17 @@ def process_msi_data(all_smaps):
             continue
 
         coords = parse_msi_coords(msg_text)
-        if len(coords) < 2:
+        if not coords:
             continue
+
+        from_dt, to_dt = parse_msi_active_times(msg_text)
+        if to_dt and to_dt < now_utc:
+            continue
+        if from_dt and from_dt > five_days:
+            continue
+
+        from_utc_str = from_dt.isoformat() + "Z" if from_dt else ""
+        to_utc_str = to_dt.isoformat() + "Z" if to_dt else ""
 
         msg_type = s.get('msgType', '')
         code = msg_id if (msg_id and '/' in msg_id) else msg_type
@@ -130,7 +170,9 @@ def process_msi_data(all_smaps):
             'raw': clean_text,
             'coords': coords,
             'source': 'MSI',
-            'category': s.get('category', 'MARITIME')
+            'category': s.get('category', 'MARITIME'),
+            'from_utc': from_utc_str,
+            'to_utc': to_utc_str
         })
 
     print(f"[MSI] Found {len(rows)} valid maritime warnings after filtering/parsing.")
@@ -282,7 +324,8 @@ def main():
             clat = sum(float(c[0]) for c in coords) / len(coords)
             clon = sum(float(c[1]) for c in coords) / len(coords)
             writer.writerow([
-                'Maritime', '', r['notam_id'], 'MSI', '', '',
+                'Maritime', '', r['notam_id'], 'MSI',
+                r.get('from_utc', ''), r.get('to_utc', ''),
                 str(round(clat, 6)), str(round(clon, 6)), '', '',
                 r['raw']
             ])
