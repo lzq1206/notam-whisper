@@ -152,7 +152,7 @@
 
       const regex = /(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))/gi;
       const matches = [...cleanedRaw.matchAll(regex)];
-      if (matches.length < 3) return [];
+      if (matches.length < 2) return [];
       
       const groups = {};
       
