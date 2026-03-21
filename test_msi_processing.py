@@ -1,4 +1,5 @@
-import sys, os
+import os
+import sys
 sys.path.append(os.getcwd())
 from fetch_msi import process_msi_data
 
