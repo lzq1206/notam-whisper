@@ -69,6 +69,7 @@ def make_msi_headers():
     }
 
 LOG_FILE = 'msi_fetch_log.txt'
+HTML_CHECK_PREFIX_LENGTH = 200
 def log_to_file(msg):
     with open(LOG_FILE, 'a', encoding='utf-8') as f:
         f.write(f"[{datetime.datetime.utcnow().isoformat()}] {msg}\n")
@@ -91,7 +92,7 @@ def fetch_msi_single(nav_area):
             text = resp.text.strip()
             log_to_file(f"  Attempt {attempt}: Status {resp.status_code}, Length {len(text)}")
 
-            if text.startswith("<") and "<html" not in text[:200].lower():
+            if text.startswith("<") and "<html" not in text[:HTML_CHECK_PREFIX_LENGTH].lower():
                 root = ET.fromstring(text)
                 entities = root.findall('smapsActiveEntity')
                 log_to_file(f"  Found {len(entities)} smapsActiveEntity nodes.")

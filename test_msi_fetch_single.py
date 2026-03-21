@@ -4,7 +4,7 @@ sys.path.append(os.getcwd())
 import fetch_msi
 
 
-class DummyResp:
+class StubResponse:
     def __init__(self, text, status=200, headers=None):
         self.text = text
         self.status_code = status
@@ -31,7 +31,7 @@ def test_accepts_xml_and_extracts_entities():
     xml = """<root><smapsActiveEntity><msgID>A</msgID><msgText>T</msgText><category>14</category><msgType>NW</msgType></smapsActiveEntity></root>"""
 
     def stub_get(*args, **kwargs):
-        return DummyResp(xml, 200, {'content-type': 'application/xml'})
+        return StubResponse(xml, 200, {'content-type': 'application/xml'})
 
     rows = run_with_stub(stub_get)
     assert len(rows) == 1
@@ -41,7 +41,7 @@ def test_accepts_xml_and_extracts_entities():
 
 def test_rejects_html_like_response():
     def stub_get(*args, **kwargs):
-        return DummyResp("<html><body>blocked</body></html>", 200, {'content-type': 'text/html'})
+        return StubResponse("<html><body>blocked</body></html>", 200, {'content-type': 'text/html'})
 
     rows = run_with_stub(stub_get)
     assert rows == [], f"Expected no rows for HTML response, got {rows}"
