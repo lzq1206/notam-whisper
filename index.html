@@ -178,6 +178,7 @@
       
       let maxLen = 0;
       let bestGroup = [];
+      let allValidSubGroups = [];
       for (const t in groups) {
         let currentSubGroup = [];
         let lastIndex = -1;
@@ -185,27 +186,22 @@
         for (const pt of groups[t]) {
           // If distance between start of coordinates is too large (> 150 chars), they are likely unrelated scattered points
           if (lastIndex === -1 || (pt.index - lastIndex) < 150) {
-            currentSubGroup.push(pt);
+            currentSubGroup.push([pt.lat, pt.lon]);
           } else {
-            if (currentSubGroup.length > maxLen) {
-              bestGroup = currentSubGroup;
-              maxLen = currentSubGroup.length;
+            if (currentSubGroup.length >= 2) {
+              allValidSubGroups.push(currentSubGroup);
             }
-            currentSubGroup = [pt];
+            currentSubGroup = [[pt.lat, pt.lon]];
           }
           lastIndex = pt.index;
         }
         
-        if (currentSubGroup.length > maxLen) {
-          bestGroup = currentSubGroup;
-          maxLen = currentSubGroup.length;
+        if (currentSubGroup.length >= 2) {
+          allValidSubGroups.push(currentSubGroup);
         }
       }
       
-      if (bestGroup.length >= 3) {
-        return bestGroup.map(pt => [pt.lat, pt.lon]);
-      }
-      return [];
+      return allValidSubGroups;
     }
 
     function clearLayers() {
@@ -230,42 +226,32 @@
         if (!isFinite(lat) || !isFinite(lon)) return;
         const color = colorByTime(Date.parse(r.from_utc), minTs, maxTs);
 
-        let shape;
-        let coords = [];
+        let coordinatesList = [];
         if (r.polygon) {
           try {
             if (r.polygon.trim().startsWith('[')) {
-              coords = JSON.parse(r.polygon);
+              let parsed = JSON.parse(r.polygon);
+              if (parsed.length > 0) {
+                if (typeof parsed[0][0] === 'number') {
+                  coordinatesList.push(parsed);
+                } else {
+                  coordinatesList = parsed;
+                }
+              }
             } else {
               const pts = r.polygon.split(/[ ;|]/).filter(Boolean);
-              coords = pts.map(p => {
+              let coords = pts.map(p => {
                 const parts = p.split(',');
                 return [parseFloat(parts[0]), parseFloat(parts[1])];
               }).filter(p => isFinite(p[0]) && isFinite(p[1]));
+              if (coords.length >= 2) coordinatesList.push(coords);
             }
           } catch(e) {}
         }
         
         // Fallback to extracting from raw text
-        if (coords.length < 3) {
-          coords = extractPolygonFromRaw(r.raw);
-        }
-
-        if (coords.length >= 3) {
-          shape = L.polygon(coords, {
-            color,
-            fillColor: color,
-            fillOpacity: 0.2,
-            weight: 2
-          });
-        } else {
-          shape = L.circle([lat, lon], {
-            radius: radiusNm * 1852,
-            color,
-            fillColor: color,
-            fillOpacity: 0.2,
-            weight: 2
-          });
+        if (coordinatesList.length === 0) {
+          coordinatesList = extractPolygonFromRaw(r.raw);
         }
 
         const popup = `
@@ -277,9 +263,45 @@
           <hr/>
           <div style="max-width:420px;max-height:260px;overflow:auto;white-space:pre-wrap;">${(r.raw || '').replace(/</g,'&lt;')}</div>
         `;
-        shape.bindPopup(popup);
-        shape.addTo(group);
-        layers.push(shape);
+
+        if (coordinatesList.length > 0) {
+          // Determine if this is a route (contains RTE/AWY keywords and not AREA/POLYGON)
+          const rawText = r.raw || '';
+          const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
+          
+          coordinatesList.forEach(pts => {
+            let shape;
+            if (pts.length >= 3 && !isRoute) {
+              shape = L.polygon(pts, {
+                color,
+                fillColor: color,
+                fillOpacity: 0.2,
+                weight: 2
+              });
+            } else if (pts.length >= 2) {
+              shape = L.polyline(pts, {
+                color,
+                weight: 3
+              });
+            }
+            if (shape) {
+              shape.bindPopup(popup);
+              shape.addTo(group);
+              layers.push(shape);
+            }
+          });
+        } else {
+          let shape = L.circle([lat, lon], {
+            radius: radiusNm * 1852,
+            color,
+            fillColor: color,
+            fillOpacity: 0.2,
+            weight: 2
+          });
+          shape.bindPopup(popup);
+          shape.addTo(group);
+          layers.push(shape);
+        }
       });
 
       if (layers.length) {
