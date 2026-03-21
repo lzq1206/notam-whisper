@@ -171,7 +171,9 @@ def parse_msi_coords(text):
 def fetch_msi_single(nav_area):
     url = f"https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&output=html"
     try:
-        resp = requests.get(url, headers=make_headers(), timeout=30)
+        import urllib3
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        resp = requests.get(url, headers=make_headers(), timeout=30, verify=False)
         if resp.status_code == 200:
             return resp.json().get('smaps', [])
     except Exception as e:
