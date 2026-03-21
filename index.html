@@ -256,7 +256,7 @@
             cesiumViewer.entities.add({
               position: Cesium.Cartesian3.fromDegrees(site.lon, site.lat),
               billboard: {
-                image: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">📡</text></svg>'),
+                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">📡</text></svg>'))),
                 verticalOrigin: Cesium.VerticalOrigin.BOTTOM, width: 24, height: 24
               },
               label: {
@@ -274,7 +274,7 @@
             cesiumViewer.entities.add({
               position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
               billboard: {
-                image: 'data:image/svg+xml;base64,' + btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="${iconColor}" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>`),
+                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="${iconColor}" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>`))),
                 verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32
               },
               label: {
@@ -292,7 +292,7 @@
             cesiumViewer.entities.add({
               position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
               billboard: {
-                image: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#22c55e" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>'),
+                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#22c55e" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>'))),
                 verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32
               },
               label: {
@@ -319,7 +319,7 @@
             position: Cesium.Cartesian3.fromDegrees(lon, lat),
             point: { pixelSize: 10, color: color, outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
             label: {
-              text: r.notam_id || (isMaritime ? 'Maritime' : 'NOTAM'),
+              text: r.notam_id || (type === 'MSI' ? 'Maritime' : 'NOTAM'),
               font: '8pt sans-serif',
               fillColor: color,
               outlineColor: Cesium.Color.BLACK,
