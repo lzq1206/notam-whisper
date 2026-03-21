@@ -242,7 +242,7 @@ def main():
             n = item.get('notam', {})
             country = item.get('_country', '')
             nid = item.get('id', '')
-            raw = n.get('raw', '').replace('\\n', '\n')
+            raw = n.get('raw', '').replace('\\n', '  ').replace('\n', '  ').replace('\r', '')
             notam_id_parts = [n.get('series',''), str(n.get('number','')), str(n.get('year',''))]
             notam_id = f"{notam_id_parts[0]}{notam_id_parts[1]}/{notam_id_parts[2]}" if notam_id_parts[0] else ''
             fir = n.get('fir', '')
