@@ -46,7 +46,34 @@ def test_rejects_html_like_response():
     rows = run_with_stub(stub_get)
     assert rows == [], f"Expected no rows for HTML response, got {rows}"
 
+def test_fallback_used_when_primary_fails():
+    xml = """<root><smapsActiveEntity><msgID>FB</msgID><msgText>Fallback</msgText><category>14</category><msgType>NW</msgType></smapsActiveEntity></root>"""
+    old_get = fetch_msi.requests.get
+    old_sleep = fetch_msi.time.sleep
+    old_fallback_template = fetch_msi.FALLBACK_MSI_URL_TEMPLATE
+    try:
+        calls = []
+        fetch_msi.time.sleep = lambda *_: None
+        fetch_msi.FALLBACK_MSI_URL_TEMPLATE = "https://fallback.example/api?navArea={nav_area}&output=xml"
+
+        def stub_get(url, *args, **kwargs):
+            calls.append(url)
+            if "fallback.example" in url:
+                return StubResponse(xml, 200, {'content-type': 'application/xml'})
+            return StubResponse("<html>blocked</html>", 200, {'content-type': 'text/html'})
+
+        fetch_msi.requests.get = stub_get
+        rows = fetch_msi.fetch_msi_single_with_fallback('4')
+        assert len(rows) == 1
+        assert rows[0]['msgID'] == 'FB'
+        assert any("fallback.example" in url for url in calls), f"Fallback URL not used. Calls: {calls}"
+    finally:
+        fetch_msi.requests.get = old_get
+        fetch_msi.time.sleep = old_sleep
+        fetch_msi.FALLBACK_MSI_URL_TEMPLATE = old_fallback_template
+
 
 test_accepts_xml_and_extracts_entities()
 test_rejects_html_like_response()
+test_fallback_used_when_primary_fails()
 print("test_msi_fetch_single passed")
