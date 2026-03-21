@@ -70,6 +70,8 @@ def make_msi_headers():
 
 LOG_FILE = 'msi_fetch_log.txt'
 HTML_CHECK_PREFIX_LENGTH = 200
+PRIMARY_MSI_URL_TEMPLATE = "https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&output=xml"
+FALLBACK_MSI_URL_TEMPLATE = os.getenv("MSI_FALLBACK_URL_TEMPLATE", "").strip()
 def log_to_file(msg):
     with open(LOG_FILE, 'a', encoding='utf-8') as f:
         f.write(f"[{datetime.datetime.utcnow().isoformat()}] {msg}\n")
@@ -79,9 +81,9 @@ def log_to_file(msg):
 with open(LOG_FILE, 'w', encoding='utf-8') as f:
     f.write("MSI Fetch Log\n")
 
-def fetch_msi_single(nav_area):
-    url = f"https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&output=xml"
-    log_to_file(f"[FETCH] Area {nav_area} URL: {url}")
+def fetch_msi_single(nav_area, url_template=PRIMARY_MSI_URL_TEMPLATE, source_name='primary'):
+    url = url_template.format(nav_area=nav_area)
+    log_to_file(f"[FETCH] ({source_name}) Area {nav_area} URL: {url}")
     MAX_RETRIES = 4
     RETRY_BACKOFF = 2.0
 
@@ -117,12 +119,21 @@ def fetch_msi_single(nav_area):
             time.sleep(RETRY_BACKOFF ** attempt)
     return []
 
+def fetch_msi_single_with_fallback(nav_area):
+    res = fetch_msi_single(nav_area, PRIMARY_MSI_URL_TEMPLATE, 'primary')
+    if res:
+        return res
+    if FALLBACK_MSI_URL_TEMPLATE and FALLBACK_MSI_URL_TEMPLATE != PRIMARY_MSI_URL_TEMPLATE:
+        log_to_file(f"[FALLBACK] Area {nav_area} trying fallback source.")
+        return fetch_msi_single(nav_area, FALLBACK_MSI_URL_TEMPLATE, 'fallback')
+    return []
+
 def fetch_msi():
     log_to_file("[MSI] Starting sequential fetch...")
     nav_areas = ['4', '12', 'A', 'P', 'C', '1', '2', '3', '5', '6', '7', '8', '9', '10', '11']
     all_smaps = []
     for na in nav_areas:
-        res = fetch_msi_single(na)
+        res = fetch_msi_single_with_fallback(na)
         all_smaps.extend(res)
         time.sleep(2)
     
