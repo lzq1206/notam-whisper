@@ -107,6 +107,48 @@
       return `rgb(${r},${g},${b})`;
     }
 
+    function parseCoordinate(s, isLon) {
+      let d, m, sec = 0;
+      if (isLon) {
+        if (s.length === 5) { d = s.slice(0,3); m = s.slice(3,5); }
+        else if (s.length >= 7) { d = s.slice(0,3); m = s.slice(3,5); sec = s.slice(5, 7); }
+        else return null;
+      } else {
+        if (s.length === 4) { d = s.slice(0,2); m = s.slice(2,4); }
+        else if (s.length >= 6) { d = s.slice(0,2); m = s.slice(2,4); sec = s.slice(4, 6); }
+        else return null;
+      }
+      return parseInt(d, 10) + parseInt(m, 10)/60 + parseInt(sec, 10)/3600;
+    }
+
+    function extractPolygonFromRaw(raw) {
+      if (!raw) return [];
+      const regex = /(\d{4}|\d{6})(N|S)\s*(\d{5}|\d{7})(E|W)/gi;
+      const matches = [...raw.matchAll(regex)];
+      if (matches.length < 3) return [];
+      
+      const coords = [];
+      for (const m of matches) {
+        let latStr = m[1];
+        let latHemi = m[2].toUpperCase();
+        let lonStr = m[3];
+        let lonHemi = m[4].toUpperCase();
+        
+        let latObj = parseCoordinate(latStr, false);
+        let lonObj = parseCoordinate(lonStr, true);
+        if (latObj === null || lonObj === null) continue;
+        
+        let lat = latObj;
+        if (latHemi === 'S') lat = -lat;
+        
+        let lon = lonObj;
+        if (lonHemi === 'W') lon = -lon;
+        
+        coords.push([lat, lon]);
+      }
+      return coords;
+    }
+
     function clearLayers() {
       layers.forEach(l => map.removeLayer(l));
       layers = [];
@@ -136,7 +178,6 @@
             if (r.polygon.trim().startsWith('[')) {
               coords = JSON.parse(r.polygon);
             } else {
-              // Parse strings like "lat,lon lat,lon"
               const pts = r.polygon.split(/[ ;|]/).filter(Boolean);
               coords = pts.map(p => {
                 const parts = p.split(',');
@@ -144,6 +185,11 @@
               }).filter(p => isFinite(p[0]) && isFinite(p[1]));
             }
           } catch(e) {}
+        }
+        
+        // Fallback to extracting from raw text
+        if (coords.length < 3) {
+          coords = extractPolygonFromRaw(r.raw);
         }
 
         if (coords.length >= 3) {
