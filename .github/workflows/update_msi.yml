@@ -27,11 +27,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests urllib3
 
-      - name: Fetch MSI maritime warnings
-        run: python fetch_msi.py
-
       - name: Pull latest changes
         run: git pull --rebase origin main
+
+      - name: Fetch MSI maritime warnings
+        run: python fetch_msi.py
 
       - name: Commit and push if changed
         uses: stefanzweifel/git-auto-commit-action@v5
