@@ -14,6 +14,7 @@ import csv
 import traceback
 import json
 import urllib3
+import time
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -170,91 +171,80 @@ def parse_msi_coords(text):
         coords.append((lat, lon))
     return coords
 
+# ─── NGA MSI NavWarnings ───
+
 def make_msi_headers():
     return {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        "Accept": "application/json, text/plain, */*",
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+        "Accept": "application/xml, text/xml, */*",
         "Accept-Language": "en-US,en;q=0.9",
-        "Referer": "https://msi.nga.mil/NavWarnings",
+        "Referer": "https://msi.nga.mil/",
         "Connection": "keep-alive"
     }
 
 def fetch_msi_single(nav_area):
-    # Try smaps JSON first
-    url = f"https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&output=json"
+    # exact URL pattern from navwarns repo
+    url = f"https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&category=14&output=xml"
     
-    import urllib3
-    import time
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     
-    max_retries = 3
-    for attempt in range(1, max_retries + 1):
+    MAX_RETRIES = 4
+    RETRY_BACKOFF = 2.0
+    
+    for attempt in range(1, MAX_RETRIES + 1):
         try:
             resp = requests.get(url, headers=make_msi_headers(), timeout=60, verify=False)
-            if resp.status_code == 200:
-                data = resp.json()
-                if data.get('smaps'):
-                    return data.get('smaps', [])
-            print(f"[MSI] Attempt {attempt} failed for Area {nav_area} smaps API")
-        except: pass
-        if attempt < max_retries: time.sleep(3)
-
-    # Fallback to broadcast-warn XML
-    url_xml = f"https://msi.nga.mil/api/publications/broadcast-warn?navArea={nav_area}&status=active&output=xml"
-    for attempt in range(1, max_retries + 1):
-        try:
-            resp = requests.get(url_xml, headers=make_msi_headers(), timeout=60, verify=False)
-            if resp.status_code == 200:
-                root = ET.fromstring(resp.text)
+            resp.raise_for_status()
+            text = resp.text.strip()
+            if text.startswith("<") and "<html" not in text[:200].lower():
+                root = ET.fromstring(text)
                 entries = []
-                for entity in root.findall('broadcastWarn'):
+                for entity in root.findall('smapsActiveEntity'):
                     entries.append({
-                        'msgID': entity.findtext('msgKey'),
+                        'msgID': entity.findtext('msgID'),
                         'msgText': entity.findtext('msgText'),
                         'category': entity.findtext('category'),
                         'msgType': entity.findtext('msgType')
                     })
                 return entries
-        except: pass
-        if attempt < max_retries: time.sleep(3)
+            print(f"[MSI] Non-XML response for Area {nav_area} (Attempt {attempt}/{MAX_RETRIES})")
+        except Exception as e:
+            print(f"[MSI] Request error for Area {nav_area} (Attempt {attempt}/{MAX_RETRIES}): {e}")
+        
+        if attempt < MAX_RETRIES:
+            time.sleep(RETRY_BACKOFF ** attempt)
             
     return []
 
 def fetch_msi():
-    # Query known active aerospace/hazardous areas
+    print("[MSI] Starting sequential fetch for NAVAREAs (using navwarns logic)...")
+    # Priority areas first
     nav_areas = ['4', '12', 'A', 'P', 'C', '1', '2', '3', '5', '6', '7', '8', '9', '10', '11']
-    KEEP_CATS = {'ROCKET LAUNCHING', 'SPACE DEBRIS', 'HAZARDOUS OPERATIONS'}
-
+    
     all_smaps = []
-    # Fewer workers to avoid throttling
-    with ThreadPoolExecutor(max_workers=2) as pool:
-        futs = {pool.submit(fetch_msi_single, na): na for na in nav_areas}
-        for f in as_completed(futs):
-            try:
-                res = f.result()
-                if res: all_smaps.extend(res)
-            except: pass
+    # Sequential fetching with sleep to avoid WAF block
+    for na in nav_areas:
+        res = fetch_msi_single(na)
+        if res:
+            all_smaps.extend(res)
+            print(f"      - Area {na}: {len(res)} messages fetched.")
+        time.sleep(5) # Cooldown between areas
 
     print(f"[MSI] Total raw warnings fetched: {len(all_smaps)}")
+    return process_msi_data(all_smaps)
 
+def process_msi_data(all_smaps):
     rows = []
     seen = set()
     for s in all_smaps:
-        cat = s.get('category', '')
-        if cat and cat not in KEEP_CATS: continue
         msg_id = s.get('msgID', '')
         if msg_id in seen: continue
         seen.add(msg_id)
         msg_text = s.get('msgText', '')
         if not msg_text: continue
 
-        # Local filtering by keyword if category is missing
-        if not cat:
-            if not any(k in msg_text.upper() for k in ["ROCKET", "SPACE", "HAZARDOUS"]):
-                continue
-
         # Clean-up for CSV
-        msg_text = msg_text.replace('\n', '  ').replace('\r', '').replace('"', "'")
+        clean_text = msg_text.replace('\n', '  ').replace('\r', '').replace('"', "'")
 
         cancel = parse_msi_cancel_time(msg_text)
         if cancel and cancel < now_utc: continue
@@ -263,19 +253,17 @@ def fetch_msi():
         if len(coords) < 2: continue
 
         msg_type = s.get('msgType', '')
-        code = msg_type
-        if msg_id and '/' in msg_id:
-            code = msg_id
+        code = msg_id if (msg_id and '/' in msg_id) else msg_type
 
         rows.append({
             'notam_id': code,
-            'raw': msg_text,
+            'raw': clean_text,
             'coords': coords,
             'source': 'MSI',
-            'category': cat or 'MARITIME'
+            'category': s.get('category', 'MARITIME')
         })
 
-    print(f"[MSI] Found {len(rows)} valid maritime warnings (rocket/space/hazops).")
+    print(f"[MSI] Found {len(rows)} valid maritime warnings after filtering/parsing.")
     return rows
 
 # ═══════════════════════════════════════════════════════════════
