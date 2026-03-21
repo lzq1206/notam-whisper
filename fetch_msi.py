@@ -146,18 +146,18 @@ def process_msi_data(all_smaps):
         clean_text = msg_text.replace('\n', '  ').replace('\r', '').replace('"', "'")
 
         cancel = parse_msi_cancel_time(msg_text)
-        if cancel and cancel < now_utc:
-            continue
+        # if cancel and cancel < now_utc:
+        #     continue
 
         coords = parse_msi_coords(msg_text)
-        if not coords:
-            continue
+        # if not coords:
+        #     continue
 
         from_dt, to_dt = parse_msi_active_times(msg_text)
-        if to_dt and to_dt < now_utc:
-            continue
-        if from_dt and from_dt > five_days:
-            continue
+        # if to_dt and to_dt < now_utc:
+        #     continue
+        # if from_dt and from_dt > five_days:
+        #     continue
 
         from_utc_str = from_dt.isoformat() + "Z" if from_dt else ""
         to_utc_str = to_dt.isoformat() + "Z" if to_dt else ""
