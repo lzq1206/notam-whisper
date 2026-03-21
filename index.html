@@ -173,10 +173,10 @@
         <label for="launchToggle" style="font-size:12px;">在地图上显示</label>
       </div>
       <div class="legend-launches">
-        <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> 已发射</div>
-        <div class="legend-row"><span class="dot" style="background:#ef4444; border:1px solid #fff;"></span> 即将发射 (近)</div>
-        <div class="legend-row"><span class="dot" style="background:#3b82f6; border:1px solid #fff;"></span> 即将发射 (远)</div>
-        <div class="legend-row"><span class="dot" style="background:#888; border:1px solid #fff; width:6px; height:6px;"></span> 发射场站</div>
+        <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> 🚀 已发射</div>
+        <div class="legend-row"><span class="dot" style="background:#ef2b2b; border:1px solid #fff;"></span> 🚀 即将发射 (近)</div>
+        <div class="legend-row"><span class="dot" style="background:#2b5bff; border:1px solid #fff;"></span> 🚀 即将发射 (远)</div>
+        <div class="legend-row" style="margin-left:2px;">📡 发射场站</div>
       </div>
       <div class="small" id="launchStatus"></div>
     </div>
@@ -250,98 +250,108 @@
         if (!cesiumViewer || !rows) return;
         cesiumViewer.entities.removeAll();
 
-      // 1. Render Launch Sites (🚀) - STATIC
-      if (launchToggle.checked) {
-        Object.entries(launchSites).forEach(([abbrev, site]) => {
-          cesiumViewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(site.lon, site.lat),
-            point: { pixelSize: 6, color: Cesium.Color.GRAY, outlineWidth: 1, outlineColor: Cesium.Color.WHITE },
-            label: {
-              text: site.name, font: '9pt sans-serif',
-              style: Cesium.LabelStyle.FILL_AND_OUTLINE, outlineWidth: 1,
-              verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 5)
-            }
+        // 1. Render Launch Sites (🚀) - STATIC
+        if (launchToggle.checked) {
+          Object.entries(launchSites).forEach(([abbrev, site]) => {
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(site.lon, site.lat),
+              billboard: {
+                image: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">📡</text></svg>'),
+                verticalOrigin: Cesium.VerticalOrigin.BOTTOM, width: 24, height: 24
+              },
+              label: {
+                text: site.name, font: '9pt sans-serif',
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE, outlineWidth: 1,
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 5)
+              }
+            });
           });
-        });
 
-        // 1b. Render Upcoming Launches (Dynamic)
-        upcomingLaunches.forEach(launch => {
-          if (!launch.lat || !launch.lon) return;
+          // 1b. Render Upcoming Launches (Dynamic)
+          upcomingLaunches.forEach(launch => {
+            if (!launch.lat || !launch.lon) return;
+            const iconColor = launch.color || 'yellow';
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
+              billboard: {
+                image: 'data:image/svg+xml;base64,' + btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="${iconColor}" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>`),
+                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32
+              },
+              label: {
+                text: '即将: ' + (launch.mission || ''), font: 'bold 10pt sans-serif',
+                fillColor: Cesium.Color.fromCssColorString(iconColor), outlineColor: Cesium.Color.BLACK, outlineWidth: 2,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16)
+              },
+              description: `<b>${launch.mission}</b><br/>${launch.dateStr}`
+            });
+          });
+
+          // 1c. Render Past Launches (Dynamic)
+          pastLaunches.forEach(launch => {
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
+              billboard: {
+                image: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#22c55e" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>'),
+                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32
+              },
+              label: {
+                text: '已发射: ' + (launch.payload || launch.vehicle), font: '10pt sans-serif',
+                fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16)
+              },
+              description: `<b>🚀 ${launch.vehicle}</b><br/>载荷: ${launch.payload}<br/>时间: ${launch.dateStr}<br/>结果: ${launch.success}`
+            });
+          });
+        }
+
+        // 2. Render NOTAM / MSI polygons
+        rows.forEach(r => {
+          const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
+          if (!isFinite(lat) || !isFinite(lon)) return;
+
+          const type = (r['type'] || 'NOTAM').toUpperCase();
+          const color = r.country === 'Maritime' ? Cesium.Color.ORANGE : Cesium.Color.RED;
+          const radiusNm = parseFloat(r.radius_nm || '1');
+
+          // Render Marker/Point
           cesiumViewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
-            point: { pixelSize: 12, color: Cesium.Color.fromCssColorString(launch.color || 'yellow'), outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
+            position: Cesium.Cartesian3.fromDegrees(lon, lat),
+            point: { pixelSize: 10, color: color, outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
             label: {
-              text: '即将: ' + (launch.mission || ''), font: 'bold 10pt sans-serif',
-              fillColor: Cesium.Color.fromCssColorString(launch.color || 'yellow'), outlineColor: Cesium.Color.BLACK, outlineWidth: 2,
+              text: r.notam_id || (isMaritime ? 'Maritime' : 'NOTAM'),
+              font: '8pt sans-serif',
+              fillColor: color,
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 2,
               style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-              verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 8)
+              verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+              pixelOffset: new Cesium.Cartesian2(0, -10)
             },
-            description: `<b>${launch.mission}</b><br/>${launch.dateStr}`
+            description: r['raw'] || ''
+          });
+
+          // Render Polygon if exists (from raw text parsing)
+          const polyCoords = parseNotamPolygons(r.raw || '');
+          polyCoords.forEach(points => {
+            const flatPoints = [];
+            points.forEach(p => flatPoints.push(p[1], p[0]));
+            cesiumViewer.entities.add({
+              polygon: {
+                hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
+                material: color.withAlpha(0.3),
+                outline: true,
+                outlineColor: color,
+                height: 100 // Slightly above ground
+              }
+            });
           });
         });
 
-        // 1c. Render Past Launches (Dynamic)
-        pastLaunches.forEach(launch => {
-          cesiumViewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
-            point: { pixelSize: 12, color: Cesium.Color.fromCssColorString('#22c55e'), outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
-            label: {
-              text: '已发射: ' + (launch.payload || launch.vehicle), font: '10pt sans-serif',
-              fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-              verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 8)
-            },
-            description: `<b>🚀 ${launch.vehicle}</b><br/>载荷: ${launch.payload}<br/>时间: ${launch.dateStr}<br/>结果: ${launch.success}`
-          });
-        });
-      }
-
-      // 2. Render NOTAM / MSI polygons
-      rows.forEach(r => {
-        const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
-        if (!isFinite(lat) || !isFinite(lon)) return;
-
-        const type = (r['type'] || 'NOTAM').toUpperCase();
-        const color = r.country === 'Maritime' ? Cesium.Color.ORANGE : Cesium.Color.RED;
-        const radiusNm = parseFloat(r.radius_nm || '1');
-
-        // Render Marker/Point
-        cesiumViewer.entities.add({
-          position: Cesium.Cartesian3.fromDegrees(lon, lat),
-          point: { pixelSize: 10, color: color, outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
-          label: {
-            text: r.notam_id || (isMaritime ? 'Maritime' : 'NOTAM'),
-            font: '8pt sans-serif',
-            fillColor: color,
-            outlineColor: Cesium.Color.BLACK,
-            outlineWidth: 2,
-            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-            pixelOffset: new Cesium.Cartesian2(0, -10)
-          },
-          description: r['raw'] || ''
-        });
-
-        // Render Polygon if exists (from raw text parsing)
-        const polyCoords = parseNotamPolygons(r.raw || '');
-        polyCoords.forEach(points => {
-          const flatPoints = [];
-          points.forEach(p => flatPoints.push(p[1], p[0]));
-          cesiumViewer.entities.add({
-            polygon: {
-              hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
-              material: color.withAlpha(0.3),
-              outline: true,
-              outlineColor: color,
-              height: 100 // Slightly above ground
-            }
-          });
-        });
-      });
-
-      console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunches.length} upcoming, ${pastLaunches.length} past.`);
-      if (cesiumViewer.entities.values.length > 0) {
-        cesiumViewer.zoomTo(cesiumViewer.entities);
-      }
+        console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunches.length} upcoming, ${pastLaunches.length} past.`);
+        if (cesiumViewer.entities.values.length > 0) {
+          cesiumViewer.zoomTo(cesiumViewer.entities);
+        }
       } catch (cesiumErr) {
         console.error('[Cesium] Render Error:', cesiumErr);
         setStatus('3D模式渲染异常: ' + cesiumErr.message);
@@ -744,7 +754,7 @@
       // Fallback for different separators
       const m2 = clean.match(/(\d{4})\s+(\d{1,2})\s+([A-Z]{3})/);
       if (!m && !m2) return new Date(s);
-      
+
       if (m) {
         const year = parseInt(m[1]), monStr = m[2], day = parseInt(m[3]);
         const hour = parseInt(m[4]), min = parseInt(m[5]);
@@ -760,12 +770,14 @@
     }
 
     function launchColor(date, now) {
+      if (date < now) return '#22c55e'; // past = green
+      // Use similar logic to colorByTime for consistency
+      // Upcoming range: usually 1 week. We can map 0-7 days to the 0-1 range.
       const diff = date - now;
-      if (diff < 0) return '#22c55e'; // past = green
       const t = Math.min(diff / (7 * 86400000), 1);
-      const r = Math.round(239 * (1 - t) + 59 * t);
-      const g = Math.round(68 * (1 - t) + 130 * t);
-      const b = Math.round(68 * (1 - t) + 246 * t);
+      const r = Math.round(255 * (1 - t) + 43 * t);
+      const g = Math.round(43 * (1 - t) + 91 * t);
+      const b = Math.round(43 * (1 - t) + 255 * t);
       return `rgb(${r},${g},${b})`;
     }
 
@@ -807,13 +819,17 @@
 
         launchLayerGroup.clearLayers();
 
-        // 2. Draw launch site markers (always show all sites)
+        // 2. Draw launch site markers (📡)
         Object.entries(launchSites).forEach(([abbrev, site]) => {
-          const siteIcon = L.circleMarker([site.lat, site.lon], {
-            radius: 4, color: '#fff', fillColor: '#888', fillOpacity: 0.7, weight: 1
+          const siteIcon = L.divIcon({
+            html: '<div style="font-size: 20px; line-height: 1;">📡</div>',
+            className: 'launch-site-icon',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
           });
-          siteIcon.bindTooltip(site.name, {permanent: false, direction: 'top'});
-          siteIcon.addTo(launchLayerGroup);
+          const m = L.marker([site.lat, site.lon], { icon: siteIcon });
+          m.bindTooltip(site.name, { permanent: false, direction: 'top' });
+          m.addTo(launchLayerGroup);
         });
 
         // 3. Fetch upcoming launches from RocketLaunch.Live (free: next 5)
@@ -846,13 +862,15 @@
             const desc = l.launch_description || '';
             const rllUrl = `https://www.rocketlaunch.live/launch/${l.slug}`;
 
-            // Color gradient: Red (0) to Blue (240)
-            const hue = (idx / (total > 1 ? total - 1 : 1)) * 240;
-            const color = `hsl(${hue}, 100%, 50%)`;
+            const color = launchColor(t0, now);
 
-            const lMarker = L.circleMarker([lat, lon], {
-              radius: 9, color: '#fff', fillColor: color, fillOpacity: 1, weight: 2
+            const lIcon = L.divIcon({
+              html: `<div style="background:${color}; width:24px; height:24px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
+              className: 'launch-upcoming-icon',
+              iconSize: [28, 28],
+              iconAnchor: [14, 14]
             });
+            const lMarker = L.marker([lat, lon], { icon: lIcon });
             lMarker.bindPopup(`
               <div style="font-size:12px;color:#666;">即将发射</div>
               <b style="color:${color}">${missionName}</b><br/>
@@ -897,9 +915,13 @@
             const successText = row['Success'] === 'S' ? '✅ 成功' : row['Success'] === 'F' ? '❌ 失败' : '?';
             const dateStr = d.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
 
-            const marker = L.circleMarker([lat, lon], {
-              radius: 9, color: '#fff', fillColor: '#22c55e', fillOpacity: 1, weight: 2
+            const pIcon = L.divIcon({
+              html: `<div style="background:#22c55e; width:24px; height:24px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
+              className: 'launch-past-icon',
+              iconSize: [28, 28],
+              iconAnchor: [14, 14]
             });
+            const marker = L.marker([lat, lon], { icon: pIcon });
             marker.bindPopup(`
               <div style="font-size:12px;color:#666;">历史发射</div>
               <b style="color:#16a34a;">🚀 ${vehicle}</b><br/>
