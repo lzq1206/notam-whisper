@@ -24,6 +24,7 @@ DROP = [
     "FL200","400FT AGL","49215FT AMSL","1350FT AMSL","9000FT AMSL",
     "QUEENSLAND","LASER DISPLAY","UNLIGHTED","6-87 ROCKET","6-86 ROCKET","6-89 ROCKET",
     "RADIOSONDE","MODEL ROCKET","VOLCAN",
+    "GPS INTERFERENCE","GPS JAMMING","NAVIGATION WARNING",
 ]
 
 now_utc = datetime.datetime.utcnow()
@@ -250,6 +251,8 @@ def main():
             lat = n.get('latitude', '')
             lon = n.get('longitude', '')
             radius = n.get('radius', '')
+            if radius == 999:  # Q-line 999 = "entire FIR / unknown", not a real radius
+                radius = ''
             from_utc = n.get('from', '')
             to_utc = n.get('to', '')
 
