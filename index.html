@@ -215,7 +215,6 @@
     function initCesium() {
       if (cesiumViewer) return;
       cesiumViewer = new Cesium.Viewer('mapCesium', {
-        terrainProvider: Cesium.createWorldTerrain ? Cesium.createWorldTerrain() : undefined,
         animation: false, timeline: false, infoBox: false, selectionIndicator: false,
         navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false
       });
@@ -247,8 +246,9 @@
     let pastLaunches = [];
 
     function renderOnGlobe(rows) {
-      if (!cesiumViewer || !rows) return;
-      cesiumViewer.entities.removeAll();
+      try {
+        if (!cesiumViewer || !rows) return;
+        cesiumViewer.entities.removeAll();
 
       // 1. Render Launch Sites (🚀) - STATIC
       if (launchToggle.checked) {
@@ -342,6 +342,10 @@
       if (cesiumViewer.entities.values.length > 0) {
         cesiumViewer.zoomTo(cesiumViewer.entities);
       }
+      } catch (cesiumErr) {
+        console.error('[Cesium] Render Error:', cesiumErr);
+        setStatus('3D模式渲染异常: ' + cesiumErr.message);
+      }
     }
 
     panelToggle.onclick = (e) => {
@@ -382,7 +386,11 @@
         }
         vals.push(cur);
         const o = {};
-        headers.forEach((h, idx) => o[h.replace(/^\ufeff/, '')] = vals[idx] ?? '');
+        if (i === 1) console.log('[CSV] Detected Headers:', headers);
+        headers.forEach((h, idx) => {
+          const key = h.replace(/^\ufeff/, '').trim();
+          if (key) o[key] = (vals[idx] ?? '').trim();
+        });
         rows.push(o);
       }
       return rows;
@@ -647,7 +655,7 @@
 
       if (notamResp.status === 'fulfilled' && notamResp.value.ok) {
         const text = await notamResp.value.text();
-        notamRows = parseCsv(text);
+        notamRows = parseCsv(text).map(r => ({ ...r, type: 'NOTAM', lat: r.lat || r.Latitude, lon: r.lon || r.Longitude }));
         console.log(`[notams.csv] Loaded ${notamRows.length} rows`);
       } else {
         console.warn('[notams.csv] Failed to load');
@@ -655,7 +663,7 @@
 
       if (msiResp.status === 'fulfilled' && msiResp.value.ok) {
         const text = await msiResp.value.text();
-        msiRows = parseCsv(text);
+        msiRows = parseCsv(text).map(r => ({ ...r, type: 'MSI', lat: r.lat || r.Latitude, lon: r.lon || r.Longitude }));
         console.log(`[msi.csv] Loaded ${msiRows.length} rows`);
       } else {
         console.warn('[msi.csv] Failed to load');
@@ -730,12 +738,25 @@
 
     function parseLaunchDate(s) {
       if (!s) return null;
-      const m = s.match(/^(\d{4})\s+(\w{3})\s+(\d{1,2})\s+(\d{2})(\d{2})/);
-      if (!m) return null;
-      const months = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
-      const mo = months[m[2]];
-      if (mo === undefined) return null;
-      return new Date(Date.UTC(+m[1], mo, +m[3], +m[4], +m[5]));
+      const clean = s.trim().toUpperCase();
+      // Expecting "2026 MAR 20 0000" or similar
+      const m = clean.match(/^(\d{4})\s+([A-Z]{3})\s+(\d{1,2})\s+(\d{2})(\d{2})/);
+      // Fallback for different separators
+      const m2 = clean.match(/(\d{4})\s+(\d{1,2})\s+([A-Z]{3})/);
+      if (!m && !m2) return new Date(s);
+      
+      if (m) {
+        const year = parseInt(m[1]), monStr = m[2], day = parseInt(m[3]);
+        const hour = parseInt(m[4]), min = parseInt(m[5]);
+        const months = {
+          'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+          'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11
+        };
+        const month = months[monStr];
+        if (month === undefined) return new Date(s); // Fallback
+        return new Date(Date.UTC(year, month, day, hour, min));
+      }
+      return new Date(s); // Final Fallback
     }
 
     function launchColor(date, now) {
