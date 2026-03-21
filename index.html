@@ -760,6 +760,7 @@
         }
 
         // 4. Load historical CSV for past launches within last 1 week
+        let pastCount = 0;
         pastLaunches = [];
         try {
           const logResp = await fetch(LAUNCH_LOG_URL, {cache: 'no-store'});
