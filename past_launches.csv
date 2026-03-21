@@ -1,4 +1,4 @@
 Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,Launch Vehicle,Official Payload Name,Success,Launch Site (Full)
-2026 MAR 20 0000,,,,Falcon 9,Starlink-371 (17-15),S,"California, United States"
-2026 MAR 20 0000,,,,Electron,"""Eight Days a Week""",S,New Zealand
-2026 MAR 19 0000,,,,Falcon 9,Starlink-370 (10-33),S,"Florida, United States"
+2026 MAR 20 0000,VSFB,34.742,-120.572,Falcon 9,Starlink-371 (17-15),S,"California, United States"
+2026 MAR 20 0000,MP,-39.261,177.864,Electron,"""Eight Days a Week""",S,New Zealand
+2026 MAR 19 0000,KSC,28.572,-80.648,Falcon 9,Starlink-370 (10-33),S,"Florida, United States"
