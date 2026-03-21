@@ -39,14 +39,20 @@ def parse_msi_cancel_time(text):
 
 def parse_msi_coords(text):
     coords = []
-    pattern = r'(\d{1,2})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([NS])\s*(\d{2,3})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([EW])'
-    for m in re.finditer(pattern, text):
+    # 1. Standard NGA format: DD-MM.mmN DDD-MM.mmW
+    pattern1 = r'(\d{1,2})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([NS])\s*(\d{2,3})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([EW])'
+    for m in re.finditer(pattern1, text):
         deg1, min1, dec1, hemi1, deg2, min2, dec2, hemi2 = m.groups()
         dec1 = dec1 if dec1 else '0'
         dec2 = dec2 if dec2 else '0'
-        lat = msi_coord_to_dd(deg1, min1, dec1, hemi1)
-        lon = msi_coord_to_dd(deg2, min2, dec2, hemi2)
-        coords.append((lat, lon))
+        coords.append((msi_coord_to_dd(deg1, min1, dec1, hemi1), msi_coord_to_dd(deg2, min2, dec2, hemi2)))
+
+    if not coords:
+        # 2. Loose format: DDMMN DDDMMW
+        pattern2 = r'(\d{2})(\d{2})\s*([NS])\s+(\d{3})(\d{2})\s*([EW])'
+        for m in re.finditer(pattern2, text):
+            d1, m1, h1, d2, m2, h2 = m.groups()
+            coords.append((msi_coord_to_dd(d1, m1, '0', h1), msi_coord_to_dd(d2, m2, '0', h2)))
     return coords
 
 # ═══════════════════════════════════════════════════════════════
@@ -351,4 +357,9 @@ def main():
     print("=" * 60)
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        log_to_file(f"CRITICAL ERROR in main: {e}")
+        import traceback
+        log_to_file(traceback.format_exc())
