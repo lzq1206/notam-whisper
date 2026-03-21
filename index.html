@@ -43,7 +43,7 @@
     </div>
 
     <div class="small" style="margin-top:6px;">
-      数据文件：<code>latest.csv</code>（优先） / <code>latest.kml</code>（回退）
+      数据文件：<code>notams.csv</code> + <code>msi.csv</code>
     </div>
     <div class="small" id="status"></div>
   </div>
@@ -78,7 +78,6 @@
       const rows = [];
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i];
-        // 简单CSV解析（处理双引号）
         const vals = [];
         let cur = '', inQ = false;
         for (let j = 0; j < line.length; j++) {
@@ -100,7 +99,7 @@
 
     function colorByTime(fromTs, minTs, maxTs) {
       if (!isFinite(fromTs) || !isFinite(minTs) || !isFinite(maxTs) || maxTs <= minTs) return '#d33';
-      const t = (fromTs - minTs) / (maxTs - minTs); // 0近 1远
+      const t = (fromTs - minTs) / (maxTs - minTs);
       const r = Math.round(255 * (1 - t) + 43 * t);
       const g = Math.round(43 * (1 - t) + 91 * t);
       const b = Math.round(43 * (1 - t) + 255 * t);
@@ -138,10 +137,8 @@
 
     function extractPolygonFromRaw(raw) {
       if (!raw) return [];
-      // Remove Q-line to avoid mistakenly parsing the center coordinate
       let cleanedRaw = raw.replace(/Q\).*?(?=\s*A\))/s, '');
 
-      // Normalize space-separated coordinates like "25 41 S" to "2541S" or "S 25 41" to "S2541"
       cleanedRaw = cleanedRaw
         .replace(/\b(\d{2,3})\s+(\d{2}(?:[.,]\d+)?)(?:\s+(\d{2}(?:[.,]\d+)?))?\s*([NSEW])\b/gi, (match, d, m, s, hemi) => {
           return d + m + (s || '') + hemi.toUpperCase();
@@ -155,7 +152,6 @@
       if (matches.length < 2) return [];
       
       const groups = {};
-      
       for (const m of matches) {
         let isHemiFirst = !!m[1];
         let latHemi = (m[1] || m[6]).toUpperCase();
@@ -165,8 +161,6 @@
         
         let latIntLen = latStr.split('.')[0].length;
         let lonIntLen = lonStr.split('.')[0].length;
-        
-        // Q-line center point is always DDMM/DDDMM (<=4 / <=5). Polygons are often DDMMSS/DDDMMSS (>4 / >5).
         let latType = (latIntLen > 4) ? 'SEC' : 'MIN';
         let lonType = (lonIntLen > 5) ? 'SEC' : 'MIN';
         let matchType = (isHemiFirst ? 'PRE' : 'SUF') + '_' + latType + '_' + lonType;
@@ -177,7 +171,6 @@
         
         let lat = latObj;
         if (latHemi === 'S') lat = -lat;
-        
         let lon = lonObj;
         if (lonHemi === 'W') lon = -lon;
         
@@ -185,31 +178,21 @@
         groups[matchType].push({ lat: lat, lon: lon, index: m.index });
       }
       
-      let maxLen = 0;
-      let bestGroup = [];
       let allValidSubGroups = [];
       for (const t in groups) {
         let currentSubGroup = [];
         let lastIndex = -1;
-        
         for (const pt of groups[t]) {
-          // If distance between start of coordinates is too large (> 150 chars), they are likely unrelated scattered points
           if (lastIndex === -1 || (pt.index - lastIndex) < 150) {
             currentSubGroup.push([pt.lat, pt.lon]);
           } else {
-            if (currentSubGroup.length >= 2) {
-              allValidSubGroups.push(currentSubGroup);
-            }
+            if (currentSubGroup.length >= 2) allValidSubGroups.push(currentSubGroup);
             currentSubGroup = [[pt.lat, pt.lon]];
           }
           lastIndex = pt.index;
         }
-        
-        if (currentSubGroup.length >= 2) {
-          allValidSubGroups.push(currentSubGroup);
-        }
+        if (currentSubGroup.length >= 2) allValidSubGroups.push(currentSubGroup);
       }
-      
       return allValidSubGroups;
     }
 
@@ -242,11 +225,8 @@
             if (r.polygon.trim().startsWith('[')) {
               let parsed = JSON.parse(r.polygon);
               if (parsed.length > 0) {
-                if (typeof parsed[0][0] === 'number') {
-                  coordinatesList.push(parsed);
-                } else {
-                  coordinatesList = parsed;
-                }
+                if (typeof parsed[0][0] === 'number') coordinatesList.push(parsed);
+                else coordinatesList = parsed;
               }
             } else {
               const pts = r.polygon.split(/[ ;|]/).filter(Boolean);
@@ -259,11 +239,8 @@
           } catch(e) {}
         }
         
-        // Fallback to extracting from raw text
-        let isFromRawExtracted = false;
         if (coordinatesList.length === 0) {
           coordinatesList = extractPolygonFromRaw(r.raw);
-          isFromRawExtracted = true;
         }
 
         const popup = `
@@ -278,24 +255,15 @@
         `;
 
         if (coordinatesList.length > 0) {
-          // Determine if this is a route (contains RTE/AWY keywords and not AREA/POLYGON)
           const rawText = r.raw || '';
           const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
           
           coordinatesList.forEach(pts => {
             let shape;
             if (pts.length >= 3 && !isRoute) {
-              shape = L.polygon(pts, {
-                color,
-                fillColor: color,
-                fillOpacity: 0.2,
-                weight: 2
-              });
+              shape = L.polygon(pts, { color, fillColor: color, fillOpacity: 0.2, weight: 2 });
             } else if (pts.length >= 2) {
-              shape = L.polyline(pts, {
-                color,
-                weight: 3
-              });
+              shape = L.polyline(pts, { color, weight: 3 });
             }
             if (shape) {
               shape.bindPopup(popup);
@@ -305,11 +273,7 @@
           });
         } else {
           let shape = L.circle([lat, lon], {
-            radius: radiusNm * 1852,
-            color,
-            fillColor: color,
-            fillOpacity: 0.2,
-            weight: 2
+            radius: radiusNm * 1852, color, fillColor: color, fillOpacity: 0.2, weight: 2
           });
           shape.bindPopup(popup);
           shape.addTo(group);
@@ -321,7 +285,9 @@
         group.addTo(map);
         try { map.fitBounds(group.getBounds(), {padding: [20,20]}); } catch (e) {}
       }
-      setStatus(`已加载 ${rows.length} 条发射相关 NOTAM`);
+      const notamCount = rows.filter(r => r.country !== 'Maritime').length;
+      const msiCount = rows.filter(r => r.country === 'Maritime').length;
+      setStatus(`已加载 ${rows.length} 条记录（航空 NOTAM: ${notamCount} | 海事警告: ${msiCount}）`);
     }
 
     function isoDate(d){ return d.toISOString().slice(0,10); }
@@ -366,37 +332,52 @@
       renderRows(dataRows);
     });
 
-    async function loadCsvFirst() {
-      try {
-        const resp = await fetch('./latest.csv', {cache: 'no-store'});
-        if (!resp.ok) throw new Error('latest.csv not found');
-        const text = await resp.text();
-        dataRows = parseCsv(text);
-        if (!dataRows.length) throw new Error('csv empty');
+    // Load both CSVs in parallel and merge
+    async function loadBothCsvs() {
+      let notamRows = [], msiRows = [];
+      const [notamResp, msiResp] = await Promise.allSettled([
+        fetch('./notams.csv', {cache: 'no-store'}),
+        fetch('./msi.csv', {cache: 'no-store'})
+      ]);
 
-        // 默认开始日期：询问用户；结束日期自动=开始+5天
+      if (notamResp.status === 'fulfilled' && notamResp.value.ok) {
+        const text = await notamResp.value.text();
+        notamRows = parseCsv(text);
+        console.log(`[notams.csv] Loaded ${notamRows.length} rows`);
+      } else {
+        console.warn('[notams.csv] Failed to load');
+      }
+
+      if (msiResp.status === 'fulfilled' && msiResp.value.ok) {
+        const text = await msiResp.value.text();
+        msiRows = parseCsv(text);
+        console.log(`[msi.csv] Loaded ${msiRows.length} rows`);
+      } else {
+        console.warn('[msi.csv] Failed to load');
+      }
+
+      dataRows = [...notamRows, ...msiRows];
+      if (dataRows.length > 0) {
         askStartDateDefault();
         applyFilter();
         return true;
-      } catch (e) {
-        console.warn('CSV load failed, fallback KML', e);
-        return false;
       }
+      return false;
     }
 
     async function loadKmlFallback() {
-      const layer = omnivore.kml('./latest.kml').on('ready', function() {
+      const layer = omnivore.kml('./notams.kml').on('ready', function() {
         try { map.fitBounds(layer.getBounds(), {padding: [20,20]}); } catch(e) {}
-        setStatus('CSV不可用，已回退显示 latest.kml');
+        setStatus('CSV不可用，已回退显示 notams.kml');
       }).on('error', function(e){
         console.error(e);
-        setStatus('latest.csv / latest.kml 均加载失败');
+        setStatus('所有数据源均加载失败');
       }).addTo(map);
       layers.push(layer);
     }
 
     (async () => {
-      const ok = await loadCsvFirst();
+      const ok = await loadBothCsvs();
       if (!ok) await loadKmlFallback();
     })();
   </script>

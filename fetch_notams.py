@@ -1,22 +1,12 @@
 #!/usr/bin/env python3
 """
-Automated aerospace NOTAM fetcher for notam-whisper.
-Primary source: https://www.notammap.org/notamdata/
-Supplementary: NGA MSI Maritime (msi.nga.mil)
+Aerospace NOTAM fetcher — notammap.org only.
+Outputs: notams.csv, notams.kml, history/notams/YYYY-WNN.*
 """
-import requests
-import re
-import os
-import glob
-import datetime
+import requests, re, os, datetime, csv, math
 from datetime import timedelta
-import csv
-import traceback
-import json
-import urllib3
-import time
-import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import xml.etree.ElementTree as ET
 
 # ─── Keyword Filters ───
 KEEP = ["UNL", "AEROSPACE", "RE-ENTRY", "ROCKET"]
@@ -36,7 +26,7 @@ DROP = [
 now_utc = datetime.datetime.utcnow()
 five_days = now_utc + timedelta(days=5)
 
-MSI_NAV_AREAS = ['4', '12', 'A', 'P', 'C']
+CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
 
 def make_headers():
     return {
@@ -45,10 +35,9 @@ def make_headers():
     }
 
 # ═══════════════════════════════════════════════════════════════
-# Source 1 (Primary): notammap.org
+# notammap.org
 # ═══════════════════════════════════════════════════════════════
 def fetch_countries():
-    """Fetch list of all countries from notammap.org."""
     url = "https://www.notammap.org/notamdata/countries.json"
     try:
         resp = requests.get(url, headers=make_headers(), timeout=30)
@@ -61,27 +50,23 @@ def fetch_countries():
     return []
 
 def fetch_country(country):
-    """Fetch all NOTAMs for a single country."""
     safe_name = country.replace(' ', '_')
     url = f"https://www.notammap.org/notamdata/{safe_name}.json"
     try:
         resp = requests.get(url, headers=make_headers(), timeout=30)
         if resp.status_code == 200:
-            data = resp.json()
-            return data.get('notams', [])
+            return resp.json().get('notams', [])
     except Exception as e:
         print(f"[notammap] Error fetching '{country}': {e}")
     return []
 
 def fetch_notammap():
-    """Fetch all NOTAMs from notammap.org, filter by KEEP/DROP keywords."""
     countries = fetch_countries()
     if not countries:
         print("[notammap] Failed to get country list!")
         return []
 
     all_notams = []
-    # Use thread pool to speed up fetching all countries
     with ThreadPoolExecutor(max_workers=10) as pool:
         future_map = {pool.submit(fetch_country, c): c for c in countries}
         for fut in as_completed(future_map):
@@ -97,7 +82,7 @@ def fetch_notammap():
 
     print(f"[notammap] Total raw NOTAMs fetched: {len(all_notams)}")
 
-    # De-duplicate by NOTAM id
+    # De-duplicate
     seen = set()
     unique = []
     for item in all_notams:
@@ -105,24 +90,18 @@ def fetch_notammap():
         if nid and nid not in seen:
             seen.add(nid)
             unique.append(item)
-
     print(f"[notammap] Unique NOTAMs: {len(unique)}")
 
-    # Apply KEEP/DROP + time filters
+    # KEEP/DROP + time filters
     filtered = []
     for item in unique:
         n = item.get('notam', {})
         raw = n.get('raw', '')
         raw_upper = raw.upper()
-
-        # DROP filter
         if any(d in raw_upper for d in DROP):
             continue
-        # KEEP filter
         if not any(k in raw_upper for k in KEEP):
             continue
-
-        # Time filter: keep only NOTAMs active within now..now+5days
         from_str = n.get('from', '')
         to_str = n.get('to', '')
         try:
@@ -136,233 +115,15 @@ def fetch_notammap():
                     continue
         except:
             pass
-
         filtered.append(item)
 
     print(f"[notammap] After KEEP/DROP + time filter: {len(filtered)}")
     return filtered
 
 # ═══════════════════════════════════════════════════════════════
-# Source 2 (Supplementary): NGA MSI Maritime Warnings
-# ═══════════════════════════════════════════════════════════════
-MONTHS_MAP = {'JAN':1,'FEB':2,'MAR':3,'APR':4,'MAY':5,'JUN':6,
-              'JUL':7,'AUG':8,'SEP':9,'OCT':10,'NOV':11,'DEC':12}
-
-def msi_coord_to_dd(deg, mm, dec, hemi):
-    sec = round(int(dec) * 60 / 100)
-    val = int(deg) + int(mm)/60.0 + sec/3600.0
-    if hemi in ('S','W'): val = -val
-    return val
-
-def parse_msi_cancel_time(text):
-    m = re.search(r'CANCEL\s+THIS\s+MSG\s+(\d{2})(\d{4})Z\s+([A-Z]+)\s+(\d{2})', text, re.I)
-    if m:
-        day, hhmm, mon, yr = m.groups()
-        try:
-            return datetime.datetime(2000+int(yr), MONTHS_MAP.get(mon.upper(),1), int(day), int(hhmm[:2]), int(hhmm[2:]))
-        except: pass
-    return None
-
-def parse_msi_coords(text):
-    coords = []
-    for m in re.finditer(r'(\d{1,2})-(\d{2})\.(\d{2})([NS])\s+(\d{2,3})-(\d{2})\.(\d{2})([EW])', text):
-        lat = msi_coord_to_dd(m.group(1), m.group(2), m.group(3), m.group(4))
-        lon = msi_coord_to_dd(m.group(5), m.group(6), m.group(7), m.group(8))
-        coords.append((lat, lon))
-    return coords
-
-# ─── NGA MSI NavWarnings ───
-
-def make_msi_headers():
-    return {
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-        "Accept": "application/xml, text/xml, */*",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Referer": "https://msi.nga.mil/",
-        "Connection": "keep-alive"
-    }
-
-def fetch_msi_single(nav_area):
-    # exact URL pattern from navwarns repo
-    url = f"https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&category=14&output=xml"
-    
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    
-    MAX_RETRIES = 4
-    RETRY_BACKOFF = 2.0
-    
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            resp = requests.get(url, headers=make_msi_headers(), timeout=60, verify=False)
-            resp.raise_for_status()
-            text = resp.text.strip()
-            if text.startswith("<") and "<html" not in text[:200].lower():
-                root = ET.fromstring(text)
-                entries = []
-                for entity in root.findall('smapsActiveEntity'):
-                    entries.append({
-                        'msgID': entity.findtext('msgID'),
-                        'msgText': entity.findtext('msgText'),
-                        'category': entity.findtext('category'),
-                        'msgType': entity.findtext('msgType')
-                    })
-                return entries
-            print(f"[MSI] Non-XML response for Area {nav_area} (Attempt {attempt}/{MAX_RETRIES})")
-        except Exception as e:
-            print(f"[MSI] Request error for Area {nav_area} (Attempt {attempt}/{MAX_RETRIES}): {e}")
-        
-        if attempt < MAX_RETRIES:
-            time.sleep(RETRY_BACKOFF ** attempt)
-            
-    return []
-
-def fetch_msi():
-    print("[MSI] Starting sequential fetch for NAVAREAs (using navwarns logic)...")
-    # Priority areas first
-    nav_areas = ['4', '12', 'A', 'P', 'C', '1', '2', '3', '5', '6', '7', '8', '9', '10', '11']
-    
-    all_smaps = []
-    # Sequential fetching with sleep to avoid WAF block
-    for na in nav_areas:
-        res = fetch_msi_single(na)
-        if res:
-            all_smaps.extend(res)
-            print(f"      - Area {na}: {len(res)} messages fetched.")
-        time.sleep(5) # Cooldown between areas
-
-    print(f"[MSI] Total raw warnings fetched: {len(all_smaps)}")
-    return process_msi_data(all_smaps)
-
-def process_msi_data(all_smaps):
-    rows = []
-    seen = set()
-    for s in all_smaps:
-        msg_id = s.get('msgID', '')
-        if msg_id in seen: continue
-        seen.add(msg_id)
-        msg_text = s.get('msgText', '')
-        if not msg_text: continue
-
-        # Clean-up for CSV
-        clean_text = msg_text.replace('\n', '  ').replace('\r', '').replace('"', "'")
-
-        cancel = parse_msi_cancel_time(msg_text)
-        if cancel and cancel < now_utc: continue
-
-        coords = parse_msi_coords(msg_text)
-        if len(coords) < 2: continue
-
-        msg_type = s.get('msgType', '')
-        code = msg_id if (msg_id and '/' in msg_id) else msg_type
-
-        rows.append({
-            'notam_id': code,
-            'raw': clean_text,
-            'coords': coords,
-            'source': 'MSI',
-            'category': s.get('category', 'MARITIME')
-        })
-
-    print(f"[MSI] Found {len(rows)} valid maritime warnings after filtering/parsing.")
-    return rows
-
-# ═══════════════════════════════════════════════════════════════
-# Main: Merge all sources into latest.csv
-# ═══════════════════════════════════════════════════════════════
-# ═══════════════════════════════════════════════════════════════
 # KML Generation
 # ═══════════════════════════════════════════════════════════════
-def csv_to_kml(csv_path, kml_path):
-    """Convert a latest.csv file into KML format."""
-    rows = []
-    with open(csv_path, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-
-    kml = ET.Element('kml', xmlns='http://www.opengis.net/kml/2.2')
-    doc = ET.SubElement(kml, 'Document')
-    ET.SubElement(doc, 'name').text = 'Aerospace NOTAMs'
-
-    # Define styles
-    for sid, color in [('polyStyle','7700ff00'), ('circleStyle','770000ff'), ('lineStyle','77ff0000')]:
-        style = ET.SubElement(doc, 'Style', id=sid)
-        ls = ET.SubElement(style, 'LineStyle')
-        ET.SubElement(ls, 'color').text = 'ff000000'
-        ET.SubElement(ls, 'width').text = '2'
-        ps = ET.SubElement(style, 'PolyStyle')
-        ET.SubElement(ps, 'color').text = color
-
-    for row in rows:
-        lat = row.get('lat', '').strip()
-        lon = row.get('lon', '').strip()
-        raw = row.get('raw', '')
-        notam_id = row.get('notam_id', '')
-        fir = row.get('fir', '')
-        radius = row.get('radius_nm', '').strip()
-
-        if not lat or not lon:
-            continue
-        try:
-            lat_f = float(lat)
-            lon_f = float(lon)
-        except:
-            continue
-
-        pm = ET.SubElement(doc, 'Placemark')
-        ET.SubElement(pm, 'name').text = notam_id or fir or 'NOTAM'
-        ET.SubElement(pm, 'description').text = raw[:500]
-
-        # Try to extract polygon coords from raw text
-        coord_regex = r'(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))'
-        cleaned = re.sub(r'Q\).*?(?=\s*A\))', '', raw, flags=re.DOTALL)
-        matches = list(re.finditer(coord_regex, cleaned, re.I))
-
-        if len(matches) >= 3:
-            # Polygon
-            ET.SubElement(pm, 'styleUrl').text = '#polyStyle'
-            poly = ET.SubElement(pm, 'Polygon')
-            outer = ET.SubElement(poly, 'outerBoundaryIs')
-            ring = ET.SubElement(outer, 'LinearRing')
-            coords_text = []
-            for m in matches:
-                if m.group(1):  # N/S first format
-                    mlat = _parse_coord_val(m.group(2), m.group(1))
-                    mlon = _parse_coord_val(m.group(4), m.group(3))
-                else:  # digits first format
-                    mlat = _parse_coord_val(m.group(5), m.group(6))
-                    mlon = _parse_coord_val(m.group(7), m.group(8))
-                coords_text.append(f"{mlon},{mlat},0")
-            coords_text.append(coords_text[0])  # close the ring
-            ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
-        elif radius and float(radius) > 0:
-            # Circle approximation as polygon
-            import math
-            ET.SubElement(pm, 'styleUrl').text = '#circleStyle'
-            poly = ET.SubElement(pm, 'Polygon')
-            outer = ET.SubElement(poly, 'outerBoundaryIs')
-            ring = ET.SubElement(outer, 'LinearRing')
-            r_deg = float(radius) / 60.0  # NM to degrees (approximate)
-            coords_text = []
-            for i in range(36):
-                angle = math.radians(i * 10)
-                cx = lon_f + r_deg * math.cos(angle) / math.cos(math.radians(lat_f))
-                cy = lat_f + r_deg * math.sin(angle)
-                coords_text.append(f"{cx},{cy},0")
-            coords_text.append(coords_text[0])
-            ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
-        else:
-            # Simple point
-            ET.SubElement(pm, 'styleUrl').text = '#circleStyle'
-            point = ET.SubElement(pm, 'Point')
-            ET.SubElement(point, 'coordinates').text = f"{lon_f},{lat_f},0"
-
-    tree = ET.ElementTree(kml)
-    ET.indent(tree, space='  ')
-    tree.write(kml_path, xml_declaration=True, encoding='UTF-8')
-    print(f"[KML] Written {len(rows)} placemarks to {kml_path}")
-
 def _parse_coord_val(digits, hemi):
-    """Parse DDMM or DDMMSS coordinate string with hemisphere letter to decimal degrees."""
     digits = digits.replace(',', '.')
     hemi = hemi.upper()
     is_lon = hemi in ('E', 'W')
@@ -392,39 +153,111 @@ def _parse_coord_val(digits, hemi):
     except:
         return 0.0
 
+def csv_to_kml(csv_path, kml_path):
+    rows = []
+    with open(csv_path, 'r', encoding='utf-8') as f:
+        rows = list(csv.DictReader(f))
+
+    kml = ET.Element('kml', xmlns='http://www.opengis.net/kml/2.2')
+    doc = ET.SubElement(kml, 'Document')
+    ET.SubElement(doc, 'name').text = 'Aerospace NOTAMs'
+
+    for sid, color in [('polyStyle','7700ff00'), ('circleStyle','770000ff'), ('lineStyle','77ff0000')]:
+        style = ET.SubElement(doc, 'Style', id=sid)
+        ls = ET.SubElement(style, 'LineStyle')
+        ET.SubElement(ls, 'color').text = 'ff000000'
+        ET.SubElement(ls, 'width').text = '2'
+        ps = ET.SubElement(style, 'PolyStyle')
+        ET.SubElement(ps, 'color').text = color
+
+    for row in rows:
+        lat = row.get('lat', '').strip()
+        lon = row.get('lon', '').strip()
+        raw = row.get('raw', '')
+        notam_id = row.get('notam_id', '')
+        fir = row.get('fir', '')
+        radius = row.get('radius_nm', '').strip()
+        if not lat or not lon:
+            continue
+        try:
+            lat_f, lon_f = float(lat), float(lon)
+        except:
+            continue
+
+        pm = ET.SubElement(doc, 'Placemark')
+        ET.SubElement(pm, 'name').text = notam_id or fir or 'NOTAM'
+        ET.SubElement(pm, 'description').text = raw[:500]
+
+        coord_regex = r'(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))'
+        cleaned = re.sub(r'Q\).*?(?=\s*A\))', '', raw, flags=re.DOTALL)
+        matches = list(re.finditer(coord_regex, cleaned, re.I))
+
+        if len(matches) >= 3:
+            ET.SubElement(pm, 'styleUrl').text = '#polyStyle'
+            poly = ET.SubElement(pm, 'Polygon')
+            outer = ET.SubElement(poly, 'outerBoundaryIs')
+            ring = ET.SubElement(outer, 'LinearRing')
+            coords_text = []
+            for m in matches:
+                if m.group(1):
+                    mlat = _parse_coord_val(m.group(2), m.group(1))
+                    mlon = _parse_coord_val(m.group(4), m.group(3))
+                else:
+                    mlat = _parse_coord_val(m.group(5), m.group(6))
+                    mlon = _parse_coord_val(m.group(7), m.group(8))
+                coords_text.append(f"{mlon},{mlat},0")
+            coords_text.append(coords_text[0])
+            ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
+        elif radius and float(radius) > 0:
+            ET.SubElement(pm, 'styleUrl').text = '#circleStyle'
+            poly = ET.SubElement(pm, 'Polygon')
+            outer = ET.SubElement(poly, 'outerBoundaryIs')
+            ring = ET.SubElement(outer, 'LinearRing')
+            r_deg = float(radius) / 60.0
+            coords_text = []
+            for i in range(36):
+                angle = math.radians(i * 10)
+                cx = lon_f + r_deg * math.cos(angle) / math.cos(math.radians(lat_f))
+                cy = lat_f + r_deg * math.sin(angle)
+                coords_text.append(f"{cx},{cy},0")
+            coords_text.append(coords_text[0])
+            ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
+        else:
+            ET.SubElement(pm, 'styleUrl').text = '#circleStyle'
+            point = ET.SubElement(pm, 'Point')
+            ET.SubElement(point, 'coordinates').text = f"{lon_f},{lat_f},0"
+
+    tree = ET.ElementTree(kml)
+    ET.indent(tree, space='  ')
+    tree.write(kml_path, xml_declaration=True, encoding='UTF-8')
+    print(f"[KML] Written {len(rows)} placemarks to {kml_path}")
+
 # ═══════════════════════════════════════════════════════════════
 # Weekly History Archiving
 # ═══════════════════════════════════════════════════════════════
-def archive_weekly(csv_path):
-    """Merge current CSV data into the weekly history file, de-duplicating by notam_id."""
-    history_dir = 'history'
+def archive_weekly(csv_path, history_subdir='notams'):
+    history_dir = os.path.join('history', history_subdir)
     os.makedirs(history_dir, exist_ok=True)
 
-    # Determine current ISO week: YYYY-WNN
     today = datetime.date.today()
     iso_year, iso_week, _ = today.isocalendar()
     week_tag = f"{iso_year}-W{iso_week:02d}"
     weekly_csv = os.path.join(history_dir, f"{week_tag}.csv")
     weekly_kml = os.path.join(history_dir, f"{week_tag}.kml")
 
-    # Read current latest.csv
     new_rows = []
     with open(csv_path, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         headers = reader.fieldnames
         new_rows = list(reader)
 
-    # Read existing weekly CSV if it exists
     existing_rows = []
     if os.path.exists(weekly_csv):
         with open(weekly_csv, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            existing_rows = list(reader)
+            existing_rows = list(csv.DictReader(f))
 
-    # Merge and de-duplicate by notam_id
     seen = set()
     merged = []
-    # New data takes priority (add first)
     for r in new_rows:
         nid = r.get('notam_id', '')
         if nid and nid not in seen:
@@ -432,7 +265,6 @@ def archive_weekly(csv_path):
             merged.append(r)
         elif not nid:
             merged.append(r)
-    # Then add old data that wasn't in new
     for r in existing_rows:
         nid = r.get('notam_id', '')
         if nid and nid not in seen:
@@ -441,49 +273,35 @@ def archive_weekly(csv_path):
         elif not nid:
             merged.append(r)
 
-    # Write merged weekly CSV
     with open(weekly_csv, 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=headers)
         writer.writeheader()
         writer.writerows(merged)
 
-    # Generate weekly KML
     csv_to_kml(weekly_csv, weekly_kml)
-
-    print(f"[HISTORY] {week_tag}: {len(merged)} records ({len(new_rows)} new + {len(existing_rows)} existing, {len(merged)} after dedup)")
+    print(f"[HISTORY] {week_tag}: {len(merged)} records ({len(new_rows)} new + {len(existing_rows)} existing)")
 
 # ═══════════════════════════════════════════════════════════════
-# Main: Merge all sources into latest.csv + latest.kml + history
+# Main
 # ═══════════════════════════════════════════════════════════════
 def main():
     print("=" * 60)
-    print("Aerospace NOTAM Fetcher - Multi-Source Pipeline")
+    print("Aerospace NOTAM Fetcher (notammap.org)")
     print("=" * 60)
 
-    # ── Source 1: notammap.org (Primary) ──
-    notammap_items = fetch_notammap()
+    items = fetch_notammap()
 
-    # ── Source 2: NGA MSI (Supplementary) ──
-    try:
-        msi_rows = fetch_msi()
-    except Exception as e:
-        print(f"[MSI] Source failed: {e}")
-        traceback.print_exc()
-        msi_rows = []
-
-    # ── Write latest.csv ──
-    with open('latest.csv', 'w', newline='', encoding='utf-8') as f:
+    # Write notams.csv
+    with open('notams.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw'])
-
-        # notammap.org records
-        for item in notammap_items:
+        writer.writerow(CSV_HEADERS)
+        for item in items:
             n = item.get('notam', {})
             country = item.get('_country', '')
             nid = item.get('id', '')
             raw = n.get('raw', '').replace('\\n', '  ').replace('\n', '  ').replace('\r', '')
-            notam_id_parts = [n.get('series',''), str(n.get('number','')), str(n.get('year',''))]
-            notam_id = f"{notam_id_parts[0]}{notam_id_parts[1]}/{notam_id_parts[2]}" if notam_id_parts[0] else ''
+            parts = [n.get('series',''), str(n.get('number','')), str(n.get('year',''))]
+            notam_id = f"{parts[0]}{parts[1]}/{parts[2]}" if parts[0] else ''
             fir = n.get('fir', '')
             qcode = n.get('notamCode', '')
             lat = n.get('latitude', '')
@@ -493,7 +311,6 @@ def main():
                 radius = ''
             from_utc = n.get('from', '')
             to_utc = n.get('to', '')
-
             writer.writerow([
                 country, str(nid), notam_id, fir, from_utc, to_utc,
                 str(lat) if lat != '' else '',
@@ -502,30 +319,11 @@ def main():
                 qcode, raw
             ])
 
-        # MSI maritime records
-        for r in msi_rows:
-            coords = r.get('coords', [])
-            if not coords: continue
-            clat = sum(float(c[0]) for c in coords) / len(coords)
-            clon = sum(float(c[1]) for c in coords) / len(coords)
-            writer.writerow([
-                'Maritime', '', r['notam_id'], 'MSI', '', '',
-                str(round(clat, 6)), str(round(clon, 6)), '', '',
-                r['raw']
-            ])
+    print(f"\nPipeline complete: {len(items)} records written to notams.csv")
 
-    total = len(notammap_items) + len(msi_rows)
-    print(f"\n{'='*60}")
-    print(f"Pipeline complete: {total} records written to latest.csv")
-    print(f"  notammap.org: {len(notammap_items)} | MSI: {len(msi_rows)}")
-
-    # ── Generate latest.kml ──
-    csv_to_kml('latest.csv', 'latest.kml')
-
-    # ── Archive into weekly history ──
-    archive_weekly('latest.csv')
-
-    print(f"{'='*60}")
+    csv_to_kml('notams.csv', 'notams.kml')
+    archive_weekly('notams.csv', 'notams')
+    print("=" * 60)
 
 if __name__ == '__main__':
     main()

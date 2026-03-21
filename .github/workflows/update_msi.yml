@@ -1,16 +1,16 @@
-name: Update NOTAMs
+name: Update MSI Warnings
 
 on:
   push:
     branches: [ main ]
     paths:
-      - 'fetch_notams.py'
+      - 'fetch_msi.py'
   schedule:
     - cron: '0 */12 * * *'
   workflow_dispatch:
 
 jobs:
-  update-notams:
+  update-msi:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -27,14 +27,14 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install requests urllib3
 
-      - name: Fetch aerospace NOTAMs
-        run: python fetch_notams.py
+      - name: Fetch MSI maritime warnings
+        run: python fetch_msi.py
 
       - name: Commit and push if changed
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[Auto] Update notams.csv, notams.kml and history"
-          file_pattern: "notams.csv notams.kml history/notams/*"
+          commit_message: "[Auto] Update msi.csv, msi.kml and history"
+          file_pattern: "msi.csv msi.kml history/msi/*"
           branch: main
