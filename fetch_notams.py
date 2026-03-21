@@ -127,7 +127,11 @@ def main():
         writer.writerow(['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw'])
         
         for n in filtered:
-            msg = n.get('icaoMessage', '')
+            icao_msg = n.get('icaoMessage', '')
+            trad_msg = n.get('traditionalMessage', '')
+            # Some long NOTAMs have their details truncated in icaoMessage but intact in traditionalMessage
+            msg = icao_msg if trad_msg in icao_msg else f"{icao_msg}\n{trad_msg}"
+            
             notam_id = n.get('notamNumber', '')
             fir = n.get('facilityDesignator', '')
             
