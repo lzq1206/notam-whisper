@@ -156,6 +156,27 @@
       setStatus(`已加载 ${rows.length} 条发射相关 NOTAM`);
     }
 
+    function isoDate(d){ return d.toISOString().slice(0,10); }
+    function plusDays(dateStr, n){
+      const d = new Date(dateStr + 'T00:00:00Z');
+      d.setUTCDate(d.getUTCDate() + n);
+      return isoDate(d);
+    }
+
+    function askStartDateDefault(){
+      const remembered = localStorage.getItem('notam_start_date') || '';
+      const fallback = remembered || isoDate(new Date());
+      const v = prompt('请输入开始日期（YYYY-MM-DD）', fallback);
+      if (v && /^\d{4}-\d{2}-\d{2}$/.test(v)) {
+        startEl.value = v;
+        endEl.value = plusDays(v, 5);
+        localStorage.setItem('notam_start_date', v);
+      } else if (fallback && /^\d{4}-\d{2}-\d{2}$/.test(fallback)) {
+        startEl.value = fallback;
+        endEl.value = plusDays(fallback, 5);
+      }
+    }
+
     function applyFilter() {
       if (!dataRows.length) return;
       const s = startEl.value ? new Date(startEl.value + 'T00:00:00Z').getTime() : -Infinity;
@@ -164,6 +185,7 @@
         const t = Date.parse(r.from_utc || '');
         return isFinite(t) && t >= s && t <= e;
       });
+      if (startEl.value) localStorage.setItem('notam_start_date', startEl.value);
       renderRows(filtered);
     }
 
@@ -182,15 +204,9 @@
         dataRows = parseCsv(text);
         if (!dataRows.length) throw new Error('csv empty');
 
-        // 默认日期筛到未来5天（基于数据最小时间）
-        const times = dataRows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite).sort((a,b)=>a-b);
-        if (times.length) {
-          const min = new Date(times[0]);
-          const max = new Date(times[Math.min(times.length - 1, 200)]);
-          startEl.value = min.toISOString().slice(0,10);
-          endEl.value = max.toISOString().slice(0,10);
-        }
-        renderRows(dataRows);
+        // 默认开始日期：询问用户；结束日期自动=开始+5天
+        askStartDateDefault();
+        applyFilter();
         return true;
       } catch (e) {
         console.warn('CSV load failed, fallback KML', e);
