@@ -1,0 +1,36 @@
+id,name,abbreviation,country,latitude,longitude,type,status
+1,Jiuquan Satellite Launch Center,JSLC,China,40.960,100.298,Government,Active
+2,Taiyuan Satellite Launch Center,TSLC,China,38.849,111.608,Government,Active
+3,Xichang Satellite Launch Center,XSLC,China,28.246,102.026,Government,Active
+4,Wenchang Space Launch Site,WSLC,China,19.614,110.951,Government,Active
+5,Hainan Commercial Spacecraft Launch Site,HCSLS,China,19.598,110.955,Commercial,Active
+6,Oriental Spaceport (Haiyang),OSP,China,36.678,121.233,Sea Port,Active
+7,Kennedy Space Center,KSC,USA,28.572,-80.648,Government,Active
+8,Cape Canaveral Space Force Station,CCSFS,USA,28.488,-80.577,Government,Active
+9,Vandenberg Space Force Base,VSFB,USA,34.742,-120.572,Government,Active
+10,SpaceX Starbase (Boca Chica),Starbase,USA,25.997,-97.156,Commercial,Active
+11,Wallops Flight Facility / MARS,WFF,USA,37.833,-75.483,Government,Active
+12,Pacific Spaceport Complex (Kodiak),PSCA,USA,57.435,-152.339,Commercial,Active
+13,Spaceport America,SA,USA,32.990,-106.975,Commercial,Active
+14,Mid-Atlantic Regional Spaceport (MARS),MARS,USA,37.833,-75.483,Government,Active
+15,Pacific Missile Range Facility (Kekaha),PMRF,USA,22.023,-159.781,Government,Active
+16,Mojave Air and Space Port,MASP,USA,35.059,-118.154,Commercial,Active
+17,Blue Origin Corn Ranch,BOCR,USA,31.422,-104.757,Commercial,Active
+18,Poker Flat Research Range,PFRR,USA,65.117,-147.469,Government,Active
+19,Guiana Space Centre (Kourou),CSG,France,5.232,-52.776,Government,Active
+20,Tanegashima Space Center,TNSC,Japan,30.375,130.955,Government,Active
+21,Uchinoura Space Center,USC,Japan,31.252,131.082,Government,Active
+22,Satish Dhawan Space Centre (Sriharikota),SDSC,India,13.720,80.231,Government,Active
+23,Baikonur Cosmodrome,BC,Kazakhstan,45.965,63.305,Government,Active
+24,Vostochny Cosmodrome,VC,Russia,51.884,128.333,Government,Active
+25,Plesetsk Cosmodrome,PC,Russia,62.926,40.578,Government,Active
+26,Naro Space Center,NSC,South Korea,34.432,127.535,Government,Active
+27,Sohmiani Center,SC,Pakistan,25.195,66.746,Government,Active
+28,Semnan Space Center,SSC,Iran,35.235,53.921,Government,Active
+29,Shahroud Space Center,SSC,Iran,36.200,55.333,Government,Active
+30,Palmuchim Airbase,PAB,Israel,31.884,34.680,Government,Active
+31,Alcântara Space Center,ASC,Brazil,-2.373,-44.396,Government,Active
+32,Mahia Peninsula (Rocket Lab),MP,New Zealand,-39.261,177.864,Commercial,Active
+33,Rocket Lab Launch Complex 2 (Wallops),WFF,USA,37.833,-75.483,Commercial,Active
+34,Esrange Space Center,ESC,Sweden,67.886,21.104,Government,Active
+35,Andøya Space Center,ASC,Norway,69.295,16.021,Government,Active

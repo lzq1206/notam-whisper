@@ -403,7 +403,7 @@
     // ═══════════════════════════════════════════════════════
     // ROCKET LAUNCH LAYER
     // ═══════════════════════════════════════════════════════
-    const LAUNCH_SITES_URL  = 'https://raw.githubusercontent.com/NattyBumppo/rocket-launch-history/master/data/launch_sites.csv';
+    const LAUNCH_SITES_URL  = './launch_sites.csv';
     const LAUNCH_LOG_URL    = 'https://raw.githubusercontent.com/NattyBumppo/rocket-launch-history/master/data/massive_launchlog.csv';
     const RLL_UPCOMING_URL  = 'https://fdo.rocketlaunch.live/json/launches/next/5';
 
@@ -494,11 +494,11 @@
         const sitesText = await sitesResp.text();
         const sitesRows = parseCsv(sitesText);
         sitesRows.forEach(row => {
-          const abbrev = (row['SATCAT Designation'] || '').trim();
-          const lat = parseFloat(row['Latitude']);
-          const lon = parseFloat(row['Longitude']);
+          const abbrev = (row['abbreviation'] || '').trim();
+          const lat = parseFloat(row['latitude']);
+          const lon = parseFloat(row['longitude']);
           if (abbrev && isFinite(lat) && isFinite(lon)) {
-            launchSites[abbrev] = { lat, lon, name: (row['FullName'] || abbrev).trim() };
+            launchSites[abbrev] = { lat, lon, name: (row['name'] || abbrev).trim() };
           }
         });
         console.log(`[launches] Loaded ${Object.keys(launchSites).length} launch sites`);
