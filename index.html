@@ -272,9 +272,16 @@
             }
           });
         } else {
-          let shape = L.circle([lat, lon], {
-            radius: radiusNm * 1852, color, fillColor: color, fillOpacity: 0.2, weight: 2
-          });
+          let shape;
+          if (isMaritime && !r.radius_nm) {
+            shape = L.circleMarker([lat, lon], {
+              radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: 2
+            });
+          } else {
+            shape = L.circle([lat, lon], {
+              radius: radiusNm * 1852, color, fillColor: color, fillOpacity: 0.2, weight: 2
+            });
+          }
           shape.bindPopup(popup);
           shape.addTo(group);
           layers.push(shape);
