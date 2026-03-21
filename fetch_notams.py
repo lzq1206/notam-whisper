@@ -169,9 +169,9 @@ def parse_msi_coords(text):
     return coords
 
 def fetch_msi_single(nav_area):
-    url = f"https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&category=14&output=html"
+    url = f"https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&output=html"
     try:
-        resp = requests.get(url, headers=make_headers(), timeout=20)
+        resp = requests.get(url, headers=make_headers(), timeout=30)
         if resp.status_code == 200:
             return resp.json().get('smaps', [])
     except Exception as e:
@@ -179,29 +179,38 @@ def fetch_msi_single(nav_area):
     return []
 
 def fetch_msi():
+    # Query all 21 NAVAREA regions
+    nav_areas = ['4', '12', 'A', 'P', 'C', '1', '2', '3', '5', '6', '7', '8', '9', '10', '11']
+    KEEP_CATS = {'ROCKET LAUNCHING', 'SPACE DEBRIS', 'HAZARDOUS OPERATIONS'}
+
     all_smaps = []
     with ThreadPoolExecutor(max_workers=5) as pool:
-        futs = {pool.submit(fetch_msi_single, na): na for na in MSI_NAV_AREAS}
+        futs = {pool.submit(fetch_msi_single, na): na for na in nav_areas}
         for f in as_completed(futs):
             try: all_smaps.extend(f.result())
             except: pass
+
+    print(f"[MSI] Total raw warnings fetched: {len(all_smaps)}")
 
     rows = []
     seen = set()
     for s in all_smaps:
         cat = s.get('category', '')
-        if cat not in ('ROCKET LAUNCHING', 'SPACE DEBRIS'): continue
+        if cat not in KEEP_CATS: continue
         msg_id = s.get('msgID', '')
         if msg_id in seen: continue
         seen.add(msg_id)
         msg_text = s.get('msgText', '')
         if not msg_text: continue
 
+        # Clean up newlines for CSV compatibility
+        msg_text = msg_text.replace('\n', '  ').replace('\r', '')
+
         cancel = parse_msi_cancel_time(msg_text)
         if cancel and cancel < now_utc: continue
 
         coords = parse_msi_coords(msg_text)
-        if len(coords) < 3: continue
+        if len(coords) < 2: continue
 
         msg_type = s.get('msgType', '')
         code_m = re.search(rf'({re.escape(msg_type)}\s+\d+/\d+(?:\([A-Z0-9]+\))?)', msg_text, re.I)
@@ -211,10 +220,11 @@ def fetch_msi():
             'notam_id': code,
             'raw': msg_text,
             'coords': coords,
-            'source': 'MSI'
+            'source': 'MSI',
+            'category': cat,
         })
 
-    print(f"[MSI] Found {len(rows)} valid maritime warnings.")
+    print(f"[MSI] Found {len(rows)} valid maritime warnings (rocket/space/hazops).")
     return rows
 
 # ═══════════════════════════════════════════════════════════════
