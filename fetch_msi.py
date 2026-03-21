@@ -86,30 +86,29 @@ def fetch_msi_single(nav_area):
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            resp = requests.get(url, headers=make_msi_headers(), timeout=60, verify=False)
-            status = resp.status_code
+            resp = requests.get(url, headers=make_msi_headers(), timeout=60)
+            resp.raise_for_status()
             text = resp.text.strip()
-            log_to_file(f"  Attempt {attempt}: Status {status}, Length {len(text)}")
-            
-            if status == 200 and text.startswith("<"):
-                if "<smapsActiveEntity" in text:
-                    root = ET.fromstring(text)
-                    entities = root.findall('smapsActiveEntity')
-                    log_to_file(f"  Found {len(entities)} smapsActiveEntity nodes.")
-                    res = []
-                    for entity in entities:
-                        res.append({
-                            'msgID': entity.findtext('msgID'),
-                            'msgText': entity.findtext('msgText'),
-                            'category': entity.findtext('category'),
-                            'msgType': entity.findtext('msgType')
-                        })
-                    return res
-                else:
-                    log_to_file("  No smapsActiveEntity nodes in XML.")
-                    return []
-            else:
-                log_to_file(f"  Unexpected response snippet: {text[:200]}")
+            log_to_file(f"  Attempt {attempt}: Status {resp.status_code}, Length {len(text)}")
+
+            if text.startswith("<") and "<html" not in text[:200].lower():
+                root = ET.fromstring(text)
+                entities = root.findall('smapsActiveEntity')
+                log_to_file(f"  Found {len(entities)} smapsActiveEntity nodes.")
+                res = []
+                for entity in entities:
+                    res.append({
+                        'msgID': entity.findtext('msgID'),
+                        'msgText': entity.findtext('msgText'),
+                        'category': entity.findtext('category'),
+                        'msgType': entity.findtext('msgType')
+                    })
+                return res
+
+            log_to_file(
+                f"  Non-XML response (Content-Type: {resp.headers.get('content-type', 'unknown')})"
+            )
+            log_to_file(f"  Unexpected response snippet: {text[:200]}")
         except Exception as e:
             log_to_file(f"  Request error: {e}")
 
