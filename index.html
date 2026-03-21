@@ -218,11 +218,18 @@
         animation: false, timeline: false, infoBox: false, selectionIndicator: false,
         navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false
       });
-      // Add OSM layer to Cesium
-      cesiumViewer.imageryLayers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({
-        url: 'https://a.tile.openstreetmap.org/'
+      // Enable high-resolution satellite imagery
+      cesiumViewer.imageryLayers.removeAll();
+      cesiumViewer.imageryLayers.addImageryProvider(new Cesium.ArcGisMapServerImageryProvider({
+        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
+        enablePickFeatures: false
       }));
+      // Quality settings
       cesiumViewer.scene.globe.depthTestAgainstTerrain = false;
+      if (Cesium.FeatureDetection.supportsImageRenderingPixelated()) {
+        cesiumViewer.resolutionScale = window.devicePixelRatio;
+      }
+      cesiumViewer.scene.postProcessStages.fxaa.enabled = true;
     }
 
     viewToggle.onclick = () => {
@@ -306,12 +313,18 @@
         }
 
         // 2. Render NOTAM / MSI polygons
+        const times = rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite);
+        const minTs = times.length ? Math.min(...times) : Date.now();
+        const maxTs = times.length ? Math.max(...times) : Date.now() + 86400000;
+
         rows.forEach(r => {
           const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
           if (!isFinite(lat) || !isFinite(lon)) return;
 
-          const type = (r['type'] || 'NOTAM').toUpperCase();
-          const color = r.country === 'Maritime' ? Cesium.Color.ORANGE : Cesium.Color.RED;
+          const fromTs = Date.parse(r.from_utc);
+          const isMaritime = r.country === 'Maritime';
+          const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
+          const color = Cesium.Color.fromCssColorString(colorHex);
           const radiusNm = parseFloat(r.radius_nm || '1');
 
           // Render Marker/Point
