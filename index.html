@@ -140,7 +140,7 @@
         viewToggleIcon.textContent = '🗺️';
         viewToggleText.textContent = '2D 平面模式';
         initCesium();
-        renderOnGlobe();
+        renderOnGlobe(filteredDataRows);
       } else {
         mapDiv.style.display = 'block';
         cesiumDiv.style.display = 'none';
@@ -149,62 +149,109 @@
       }
     };
 
-    function renderOnGlobe() {
-      if (!cesiumViewer) return;
+    let upcomingLaunches = [];
+    let pastLaunches = [];
+
+    function renderOnGlobe(rows) {
+      if (!cesiumViewer || !rows) return;
       cesiumViewer.entities.removeAll();
 
-      // 1. Render Launch Sites (🚀)
-      Object.entries(launchSites).forEach(([abbrev, site]) => {
+      // 1. Render Launch Sites (🚀) - STATIC
+      if (launchToggle.checked) {
+        Object.entries(launchSites).forEach(([abbrev, site]) => {
+          cesiumViewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(site.lon, site.lat),
+            billboard: {
+              image: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">🚀</text></svg>'),
+              verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+              width: 24, height: 24
+            },
+            label: {
+              text: site.name, font: '10pt sans-serif',
+              style: Cesium.LabelStyle.FILL_AND_OUTLINE, outlineWidth: 1,
+              verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 5)
+            }
+          });
+        });
+
+        // 1b. Render Upcoming Launches (Dynamic)
+        upcomingLaunches.forEach(launch => {
+          if (!launch.lat || !launch.lon) return;
+          cesiumViewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
+            billboard: {
+              image: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24" fill="yellow">🚀</text></svg>'),
+              verticalOrigin: Cesium.VerticalOrigin.BOTTOM, width: 30, height: 30
+            },
+            label: {
+              text: '即将: ' + (launch.mission || ''), font: 'bold 11pt sans-serif',
+              fillColor: Cesium.Color.YELLOW, outlineColor: Cesium.Color.BLACK, outlineWidth: 2,
+              style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+              verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 8)
+            },
+            description: `<b>${launch.mission}</b><br/>${launch.dateStr}`
+          });
+        });
+
+        // 1c. Render Past Launches (Dynamic)
+        pastLaunches.forEach(launch => {
+          cesiumViewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
+            point: { pixelSize: 12, color: Cesium.Color.fromCssColorString('#22c55e'), outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
+            label: {
+              text: '已发射: ' + (launch.payload || launch.vehicle), font: '10pt sans-serif',
+              fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+              verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 8)
+            },
+            description: `<b>🚀 ${launch.vehicle}</b><br/>载荷: ${launch.payload}<br/>时间: ${launch.dateStr}<br/>结果: ${launch.success}`
+          });
+        });
+      }
+
+      // 2. Render NOTAM / MSI polygons
+      rows.forEach(r => {
+        const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
+        if (!isFinite(lat) || !isFinite(lon)) return;
+
+        const type = (r['type'] || 'NOTAM').toUpperCase();
+        const color = r.country === 'Maritime' ? Cesium.Color.ORANGE : Cesium.Color.RED;
+        const radiusNm = parseFloat(r.radius_nm || '1');
+        
+        // Render Marker/Point
         cesiumViewer.entities.add({
-          position: Cesium.Cartesian3.fromDegrees(site.lon, site.lat),
-          billboard: {
-            image: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">🚀</text></svg>'),
-            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-            width: 28, height: 28
-          },
+          position: Cesium.Cartesian3.fromDegrees(lon, lat),
+          point: { pixelSize: 10, color: color, outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
           label: {
-            text: site.name,
-            font: '12pt sans-serif',
-            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            text: r.notam_id || (isMaritime ? 'Maritime' : 'NOTAM'),
+            font: '8pt sans-serif',
+            fillColor: color,
+            outlineColor: Cesium.Color.BLACK,
             outlineWidth: 2,
-            verticalOrigin: Cesium.VerticalOrigin.TOP,
-            pixelOffset: new Cesium.Cartesian2(0, 5)
-          }
-        });
-      });
-
-      // 2. Render NOTAM / MSI polygons (simple representation)
-      dataRows.forEach(row => {
-        const type = (row['type'] || 'NOTAM').toUpperCase();
-        const color = type === 'MSI' ? Cesium.Color.PURPLE : Cesium.Color.RED;
-        const coordsStr = row['coordinates'] || '';
-        const pairs = coordsStr.split(';');
-        const points = [];
-        pairs.forEach(p => {
-          const c = p.trim().split(/\s+/);
-          if (c.length >= 2) points.push(parseFloat(c[1]), parseFloat(c[0]));
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+            pixelOffset: new Cesium.Cartesian2(0, -10)
+          },
+          description: r['raw'] || ''
         });
 
-        if (points.length >= 6) { // Polygon
+        // Render Polygon if exists (from raw text parsing)
+        const polyCoords = parseNotamPolygons(r.raw || '');
+        polyCoords.forEach(points => {
+          const flatPoints = [];
+          points.forEach(p => flatPoints.push(p[1], p[0]));
           cesiumViewer.entities.add({
             polygon: {
-              hierarchy: Cesium.Cartesian3.fromDegreesArray(points),
+              hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
               material: color.withAlpha(0.3),
               outline: true,
-              outlineColor: color
-            },
-            description: row['content'] || ''
+              outlineColor: color,
+              height: 100 // Slightly above ground
+            }
           });
-        } else if (points.length >= 2) { // Point/Circle
-          cesiumViewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(points[1], points[0]),
-            point: { pixelSize: 8, color: color, outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
-            description: row['content'] || ''
-          });
-        }
+        });
       });
       
-      console.log('[Cesium] Rendered entities');
+      console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunches.length} upcoming, ${pastLaunches.length} past.`);
     }
 
     panelToggle.onclick = (e) => {
@@ -289,7 +336,7 @@
       return parseFloat(d) + parseFloat(m)/60 + parseFloat(sec)/3600;
     }
 
-    function extractPolygonFromRaw(raw) {
+    function parseNotamPolygons(raw) {
       if (!raw) return [];
       let cleanedRaw = raw.replace(/Q\).*?(?=\s*A\))/s, '');
 
@@ -355,7 +402,14 @@
       layers = [];
     }
 
+    let filteredDataRows = [];
+
     function renderRows(rows) {
+      filteredDataRows = rows;
+      if (is3D) {
+        renderOnGlobe(rows);
+      }
+      
       clearLayers();
       if (!rows.length) {
         setStatus('当前筛选无数据');
@@ -394,7 +448,7 @@
         }
         
         if (coordinatesList.length === 0) {
-          coordinatesList = extractPolygonFromRaw(r.raw);
+          coordinatesList = parseNotamPolygons(r.raw);
         }
 
         const popup = `
@@ -659,34 +713,37 @@
         const now = new Date();
         let upcomingCount = 0;
         try {
+          upcomingLaunches = [];
           const rllResp = await fetch(RLL_UPCOMING_URL, {cache: 'no-store'});
           const rllData = await rllResp.json();
-          (rllData.result || []).forEach((launch, idx) => {
-            const timeStr = launch.t0 || launch.win_open;
-            const date = timeStr ? new Date(timeStr) : null;
-            const coords = coordsForRllLoc(launch.pad && launch.pad.location);
-            if (!coords) {
-              console.warn('[RLL] No coords for:', launch.pad && launch.pad.location);
-              return;
+          (rllData.result || []).forEach(l => {
+            const loc = l.pad?.location;
+            const slug = loc?.slug;
+            let lat = loc?.latitude, lon = loc?.longitude;
+            if (!lat && slug && RLL_LOC_COORDS[slug]) {
+              lat = RLL_LOC_COORDS[slug].lat;
+              lon = RLL_LOC_COORDS[slug].lon;
             }
+            if (!lat) return;
+            
+            const missionName = l.name || '未知任务';
+            const vehicleName = l.vehicle?.name || '';
+            const locName = loc?.name || '';
+            const padName = l.pad?.name || '';
+            const t0 = l.win_open ? new Date(l.win_open) : null;
+            const dateStr = t0 ? t0.toISOString().replace('T',' ').slice(0,16)+' UTC' : '时间待定';
+            const weather = l.weather_temp ? ` (${l.weather_temp}°C ${l.weather_condition || ''})` : '';
+            const desc = l.launch_description || '';
+            const rllUrl = `https://www.rocketlaunch.live/launch/${l.slug}`;
 
-            const total = (rllData.result || []).length;
-            const color = date ? launchColor(date, now) : `hsl(${(idx/total)*240},80%,50%)`;
-            const vehicle = launch.vehicle ? launch.vehicle.name : '未知';
-            const missionName = (launch.missions && launch.missions[0]) ? launch.missions[0].name : launch.name;
-            const padName = (launch.pad && launch.pad.name) ? launch.pad.name : '';
-            const locName = (launch.pad && launch.pad.location) ? launch.pad.location.name : '';
-            const dateStr = date ? date.toISOString().replace('T',' ').slice(0,16)+' UTC' : (launch.date_str || '日期待定');
-            const desc = launch.mission_description || '';
-            const rllUrl = `https://rocketlaunch.live/launch/${launch.slug}`;
-            const weather = launch.weather_summary ? `<br/>🌤 ${launch.weather_summary.replace(/\n/g,' ')}` : '';
-
-            const marker = L.circleMarker([coords.lat, coords.lon], {
-              radius: 11, color: '#fff', fillColor: color,
-              fillOpacity: 0.95, weight: 2.5
+            const marker = L.divIcon({
+              className: 'rocket-marker',
+              html: `<div style="font-size:24px; filter: drop-shadow(0 0 2px gold);">🚀</div>`,
+              iconSize: [30, 30], iconAnchor: [15, 15]
             });
-            marker.bindPopup(`
-              <b>🚀 ${vehicle}</b><br/>
+            const lMarker = L.marker([lat, lon], {icon: marker});
+            lMarker.bindPopup(`
+              <div style="font-size:12px;color:#666;">即将发射</div>
               <b>${missionName}</b><br/>
               发射场: ${locName}${padName ? ' / '+padName : ''}<br/>
               时间: ${dateStr}${weather}<br/>
@@ -694,7 +751,8 @@
               <a href="${rllUrl}" target="_blank" style="font-size:11px;">🔗 详情 / 直播</a><br/>
               <small style="color:#888;">Data by RocketLaunch.Live</small>
             `, {maxWidth: 340});
-            marker.addTo(launchLayerGroup);
+            lMarker.addTo(launchLayerGroup);
+            upcomingLaunches.push({ lat, lon, mission: missionName, vehicle: vehicleName, dateStr });
             upcomingCount++;
           });
         } catch (rllErr) {
@@ -702,7 +760,7 @@
         }
 
         // 4. Load historical CSV for past launches within last 1 week
-        let pastCount = 0;
+        pastLaunches = [];
         try {
           const logResp = await fetch(LAUNCH_LOG_URL, {cache: 'no-store'});
           const logText = await logResp.text();
@@ -727,7 +785,7 @@
             if (!isFinite(lat) || !isFinite(lon)) return;
             const vehicle = row['Launch Vehicle'] || '未知';
             const payload = row['Official Payload Name'] || '';
-            const success = row['Success'] === 'S' ? '✅ 成功' : row['Success'] === 'F' ? '❌ 失败' : '?';
+            const successText = row['Success'] === 'S' ? '✅ 成功' : row['Success'] === 'F' ? '❌ 失败' : '?';
             const dateStr = d.toISOString().replace('T',' ').slice(0,16)+' UTC';
             const marker = L.circleMarker([lat, lon], {
               radius: 10, color: '#fff', fillColor: '#22c55e',
@@ -738,30 +796,33 @@
               载荷: ${payload}<br/>
               发射场: ${row['Launch Site (Full)'] || abbrev}<br/>
               时间: ${dateStr}<br/>
-              结果: ${success}
+              结果: ${successText}
             `);
             marker.addTo(launchLayerGroup);
+            pastLaunches.push({ lat, lon, vehicle, payload, dateStr, success: successText });
             pastCount++;
           });
         } catch (csvErr) {
           console.warn('[launches] Past CSV failed:', csvErr);
         }
 
-        launchStatusEl.innerHTML = `
-          <b style="color:#3b82f6;">↑ ${upcomingCount} 次即将发射</b>（RocketLaunch.Live）<br/>
-          <b style="color:#22c55e;">✔ ${pastCount} 次过去一周</b>（历史）<br/>
-          🟣 ${Object.keys(launchSites).length} 个发射场
-        `;
-      } catch (e) {
-        console.error('[launches]', e);
-        launchStatusEl.textContent = '火箭数据加载失败';
+        launchStatusEl.textContent = `🚀 ${upcomingCount} 计划 / ${pastCount} 过去 / ${Object.keys(launchSites).length} 场`;
+        
+        if (is3D) renderOnGlobe(filteredDataRows);
+      } catch (err) {
+        console.error('[launches] Error:', err);
+        launchStatusEl.textContent = '加载失败';
       }
     }
 
-    launchToggle.addEventListener('change', () => {
-      if (launchToggle.checked) launchLayerGroup.addTo(map);
-      else map.removeLayer(launchLayerGroup);
-    });
+    launchToggle.onchange = () => {
+      if (launchToggle.checked) {
+        map.addLayer(launchLayerGroup);
+      } else {
+        map.removeLayer(launchLayerGroup);
+      }
+      if (is3D) renderOnGlobe(filteredDataRows);
+    };
 
     loadLaunchData();
 
