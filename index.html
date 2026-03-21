@@ -233,7 +233,8 @@
         const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
         const radiusNm = Math.max(1, parseFloat(r.radius_nm || '1'));
         if (!isFinite(lat) || !isFinite(lon)) return;
-        const color = colorByTime(Date.parse(r.from_utc), minTs, maxTs);
+        const isMaritime = r.country === 'Maritime';
+        const color = isMaritime ? '#ff9900' : colorByTime(Date.parse(r.from_utc), minTs, maxTs);
 
         let coordinatesList = [];
         if (r.polygon) {
@@ -266,7 +267,8 @@
         }
 
         const popup = `
-          <b>${r.notam_id || ''}</b><br/>
+          <b>${r.notam_id || (isMaritime ? 'Maritime Warning' : '')}</b><br/>
+          ${isMaritime ? '<b style="color:#ff9900;">[Maritime NavWarning]</b><br/>' : ''}
           FIR: ${r.fir || ''}<br/>
           from: ${r.from_utc || ''}<br/>
           to: ${r.to_utc || ''}<br/>
@@ -348,8 +350,10 @@
       const s = startEl.value ? new Date(startEl.value + 'T00:00:00Z').getTime() : -Infinity;
       const e = endEl.value ? new Date(endEl.value + 'T23:59:59Z').getTime() : Infinity;
       const filtered = dataRows.filter(r => {
-        const t = Date.parse(r.from_utc || '');
-        return isFinite(t) && t >= s && t <= e;
+        if (!r.from_utc) return true;
+        const t = Date.parse(r.from_utc);
+        if (!isFinite(t)) return true;
+        return t >= s && t <= e;
       });
       if (startEl.value) localStorage.setItem('notam_start_date', startEl.value);
       renderRows(filtered);
