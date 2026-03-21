@@ -139,7 +139,16 @@
     function extractPolygonFromRaw(raw) {
       if (!raw) return [];
       // Remove Q-line to avoid mistakenly parsing the center coordinate
-      const cleanedRaw = raw.replace(/Q\).*?(?=\s*A\))/s, '');
+      let cleanedRaw = raw.replace(/Q\).*?(?=\s*A\))/s, '');
+
+      // Normalize space-separated coordinates like "25 41 S" to "2541S" or "S 25 41" to "S2541"
+      cleanedRaw = cleanedRaw
+        .replace(/\b(\d{2,3})\s+(\d{2}(?:[.,]\d+)?)(?:\s+(\d{2}(?:[.,]\d+)?))?\s*([NSEW])\b/gi, (match, d, m, s, hemi) => {
+          return d + m + (s || '') + hemi.toUpperCase();
+        })
+        .replace(/(^|[\s,-])([NSEW])\s*(\d{2,3})\s+(\d{2}(?:[.,]\d+)?)(?:\s+(\d{2}(?:[.,]\d+)?))?\b/gi, (match, pref, hemi, d, m, s) => {
+          return pref + hemi.toUpperCase() + d + m + (s || '');
+        });
 
       const regex = /(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))/gi;
       const matches = [...cleanedRaw.matchAll(regex)];
