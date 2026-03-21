@@ -3,8 +3,6 @@ name: Update MSI Warnings
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'fetch_msi.py'
   schedule:
     - cron: '0 */12 * * *'
   workflow_dispatch:
@@ -32,9 +30,12 @@ jobs:
       - name: Fetch MSI maritime warnings
         run: python fetch_msi.py
 
+      - name: Pull latest changes
+        run: git pull --rebase origin main
+
       - name: Commit and push if changed
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "[Auto] Update msi.csv, msi.kml and history"
-          file_pattern: "msi.csv msi.kml history/msi/*"
+          file_pattern: "msi.csv msi.kml history/msi/* msi_fetch_log.txt"
           branch: main
