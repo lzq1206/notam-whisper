@@ -1,2 +1,40 @@
 MSI Fetch Log
-[2026-03-21T09:59:47.660757] [MSI] Processed 2 rows.
+[2026-03-21T10:32:23.900367] [MSI] Starting sequential fetch...
+[2026-03-21T10:32:23.900489] [FETCH] (primary) Area 4 URL: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
+[2026-03-21T10:32:33.851975]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
+[2026-03-21T10:32:45.146108]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
+[2026-03-21T10:32:57.348834]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
+[2026-03-21T10:33:07.673811]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
+[2026-03-21T10:33:09.674850] [FETCH] (primary) Area 12 URL: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
+[2026-03-21T10:33:11.929235]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
+[2026-03-21T10:33:21.109608]   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Max retries exceeded with url: /api/publications/smaps?navArea=12&status=active&output=xml (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)')))
+[2026-03-21T10:33:27.557641]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
+[2026-03-21T10:33:36.962861]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
+[2026-03-21T10:33:38.965866] [FETCH] (primary) Area A URL: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
+[2026-03-21T10:33:40.209363]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
+[2026-03-21T10:33:43.514635]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
+[2026-03-21T10:33:48.814895]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
+[2026-03-21T10:33:58.162210]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
+[2026-03-21T10:34:00.164819] [FETCH] (primary) Area P URL: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
+[2026-03-21T10:34:02.548403]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
+[2026-03-21T10:34:05.824490]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
+[2026-03-21T10:34:19.029880]   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Max retries exceeded with url: /api/publications/smaps?navArea=P&status=active&output=xml (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)')))
+[2026-03-21T10:34:32.397739]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
+[2026-03-21T10:34:34.400452] [FETCH] (primary) Area C URL: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
+[2026-03-21T10:34:37.501211]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
+[2026-03-21T10:34:39.902165]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
+[2026-03-21T10:34:44.162859]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
+[2026-03-21T10:34:53.405849]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
+[2026-03-21T10:34:55.408050] [FETCH] (primary) Area 1 URL: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
+[2026-03-21T10:34:55.730086]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
+[2026-03-21T10:34:58.028981]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
+[2026-03-21T10:35:04.316195]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
+[2026-03-21T10:35:13.663538]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
+[2026-03-21T10:35:15.666388] [FETCH] (primary) Area 2 URL: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
+[2026-03-21T10:35:16.919165]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
+[2026-03-21T10:35:20.176738]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
+[2026-03-21T10:35:29.207862]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
+[2026-03-21T10:35:38.261338]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
+[2026-03-21T10:35:40.263984] [FETCH] (primary) Area 3 URL: https://msi.nga.mil/api/publications/smaps?navArea=3&status=active&output=xml
+[2026-03-21T10:35:40.500435]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=3&status=active&output=xml
+[2026-03-21T10:35:42.984304]   Request error: 503 Server Error: Service Unavailable for url: https://msi.nga.mil/api/publications/smaps?navArea=3&status=active&output=xml

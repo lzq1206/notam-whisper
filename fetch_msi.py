@@ -3,7 +3,7 @@
 NGA MSI Maritime Warning fetcher.
 Outputs: msi.csv, msi_raw.csv, msi.kml, history/msi/YYYY-WNN.*
 """
-import requests, re, os, datetime, csv, math, time, urllib3
+import requests, re, os, datetime, csv, math, time, urllib3, hashlib, html
 import xml.etree.ElementTree as ET
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -40,6 +40,21 @@ def parse_msi_cancel_time(text):
 
 def parse_msi_coords(text):
     coords = []
+
+    # 0) DMS style used by some web tables: 22°19'10.0"N, 120°37'48.0"E
+    pattern0 = r'(\d{1,2})\s*°\s*(\d{1,2})\s*\'?\s*(\d{1,2}(?:\.\d+)?)?\s*"?\s*([NS])\s*,?\s*(\d{1,3})\s*°\s*(\d{1,2})\s*\'?\s*(\d{1,2}(?:\.\d+)?)?\s*"?\s*([EW])'
+    for m in re.finditer(pattern0, text, re.I):
+        d1, m1, s1, h1, d2, m2, s2, h2 = m.groups()
+        s1 = float(s1 or 0.0)
+        s2 = float(s2 or 0.0)
+        lat = int(d1) + int(m1) / 60.0 + s1 / 3600.0
+        lon = int(d2) + int(m2) / 60.0 + s2 / 3600.0
+        if h1.upper() == 'S':
+            lat = -lat
+        if h2.upper() == 'W':
+            lon = -lon
+        coords.append((round(lat, 6), round(lon, 6)))
+
     # 1. Standard NGA format: DD-MM.mmN DDD-MM.mmW
     pattern1 = r'(\d{1,2})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([NS])\s*(\d{2,3})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([EW])'
     for m in re.finditer(pattern1, text):
@@ -54,7 +69,16 @@ def parse_msi_coords(text):
         for m in re.finditer(pattern2, text):
             d1, m1, h1, d2, m2, h2 = m.groups()
             coords.append((msi_coord_to_dd(d1, m1, '0', h1), msi_coord_to_dd(d2, m2, '0', h2)))
-    return coords
+
+    # deduplicate while preserving order
+    dedup = []
+    seen = set()
+    for c in coords:
+        key = (round(c[0], 6), round(c[1], 6))
+        if key not in seen:
+            seen.add(key)
+            dedup.append(key)
+    return dedup
 
 # ═══════════════════════════════════════════════════════════════
 # MSI Fetching (navwarns-style)
@@ -72,6 +96,8 @@ LOG_FILE = 'msi_fetch_log.txt'
 HTML_CHECK_PREFIX_LENGTH = 200
 PRIMARY_MSI_URL_TEMPLATE = "https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&output=xml"
 FALLBACK_MSI_URL_TEMPLATE = os.getenv("MSI_FALLBACK_URL_TEMPLATE", "").strip()
+# Secondary stable source (NAVAREA III XML mirror)
+NAVAREA3_XML_URL = os.getenv("MSI_NAVAREA3_XML_URL", "https://armada.defensa.gob.es/ihm/XML/Index_Navareas_eng.xml").strip()
 def log_to_file(msg):
     with open(LOG_FILE, 'a', encoding='utf-8') as f:
         f.write(f"[{datetime.datetime.utcnow().isoformat()}] {msg}\n")
@@ -129,6 +155,93 @@ def fetch_msi_single_with_fallback(nav_area):
         return fetch_msi_single(nav_area, FALLBACK_MSI_URL_TEMPLATE, 'fallback')
     return []
 
+
+def fetch_navarea3_xml(url=NAVAREA3_XML_URL):
+    """
+    Alternative source parser (NAVAREA III XML).
+    Returns smaps-like records with keys: msgID/msgText/category/msgType
+    """
+    if not url:
+        return []
+    log_to_file(f"[ALT] Fetch NAVAREA3 XML: {url}")
+    try:
+        resp = requests.get(url, timeout=60)
+        resp.raise_for_status()
+        text = resp.text
+        root = ET.fromstring(text)
+        out = []
+        for i, node in enumerate(root.findall('navarea')):
+            nid = node.attrib.get('id_nav', '').strip() or str(i + 1)
+            body = (node.text or '').replace('<br />', ' ').replace('<br/>', ' ')
+            body = re.sub(r'\s+', ' ', body).strip()
+            if not body:
+                continue
+            out.append({
+                'msgID': f"NAVAREA3-{nid}",
+                'msgText': body,
+                'category': 'NAVAREA-III',
+                'msgType': 'ALT-XML',
+            })
+        log_to_file(f"[ALT] NAVAREA3 parsed records: {len(out)}")
+        return out
+    except Exception as e:
+        log_to_file(f"[ALT] NAVAREA3 fetch error: {e}")
+        return []
+
+
+def _clean_html_text(s):
+    s = re.sub(r'<br\s*/?>', '\\n', s, flags=re.I)
+    s = re.sub(r'<[^>]+>', ' ', s)
+    s = html.unescape(s)
+    s = re.sub(r'\s+', ' ', s).strip()
+    return s
+
+
+def fetch_navwarnings_table(url='https://www.navwarnings.com/'):
+    """
+    Parse navwarnings.com home table as fallback adapter.
+    Returns smaps-like records with keys: msgID/msgText/category/msgType
+    """
+    log_to_file(f"[ALT] Fetch navwarnings table: {url}")
+    out = []
+    try:
+        resp = requests.get(url, timeout=60, headers={'User-Agent': make_msi_headers()['User-Agent']})
+        resp.raise_for_status()
+        html_text = resp.text
+        tbl = re.search(r'<table[^>]*>(.*?)</table>', html_text, re.I | re.S)
+        if not tbl:
+            log_to_file('[ALT] navwarnings: no table found')
+            return []
+
+        table_html = tbl.group(1)
+        rows = re.findall(r'<tr[^>]*>(.*?)</tr>', table_html, re.I | re.S)
+        for tr in rows:
+            cols = re.findall(r'<t[dh][^>]*>(.*?)</t[dh]>', tr, re.I | re.S)
+            if len(cols) < 3:
+                continue
+            # Skip header row
+            if re.search(r'NavArea', cols[0], re.I) and re.search(r'Year', cols[1], re.I):
+                continue
+            nav_area = _clean_html_text(cols[0])
+            date_txt = _clean_html_text(cols[1])
+            msg = _clean_html_text(cols[2])
+            if not msg:
+                continue
+            digest = hashlib.md5((nav_area + '|' + date_txt + '|' + msg[:200]).encode('utf-8')).hexdigest()[:10]
+            out.append({
+                'msgID': f"NAVWARN-{digest}",
+                'msgText': f"[{nav_area}] {date_txt} {msg}",
+                'category': nav_area or 'NAVWARNINGS',
+                'msgType': 'ALT-WEB',
+            })
+
+        log_to_file(f"[ALT] navwarnings parsed records: {len(out)}")
+        return out
+    except Exception as e:
+        log_to_file(f"[ALT] navwarnings fetch error: {e}")
+        return []
+
+
 def fetch_msi():
     log_to_file("[MSI] Starting sequential fetch...")
     nav_areas = ['4', '12', 'A', 'P', 'C', '1', '2', '3', '5', '6', '7', '8', '9', '10', '11']
@@ -137,7 +250,25 @@ def fetch_msi():
         res = fetch_msi_single_with_fallback(na)
         all_smaps.extend(res)
         time.sleep(2)
-    
+
+    # If NGA sources unstable, add alternative NAVAREA III feed
+    if len(all_smaps) < 5:
+        alt = fetch_navarea3_xml()
+        seen = {x.get('msgID') for x in all_smaps if x.get('msgID')}
+        for a in alt:
+            if a.get('msgID') not in seen:
+                all_smaps.append(a)
+                seen.add(a.get('msgID'))
+
+    # Additional fallback adapter: navwarnings.com table
+    navw = fetch_navwarnings_table()
+    if navw:
+        seen = {x.get('msgID') for x in all_smaps if x.get('msgID')}
+        for a in navw:
+            if a.get('msgID') not in seen:
+                all_smaps.append(a)
+                seen.add(a.get('msgID'))
+
     log_to_file(f"[MSI] Total raw warnings: {len(all_smaps)}")
     return process_msi_data(all_smaps)
 

@@ -20,5 +20,93 @@
         <color>7700aaff</color>
       </PolyStyle>
     </Style>
+    <Placemark>
+      <name>NAVWARN-725cf69d82</name>
+      <description>[Taiwan NTM] 2026-03-19 10:51:00.543 55 (T) Dongsha Island Waters – Firing Exercise Dongsha Island Waters Source Navy Headquarters, MND, letter No. 1150019563 dated March 12, 2026. Details 1. The live ammunition fire exercise will take place in April 2026. Regulated content is shown as attachment. 2. During the exercise period, all vessels are prohibited from sailing the exercise waters. In Area (Firing for CGA Exercise): 20°46'47.0'N, 116°35'01.0'E 20°36'27.0'N, 116°35'01.0'E 20°36'27.0'N, 116°</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>116.726806,20.693611,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVWARN-aac7397d4d</name>
+      <description>[Taiwan NTM] 2026-03-13 10:17:00.743 51 (T) Dongyin Waters – Firing Exercise Dongyin Waters Source Navy Headquarters, MND, letter No. 1150018688 dated March 11, 2026. Details 1. The live ammunition fire exercise will take place in April 2026. Regulated content is shown as attachment. 2. During the exercise period, all vessels are prohibited from sailing the exercise waters. Charts affected 0304 - 0305 - 0306 In Area (A): 26°25'49.0'N, 120°31'01.0'E 26°26'04.0'N, 120°28'40.0'E 26°22'52.0'N, 120°2</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>120.468055,26.37925,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVWARN-efb84f7d26</name>
+      <description>[Taiwan NTM] 2026-03-09 13:17:00.53 45 (T) Taiwan Waters – Firing Exercise Taiwan Waters Source Air Force Headquarters, MND, letter No. 1150049962 dated March 4, 2026. Details 1. The live ammunition fire exercise will take place from April to June 2026. Regulated content is shown as attachment. 2. During the exercise period, all vessels are prohibited from sailing the exercise waters. Charts affected 0313 - 0338 - 0340 - 04502 - 04504 - 0471B In Area (A): 22°19'10.0'N, 120°37'48.0'E 22°21'59.0'N</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>120.574881,22.273572,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVWARN-6586e2bbcd</name>
+      <description>[Taiwan NTM] 2026-03-05 10:34:00.377 44 (T) Penghu Waters – Firing Exercise Penghu Waters Source Navy Headquarters, MND, letter No. 1150015345 dated March 3, 2026. Details 1. The live ammunition fire exercise will take place in April 2026. Regulated content is shown as attachment. 2. During the exercise period, all vessels are prohibited from sailing the exercise waters. Charts affected 0313 - 0319 - 0331 - 0334 - 0336 - 04525 - 04529 In Area (Army Firing Exercise): 23°30'39.0'N, 119°34'06.0'E 2</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>119.56868,23.475,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVWARN-8d6aa854ca</name>
+      <description>[Murmansk] 2026-02-09 14:16:00.243 BARENTS SEA MARINE RADIO BEACONS 1. SYETNAVOLOKSKIY 69-23.9N 033-30.0E NR 1250 CHANGED TO OPERATION ON DEMAND 2. TERIBERSKIY 69-15.1N 035-09.5E NR 1260 INACTIVE SINCE 01 APR 2024 3. OT 29/24 128/24 AND THIS POINT= 091000 MSK GS-</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>34.325417,69.3175,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVWARN-6f6937f21b</name>
+      <description>[Coastal] 2026-01-14 06:51:58.567 PAKISTAN KARACHI APPROACHES CHARTS PAK 5 (INT 7314), 30 (INT 7315) AND BA 40 WRECK BUOY IN POSITION 24-46.45N 066-57.09E REPORTED MISSING MARINERS CAUTIONED</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>66.951389,24.774167,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVWARN-92c83e7561</name>
+      <description>[Navarea XIV] 2026-03-18 20:51:00.69 SOUTH PACIFIC OCEAN SOUTHWEST PACIFIC BASIN 1. HAZARDOUS OPERATIONS, SPACE DEBRIS DAILY FROM 24 MAR 2026 TO 01 APR 2026 BETWEEN 0046 UTC AND 0532 UTC IN AREA BOUNDED BY: A. 25-23.00S 156-56.00W B. 26-03.00S 153-24.00W C. 43-04.00S 157-03.00W D. 59-49.00S 163-34.00W E. 59-13.00S 168-58.00W F. 42-28.00S 161-17.00W 2. CANCEL THIS MESSAGE 010632 UTC APR 2026</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>-160.2,-42.666667,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVWARN-d9081d8c06</name>
+      <description>[Navarea XIV] 2026-03-05 20:51:00.31 SOUTHERN OCEAN 1. HAZARDOUS OPERATIONS, SPACE DEBRIS DAILY FROM 05 MAR 2026 TO 31 MAR 2026 BETWEEN 0000 UTC AND 2359 UTC IN AREA BOUNDED BY: A. 39-52.00S 082-05.00E B. 51-17.00S 115-27.00E C. 47-11.00S 158-59.00E D. 48-02.00S 159-55.00E E. 49-27.00S 159-48.00E F. 53-37.00S 114-28.00E G. 41-36.00S 080-09.00E 2. CANCEL THIS MESSAGE 010100 UTC APR 2026</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>124.407143,-47.290476,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA3-0034</name>
+      <description>THE COORDINATOR OF COASTAL ALERTS OF UKRAINE HAS DECLARED THE FOLLOWING COASTAL APPROACH INSTRUCTIONS FOR ENTRY INTO OR EXIT FROM UKRAINIAN PORTS UNTIL FURTHER NOTICE: 1. FROM 100000 ON AUGUST 23, DAILY FROM 0200 TO 1700 UTC ROUTES TO UKRAINIAN PORTS: ROUTE No. 1.1: ROUTE FOR VESSELS WITH A DRAFT OF UP TO 8 METERS. THE WIDTH OF THE DOUBLE TRACK IS 3 NM BETWEEN THE POINTS E-H. TRACK WIDTH: 1 NM. NAVIGATION IN THE OPPOSITE DIRECTION. CENTERLINE COORDINATES OF THE ROUTE: a. 45-05.00N 030-03.00E - E</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>30.654023,46.00197,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA3-0124</name>
+      <description>1. WAR RISK AREA, IN NORTHWESTERN PART OF BLACK SEA TO NORTHERN OF LINE 45-12.2N 029-41.1E 45-11.5N 029-41.4E 45-11.5N 033-10.5E FROM 19 MAR 22 UNTIL FURTHER NOTICE. 2.- CANCEL NAVAREA III 0119/22 AND THIS PARAGRAPH</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>30.845,45.189537,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA3-0092</name>
+      <description>1.- DUE TO MINE DANGER NAVIGATION PROHIBITED UNTILL FURTHER NOTICE IN AREA BOUNDED BY: A 46-04.0N 033-12.8E 46-03.1N 033-13.9E 45-55.6N 033-08.1E 45-57.3N 032-54.5E 46-00.9N 033-06.8E B 46-06.4N 032-05.4E 45-57.4N 032-53.3E 45-49.2N 032-47.0E 45-59.7N 032-02.4E C 46-09.4N 032-06.6E 46-07.0N 032-05.5E 45-58.2N 032-54.2E 45-59.5N 033-05.5E 46-00.9N 033-05.5E 46-00.9N 033-04.8E AND COASTLINE D 46-32.4N 031-01.2E 46-32.6N 031-26.3E 46-28.0N 031-27.9E 46-27.9N 031-00.8E E 46-34.9N 031-30.5E 46-35.6N </description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>31.812118,46.336632,0</coordinates>
+      </Point>
+    </Placemark>
   </Document>
 </kml>
