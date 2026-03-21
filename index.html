@@ -5,13 +5,34 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NOTAM / MSI / 火箭发射 地图</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
   <style>
-    html, body, #map { height: 100%; margin: 0; }
+    html, body, #map, #mapCesium { height: 100%; margin: 0; }
+    #mapCesium { display: none; background: #000; }
+    .view-toggle {
+      position: absolute; bottom: 30px; right: 10px; z-index: 1000;
+      background: #fff; padding: 8px 12px; border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.2); cursor: pointer;
+      font: bold 12px sans-serif; display: flex; align-items: center; gap: 6px;
+    }
     .panel {
       position: absolute; z-index: 1000; top: 10px; left: 10px;
       background: #fff; padding: 10px 12px; border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0,0,0,.2); font: 13px/1.4 sans-serif;
-      min-width: 320px;
+      min-width: 320px; transition: all 0.3s ease;
+    }
+    .panel.collapsed {
+      min-width: 0; width: 40px; height: 40px; padding: 0;
+      overflow: hidden; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .panel.collapsed .panel-content { display: none; }
+    .panel-toggle {
+      position: absolute; top: 10px; right: 10px; cursor: pointer;
+      font-weight: bold; background: #eee; padding: 2px 6px; border-radius: 4px;
+    }
+    .panel.collapsed .panel-toggle {
+      position: static; font-size: 18px; background: none; padding: 0;
     }
     .panel input, .panel button { font-size: 12px; margin-top: 4px; }
     .legend {
@@ -28,44 +49,53 @@
   </style>
 </head>
 <body>
-  <div class="panel">
-    <div><b>发射相关 NOTAM 地图</b></div>
-    <div class="small">红(近) → 蓝(远)</div>
-    <div class="legend"></div>
+  <div class="panel collapsed" id="mainPanel">
+    <div class="panel-toggle" id="panelToggle">☰</div>
+    <div class="panel-content">
+      <div><b>发射相关 NOTAM 地图</b></div>
+      <div class="small">红(近) → 蓝(远)</div>
+      <div class="legend"></div>
 
-    <div style="margin-top:8px;">
-      <label>开始日期：</label><br/>
-      <input id="startDate" type="date" />
-    </div>
-    <div>
-      <label>结束日期：</label><br/>
-      <input id="endDate" type="date" />
-    </div>
-    <div class="row" style="margin-top:6px;">
-      <button id="applyBtn">应用筛选</button>
-      <button id="resetBtn">重置</button>
-    </div>
+      <div style="margin-top:8px;">
+        <label>开始日期：</label><br/>
+        <input id="startDate" type="date" />
+      </div>
+      <div>
+        <label>结束日期：</label><br/>
+        <input id="endDate" type="date" />
+      </div>
+      <div class="row" style="margin-top:6px;">
+        <button id="applyBtn">应用筛选</button>
+        <button id="resetBtn">重置</button>
+      </div>
 
-    <div class="small" style="margin-top:6px;">
-      数据文件：<code>notams.csv</code> + <code>msi.csv</code>
-    </div>
-    <div class="small" id="status"></div>
+      <div class="small" style="margin-top:6px;">
+        数据文件：<code>notams.csv</code> + <code>msi.csv</code>
+      </div>
+      <div class="small" id="status"></div>
 
-    <hr style="margin:8px 0;"/>
-    <div style="font-size:13px;"><b>🚀 火箭发射（±1周）</b></div>
-    <div class="launch-layer-toggle">
-      <input type="checkbox" id="launchToggle" checked />
-      <label for="launchToggle" style="font-size:12px;">在地图上显示</label>
+      <hr style="margin:8px 0;"/>
+      <div style="font-size:13px;"><b>🚀 火箭发射（±1周）</b></div>
+      <div class="launch-layer-toggle">
+        <input type="checkbox" id="launchToggle" checked />
+        <label for="launchToggle" style="font-size:12px;">在地图上显示</label>
+      </div>
+      <div class="legend-launches">
+        <div class="legend-row"><span class="dot" style="background:#22c55e;"></span> 已发射（过去）</div>
+        <div class="legend-row"><span class="dot" style="background:#ef4444;"></span> 即将发射（近）</div>
+        <div class="legend-row"><span class="dot" style="background:#3b82f6;"></span> 即将发射（远）</div>
+      </div>
+      <div class="small" id="launchStatus"></div>
     </div>
-    <div class="legend-launches">
-      <div class="legend-row"><span class="dot" style="background:#22c55e;"></span> 已发射（过去）</div>
-      <div class="legend-row"><span class="dot" style="background:#ef4444;"></span> 即将发射（近）</div>
-      <div class="legend-row"><span class="dot" style="background:#3b82f6;"></span> 即将发射（远）</div>
-    </div>
-    <div class="small" id="launchStatus"></div>
   </div>
 
   <div id="map"></div>
+  <div id="mapCesium"></div>
+
+  <div class="view-toggle" id="viewToggle">
+    <span id="viewToggleIcon">🌍</span>
+    <span id="viewToggleText">3D 地球模式</span>
+  </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
@@ -78,6 +108,113 @@
     }).addTo(map);
 
     const statusEl = document.getElementById('status');
+    const panel = document.getElementById('mainPanel');
+    const panelToggle = document.getElementById('panelToggle');
+    const viewToggle = document.getElementById('viewToggle');
+    const viewToggleIcon = document.getElementById('viewToggleIcon');
+    const viewToggleText = document.getElementById('viewToggleText');
+    const mapDiv = document.getElementById('map');
+    const cesiumDiv = document.getElementById('mapCesium');
+
+    let is3D = false;
+    let cesiumViewer = null;
+
+    function initCesium() {
+      if (cesiumViewer) return;
+      cesiumViewer = new Cesium.Viewer('mapCesium', {
+        terrainProvider: Cesium.createWorldTerrain ? Cesium.createWorldTerrain() : undefined,
+        animation: false, timeline: false, infoBox: false, selectionIndicator: false,
+        navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false
+      });
+      // Add OSM layer to Cesium
+      cesiumViewer.imageryLayers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({
+        url : 'https://a.tile.openstreetmap.org/'
+      }));
+    }
+
+    viewToggle.onclick = () => {
+      is3D = !is3D;
+      if (is3D) {
+        mapDiv.style.display = 'none';
+        cesiumDiv.style.display = 'block';
+        viewToggleIcon.textContent = '🗺️';
+        viewToggleText.textContent = '2D 平面模式';
+        initCesium();
+        renderOnGlobe();
+      } else {
+        mapDiv.style.display = 'block';
+        cesiumDiv.style.display = 'none';
+        viewToggleIcon.textContent = '🌍';
+        viewToggleText.textContent = '3D 地球模式';
+      }
+    };
+
+    function renderOnGlobe() {
+      if (!cesiumViewer) return;
+      cesiumViewer.entities.removeAll();
+
+      // 1. Render Launch Sites (🚀)
+      Object.entries(launchSites).forEach(([abbrev, site]) => {
+        cesiumViewer.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(site.lon, site.lat),
+          billboard: {
+            image: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">🚀</text></svg>'),
+            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+            width: 28, height: 28
+          },
+          label: {
+            text: site.name,
+            font: '12pt sans-serif',
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            outlineWidth: 2,
+            verticalOrigin: Cesium.VerticalOrigin.TOP,
+            pixelOffset: new Cesium.Cartesian2(0, 5)
+          }
+        });
+      });
+
+      // 2. Render NOTAM / MSI polygons (simple representation)
+      dataRows.forEach(row => {
+        const type = (row['type'] || 'NOTAM').toUpperCase();
+        const color = type === 'MSI' ? Cesium.Color.PURPLE : Cesium.Color.RED;
+        const coordsStr = row['coordinates'] || '';
+        const pairs = coordsStr.split(';');
+        const points = [];
+        pairs.forEach(p => {
+          const c = p.trim().split(/\s+/);
+          if (c.length >= 2) points.push(parseFloat(c[1]), parseFloat(c[0]));
+        });
+
+        if (points.length >= 6) { // Polygon
+          cesiumViewer.entities.add({
+            polygon: {
+              hierarchy: Cesium.Cartesian3.fromDegreesArray(points),
+              material: color.withAlpha(0.3),
+              outline: true,
+              outlineColor: color
+            },
+            description: row['content'] || ''
+          });
+        } else if (points.length >= 2) { // Point/Circle
+          cesiumViewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(points[1], points[0]),
+            point: { pixelSize: 8, color: color, outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
+            description: row['content'] || ''
+          });
+        }
+      });
+      
+      console.log('[Cesium] Rendered entities');
+    }
+
+    panelToggle.onclick = (e) => {
+      e.stopPropagation();
+      panel.classList.toggle('collapsed');
+    };
+    panel.onclick = () => {
+      if (panel.classList.contains('collapsed')) panel.classList.remove('collapsed');
+    };
+
     const startEl = document.getElementById('startDate');
     const endEl = document.getElementById('endDate');
     const applyBtn = document.getElementById('applyBtn');
