@@ -128,13 +128,41 @@
         const radiusNm = Math.max(1, parseFloat(r.radius_nm || '1'));
         if (!isFinite(lat) || !isFinite(lon)) return;
         const color = colorByTime(Date.parse(r.from_utc), minTs, maxTs);
-        const c = L.circle([lat, lon], {
-          radius: radiusNm * 1852,
-          color,
-          fillColor: color,
-          fillOpacity: 0.2,
-          weight: 2
-        });
+
+        let shape;
+        let coords = [];
+        if (r.polygon) {
+          try {
+            if (r.polygon.trim().startsWith('[')) {
+              coords = JSON.parse(r.polygon);
+            } else {
+              // Parse strings like "lat,lon lat,lon"
+              const pts = r.polygon.split(/[ ;|]/).filter(Boolean);
+              coords = pts.map(p => {
+                const parts = p.split(',');
+                return [parseFloat(parts[0]), parseFloat(parts[1])];
+              }).filter(p => isFinite(p[0]) && isFinite(p[1]));
+            }
+          } catch(e) {}
+        }
+
+        if (coords.length >= 3) {
+          shape = L.polygon(coords, {
+            color,
+            fillColor: color,
+            fillOpacity: 0.2,
+            weight: 2
+          });
+        } else {
+          shape = L.circle([lat, lon], {
+            radius: radiusNm * 1852,
+            color,
+            fillColor: color,
+            fillOpacity: 0.2,
+            weight: 2
+          });
+        }
+
         const popup = `
           <b>${r.notam_id || ''}</b><br/>
           FIR: ${r.fir || ''}<br/>
@@ -144,9 +172,9 @@
           <hr/>
           <div style="max-width:420px;max-height:260px;overflow:auto;white-space:pre-wrap;">${(r.raw || '').replace(/</g,'&lt;')}</div>
         `;
-        c.bindPopup(popup);
-        c.addTo(group);
-        layers.push(c);
+        shape.bindPopup(popup);
+        shape.addTo(group);
+        layers.push(shape);
       });
 
       if (layers.length) {
