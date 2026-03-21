@@ -76,20 +76,35 @@ def fetch_past_launches():
 
 def save_to_csv(launches, filename):
     keys = ["Launch Date and Time (UTC)", "Launch Site (Abbrv.)", "Latitude", "Longitude", "Launch Vehicle", "Official Payload Name", "Success", "Launch Site (Full)"]
+    
+    existing_data = []
+    if os.path.exists(filename):
+        with open(filename, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            existing_data = list(reader)
+    
+    # Merge and Deduplicate (based on Date + Vehicle + Payload)
+    combined = existing_data + launches
+    unique = {}
+    for item in combined:
+        # Create a unique key
+        k = f"{item.get('Launch Date and Time (UTC)')}|{item.get('Launch Vehicle')}|{item.get('Official Payload Name')}"
+        if k not in unique:
+            unique[k] = item
+    
+    # Sort by date (descending)
+    final_list = sorted(unique.values(), key=lambda x: x.get('Launch Date and Time (UTC)', ''), reverse=True)
+
     with open(filename, 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=keys)
         writer.writeheader()
-        writer.writerows(launches)
+        writer.writerows(final_list)
 
 if __name__ == "__main__":
     launches = fetch_past_launches()
-    if not launches:
-        # Mock some recent ones if scrape fails
-        launches = [
-            {"Launch Date and Time (UTC)": "2026 MAR 20 0000", "Launch Site (Abbrv.)": "VSFB", "Latitude": 34.742, "Longitude": -120.572, "Launch Vehicle": "Falcon 9", "Official Payload Name": "Starlink-371 (17-15)", "Success": "S", "Launch Site (Full)": "California, United States"},
-            {"Launch Date and Time (UTC)": "2026 MAR 20 0000", "Launch Site (Abbrv.)": "MP", "Latitude": -39.261, "Longitude": 177.864, "Launch Vehicle": "Electron", "Official Payload Name": "\"Eight Days a Week\"", "Success": "S", "Launch Site (Full)": "New Zealand"},
-            {"Launch Date and Time (UTC)": "2026 MAR 19 0000", "Launch Site (Abbrv.)": "KSC", "Latitude": 28.572, "Longitude": -80.648, "Launch Vehicle": "Falcon 9", "Official Payload Name": "Starlink-370 (10-33)", "Success": "S", "Launch Site (Full)": "Florida, United States"},
-        ]
-    
-    save_to_csv(launches, os.path.join(os.path.dirname(__file__), "past_launches.csv"))
-    print(f"Saved {len(launches)} launches to past_launches.csv")
+    if launches:
+        # Only save if we actually got something from the scrape
+        save_to_csv(launches, os.path.join(os.path.dirname(__file__), "past_launches.csv"))
+        print(f"Merged {len(launches)} new/recent launches into past_launches.csv")
+    else:
+        print("No new launches found or scrape failed.")
