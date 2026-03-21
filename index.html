@@ -283,26 +283,7 @@
           coordinatesList.forEach(pts => {
             let shape;
             if (pts.length >= 3 && !isRoute) {
-              let drawPts = pts;
-              // If extracted from raw text, auto-sort vertices clockwise to avoid "bow-tie" self-intersecting anomalies
-              if (isFromRawExtracted) {
-                 let uniquePts = [];
-                 let seen = new Set();
-                 pts.forEach(p => {
-                     let key = p[0].toFixed(5) + ',' + p[1].toFixed(5);
-                     if (!seen.has(key)) { seen.add(key); uniquePts.push(p); }
-                 });
-                 if (uniquePts.length >= 3) {
-                     let cx = 0, cy = 0;
-                     uniquePts.forEach(p => { cx += p[1]; cy += p[0]; });
-                     cx /= uniquePts.length;
-                     cy /= uniquePts.length;
-                     uniquePts.sort((a, b) => Math.atan2(a[0] - cy, a[1] - cx) - Math.atan2(b[0] - cy, b[1] - cx));
-                     drawPts = uniquePts;
-                 }
-              }
-
-              shape = L.polygon(drawPts, {
+              shape = L.polygon(pts, {
                 color,
                 fillColor: color,
                 fillOpacity: 0.2,
