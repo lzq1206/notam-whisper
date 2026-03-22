@@ -1,231 +1,86 @@
 #!/usr/bin/env python3
 """
-NGA MSI Maritime Warning fetcher.
-Outputs: msi.csv, msi_raw.csv, msi.kml, history/msi/YYYY-WNN.*
+MSI (Maritime Safety Information) Fetcher
+NGA API: msi.nga.mil
+Outputs: msi.csv, msi.kml, msi_raw.csv
 """
-import requests, re, os, datetime, csv, math, time, urllib3
+import requests, re, os, datetime, csv, time, json
 import xml.etree.ElementTree as ET
-import urllib.request
+import urllib3
 import ssl
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-now_utc = datetime.datetime.utcnow()
+
+# --- Configuration ---
+PRIMARY_MSI_URL_TEMPLATE = "https://msi.nga.mil/api/publications/ntm/warnings?output=xml&navArea={nav_area}"
+FALLBACK_MSI_URL_TEMPLATE = None 
+MAX_RETRIES = 3
+RETRY_BACKOFF = 2
+
+# For "Daily Memo" textual warnings sometimes found on the site
+DAILY_MEMO_URLS = {
+    '4':  'https://msi.nga.mil/apology_objects/DailyMemLANT.txt',
+    '12': 'https://msi.nga.mil/apology_objects/DailyMemPAC.txt',
+}
+
+MONTHS_MAP = {
+    'JAN':1,'FEB':2,'MAR':3,'APR':4,'MAY':5,'JUN':6,
+    'JUL':7,'AUG':8,'SEP':9,'OCT':10,'NOV':11,'DEC':12
+}
 
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw','polygon']
-RAW_CSV_HEADERS = ['notam_id','category','from_utc','to_utc','raw']
+RAW_CSV_HEADERS = ['msgID','category','from_utc','to_utc','msgText']
 
-MONTHS_MAP = {'JAN':1,'FEB':2,'MAR':3,'APR':4,'MAY':5,'JUN':6,
-              'JUL':7,'AUG':8,'SEP':9,'OCT':10,'NOV':11,'DEC':12}
+AEROSPACE_KEYWORDS = ["ROCKET", "LAUNCH", "SPACE", "RE-ENTRY", "DEBRIS", "AEROSPACE", "SATELLITE", "MISSILE"]
 
-AEROSPACE_KEYWORDS = ['ROCKET', 'LAUNCH', 'SPACE', 'DEBRIS', 'SATELLITE', 'RE-ENTRY', 'REENTRY', 'AEROSPACE', 'SPLASH']
+def log_to_file(msg):
+    with open('msi_fetch_log.txt', 'a', encoding='utf-8') as f:
+        f.write(f"{datetime.datetime.now().isoformat()} - {msg}\n")
 
-# ═══════════════════════════════════════════════════════════════
-# MSI Coordinate & Time Parsing
-# ═══════════════════════════════════════════════════════════════
-def msi_coord_to_dd(deg, mm, dec, hemi):
-    sec = round(int(dec) * 60 / 100)
-    val = int(deg) + int(mm)/60.0 + sec/3600.0
-    if hemi in ('S','W'):
-        val = -val
-    return val
+# --- Parsing Helpers ---
+def parse_msi_coords_multi(text):
+    """
+    Parses complex coordinates like:
+    A. 35-09.00N 120-39.00W, 34-08.00N 119-36.00W...
+    B. 31-09.00N 124-59.00W...
+    Returns a list of coordinate rings (List[List[Tuple[float, float]]])
+    """
+    if not text: return []
+    
+    # Split by sections A., B., C. or just treat as one if none
+    sections = re.split(r'\b[A-Z]\.\s', text)
+    if not sections or (len(sections) == 1 and not re.search(r'\d{2}-\d{2}\.\d+[NS]', text)):
+        # Try to find any coordinates if no lettered sections
+        sections = [text]
+
+    all_rings = []
+    # Pattern: DD-MM.mmN DDD-MM.mmE
+    coord_pattern = r'(\d{1,3})-(\d{2}\.\d+)\s*([NS])\s+(\d{1,3})-(\d{2}\.\d+)\s*([EW])'
+    
+    for sec in sections:
+        ring = []
+        for match in re.finditer(coord_pattern, sec):
+            lat_d, lat_m, lat_h, lon_d, lon_m, lon_h = match.groups()
+            lat = float(lat_d) + float(lat_m)/60.0
+            if lat_h.upper() == 'S': lat = -lat
+            lon = float(lon_d) + float(lon_m)/60.0
+            if lon_h.upper() == 'W': lon = -lon
+            ring.append((round(lat, 6), round(lon, 6)))
+        if ring:
+            all_rings.append(ring)
+    return all_rings
 
 def parse_msi_cancel_time(text):
-    m = re.search(r'CANCEL\s+THIS\s+MSG\s+(\d{2})(\d{4})Z\s+([A-Z]+)\s+(\d{2})', text, re.I)
+    """
+    Extracts cancellation date from 'CANCEL THIS MSG DDHHMMZ MON YY'
+    """
+    m = re.search(r'CANCEL\s+THIS\s+MSG\s+(\d{2})(\d{4})Z\s+([A-Z]{3})\s+(\d{2})', text, re.I)
     if m:
         day, hhmm, mon, yr = m.groups()
         try:
-            h = int(hhmm[:2]) if len(hhmm)>=2 else 0
-            m_val = int(hhmm[2:4]) if len(hhmm)>=4 else 0
-            return datetime.datetime(2000+int(yr), MONTHS_MAP.get(mon.upper(),1), int(day), h, m_val)
-        except:
-            pass
+            return datetime.datetime(2000 + int(yr), MONTHS_MAP.get(mon.upper(), 1), int(day), int(hhmm[:2]), int(hhmm[2:4]))
+        except: pass
     return None
-
-def parse_msi_coords_multi(text):
-    """
-    Returns a list of coordinate lists, one for each area (e.g. A., B...).
-    If no A/B markers found, returns one list in the outer list.
-    """
-    if 'BOUND BY' not in text.upper():
-        return []
-        
-    parts = re.split(r'BOUND BY[\s:]*', text, flags=re.I)
-    if len(parts) < 2:
-        return []
-    
-    content = parts[1]
-    # Split further by A. B. C. if present
-    sub_parts = re.split(r'\s+([A-Z]\.)\s+', content)
-    
-    areas = []
-    current_area_text = ""
-    
-    if len(sub_parts) == 1:
-        current_area_text = sub_parts[0]
-        c = find_coords_in_text(current_area_text)
-        if c: areas.append(c)
-    else:
-        # sub_parts will be like ["first part before A.", "A.", "text after A.", "B.", "text after B."]
-        # Or even just ["text before A. (empty usually)", "A.", "text after A.", ...]
-        # We look for groups
-        current_text = sub_parts[0]
-        for i in range(1, len(sub_parts), 2):
-            if i+1 < len(sub_parts):
-                label = sub_parts[i]
-                text_block = sub_parts[i+1]
-                c = find_coords_in_text(text_block)
-                if c: areas.append(c)
-    
-    if not areas:
-        # Final fallback: search everything
-        c = find_coords_in_text(text)
-        if c: areas.append(c)
-        
-    return areas
-
-def find_coords_in_text(text):
-    coords = []
-    # 1. Standard NGA format: DD-MM.mmN DDD-MM.mmW
-    pattern1 = r'(\d{1,2})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([NS])\s*(\d{2,3})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([EW])'
-    for m in re.finditer(pattern1, text):
-        deg1, min1, dec1, hemi1, deg2, min2, dec2, hemi2 = m.groups()
-        dec1 = dec1 if dec1 else '0'
-        dec2 = dec2 if dec2 else '0'
-        coords.append((msi_coord_to_dd(deg1, min1, dec1, hemi1), msi_coord_to_dd(deg2, min2, dec2, hemi2)))
-
-    if not coords:
-        # 2. Loose format: DDMMN DDDMMW
-        pattern2 = r'(\d{2})(\d{2})\s*([NS])\s*(\d{3})(\d{2})\s*([EW])'
-        for m in re.finditer(pattern2, text):
-            d1, m1, h1, d2, m2, h2 = m.groups()
-            coords.append((msi_coord_to_dd(d1, m1, '0', h1), msi_coord_to_dd(d2, m2, '0', h2)))
-    return coords
-
-# ═══════════════════════════════════════════════════════════════
-# MSI Fetching (navwarns-style)
-# ═══════════════════════════════════════════════════════════════
-def make_msi_headers():
-    return {
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-        "Accept": "application/xml, text/xml, */*",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Referer": "https://msi.nga.mil/",
-        "Connection": "keep-alive"
-    }
-
-LOG_FILE = 'msi_fetch_log.txt'
-HTML_CHECK_PREFIX_LENGTH = 200
-PRIMARY_MSI_URL_TEMPLATE = "https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&output=xml"
-FALLBACK_MSI_URL_TEMPLATE = os.getenv("MSI_FALLBACK_URL_TEMPLATE", "").strip()
-
-DAILY_MEMO_URLS = {
-    '4': 'https://msi.nga.mil/apology_objects/DailyMemIV.txt',
-    '12': 'https://msi.nga.mil/apology_objects/DailyMemXII.txt',
-    'A': 'https://msi.nga.mil/apology_objects/DailyMemLAN.txt',
-    'P': 'https://msi.nga.mil/apology_objects/DailyMemPAC.txt',
-    'C': 'https://msi.nga.mil/apology_objects/DailyMemARC.txt'
-}
-
-def parse_msi_text_memo(text):
-    text = text.replace('\r\n', '\n')
-    blocks = re.split(r'\n(?=\d{6}Z [A-Z]{3} \d{2}\n)', text)
-    res = []
-    for block in blocks:
-        block = block.strip()
-        if not block: continue
-        if not re.match(r'\d{6}Z [A-Z]{3} \d{2}', block):
-            continue
-        lines = block.split('\n')
-        if len(lines) < 2: continue
-        msg_id_line = lines[1].strip()
-        msg_id_match = re.search(r'^([A-Z]+(?:\s+[A-Z\d]+)?\s+\d+/\d+)', msg_id_line)
-        msg_id = msg_id_match.group(1) if msg_id_match else msg_id_line
-        res.append({
-            'msgID': msg_id,
-            'msgText': block,
-            'category': 'MARITIME',
-            'msgType': 'Warning'
-        })
-    return res
-
-def fetch_msi_from_txt(nav_area):
-    url = DAILY_MEMO_URLS.get(nav_area)
-    if not url: return []
-    log_to_file(f"[FETCH] (text-memo) Area {nav_area} URL: {url}")
-    try:
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
-        req = urllib.request.Request(url, headers=make_msi_headers())
-        with urllib.request.urlopen(req, context=ctx, timeout=60) as response:
-            status = response.getcode()
-            text = response.read().decode('utf-8', errors='replace').strip()
-            if status == 200:
-                return parse_msi_text_memo(text)
-    except Exception as e:
-        log_to_file(f'  Text memo fetch error: {e}')
-    return []
-
-def log_to_file(msg):
-    with open(LOG_FILE, 'a', encoding='utf-8') as f:
-        f.write(f"[{datetime.datetime.utcnow().isoformat()}] {msg}\n")
-    print(msg)
-
-# Initialize log file
-with open(LOG_FILE, 'w', encoding='utf-8') as f:
-    f.write("MSI Fetch Log\n")
-
-def fetch_msi_single(nav_area, url_template=PRIMARY_MSI_URL_TEMPLATE, source_name='primary'):
-    url = url_template.format(nav_area=nav_area)
-    log_to_file(f"[FETCH] ({source_name}) Area {nav_area} URL: {url}")
-    MAX_RETRIES = 4
-    RETRY_BACKOFF = 2.0
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            req = urllib.request.Request(url, headers=make_msi_headers())
-            with urllib.request.urlopen(req, context=ctx, timeout=60) as response:
-                status = response.getcode()
-                text = response.read().decode('utf-8', errors='replace').strip()
-                if status == 200 and text.startswith('<') and "<html" not in text[:HTML_CHECK_PREFIX_LENGTH].lower():
-                    if '<smapsActiveEntity' in text:
-                        root = ET.fromstring(text)
-                        entities = root.findall('smapsActiveEntity')
-                        res = []
-                        for entity in entities:
-                            res.append({
-                                'msgID': entity.findtext('msgID'),
-                                'msgText': entity.findtext('msgText'),
-                                'category': entity.findtext('category'),
-                                'msgType': entity.findtext('msgType')
-                            })
-                        return res
-        except Exception as e:
-            log_to_file(f'  Request error: {e}')
-        if attempt < MAX_RETRIES:
-            time.sleep(RETRY_BACKOFF ** attempt)
-    return []
-
-def fetch_msi_single_with_fallback(nav_area):
-    res = fetch_msi_single(nav_area, PRIMARY_MSI_URL_TEMPLATE, 'primary')
-    if res: return res
-    if FALLBACK_MSI_URL_TEMPLATE:
-        res = fetch_msi_single(nav_area, FALLBACK_MSI_URL_TEMPLATE, 'fallback')
-        if res: return res
-    if nav_area in DAILY_MEMO_URLS:
-        return fetch_msi_from_txt(nav_area)
-    return []
-
-def fetch_msi():
-    nav_areas = ['4', '12', 'A', 'P', 'C', '1', '2', '3', '5', '6', '7', '8', '9', '10', '11']
-    all_smaps = []
-    for na in nav_areas:
-        res = fetch_msi_single_with_fallback(na)
-        all_smaps.extend(res)
-        time.sleep(2)
-    return process_msi_data(all_smaps)
 
 def parse_msi_active_times(text):
     """
@@ -311,6 +166,64 @@ def parse_msi_active_times(text):
     if not found_dts: return None, None
     return min(found_dts), max(found_dts)
 
+# --- Fetching ---
+def fetch_msi_single(nav_area, url_template, label):
+    url = url_template.format(nav_area=nav_area)
+    log_to_file(f"Fetching {label} NAVAREA {nav_area}...")
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            resp = requests.get(url, timeout=30, verify=False)
+            if resp.status_code == 200:
+                root = ET.fromstring(resp.text)
+                entities = root.findall('.//warning')
+                if entities:
+                    res = []
+                    for entity in entities:
+                        res.append({
+                            'msgID': entity.findtext('msgID'),
+                            'msgText': entity.findtext('msgText'),
+                            'category': entity.findtext('category'),
+                            'msgType': entity.findtext('msgType')
+                        })
+                    return res
+        except Exception as e:
+            log_to_file(f"  Request error: {e}")
+        if attempt < MAX_RETRIES:
+            time.sleep(RETRY_BACKOFF ** attempt)
+    return []
+
+def fetch_msi_from_txt(nav_area):
+    url = DAILY_MEMO_URLS.get(nav_area)
+    if not url: return []
+    try:
+        resp = requests.get(url, timeout=30, verify=False)
+        if resp.status_code == 200:
+            text = resp.text
+            # Split by double newline or typical warning separator
+            blocks = re.split(r'\n\s*\n', text)
+            res = []
+            for block in blocks:
+                if len(block.strip()) > 50:
+                    res.append({
+                        'msgID': '', # Will be hashed
+                        'msgText': block.strip(),
+                        'category': 'Daily Memo',
+                        'msgType': 'NavWarning'
+                    })
+            return res
+    except: pass
+    return []
+
+def fetch_msi_single_with_fallback(nav_area):
+    res = fetch_msi_single(nav_area, PRIMARY_MSI_URL_TEMPLATE, 'primary')
+    if res: return res
+    if FALLBACK_MSI_URL_TEMPLATE:
+        res = fetch_msi_single(nav_area, FALLBACK_MSI_URL_TEMPLATE, 'fallback')
+        if res: return res
+    if nav_area in DAILY_MEMO_URLS:
+        return fetch_msi_from_txt(nav_area)
+    return []
+
 def process_msi_data(all_smaps):
     rows = []
     seen = set()
@@ -352,12 +265,14 @@ def process_msi_data(all_smaps):
         })
     return rows
 
-def write_msi_raw_csv(rows, csv_path='msi_raw.csv'):
-    with open(csv_path, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(RAW_CSV_HEADERS)
-        for r in rows:
-            writer.writerow([r.get('notam_id', ''), r.get('category', ''), r.get('from_utc', ''), r.get('to_utc', ''), r.get('raw', '')])
+def fetch_msi():
+    nav_areas = ['4', '12', 'A', 'P', 'C', '1', '2', '3', '5', '6', '7', '8', '9', '10', '11']
+    all_smaps = []
+    for na in nav_areas:
+        res = fetch_msi_single_with_fallback(na)
+        all_smaps.extend(res)
+        time.sleep(2)
+    return process_msi_data(all_smaps)
 
 def csv_to_kml(csv_path, kml_path):
     rows = []
@@ -377,9 +292,7 @@ def csv_to_kml(csv_path, kml_path):
         poly = pm_row.get('polygon', '')
         if poly and poly.startswith('['):
             try:
-                import json
                 coords_list = json.loads(poly)
-                # coords_list is [[(lat,lon),...], [(lat,lon),...]] or similar
                 if coords_list and isinstance(coords_list[0], list):
                     if len(coords_list) > 1:
                         mg = ET.SubElement(pm, 'MultiGeometry')
@@ -446,7 +359,6 @@ def archive_weekly(csv_path, history_subdir='msi'):
 
 def main():
     msi_rows = fetch_msi()
-    write_msi_raw_csv(msi_rows, 'msi_raw.csv')
     with open('msi.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(CSV_HEADERS)

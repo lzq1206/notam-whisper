@@ -293,6 +293,23 @@
             });
           });
 
+          // 1c. Render Past Launches (Dynamic) - Render BEFORE upcoming so upcoming are on top
+          pastLaunches.forEach(launch => {
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
+              billboard: {
+                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#22c55e" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>'))),
+                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32
+              },
+              label: {
+                text: '已发射: ' + (launch.payload || launch.vehicle), font: '10pt sans-serif',
+                fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16)
+              },
+              description: `<b>🚀 ${launch.vehicle}</b><br/>载荷: ${launch.payload}<br/>时间: ${launch.dateStr}<br/>结果: ${launch.success}`
+            });
+          });
+
           // 1b. Render Upcoming Launches (Dynamic)
           upcomingLaunches.forEach(launch => {
             if (!launch.lat || !launch.lon) return;
@@ -312,24 +329,10 @@
               description: `<b>${launch.mission}</b><br/>${launch.dateStr}`
             });
           });
-
-          // 1c. Render Past Launches (Dynamic)
-          pastLaunches.forEach(launch => {
-            cesiumViewer.entities.add({
-              position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
-              billboard: {
-                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#22c55e" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>'))),
-                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32
-              },
-              label: {
-                text: '已发射: ' + (launch.payload || launch.vehicle), font: '10pt sans-serif',
-                fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16)
-              },
-              description: `<b>🚀 ${launch.vehicle}</b><br/>载荷: ${launch.payload}<br/>时间: ${launch.dateStr}<br/>结果: ${launch.success}`
-            });
-          });
         }
+
+        // 排序：时间早的最后渲染（叠在上方）
+        rows.sort((a,b) => (Date.parse(b.from_utc) || 0) - (Date.parse(a.from_utc) || 0));
 
         const now = Date.now();
         const times = rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite);
@@ -617,14 +620,22 @@
       return allValidSubGroups;
     }
 
-    function isRocketCloudVisible(fromStr, toStr, lat, lon) {
+    function isRocketCloudVisible(fromStr, toStr, lat, lon, rawText) {
       if (!fromStr || !toStr || !isFinite(lat)) return false;
       try {
         const from = new Date(fromStr).getTime();
         const to = new Date(toStr).getTime();
+        const raw = (rawText || '').toUpperCase();
         
-        // 增加 12 小时限制：如果持续时间超过 12 小时，则认为不是典型的发射窗口，不显示发光效果
-        if (to - from > 12 * 3600 * 1000) return false;
+        // 增加 12 小时限制：如果持续时间超过 12 小时，则不显示发光
+        const duration = to - from;
+        const isDaily = raw.includes('DAILY') || raw.includes('ALTERNATE');
+        const isLaunch = raw.includes('ROCKET') || raw.includes('LAUNCH') || raw.includes('SPACE');
+        
+        if (duration > 12 * 3600 * 1000) {
+           // 如果虽然总时长长，但包含 DAILY/ALTERNATE 且是火箭任务，仍允许发光
+           if (!(isDaily && isLaunch)) return false;
+        }
 
         const checkDays = [];
         const fromDate = new Date(from);
@@ -663,6 +674,16 @@
         setStatus('当前筛选无数据');
         return;
       }
+
+      // 排序：将时间更晚（更远未来/蓝色）的排在前面，更早（即将发生/红色）的排在后面（最后渲染，叠在最上方）
+      rows.sort((a, b) => {
+        const ta = Date.parse(a.from_utc) || 0;
+        const tb = Date.parse(b.from_utc) || 0;
+        return tb - ta; 
+      });
+
+      // 排序：时间早的（即将发生/红色）最后渲染，排在最上方
+      rows.sort((a, b) => (Date.parse(b.from_utc) || 0) - (Date.parse(a.from_utc) || 0));
 
       const now = Date.now();
       const times = rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite);
@@ -712,7 +733,7 @@
           <div style="max-width:420px;max-height:260px;overflow:auto;white-space:pre-wrap;">${(r.raw || '').replace(/</g, '&lt;')}</div>
         `;
 
-        const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon);
+        const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
         const pathOptions = { 
           color, fillColor: color, fillOpacity: 0.2, 
           weight: isGlow ? 0.7 : 2, 
@@ -1019,7 +1040,7 @@
             iconSize: [24, 24],
             iconAnchor: [12, 12]
           });
-          const m = L.marker([site.lat, site.lon], { icon: siteIcon });
+          const m = L.marker([site.lat, site.lon], { icon: siteIcon, zIndexOffset: 500 });
           m.bindTooltip(site.name, { permanent: false, direction: 'top' });
           m.addTo(launchLayerGroup);
         });
@@ -1069,7 +1090,7 @@
               iconSize: [28, 28],
               iconAnchor: [14, 14]
             });
-            const lMarker = L.marker([lat, lon], { icon: lIcon });
+            const lMarker = L.marker([lat, lon], { icon: lIcon, zIndexOffset: 2000 });
             lMarker.bindPopup(`
               <div style="font-size:12px;color:#666;">即将发射</div>
               <b style="color:${color}">${missionName}</b><br/>
@@ -1120,7 +1141,7 @@
               iconSize: [28, 28],
               iconAnchor: [14, 14]
             });
-            const marker = L.marker([lat, lon], { icon: pIcon });
+            const marker = L.marker([lat, lon], { icon: pIcon, zIndexOffset: 1000 });
             marker.bindPopup(`
               <div style="font-size:12px;color:#666;">历史发射</div>
               <b style="color:#16a34a;">🚀 ${vehicle}</b><br/>
