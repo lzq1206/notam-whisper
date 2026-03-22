@@ -328,11 +328,9 @@
           });
         }
 
-        // 2. Render NOTAM / MSI polygons
-        const now = Date.now();
         const times = rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite);
-        const minTs = now; 
-        const maxTs = times.length ? Math.max(now + 86400000, ...times) : now + 86400000;
+        const minTs = times.length ? Math.min(...times) : Date.now();
+        const maxTs = times.length ? Math.max(...times) : Date.now() + 86400000;
 
         rows.forEach(r => {
           const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
@@ -662,10 +660,8 @@
         return;
       }
 
-      const now = Date.now();
       const times = rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite);
-      const minTs = now;
-      const maxTs = times.length ? Math.max(now + 86400000, ...times) : now + 86400000;
+      const minTs = Math.min(...times), maxTs = Math.max(...times);
 
       const group = L.featureGroup();
       rows.forEach(r => {

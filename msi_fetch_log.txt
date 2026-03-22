@@ -23,3 +23,59 @@ MSI Fetch Log
 [2026-03-22T18:22:51.037258]   Request error: HTTP Error 503: Service Unavailable
 [2026-03-22T18:23:01.779102]   Request error: HTTP Error 503: Service Unavailable
 [2026-03-22T18:23:01.779635] [FETCH] (text-memo) Area P URL: https://msi.nga.mil/apology_objects/DailyMemPAC.txt
+[2026-03-22T18:23:04.294320] [FETCH] (primary) Area C URL: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
+[2026-03-22T18:23:04.654975]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:06.878102]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:11.091122]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:19.325640]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:19.326142] [FETCH] (text-memo) Area C URL: https://msi.nga.mil/apology_objects/DailyMemARC.txt
+[2026-03-22T18:23:22.795141] [FETCH] (primary) Area 1 URL: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
+[2026-03-22T18:23:23.061872]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:26.259978]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:31.465492]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:40.698802]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:42.699641] [FETCH] (primary) Area 2 URL: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
+[2026-03-22T18:23:43.961763]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:46.209716]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:23:52.426655]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:03.756921]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:05.758000] [FETCH] (primary) Area 3 URL: https://msi.nga.mil/api/publications/smaps?navArea=3&status=active&output=xml
+[2026-03-22T18:24:06.334121]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:09.563576]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:14.792046]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:24.015314]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:26.016426] [FETCH] (primary) Area 5 URL: https://msi.nga.mil/api/publications/smaps?navArea=5&status=active&output=xml
+[2026-03-22T18:24:26.294532]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:28.533836]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:32.734534]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:44.268431]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:46.269263] [FETCH] (primary) Area 6 URL: https://msi.nga.mil/api/publications/smaps?navArea=6&status=active&output=xml
+[2026-03-22T18:24:46.553764]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:48.782521]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:24:54.983772]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:05.263611]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:07.264789] [FETCH] (primary) Area 7 URL: https://msi.nga.mil/api/publications/smaps?navArea=7&status=active&output=xml
+[2026-03-22T18:25:11.987772]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:14.301675]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:18.527508]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:30.395325]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:32.396378] [FETCH] (primary) Area 8 URL: https://msi.nga.mil/api/publications/smaps?navArea=8&status=active&output=xml
+[2026-03-22T18:25:34.958875]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:37.178940]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:41.378789]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:49.717695]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:51.718428] [FETCH] (primary) Area 9 URL: https://msi.nga.mil/api/publications/smaps?navArea=9&status=active&output=xml
+[2026-03-22T18:25:52.015967]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:54.250918]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:25:58.451919]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:26:07.658438]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:26:09.659266] [FETCH] (primary) Area 10 URL: https://msi.nga.mil/api/publications/smaps?navArea=10&status=active&output=xml
+[2026-03-22T18:26:09.884371]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:26:15.087083]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:26:19.319068]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:26:35.537584]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:26:37.538962] [FETCH] (primary) Area 11 URL: https://msi.nga.mil/api/publications/smaps?navArea=11&status=active&output=xml
+[2026-03-22T18:26:39.876598]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:26:52.092158]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:27:05.333663]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T18:27:13.528549]   Request error: HTTP Error 503: Service Unavailable
