@@ -1,171 +1,95 @@
 MSI Fetch Log
-[2026-03-22T16:02:42.333847] [FETCH] (primary) Area 4 URL: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
-[2026-03-22T16:02:43.271516]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
+[2026-03-22T16:22:51.840045] [FETCH] (primary) Area 4 URL: https://msi.nga.mil/api/publications/smaps?navArea=4&status=active&output=xml
+[2026-03-22T16:22:53.018050]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:22:55.544144]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:22:59.755924]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:07.967962]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:07.968169] [FETCH] (text-memo) Area 4 URL: https://msi.nga.mil/apology_objects/DailyMemIV.txt
+[2026-03-22T16:23:10.236191] [FETCH] (primary) Area 12 URL: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
+[2026-03-22T16:23:12.373617]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:14.484937]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:18.699017]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:26.897257]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:26.897460] [FETCH] (text-memo) Area 12 URL: https://msi.nga.mil/apology_objects/DailyMemXII.txt
+[2026-03-22T16:23:29.003293] [FETCH] (primary) Area A URL: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
+[2026-03-22T16:23:29.583777]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:32.237267]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:36.407731]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:44.576115]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:44.576325] [FETCH] (text-memo) Area A URL: https://msi.nga.mil/apology_objects/DailyMemLAN.txt
+[2026-03-22T16:23:46.676974] [FETCH] (primary) Area P URL: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
+[2026-03-22T16:23:46.961731]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:49.070067]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:23:53.594631]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:01.711458]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:01.711713] [FETCH] (text-memo) Area P URL: https://msi.nga.mil/apology_objects/DailyMemPAC.txt
+[2026-03-22T16:24:03.935682] [FETCH] (primary) Area C URL: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
+[2026-03-22T16:24:04.073126]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:06.259040]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:10.390671]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:18.677741]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:18.677954] [FETCH] (text-memo) Area C URL: https://msi.nga.mil/apology_objects/DailyMemARC.txt
+[2026-03-22T16:24:20.781970] [FETCH] (primary) Area 1 URL: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
+[2026-03-22T16:24:21.071344]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:23.191154]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:27.337573]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:35.756840]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:37.759221] [FETCH] (primary) Area 2 URL: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
+[2026-03-22T16:24:38.036657]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:40.457235]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:44.579747]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:52.769913]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:54.772291] [FETCH] (primary) Area 3 URL: https://msi.nga.mil/api/publications/smaps?navArea=3&status=active&output=xml
+[2026-03-22T16:24:54.922877]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:24:57.420981]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:25:02.161214]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
 The last 30x error message was:
 Temporary Redirect
-[2026-03-22T16:02:45.994422]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
+[2026-03-22T16:25:10.626681]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:25:12.629072] [FETCH] (primary) Area 5 URL: https://msi.nga.mil/api/publications/smaps?navArea=5&status=active&output=xml
+[2026-03-22T16:25:13.031878]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:25:15.238316]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:25:19.529152]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:25:27.783683]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:25:29.784673] [FETCH] (primary) Area 6 URL: https://msi.nga.mil/api/publications/smaps?navArea=6&status=active&output=xml
+[2026-03-22T16:25:29.959313]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:25:32.624043]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
 The last 30x error message was:
 Temporary Redirect
-[2026-03-22T16:02:50.761148]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
+[2026-03-22T16:25:37.404896]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
 The last 30x error message was:
 Temporary Redirect
-[2026-03-22T16:02:59.714001]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
+[2026-03-22T16:25:45.770801]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
 The last 30x error message was:
 Temporary Redirect
-[2026-03-22T16:02:59.714239] [FETCH] (text-memo) Area 4 URL: https://msi.nga.mil/apology_objects/DailyMemIV.txt
-[2026-03-22T16:03:01.910116] [FETCH] (primary) Area 12 URL: https://msi.nga.mil/api/publications/smaps?navArea=12&status=active&output=xml
-[2026-03-22T16:03:02.989266]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
+[2026-03-22T16:25:47.773199] [FETCH] (primary) Area 7 URL: https://msi.nga.mil/api/publications/smaps?navArea=7&status=active&output=xml
+[2026-03-22T16:25:48.231951]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
 The last 30x error message was:
 Temporary Redirect
-[2026-03-22T16:03:05.671872]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
+[2026-03-22T16:25:50.618974]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
 The last 30x error message was:
 Temporary Redirect
-[2026-03-22T16:03:15.363454]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
+[2026-03-22T16:25:55.010583]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:03.526879]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:05.529260] [FETCH] (primary) Area 8 URL: https://msi.nga.mil/api/publications/smaps?navArea=8&status=active&output=xml
+[2026-03-22T16:26:06.035269]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:08.232339]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:12.585970]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:20.922596]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:22.924978] [FETCH] (primary) Area 9 URL: https://msi.nga.mil/api/publications/smaps?navArea=9&status=active&output=xml
+[2026-03-22T16:26:23.040360]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:25.191829]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:29.690107]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
 The last 30x error message was:
 Temporary Redirect
-[2026-03-22T16:03:24.187147]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:03:24.187386] [FETCH] (text-memo) Area 12 URL: https://msi.nga.mil/apology_objects/DailyMemXII.txt
-[2026-03-22T16:03:26.330973] [FETCH] (primary) Area A URL: https://msi.nga.mil/api/publications/smaps?navArea=A&status=active&output=xml
-[2026-03-22T16:03:27.133820]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:03:29.892977]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:03:35.392832]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:03:44.448640]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:03:44.448862] [FETCH] (text-memo) Area A URL: https://msi.nga.mil/apology_objects/DailyMemLAN.txt
-[2026-03-22T16:03:46.874828] [FETCH] (primary) Area P URL: https://msi.nga.mil/api/publications/smaps?navArea=P&status=active&output=xml
-[2026-03-22T16:03:47.858793]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:03:50.730749]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:03:55.517810]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:04.086329]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:04.086585] [FETCH] (text-memo) Area P URL: https://msi.nga.mil/apology_objects/DailyMemPAC.txt
-[2026-03-22T16:04:06.310856] [FETCH] (primary) Area C URL: https://msi.nga.mil/api/publications/smaps?navArea=C&status=active&output=xml
-[2026-03-22T16:04:06.997786]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:09.722833]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:14.753671]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:23.619662]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:23.619909] [FETCH] (text-memo) Area C URL: https://msi.nga.mil/apology_objects/DailyMemARC.txt
-[2026-03-22T16:04:25.753682] [FETCH] (primary) Area 1 URL: https://msi.nga.mil/api/publications/smaps?navArea=1&status=active&output=xml
-[2026-03-22T16:04:26.771917]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:29.585997]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:34.570886]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:43.208672]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:45.211070] [FETCH] (primary) Area 2 URL: https://msi.nga.mil/api/publications/smaps?navArea=2&status=active&output=xml
-[2026-03-22T16:04:45.877477]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:49.645879]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:04:54.199605]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:03.513299]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:05.515714] [FETCH] (primary) Area 3 URL: https://msi.nga.mil/api/publications/smaps?navArea=3&status=active&output=xml
-[2026-03-22T16:05:06.482835]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:09.157329]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:13.851177]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:22.676509]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:24.678923] [FETCH] (primary) Area 5 URL: https://msi.nga.mil/api/publications/smaps?navArea=5&status=active&output=xml
-[2026-03-22T16:05:25.388663]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:28.139040]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:33.342741]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:42.208229]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:44.209402] [FETCH] (primary) Area 6 URL: https://msi.nga.mil/api/publications/smaps?navArea=6&status=active&output=xml
-[2026-03-22T16:05:45.123037]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:48.030983]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:05:52.950833]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:06:01.591799]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:06:03.594323] [FETCH] (primary) Area 7 URL: https://msi.nga.mil/api/publications/smaps?navArea=7&status=active&output=xml
-[2026-03-22T16:06:04.331104]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:06:07.057796]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:06:11.784470]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:06:20.535486]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
-[2026-03-22T16:06:22.537865] [FETCH] (primary) Area 8 URL: https://msi.nga.mil/api/publications/smaps?navArea=8&status=active&output=xml
-[2026-03-22T16:06:22.884020]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:06:25.151646]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:06:29.548913]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:06:37.666743]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:06:39.669084] [FETCH] (primary) Area 9 URL: https://msi.nga.mil/api/publications/smaps?navArea=9&status=active&output=xml
-[2026-03-22T16:06:40.238294]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:06:42.564726]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:06:46.899639]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:06:55.214797]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:06:57.217201] [FETCH] (primary) Area 10 URL: https://msi.nga.mil/api/publications/smaps?navArea=10&status=active&output=xml
-[2026-03-22T16:06:57.572357]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:07:00.058566]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:07:04.339824]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:07:12.513870]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:07:14.516246] [FETCH] (primary) Area 11 URL: https://msi.nga.mil/api/publications/smaps?navArea=11&status=active&output=xml
-[2026-03-22T16:07:14.810919]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:07:17.236206]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:07:21.369776]   Request error: HTTP Error 503: Service Unavailable
-[2026-03-22T16:07:30.667789]   Request error: HTTP Error 307: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Temporary Redirect
+[2026-03-22T16:26:38.223107]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:40.225544] [FETCH] (primary) Area 10 URL: https://msi.nga.mil/api/publications/smaps?navArea=10&status=active&output=xml
+[2026-03-22T16:26:40.400986]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:42.710011]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:46.814333]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:55.025904]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:57.028278] [FETCH] (primary) Area 11 URL: https://msi.nga.mil/api/publications/smaps?navArea=11&status=active&output=xml
+[2026-03-22T16:26:57.218593]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:26:59.363571]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:27:03.466348]   Request error: HTTP Error 503: Service Unavailable
+[2026-03-22T16:27:11.699653]   Request error: HTTP Error 503: Service Unavailable
