@@ -344,11 +344,11 @@
           if (!isFinite(lat) || !isFinite(lon)) return;
 
           const fromTs = Date.parse(r.from_utc);
-          const isMaritime = r.country === 'Maritime';
+          const isMaritime = r.country === 'Maritime' || r.source === 'MSI' || r.type === 'MSI';
           const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
           const color = Cesium.Color.fromCssColorString(colorHex);
-          const radiusNm = parseFloat(r.radius_nm || '1');
-          const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon);
+          const radiusNm = parseFloat(r.radius_nm || '0');
+          const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
 
           // Render Label (Only for NOTAMs, not for Maritime)
           if (!isMaritime) {
@@ -398,7 +398,7 @@
                     outline: true,
                     outlineColor: isGlow ? Cesium.Color.YELLOW.withAlpha(0.7) : color,
                     outlineWidth: 1,
-                    height: 100
+                    height: 500
                   },
                   description: r['raw'] || ''
                 };
@@ -412,13 +412,13 @@
                          glowPower: 0.25,
                          color: Cesium.Color.YELLOW
                       }),
-                      height: 110
+                      height: 510
                     }
                   });
                 }
                cesiumViewer.entities.add(entityOptions);
              });
-          } else if (radiusNm > 0 && !isMaritime) {
+          } else if (radiusNm > 0) {
             // Approximate circular area if only radius is given
             cesiumViewer.entities.add({
               position: Cesium.Cartesian3.fromDegrees(lon, lat),
@@ -429,7 +429,7 @@
                 outline: true,
                 outlineColor: isGlow ? Cesium.Color.YELLOW.withAlpha(0.7) : color,
                 outlineWidth: 1,
-                height: 100
+                height: 500
               },
               description: r['raw'] || ''
             });
