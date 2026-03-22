@@ -986,9 +986,9 @@
             const loc = l.pad?.location;
             const slug = loc?.slug;
             let lat = loc?.latitude, lon = loc?.longitude;
-            if (!lat && slug && RLL_LOC_COORDS[slug]) {
-              lat = RLL_LOC_COORDS[slug].lat;
-              lon = RLL_LOC_COORDS[slug].lon;
+            if (!lat && loc) {
+              const coords = coordsForRllLoc(loc);
+              if (coords) { lat = coords.lat; lon = coords.lon; }
             }
             if (!lat) return;
 
