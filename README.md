@@ -2,6 +2,7 @@
 
 Auto-updated Rocket / NOTAM / NavWarnings KML viewer  
 https://lzq1206.github.io/notam-whisper/
+本项目希望未来能帮助大家拍摄到火箭云
 
 ## 简介
 notam-whisper 是一组轻量 Python 脚本与静态页面，用于：
@@ -108,49 +109,3 @@ MSI 的 raw/coords 解析会先写入 msi_raw.csv（原始文本），再写入 
   - 日志文件 LOG_FILE（默认 msi_fetch_log.txt）
 - 如果想用不同的输出目录或文件名，可在脚本中修改对应常量或通过包装脚本/环境变量实现
 
-## 自动化部署建议
-- 使用 cron / systemd timer 定时运行（例：每天凌晨 02:00 更新）
-
-Cron 示例（每天 02:00 抓取 NOTAM）：
-
-```cron
-0 2 * * * /usr/bin/python3 /path/to/notam-whisper/fetch_notams.py >> /var/log/notam-whisper.log 2>&1
-```
-
-- 将结果上载到对象存储或网页托管：
-  - 将生成的 notams.kml / msi.kml 发布到静态服务器或 GitHub Pages（本仓库已托管页面：https://lzq1206.github.io/notam-whisper/）
-  - 可用 rsync / rclone / GitHub Actions 自动推送到 Pages 或 S3
-
-- Docker（轻示例）
-
-```dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY . /app
-RUN pip install --no-cache-dir requests
-CMD ["python3", "fetch_notams.py"]
-```
-
-注意：为长期运行，建议把抓取频率交给容器编排或外部任务调度（不要在容器内循环 sleep）
-
-## 日志与故障排查
-- fetch_msi.py 会写 msi_fetch_log.txt（请求/解析错误记录）
-- 常见问题：
-  - 网络超时或证书问题：脚本中对部分请求禁用了证书校验以兼容某些源（谨慎使用）
-  - 页面返回 HTML（站点维护或反爬）：检查日志与返回内容前缀
-  - 坐标解析失败：NOTAM/MSI 原文格式多样，脚本做了多种正则解析，但仍可能错过某些格式 -> 可在 parse 函数中扩展正则
-
-## 可改进点（建议）
-- 将 KEEP / DROP 过滤改为可配置文件（JSON/YAML）以便运行时调整
-- 输出加入唯一 ID 与哈希以便更好地去重与差异比对
-- 增加 CLI 参数（输出目录、最大并发数、时间窗口等）
-- 增加单元测试与集成测试，增加 requirements.txt 与 Docker Compose / systemd 单元文件
-- 为 KML 增加更友好的 Description（包含时间、原始文本全文、来源链接等）
-
-## 贡献与许可证
-- 当前仓库不包含明确 LICENSE 文件（如果希望对外开放代码，请添加许可证，例如 MIT / Apache-2.0 等）
-- 欢迎 PR / issue：请在提交前描述修改目的并包含可复现步骤
-
-## 示例：把抓取加入 GitHub Actions（思路）
-- 使用 schedule 触发器每天运行脚本，生成文件并 push 到 gh-pages 分支或上传到 S3
-- 注意 GitHub Actions 运行时间限制与私密凭据的安全存放（使用 Secrets）
