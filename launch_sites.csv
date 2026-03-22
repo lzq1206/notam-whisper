@@ -1,36 +1,50 @@
 id,name,abbreviation,country,latitude,longitude,type,status
-1,Jiuquan Satellite Launch Center,JSLC,China,40.960,100.298,Government,Active
-2,Taiyuan Satellite Launch Center,TSLC,China,38.849,111.608,Government,Active
-3,Xichang Satellite Launch Center,XSLC,China,28.246,102.026,Government,Active
-4,Wenchang Space Launch Site,WSLC,China,19.614,110.951,Government,Active
-5,Hainan Commercial Spacecraft Launch Site,HCSLS,China,19.598,110.955,Commercial,Active
-6,Oriental Spaceport (Haiyang),OSP,China,36.678,121.233,Sea Port,Active
-7,Kennedy Space Center,KSC,USA,28.572,-80.648,Government,Active
-8,Cape Canaveral Space Force Station,CCSFS,USA,28.488,-80.577,Government,Active
-9,Vandenberg Space Force Base,VSFB,USA,34.742,-120.572,Government,Active
-10,SpaceX Starbase (Boca Chica),Starbase,USA,25.997,-97.156,Commercial,Active
-11,Wallops Flight Facility / MARS,WFF,USA,37.833,-75.483,Government,Active
-12,Pacific Spaceport Complex (Kodiak),PSCA,USA,57.435,-152.339,Commercial,Active
-13,Spaceport America,SA,USA,32.990,-106.975,Commercial,Active
-14,Mid-Atlantic Regional Spaceport (MARS),MARS,USA,37.833,-75.483,Government,Active
-15,Pacific Missile Range Facility (Kekaha),PMRF,USA,22.023,-159.781,Government,Active
-16,Mojave Air and Space Port,MASP,USA,35.059,-118.154,Commercial,Active
-17,Blue Origin Corn Ranch,BOCR,USA,31.422,-104.757,Commercial,Active
-18,Poker Flat Research Range,PFRR,USA,65.117,-147.469,Government,Active
-19,Guiana Space Centre (Kourou),CSG,France,5.232,-52.776,Government,Active
-20,Tanegashima Space Center,TNSC,Japan,30.375,130.955,Government,Active
-21,Uchinoura Space Center,USC,Japan,31.252,131.082,Government,Active
-22,Satish Dhawan Space Centre (Sriharikota),SDSC,India,13.720,80.231,Government,Active
-23,Baikonur Cosmodrome,BC,Kazakhstan,45.965,63.305,Government,Active
-24,Vostochny Cosmodrome,VC,Russia,51.884,128.333,Government,Active
-25,Plesetsk Cosmodrome,PC,Russia,62.926,40.578,Government,Active
-26,Naro Space Center,NSC,South Korea,34.432,127.535,Government,Active
-27,Sohmiani Center,SC,Pakistan,25.195,66.746,Government,Active
-28,Semnan Space Center,SSC,Iran,35.235,53.921,Government,Active
-29,Shahroud Space Center,SSC,Iran,36.200,55.333,Government,Active
-30,Palmuchim Airbase,PAB,Israel,31.884,34.680,Government,Active
-31,Alcântara Space Center,ASC,Brazil,-2.373,-44.396,Government,Active
-32,Mahia Peninsula (Rocket Lab),MP,New Zealand,-39.261,177.864,Commercial,Active
-33,Rocket Lab Launch Complex 2 (Wallops),WFF,USA,37.833,-75.483,Commercial,Active
-34,Esrange Space Center,ESC,Sweden,67.886,21.104,Government,Active
-35,Andøya Space Center,ASC,Norway,69.295,16.021,Government,Active
+1,Jiuquan Satellite Launch Center,JSLC,China,40.960,100.298,Orbital,Active
+2,Taiyuan Satellite Launch Center,TSLC,China,38.849,111.608,Orbital,Active
+3,Xichang Satellite Launch Center,XSLC,China,28.246,102.026,Orbital,Active
+4,Wenchang Space Launch Site,WSLC,China,19.614,110.951,Orbital,Active
+5,Hainan Commercial Spacecraft Launch Site,HCSLS,China,19.598,110.955,Orbital,Active
+6,Oriental Spaceport (Haiyang),OSP,China,36.678,121.233,Orbital (Sea),Active
+7,Sonmiani Flight Test Range,Sonmiani,Pakistan,25.200,66.750,Suborbital/Test,Active
+8,Base 603 (Guangde),Base603,China,30.933,119.200,Suborbital,Historic
+9,Kennedy Space Center,KSC,USA,28.572,-80.648,Orbital,Active
+10,Cape Canaveral Space Force Station,CCSFS,USA,28.488,-80.577,Orbital,Active
+11,Vandenberg Space Force Base,VSFB,USA,34.742,-120.572,Orbital,Active
+12,SpaceX Starbase (Boca Chica),Starbase,USA,25.997,-97.156,Orbital,Active
+13,Wallops Flight Facility,WFF,USA,37.833,-75.483,Orbital,Active
+14,Pacific Spaceport Complex (Kodiak),PSCA,USA,57.435,-152.339,Orbital,Active
+15,White Sands Missile Range,WSMR,USA,32.381,-106.475,Test/Suborbital,Active
+16,Poker Flat Research Range,PFRR,USA,65.119,-147.469,Suborbital,Active
+17,Reagan Test Site (Kwajalein),RTS,USA/Marshall Is.,8.720,167.720,Test/Orbital,Active
+18,Omelek Island (Kwajalein),Omelek,USA/Marshall Is.,9.048,167.743,Orbital,Historic
+19,Spaceport America,SA,USA,32.990,-106.975,Suborbital,Active
+20,Mojave Air and Space Port,MASP,USA,35.059,-118.151,Suborbital,Active
+21,Baikonur Cosmodrome,Baikonur,Kazakhstan/Russia,45.964,63.305,Orbital,Active
+22,Vostochny Cosmodrome,Vostochny,Russia,51.884,128.334,Orbital,Active
+23,Plesetsk Cosmodrome,Plesetsk,Russia,62.925,40.577,Orbital,Active
+24,Dombarovsky (Yasny),Yasny,Russia,51.207,59.850,Orbital,Active
+25,Kapustin Yar,KapYar,Russia,48.565,46.260,Military/Test,Active
+26,Nyonoksa Test Range,Nyonoksa,Russia,64.643,39.186,Military/Test,Active
+27,Svobodny Cosmodrome,Svobodny,Russia,51.733,128.000,Orbital,Historic
+28,Guiana Space Centre (Kourou),CSG,French Guiana/ESA,5.239,-52.768,Orbital,Active
+29,Tanegashima Space Center,TNSC,Japan,30.400,130.976,Orbital,Active
+30,Uchinoura Space Center,USC,Japan,31.251,131.079,Orbital,Active
+31,Satish Dhawan Space Centre,SDSC,India,13.719,80.230,Orbital,Active
+32,Kulasekharapatnam Spaceport,KSSP,India,8.380,78.030,Orbital,Under Construction
+33,Thumba Equatorial Rocket Launching Station,TERLS,India,8.533,76.866,Suborbital,Active
+34,Rocket Lab Launch Complex 1,LC-1,New Zealand,-39.261,177.865,Orbital,Active
+35,Naro Space Center,Naro,South Korea,34.431,127.535,Orbital,Active
+36,Sohae Satellite Launching Station,Sohae,North Korea,39.660,124.705,Orbital,Active
+37,Tonghae Satellite Launching Ground,Tonghae,North Korea,40.849,129.666,Orbital/Test,Inactive
+38,Semnan Space Center,Semnan,Iran,35.234,53.921,Orbital,Active
+39,Shahroud Space Center,Shahroud,Iran,36.200,55.333,Military/Orbital,Active
+40,Palmachim Airbase,Palmachim,Israel,31.884,34.680,Orbital/Military,Active
+41,Alcântara Space Center,CLA,Brazil,-2.316,-44.367,Orbital,Active
+42,Barreira do Inferno Launch Center,CLBI,Brazil,-5.916,-35.166,Suborbital,Active
+43,Esrange Space Center,Esrange,Sweden,67.893,21.101,Orbital/Suborbital,Active
+44,Andøya Space,Andoya,Norway,69.294,16.020,Orbital/Suborbital,Active
+45,SaxaVord Spaceport,SaxaVord,UK,60.819,-0.768,Orbital,Active
+46,Spaceport Cornwall,Cornwall,UK,50.440,-4.995,Air Launch,Active
+47,Woomera Test Range,Woomera,Australia,-30.958,136.532,Test/Suborbital,Historic
+48,Arnhem Space Centre,ASC,Australia,-12.381,136.819,Suborbital,Active
+49,Broglio Space Centre (San Marco),SanMarco,Kenya/Italy,-2.940,40.213,Orbital (Sea),Historic

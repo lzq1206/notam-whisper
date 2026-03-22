@@ -339,7 +339,7 @@
           const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
           const color = Cesium.Color.fromCssColorString(colorHex);
           const radiusNm = parseFloat(r.radius_nm || '1');
-          const isGlow = isRocketCloudVisible(r.from_utc, lat, lon);
+          const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon);
 
           // Render Label (Only for NOTAMs, not for Maritime)
           if (!isMaritime) {
@@ -599,16 +599,26 @@
       return allValidSubGroups;
     }
 
-    function isRocketCloudVisible(dateStr, lat, lon) {
-      if (!dateStr || !isFinite(lat)) return false;
+    function isRocketCloudVisible(fromStr, toStr, lat, lon) {
+      if (!fromStr || !isFinite(lat)) return false;
       try {
-        const d = new Date(dateStr);
-        if (isNaN(d.getTime())) return false;
-        const times = SunCalc.getTimes(d, lat, lon);
-        // Evening: Sunset to Astronomical Dusk (-18°)
-        // Morning: Astronomical Dawn (-18°) to Sunrise
-        return (d >= times.sunset && d <= times.astronomicalDusk) || 
-               (d >= times.astronomicalDawn && d <= times.sunrise);
+        const from = new Date(fromStr);
+        const to = toStr ? new Date(toStr) : from;
+        if (isNaN(from.getTime())) return false;
+        if (to.getTime() - from.getTime() > 24 * 3600 * 1000) return true;
+
+        const checkDays = [from];
+        if (to.getTime() > from.getTime() && from.getUTCDate() !== to.getUTCDate()) {
+          checkDays.push(to);
+        }
+
+        for (const d of checkDays) {
+          const times = SunCalc.getTimes(d, lat, lon);
+          const isOverlap = (s1, e1, s2, e2) => s1 <= e2 && e1 >= s2;
+          if (isOverlap(from, to, times.sunset, times.astronomicalDusk) || 
+              isOverlap(from, to, times.astronomicalDawn, times.sunrise)) return true;
+        }
+        return false;
       } catch(e) { return false; }
     }
 
@@ -677,7 +687,7 @@
           <div style="max-width:420px;max-height:260px;overflow:auto;white-space:pre-wrap;">${(r.raw || '').replace(/</g, '&lt;')}</div>
         `;
 
-        const isGlow = isRocketCloudVisible(r.from_utc, lat, lon);
+        const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon);
         const pathOptions = { 
           color, fillColor: color, fillOpacity: 0.2, weight: isGlow ? 4 : 2,
           shadowBlur: isGlow ? 12 : 0, shadowColor: isGlow ? '#fff' : 'transparent'
@@ -840,11 +850,12 @@
       'tanegashima-space-center': { lat: 30.4, lon: 131.0 },
       'uchinoura-space-center': { lat: 31.2, lon: 131.1 },
       'naro-space-center': { lat: 34.432, lon: 127.535 },
-      'mahia-peninsula': { lat: -39.261, lon: 177.864 },
-      'andoya': { lat: 69.295, lon: 16.021 },
-      'esrange-space-center': { lat: 67.886, lon: 21.104 },
-      'wallops-flight-facility': { lat: 37.8, lon: -75.5 },
-      'mid-atlantic-regional-spaceport': { lat: 37.84, lon: -75.49 },
+      'mahia-peninsula': { lat: -39.261, lon: 177.865 },
+      'rocket-lab-launch-complex-mahia-peninsula': { lat: -39.261, lon: 177.865 },
+      'andoya': { lat: 69.294, lon: 16.020 },
+      'esrange-space-center': { lat: 67.893, lon: 21.101 },
+      'wallops-flight-facility': { lat: 37.833, lon: -75.483 },
+      'mid-atlantic-regional-spaceport': { lat: 37.833, lon: -75.483 },
       'sea-launch': { lat: 0.0, lon: -154.0 },
       'yellow-sea': { lat: 34.5, lon: 122.0 },
       'imam-khomeini-space-center': { lat: 35.235, lon: 53.921 },
