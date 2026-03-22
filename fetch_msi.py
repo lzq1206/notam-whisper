@@ -264,7 +264,7 @@ def parse_msi_active_times(text):
             except: pass
 
     # 2. THRU format: DD THRU DD MON [YYYY]
-    for m2 in re.finditer(r'(\d{2})\s+THRU\s+(\d{2})\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I):
+    for m2 in re.finditer(r'(\d{1,2})\s+THRU\s+(\d{1,2})\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I):
         d1, d2, mon, yr = m2.groups()
         y_val = int(yr)+2000 if (yr and len(yr)==2) else (int(yr) if (yr and len(yr)==4) else datetime.datetime.utcnow().year)
         month = MONTHS_MAP.get(mon.upper())
@@ -276,6 +276,21 @@ def parse_msi_active_times(text):
                     m1_val -= 1
                     if m1_val < 1: m1_val = 12; y1 -= 1
                 found_dts.append(datetime.datetime(y1, m1_val, int(d1), 0, 0))
+            except: pass
+
+    # 2b. Time-Only DAILY format: HHMMZ TO HHMMZ DAILY DD THRU DD MON [YYYY]
+    for m2b in re.finditer(r'(\d{4})Z\s+TO\s+(\d{4})Z\s+DAILY\s+(\d{1,2})\s+THRU\s+(\d{1,2})\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I):
+        t1, t2, d1, d2, mon, yr = m2b.groups()
+        y_val = int(yr)+2000 if (yr and len(yr)==2) else (int(yr) if (yr and len(yr)==4) else datetime.datetime.utcnow().year)
+        month = MONTHS_MAP.get(mon.upper())
+        if month:
+            try:
+                found_dts.append(datetime.datetime(y_val, month, int(d2), int(t2[:2]), int(t2[2:4])))
+                m1_val, y1 = month, y_val
+                if int(d1) > int(d2): 
+                    m1_val -= 1
+                    if m1_val < 1: m1_val = 12; y1 -= 1
+                found_dts.append(datetime.datetime(y1, m1_val, int(d1), int(t1[:2]), int(t1[2:4])))
             except: pass
 
     # 3. UNTIL format

@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import xml.etree.ElementTree as ET
 
 # ─── Keyword Filters ───
-KEEP = ["UNL", "AEROSPACE", "RE-ENTRY", "ROCKET"]
+KEEP = ["AEROSPACE", "RE-ENTRY", "REENTRY", "ROCKET", "SPACE DEBRIS", "SPACE FLIGHT", "SPACE OPS", "SPACE OPERATION"]
 DROP = [
     "KWAJALEIN","BALLOON","BALLON","TRANSMITTER","GUNFIRING","AERIAL","GUN FRNG",
     "AIR EXER","REF AIP","MISSILES","KOLKATA","MWARA","ZS(D)","ZY(R)","ZG(R)",
