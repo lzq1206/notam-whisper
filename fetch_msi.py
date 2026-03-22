@@ -228,73 +228,73 @@ def fetch_msi():
     return process_msi_data(all_smaps)
 
 def parse_msi_active_times(text):
-    # 1. Standard format: 080230Z TO 080430Z MAR 26
-    m1 = re.search(r'(\d{2})(\d{4})Z\s*(?:[A-Z]{3}\s*)?TO\s*(\d{2})(\d{4})Z\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I)
-    if m1:
+    """
+    Finds all potential dates in the text and returns (min_dt, max_dt).
+    Handles multiple 'TO' windows, 'THRU', and 'CANCEL' messages.
+    """
+    found_dts = []
+    
+    # 0. Creation date at start of message: 240853Z FEB 26
+    m0 = re.match(r'^(\d{2})(\d{4})Z\s+([A-Z]{3})\s+(\d{2})', text.strip())
+    if m0:
+        day, hhmm, mon, yr = m0.groups()
+        try:
+            y = 2000 + int(yr)
+            m = MONTHS_MAP.get(mon.upper(), 1)
+            found_dts.append(datetime.datetime(y, m, int(day), int(hhmm[:2]), int(hhmm[2:4])))
+        except: pass
+
+    # 1. Standard windows: DDHHMMZ TO DDHHMMZ MON [YYYY]
+    # We use finditer to catch ALL windows (important for multi-stage launches)
+    for m1 in re.finditer(r'(\d{2})(\d{4})Z\s*(?:[A-Z]{3}\s*)?TO\s*(\d{2})(\d{4})Z\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I):
         d1, t1, d2, t2, mon, yr = m1.groups()
-        if yr is None: yr = datetime.datetime.utcnow().year
-        else:
-            yr = int(yr)
-            if yr < 100: yr += 2000
+        y_val = int(yr)+2000 if (yr and len(yr)==2) else (int(yr) if (yr and len(yr)==4) else datetime.datetime.utcnow().year)
         month = MONTHS_MAP.get(mon.upper())
         if month:
             try:
-                h2 = int(t2[:2]) if len(t2)>=2 else 0
-                m2_val = int(t2[2:4]) if len(t2)>=4 else 0
-                to_dt = datetime.datetime(yr, month, int(d2), h2, m2_val)
-                m1_val, y1 = month, yr
-                if int(d1) > int(d2): # Likely spans across months
+                h2, m2 = int(t2[:2]), int(t2[2:4])
+                to_dt = datetime.datetime(y_val, month, int(d2), h2, m2)
+                found_dts.append(to_dt)
+                m1_val, y1 = month, y_val
+                if int(d1) > int(d2): 
                     m1_val -= 1
                     if m1_val < 1: m1_val = 12; y1 -= 1
-                h1 = int(t1[:2]) if len(t1)>=2 else 0
-                m1_t = int(t1[2:4]) if len(t1)>=4 else 0
-                from_dt = datetime.datetime(y1, m1_val, int(d1), h1, m1_t)
-                return from_dt, to_dt
+                from_dt = datetime.datetime(y1, m1_val, int(d1), int(t1[:2]), int(t1[2:4]))
+                found_dts.append(from_dt)
             except: pass
 
-    # 2. THRU format: 01 THRU 31 MAR [YYYY]
-    m2 = re.search(r'(\d{2})\s+THRU\s+(\d{2})\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I)
-    if m2:
+    # 2. THRU format: DD THRU DD MON [YYYY]
+    for m2 in re.finditer(r'(\d{2})\s+THRU\s+(\d{2})\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I):
         d1, d2, mon, yr = m2.groups()
-        if yr is None: yr = datetime.datetime.utcnow().year
-        else:
-            yr = int(yr); 
-            if yr < 100: yr += 2000
+        y_val = int(yr)+2000 if (yr and len(yr)==2) else (int(yr) if (yr and len(yr)==4) else datetime.datetime.utcnow().year)
         month = MONTHS_MAP.get(mon.upper())
         if month:
             try:
-                from_dt = datetime.datetime(yr, month, int(d1), 0, 0)
-                to_dt = datetime.datetime(yr, month, int(d2), 23, 59)
-                if int(d1) > int(d2): # Cross-month? Usually "01 MAR THRU 02 APR" but NGA is weird.
-                    # If d1 > d2, assume d1 is previous month
-                    m1_val = month - 1
-                    y1 = yr
+                found_dts.append(datetime.datetime(y_val, month, int(d2), 23, 59))
+                m1_val, y1 = month, y_val
+                if int(d1) > int(d2): 
+                    m1_val -= 1
                     if m1_val < 1: m1_val = 12; y1 -= 1
-                    from_dt = datetime.datetime(y1, m1_val, int(d1), 0, 0)
-                return from_dt, to_dt
+                found_dts.append(datetime.datetime(y1, m1_val, int(d1), 0, 0))
             except: pass
 
-    # 3. UNTIL format: UNTIL 181600Z MAR [YYYY]
+    # 3. UNTIL format
     m3 = re.search(r'UNTIL\s+(\d{2})(\d{4})Z\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I)
     if m3:
         d2, t2, mon, yr = m3.groups()
-        if yr is None: yr = datetime.datetime.utcnow().year
-        else:
-            yr = int(yr); 
-            if yr < 100: yr += 2000
+        y_val = int(yr)+2000 if (yr and len(yr)==2) else (int(yr) if (yr and len(yr)==4) else datetime.datetime.utcnow().year)
         month = MONTHS_MAP.get(mon.upper())
         if month:
             try:
-                h2 = int(t2[:2])
-                m2_val = int(t2[2:4])
-                to_dt = datetime.datetime(yr, month, int(d2), h2, m2_val)
-                # For "UNTIL", start is usually "now" or relative to creation
-                from_dt = datetime.datetime.utcnow()
-                return from_dt, to_dt
+                found_dts.append(datetime.datetime(y_val, month, int(d2), int(t2[:2]), int(t2[2:4])))
             except: pass
 
-    # 4. Fallback: creation date for from_dt if known, otherwise None
-    return None, None
+    # 4. CANCEL date: CANCEL THIS MSG 010001Z APR 26
+    c_dt = parse_msi_cancel_time(text)
+    if c_dt: found_dts.append(c_dt)
+
+    if not found_dts: return None, None
+    return min(found_dts), max(found_dts)
 
 def process_msi_data(all_smaps):
     rows = []
