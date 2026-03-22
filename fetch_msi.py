@@ -17,6 +17,8 @@ RAW_CSV_HEADERS = ['notam_id','category','from_utc','to_utc','raw']
 MONTHS_MAP = {'JAN':1,'FEB':2,'MAR':3,'APR':4,'MAY':5,'JUN':6,
               'JUL':7,'AUG':8,'SEP':9,'OCT':10,'NOV':11,'DEC':12}
 
+AEROSPACE_KEYWORDS = ['ROCKET', 'LAUNCH', 'SPACE', 'DEBRIS', 'SATELLITE', 'RE-ENTRY', 'REENTRY', 'AEROSPACE', 'SPLASH']
+
 # ═══════════════════════════════════════════════════════════════
 # MSI Coordinate & Time Parsing
 # ═══════════════════════════════════════════════════════════════
@@ -39,10 +41,51 @@ def parse_msi_cancel_time(text):
             pass
     return None
 
-def parse_msi_coords(text):
+def parse_msi_coords_multi(text):
+    """
+    Returns a list of coordinate lists, one for each area (e.g. A., B...).
+    If no A/B markers found, returns one list in the outer list.
+    """
+    if 'BOUND BY' not in text.upper():
+        return []
+        
+    parts = re.split(r'BOUND BY[\s:]*', text, flags=re.I)
+    if len(parts) < 2:
+        return []
+    
+    content = parts[1]
+    # Split further by A. B. C. if present
+    sub_parts = re.split(r'\s+([A-Z]\.)\s+', content)
+    
+    areas = []
+    current_area_text = ""
+    
+    if len(sub_parts) == 1:
+        current_area_text = sub_parts[0]
+        c = find_coords_in_text(current_area_text)
+        if c: areas.append(c)
+    else:
+        # sub_parts will be like ["first part before A.", "A.", "text after A.", "B.", "text after B."]
+        # Or even just ["text before A. (empty usually)", "A.", "text after A.", ...]
+        # We look for groups
+        current_text = sub_parts[0]
+        for i in range(1, len(sub_parts), 2):
+            if i+1 < len(sub_parts):
+                label = sub_parts[i]
+                text_block = sub_parts[i+1]
+                c = find_coords_in_text(text_block)
+                if c: areas.append(c)
+    
+    if not areas:
+        # Final fallback: search everything
+        c = find_coords_in_text(text)
+        if c: areas.append(c)
+        
+    return areas
+
+def find_coords_in_text(text):
     coords = []
     # 1. Standard NGA format: DD-MM.mmN DDD-MM.mmW
-    # Handles 71-01.00N and 71-01N
     pattern1 = r'(\d{1,2})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([NS])\s*(\d{2,3})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([EW])'
     for m in re.finditer(pattern1, text):
         deg1, min1, dec1, hemi1, deg2, min2, dec2, hemi2 = m.groups()
@@ -185,9 +228,10 @@ def fetch_msi():
     return process_msi_data(all_smaps)
 
 def parse_msi_active_times(text):
-    m = re.search(r'(\d{2})(\d{4})Z\s*(?:[A-Z]{3}\s*)?TO\s*(\d{2})(\d{4})Z\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text)
-    if m:
-        d1, t1, d2, t2, mon, yr = m.groups()
+    # 1. Standard format: 080230Z TO 080430Z MAR 26
+    m1 = re.search(r'(\d{2})(\d{4})Z\s*(?:[A-Z]{3}\s*)?TO\s*(\d{2})(\d{4})Z\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I)
+    if m1:
+        d1, t1, d2, t2, mon, yr = m1.groups()
         if yr is None: yr = datetime.datetime.utcnow().year
         else:
             yr = int(yr)
@@ -196,23 +240,65 @@ def parse_msi_active_times(text):
         if month:
             try:
                 h2 = int(t2[:2]) if len(t2)>=2 else 0
-                m2 = int(t2[2:4]) if len(t2)>=4 else 0
-                to_dt = datetime.datetime(yr, month, int(d2), h2, m2)
-                m1, y1 = month, yr
-                if int(d1) > int(d2):
-                    m1 -= 1
-                    if m1 < 1: m1 = 12; y1 -= 1
+                m2_val = int(t2[2:4]) if len(t2)>=4 else 0
+                to_dt = datetime.datetime(yr, month, int(d2), h2, m2_val)
+                m1_val, y1 = month, yr
+                if int(d1) > int(d2): # Likely spans across months
+                    m1_val -= 1
+                    if m1_val < 1: m1_val = 12; y1 -= 1
                 h1 = int(t1[:2]) if len(t1)>=2 else 0
                 m1_t = int(t1[2:4]) if len(t1)>=4 else 0
-                from_dt = datetime.datetime(y1, m1, int(d1), h1, m1_t)
+                from_dt = datetime.datetime(y1, m1_val, int(d1), h1, m1_t)
                 return from_dt, to_dt
             except: pass
+
+    # 2. THRU format: 01 THRU 31 MAR [YYYY]
+    m2 = re.search(r'(\d{2})\s+THRU\s+(\d{2})\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I)
+    if m2:
+        d1, d2, mon, yr = m2.groups()
+        if yr is None: yr = datetime.datetime.utcnow().year
+        else:
+            yr = int(yr); 
+            if yr < 100: yr += 2000
+        month = MONTHS_MAP.get(mon.upper())
+        if month:
+            try:
+                from_dt = datetime.datetime(yr, month, int(d1), 0, 0)
+                to_dt = datetime.datetime(yr, month, int(d2), 23, 59)
+                if int(d1) > int(d2): # Cross-month? Usually "01 MAR THRU 02 APR" but NGA is weird.
+                    # If d1 > d2, assume d1 is previous month
+                    m1_val = month - 1
+                    y1 = yr
+                    if m1_val < 1: m1_val = 12; y1 -= 1
+                    from_dt = datetime.datetime(y1, m1_val, int(d1), 0, 0)
+                return from_dt, to_dt
+            except: pass
+
+    # 3. UNTIL format: UNTIL 181600Z MAR [YYYY]
+    m3 = re.search(r'UNTIL\s+(\d{2})(\d{4})Z\s+([A-Z]{3})(?:\s+(\d{2,4}))?', text, re.I)
+    if m3:
+        d2, t2, mon, yr = m3.groups()
+        if yr is None: yr = datetime.datetime.utcnow().year
+        else:
+            yr = int(yr); 
+            if yr < 100: yr += 2000
+        month = MONTHS_MAP.get(mon.upper())
+        if month:
+            try:
+                h2 = int(t2[:2])
+                m2_val = int(t2[2:4])
+                to_dt = datetime.datetime(yr, month, int(d2), h2, m2_val)
+                # For "UNTIL", start is usually "now" or relative to creation
+                from_dt = datetime.datetime.utcnow()
+                return from_dt, to_dt
+            except: pass
+
+    # 4. Fallback: creation date for from_dt if known, otherwise None
     return None, None
 
 def process_msi_data(all_smaps):
     rows = []
     seen = set()
-    five_days = now_utc + datetime.timedelta(days=5)
     for s in all_smaps:
         msg_id = s.get('msgID', '')
         if not msg_id: msg_id = str(hash(s.get('msgText','')))[:10]
@@ -220,13 +306,30 @@ def process_msi_data(all_smaps):
         seen.add(msg_id)
         msg_text = s.get('msgText', '')
         if not msg_text: continue
-        coords = parse_msi_coords(msg_text)
+        
+        # Aerospace Filter
+        is_aerospace = any(k in msg_text.upper() for k in AEROSPACE_KEYWORDS)
+        if not is_aerospace:
+            continue
+
+        multi_coords = parse_msi_coords_multi(msg_text)
+        if not multi_coords: continue
+        
+        # Calculate center for backwards compatibility and single-point representation
+        all_flattened = []
+        for area in multi_coords: all_flattened.extend(area)
+        clat = sum(c[0] for c in all_flattened)/len(all_flattened)
+        clon = sum(c[1] for c in all_flattened)/len(all_flattened)
+
         from_dt, to_dt = parse_msi_active_times(msg_text)
         clean_text = msg_text.replace('\n', '  ').replace('\r', '').replace('"', "'")
+        
         rows.append({
             'notam_id': msg_id,
             'raw': clean_text,
-            'coords': coords,
+            'coords': multi_coords, # Now list of lists
+            'lat': clat,
+            'lon': clon,
             'source': 'MSI',
             'category': s.get('category', 'MARITIME'),
             'from_utc': from_dt.isoformat() + "Z" if from_dt else "",
@@ -261,15 +364,25 @@ def csv_to_kml(csv_path, kml_path):
             try:
                 import json
                 coords_list = json.loads(poly)
+                # coords_list is [[(lat,lon),...], [(lat,lon),...]] or similar
                 if coords_list and isinstance(coords_list[0], list):
-                    multi = ET.SubElement(pm, 'Polygon')
-                    bi = ET.SubElement(multi, 'outerBoundaryIs')
-                    lr = ET.SubElement(bi, 'LinearRing')
-                    cs = []
-                    for pt in coords_list[0]: cs.append(f"{pt[1]},{pt[0]},0")
-                    # Close the ring
-                    if cs[0] != cs[-1]: cs.append(cs[0])
-                    ET.SubElement(lr, 'coordinates').text = " ".join(cs)
+                    if len(coords_list) > 1:
+                        mg = ET.SubElement(pm, 'MultiGeometry')
+                        for ring in coords_list:
+                            if not ring: continue
+                            geom = ET.SubElement(mg, 'Polygon')
+                            bi = ET.SubElement(geom, 'outerBoundaryIs')
+                            lr = ET.SubElement(bi, 'LinearRing')
+                            cs = [f"{pt[1]},{pt[0]},0" for pt in ring]
+                            if cs[0] != cs[-1]: cs.append(cs[0])
+                            ET.SubElement(lr, 'coordinates').text = " ".join(cs)
+                    else:
+                        multi = ET.SubElement(pm, 'Polygon')
+                        bi = ET.SubElement(multi, 'outerBoundaryIs')
+                        lr = ET.SubElement(bi, 'LinearRing')
+                        cs = [f"{pt[1]},{pt[0]},0" for pt in coords_list[0]]
+                        if cs[0] != cs[-1]: cs.append(cs[0])
+                        ET.SubElement(lr, 'coordinates').text = " ".join(cs)
                 else: raise ValueError()
             except:
                 point = ET.SubElement(pm, 'Point')
@@ -323,15 +436,10 @@ def main():
         writer = csv.writer(f)
         writer.writerow(CSV_HEADERS)
         for r in msi_rows:
-            coords = r.get('coords', [])
-            if not coords: continue
-            clat = sum(c[0] for c in coords)/len(coords)
-            clon = sum(c[1] for c in coords)/len(coords)
-            poly_json = ""
-            if len(coords) >= 3:
-                import json
-                poly_json = json.dumps([coords])
-            writer.writerow(['Maritime', '', r['notam_id'], 'MSI', r.get('from_utc', ''), r.get('to_utc', ''), round(clat, 6), round(clon, 6), '', '', r['raw'], poly_json])
+            # r['coords'] is now a list of lists [[(lat,lon),...], [...]]
+            import json
+            poly_json = json.dumps(r['coords'])
+            writer.writerow(['Maritime', '', r['notam_id'], 'MSI', r.get('from_utc', ''), r.get('to_utc', ''), round(r['lat'], 6), round(r['lon'], 6), '', '', r['raw'], poly_json])
     csv_to_kml('msi.csv', 'msi.kml')
     archive_weekly('msi.csv', 'msi')
 
