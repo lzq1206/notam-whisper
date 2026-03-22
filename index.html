@@ -215,7 +215,7 @@
     function initCesium() {
       if (cesiumViewer) return;
       cesiumViewer = new Cesium.Viewer('mapCesium', {
-        animation: false, timeline: false, infoBox: false, selectionIndicator: false,
+        animation: false, timeline: false, infoBox: true, selectionIndicator: true,
         navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false
       });
       // Enable high-resolution satellite imagery (Async init for Cesium 1.107+)
@@ -335,38 +335,73 @@
           const color = Cesium.Color.fromCssColorString(colorHex);
           const radiusNm = parseFloat(r.radius_nm || '1');
 
-          // Render Marker/Point
+          // Render Label (Always)
           cesiumViewer.entities.add({
             position: Cesium.Cartesian3.fromDegrees(lon, lat),
-            point: { pixelSize: 10, color: color, outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
             label: {
-              text: r.notam_id || (type === 'MSI' ? 'Maritime' : 'NOTAM'),
+              text: r.notam_id || (isMaritime ? 'Maritime' : 'NOTAM'),
               font: '8pt sans-serif',
               fillColor: color,
               outlineColor: Cesium.Color.BLACK,
               outlineWidth: 2,
               style: Cesium.LabelStyle.FILL_AND_OUTLINE,
               verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-              pixelOffset: new Cesium.Cartesian2(0, -10)
+              pixelOffset: new Cesium.Cartesian2(0, -10),
+              showBackground: true,
+              backgroundColor: new Cesium.Color(0, 0, 0, 0.5)
             },
             description: r['raw'] || ''
           });
 
-          // Render Polygon if exists (from raw text parsing)
-          const polyCoords = parseNotamPolygons(r.raw || '');
-          polyCoords.forEach(points => {
-            const flatPoints = [];
-            points.forEach(p => flatPoints.push(p[1], p[0]));
-            cesiumViewer.entities.add({
-              polygon: {
-                hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
-                material: color.withAlpha(0.3),
-                outline: true,
-                outlineColor: color,
-                height: 100 // Slightly above ground
-              }
-            });
-          });
+          // Render Polygon/Circle
+          let polyCoords = [];
+          if (r.polygon) {
+             // Handle pre-parsed polygon from CSV (if any)
+             try {
+                if (r.polygon.trim().startsWith('[')) {
+                   let parsed = JSON.parse(r.polygon);
+                   if (parsed.length > 0) {
+                      if (typeof parsed[0][0] === 'number') polyCoords.push(parsed);
+                      else polyCoords = parsed;
+                   }
+                }
+             } catch(e) {}
+          }
+
+          if (polyCoords.length === 0) {
+             polyCoords = parseNotamPolygons(r.raw || '');
+          }
+
+          if (polyCoords.length > 0) {
+             polyCoords.forEach(points => {
+               const flatPoints = [];
+               points.forEach(p => flatPoints.push(p[1], p[0]));
+               cesiumViewer.entities.add({
+                 polygon: {
+                   hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
+                   material: color.withAlpha(0.3),
+                   outline: true,
+                   outlineColor: color,
+                   height: 100
+                 },
+                 description: r['raw'] || ''
+               });
+             });
+          } else if (radiusNm > 0 && !isMaritime) {
+             // Approximate circular area if only radius is given
+             cesiumViewer.entities.add({
+               position: Cesium.Cartesian3.fromDegrees(lon, lat),
+               ellipse: {
+                 semiMinorAxis: radiusNm * 1852,
+                 semiMajorAxis: radiusNm * 1852,
+                 material: color.withAlpha(0.3),
+                 outline: true,
+                 outlineColor: color,
+                 height: 100
+               },
+               description: r['raw'] || ''
+             });
+          }
         });
 
         console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunches.length} upcoming, ${pastLaunches.length} past.`);
