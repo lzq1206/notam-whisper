@@ -9,18 +9,17 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import xml.etree.ElementTree as ET
 
 # ─── Keyword Filters ───
-KEEP = ["UNL", "AEROSPACE", "RE-ENTRY", "ROCKET"]
+KEEP = ["UNL", "AEROSPACE", "RE-ENTRY", "ROCKET", "SPACE", "LAUNCH", "MISSILE"]
 DROP = [
     "KWAJALEIN","BALLOON","BALLON","TRANSMITTER","GUNFIRING","AERIAL","GUN FRNG",
     "AIR EXER","REF AIP","MISSILES","KOLKATA","MWARA","ZS(D)","ZY(R)","ZG(R)",
     "SHIQUANHE","MEDEVAC","WOOMERA AIRSPACE","MAVLA","VED-52 ACT",
     "LASER DANGER AREA","ACFT MANEUVERING","ATTENTION ACFT","STNR ALT RESERVATION",
     "UNTIL PERM","MILITARY FLIGHTS","DUE MIL FLYING","EMERALD","SATPHONE",
-    "OAKLAND ATC","UNLIT","UNLESS","ADS-B","UNLOAD","3000FT","UNMANNED ACFT","VVIP MOV",
-    "FL200","400FT AGL","49215FT AMSL","1350FT AMSL","9000FT AMSL",
-    "QUEENSLAND","LASER DISPLAY","UNLIGHTED","6-87 ROCKET","6-86 ROCKET","6-89 ROCKET",
+    "OAKLAND ATC","UNLIGHTED","6-87 ROCKET","6-86 ROCKET","6-89 ROCKET",
     "RADIOSONDE","MODEL ROCKET","VOLCAN",
     "GPS INTERFERENCE","GPS JAMMING","NAVIGATION WARNING",
+    "AIRSPAICE", "FIR RECIFE", "FIR SECT",
 ]
 
 now_utc = datetime.datetime.utcnow()
@@ -98,9 +97,12 @@ def fetch_notammap():
         n = item.get('notam', {})
         raw = n.get('raw', '')
         raw_upper = raw.upper()
+        # KEEP/DROP filters with word boundaries
         if any(d in raw_upper for d in DROP):
             continue
-        if not any(k in raw_upper for k in KEEP):
+        
+        keep_regex = r'\b(UNL|AEROSPACE|RE-ENTRY|REENTRY|ROCKET|SPACE|LAUNCH|MISSILE)\b'
+        if not re.search(keep_regex, raw_upper):
             continue
         from_str = n.get('from', '')
         to_str = n.get('to', '')
