@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
   <style>
     html,
     body,
@@ -177,6 +178,10 @@
         <div class="legend-row"><span class="dot" style="background:#ef2b2b; border:1px solid #fff;"></span> 🚀 即将发射 (近)</div>
         <div class="legend-row"><span class="dot" style="background:#2b5bff; border:1px solid #fff;"></span> 🚀 即将发射 (远)</div>
         <div class="legend-row" style="margin-left:2px;">📡 发射场站</div>
+        <div class="legend-row" style="margin-top:5px; border-top:1px solid #eee; padding-top:5px;">
+          <div style="width:14px; height:14px; border:2px solid #fff; box-shadow:0 0 8px #fff; border-radius:50%; background:#888; margin-right:6px;"></div>
+          <span style="font-size:11px; color:#444;">外发光轮廓 = 处于天文晨昏光(可见火箭云)</span>
+        </div>
       </div>
       <div class="small" id="launchStatus"></div>
     </div>
@@ -334,6 +339,7 @@
           const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
           const color = Cesium.Color.fromCssColorString(colorHex);
           const radiusNm = parseFloat(r.radius_nm || '1');
+          const isGlow = isRocketCloudVisible(r.from_utc, lat, lon);
 
           // Render Label (Always)
           cesiumViewer.entities.add({
@@ -342,8 +348,8 @@
               text: r.notam_id || (isMaritime ? 'Maritime' : 'NOTAM'),
               font: '8pt sans-serif',
               fillColor: color,
-              outlineColor: Cesium.Color.BLACK,
-              outlineWidth: 2,
+              outlineColor: isGlow ? Cesium.Color.WHITE : Cesium.Color.BLACK,
+              outlineWidth: isGlow ? 3 : 2,
               style: Cesium.LabelStyle.FILL_AND_OUTLINE,
               verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
               pixelOffset: new Cesium.Cartesian2(0, -10),
@@ -376,16 +382,32 @@
              polyCoords.forEach(points => {
                const flatPoints = [];
                points.forEach(p => flatPoints.push(p[1], p[0]));
-               cesiumViewer.entities.add({
+               const entityOptions = {
                  polygon: {
                    hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
                    material: color.withAlpha(0.3),
                    outline: true,
-                   outlineColor: color,
+                   outlineColor: isGlow ? Cesium.Color.WHITE : color,
+                   outlineWidth: isGlow ? 4 : 2,
                    height: 100
                  },
                  description: r['raw'] || ''
-               });
+               };
+               // Add Glow for outlines in 3D (approximation using thicker outline or PolylineGlow)
+               if (isGlow) {
+                 cesiumViewer.entities.add({
+                   polyline: {
+                     positions: Cesium.Cartesian3.fromDegreesArray(flatPoints.concat([flatPoints[0], flatPoints[1]])),
+                     width: 8,
+                     material: new Cesium.PolylineGlowMaterialProperty({
+                        glowPower: 0.3,
+                        color: Cesium.Color.WHITE
+                     }),
+                     height: 110
+                   }
+                 });
+               }
+               cesiumViewer.entities.add(entityOptions);
              });
           } else if (radiusNm > 0 && !isMaritime) {
              // Approximate circular area if only radius is given
@@ -396,11 +418,27 @@
                  semiMajorAxis: radiusNm * 1852,
                  material: color.withAlpha(0.3),
                  outline: true,
-                 outlineColor: color,
+                 outlineColor: isGlow ? Cesium.Color.WHITE : color,
+                 outlineWidth: isGlow ? 4 : 2,
                  height: 100
                },
                description: r['raw'] || ''
              });
+             if (isGlow) {
+               // Circle glow in 3D
+               cesiumViewer.entities.add({
+                 position: Cesium.Cartesian3.fromDegrees(lon, lat),
+                 ellipse: {
+                   semiMinorAxis: radiusNm * 1852 + 500,
+                   semiMajorAxis: radiusNm * 1852 + 500,
+                   material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.1)),
+                   outline: true,
+                   outlineColor: Cesium.Color.WHITE.withAlpha(0.5),
+                   outlineWidth: 10,
+                   height: 105
+                 }
+               });
+             }
           }
         });
 
@@ -561,6 +599,19 @@
       return allValidSubGroups;
     }
 
+    function isRocketCloudVisible(dateStr, lat, lon) {
+      if (!dateStr || !isFinite(lat)) return false;
+      try {
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return false;
+        const times = SunCalc.getTimes(d, lat, lon);
+        // Evening: Sunset to Astronomical Dusk (-18°)
+        // Morning: Astronomical Dawn (-18°) to Sunrise
+        return (d >= times.sunset && d <= times.astronomicalDusk) || 
+               (d >= times.astronomicalDawn && d <= times.sunrise);
+      } catch(e) { return false; }
+    }
+
     function clearLayers() {
       layers.forEach(l => map.removeLayer(l));
       layers = [];
@@ -626,6 +677,12 @@
           <div style="max-width:420px;max-height:260px;overflow:auto;white-space:pre-wrap;">${(r.raw || '').replace(/</g, '&lt;')}</div>
         `;
 
+        const isGlow = isRocketCloudVisible(r.from_utc, lat, lon);
+        const pathOptions = { 
+          color, fillColor: color, fillOpacity: 0.2, weight: isGlow ? 4 : 2,
+          shadowBlur: isGlow ? 12 : 0, shadowColor: isGlow ? '#fff' : 'transparent'
+        };
+
         if (coordinatesList.length > 0) {
           const rawText = r.raw || '';
           const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
@@ -633,9 +690,9 @@
           coordinatesList.forEach(pts => {
             let shape;
             if (pts.length >= 3 && !isRoute) {
-              shape = L.polygon(pts, { color, fillColor: color, fillOpacity: 0.2, weight: 2 });
+              shape = L.polygon(pts, pathOptions);
             } else if (pts.length >= 2) {
-              shape = L.polyline(pts, { color, weight: 3 });
+              shape = L.polyline(pts, { ...pathOptions, weight: isGlow ? 5 : 3 });
             }
             if (shape) {
               shape.bindPopup(popup);
@@ -647,11 +704,12 @@
           let shape;
           if (isMaritime && !r.radius_nm) {
             shape = L.circleMarker([lat, lon], {
-              radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: 2
+              radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: isGlow ? 3 : 2,
+              shadowBlur: isGlow ? 10 : 0, shadowColor: '#fff'
             });
           } else {
             shape = L.circle([lat, lon], {
-              radius: radiusNm * 1852, color, fillColor: color, fillOpacity: 0.2, weight: 2
+              ...pathOptions, radius: radiusNm * 1852
             });
           }
           shape.bindPopup(popup);
