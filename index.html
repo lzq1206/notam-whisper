@@ -783,14 +783,21 @@
       const s = startEl.value ? new Date(startEl.value + 'T00:00:00Z').getTime() : -Infinity;
       const e = endEl.value ? new Date(endEl.value + 'T23:59:59Z').getTime() : Infinity;
       const filtered = dataRows.filter(r => {
-        // Use overlap logic: (AlertStart <= SelectedEnd && AlertEnd >= SelectedStart)
-        const t1 = r.from_utc ? Date.parse(r.from_utc) : -Infinity;
-        const t2 = r.to_utc ? Date.parse(r.to_utc) : (r.from_utc ? t1 + 86400000 * 365 : Infinity); // Default 1 year if only start
-        const isFiniteT1 = isFinite(t1);
-        const isFiniteT2 = isFinite(t2);
+        const isMaritime = r.country === 'Maritime';
         
-        if (!isFiniteT1 && !isFiniteT2) return true;
-        return t1 <= e && t2 >= s;
+        // MSI: 使用重叠逻辑 (AlertStart <= SelectedEnd && AlertEnd >= SelectedStart)
+        if (isMaritime) {
+          const t1 = r.from_utc ? Date.parse(r.from_utc) : -Infinity;
+          const t2 = r.to_utc ? Date.parse(r.to_utc) : (r.from_utc ? t1 + 86400000 * 365 : Infinity);
+          if (!isFinite(t1) && !isFinite(t2)) return true;
+          return t1 <= e && t2 >= s;
+        } 
+        
+        // NOTAM/Legacy: 恢复到 ZIP 中的“开始日期在范围内”逻辑
+        if (!r.from_utc) return true;
+        const t = Date.parse(r.from_utc);
+        if (!isFinite(t)) return true;
+        return t >= s && t <= e;
       });
       if (startEl.value) localStorage.setItem('notam_start_date', startEl.value);
       renderRows(filtered);
