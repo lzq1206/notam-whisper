@@ -37,7 +37,7 @@ notam-whisper 是一组轻量 Python 脚本与静态页面，用于：
 - 推荐 Python 3.8+
 - 需要安装：
   - requests
-  - urllib3（可选，脚本使用 urllib.request/urllib3）
+  - urllib3（可选；脚本主要通过 Python 标准库 urllib.request 发送请求，无需单独安装 urllib3，但部分高级 TLS 配置可能会用到）
 
 安装示例：
 
@@ -102,7 +102,7 @@ MSI 的 raw/coords 解析会先写入 msi_raw.csv（原始文本），再写入 
 ## 配置与可调参数
 - fetch_notams.py:
   - KEEP / DROP 列表：用于关键词过滤（文件顶部），可按需修改以扩大或缩小匹配
-  - 时间窗口：脚本默认过滤未来超过 5 天或已过期的 NOTAM（变量 five_days）
+  - 时间窗口：脚本默认过滤未来超过 5 天或已过期的 NOTAM（代码变量名：`five_days`，可按需调整）
 - fetch_msi.py:
   - 环境变量 MSI_FALLBACK_URL_TEMPLATE：可设置备用的 MSI 数据源模板 URL（格式中含 {nav_area}）
   - 日志文件 LOG_FILE（默认 msi_fetch_log.txt）
