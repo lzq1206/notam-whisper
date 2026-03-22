@@ -201,7 +201,10 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
   <script>
-    const map = L.map('map', { zoomControl: false }).setView([34.5, 108.5], 4);
+    const map = L.map('map', { 
+      zoomControl: false, 
+      worldCopyJump: true // 解决跨越经度180度标识消失的问题
+    }).setView([34.5, 108.5], 4);
     L.control.zoom({ position: 'topright' }).addTo(map);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -721,6 +724,17 @@
           const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
 
           coordinatesList.forEach(pts => {
+            // 对多边形坐标进行归一化，防止跨越 180 度经线时出现拉伸
+            if (pts.length > 1) {
+              const firstLon = pts[0][1];
+              for (let i = 1; i < pts.length; i++) {
+                let currentLon = pts[i][1];
+                let diff = currentLon - pts[i-1][1];
+                if (diff > 180) pts[i][1] -= 360;
+                else if (diff < -180) pts[i][1] += 360;
+              }
+            }
+            
             let shape;
             if (pts.length >= 3 && !isRoute) {
               shape = L.polygon(pts, pathOptions);
