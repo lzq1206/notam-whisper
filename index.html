@@ -344,13 +344,14 @@
         const maxTs = times.length ? Math.max(now + 86400000, ...times) : now + 86400000;
 
         rows.forEach(r => {
+          try {
           const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
           if (!isFinite(lat) || !isFinite(lon)) return;
 
           const fromTs = Date.parse(r.from_utc);
           const isMaritime = r.country === 'Maritime' || r.source === 'MSI' || r.type === 'MSI';
           const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
-          const color = Cesium.Color.fromCssColorString(colorHex);
+          const color = Cesium.Color.fromCssColorString(colorHex) || Cesium.Color.RED;
           const radiusNm = parseFloat(r.radius_nm || '0');
           const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
 
@@ -457,7 +458,10 @@
               });
             }
           }
-        });
+        } catch (err) {
+          console.error('[Cesium] Entity Error:', err, r);
+        }
+      });
 
         console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunches.length} upcoming, ${pastLaunches.length} past.`);
         if (cesiumViewer.entities.values.length > 0) {
