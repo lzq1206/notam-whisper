@@ -299,12 +299,14 @@
               position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
               billboard: {
                 image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#22c55e" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>'))),
-                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32
+                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32,
+                eyeOffset: new Cesium.Cartesian3(0, 0, 500)
               },
               label: {
                 text: '已发射: ' + (launch.payload || launch.vehicle), font: '10pt sans-serif',
                 fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16)
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
+                eyeOffset: new Cesium.Cartesian3(0, 0, 500)
               },
               description: `<b>🚀 ${launch.vehicle}</b><br/>载荷: ${launch.payload}<br/>时间: ${launch.dateStr}<br/>结果: ${launch.success}`
             });
@@ -318,13 +320,15 @@
               position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
               billboard: {
                 image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="${iconColor}" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>`))),
-                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32
+                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32,
+                eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
               label: {
                 text: '即将: ' + (launch.mission || ''), font: 'bold 10pt sans-serif',
                 fillColor: Cesium.Color.fromCssColorString(iconColor), outlineColor: Cesium.Color.BLACK, outlineWidth: 2,
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16)
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
+                eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
               description: `<b>${launch.mission}</b><br/>${launch.dateStr}`
             });
@@ -350,23 +354,22 @@
           const radiusNm = parseFloat(r.radius_nm || '0');
           const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
 
-          // Render Label (Only for NOTAMs, not for Maritime)
-          if (!isMaritime) {
-            cesiumViewer.entities.add({
-              position: Cesium.Cartesian3.fromDegrees(lon, lat),
-              label: {
-                text: r.notam_id || 'NOTAM',
-                font: '8pt sans-serif',
-                fillColor: color,
-                outlineColor: isGlow ? Cesium.Color.WHITE : Cesium.Color.BLACK,
-                outlineWidth: isGlow ? 3 : 2,
-                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                pixelOffset: new Cesium.Cartesian2(0, -10)
-              },
-              description: r['raw'] || ''
-            });
-          }
+          // Render Label (Now for all, including MSI)
+          cesiumViewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(lon, lat),
+            label: {
+              text: (isMaritime ? 'MSI: ' : '') + (r.notam_id || 'NOTAM'),
+              font: '8pt sans-serif',
+              fillColor: color,
+              outlineColor: isGlow ? Cesium.Color.WHITE : Cesium.Color.BLACK,
+              outlineWidth: isGlow ? 3 : 2,
+              style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+              verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+              pixelOffset: new Cesium.Cartesian2(0, -10),
+              eyeOffset: new Cesium.Cartesian3(0, 0, -500)
+            },
+            description: r['raw'] || ''
+          });
 
           // Render Polygon/Circle
           let polyCoords = [];
@@ -398,7 +401,7 @@
                     outline: true,
                     outlineColor: isGlow ? Cesium.Color.YELLOW.withAlpha(0.7) : color,
                     outlineWidth: 1,
-                    height: 500
+                    height: 800
                   },
                   description: r['raw'] || ''
                 };
@@ -429,7 +432,7 @@
                 outline: true,
                 outlineColor: isGlow ? Cesium.Color.YELLOW.withAlpha(0.7) : color,
                 outlineWidth: 1,
-                height: 500
+                height: 800
               },
               description: r['raw'] || ''
             });
