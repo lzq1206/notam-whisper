@@ -341,23 +341,23 @@
           const radiusNm = parseFloat(r.radius_nm || '1');
           const isGlow = isRocketCloudVisible(r.from_utc, lat, lon);
 
-          // Render Label (Always)
-          cesiumViewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(lon, lat),
-            label: {
-              text: r.notam_id || (isMaritime ? 'Maritime' : 'NOTAM'),
-              font: '8pt sans-serif',
-              fillColor: color,
-              outlineColor: isGlow ? Cesium.Color.WHITE : Cesium.Color.BLACK,
-              outlineWidth: isGlow ? 3 : 2,
-              style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-              verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-              pixelOffset: new Cesium.Cartesian2(0, -10),
-              showBackground: true,
-              backgroundColor: new Cesium.Color(0, 0, 0, 0.5)
-            },
-            description: r['raw'] || ''
-          });
+          // Render Label (Only for NOTAMs, not for Maritime)
+          if (!isMaritime) {
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(lon, lat),
+              label: {
+                text: r.notam_id || 'NOTAM',
+                font: '8pt sans-serif',
+                fillColor: color,
+                outlineColor: isGlow ? Cesium.Color.WHITE : Cesium.Color.BLACK,
+                outlineWidth: isGlow ? 3 : 2,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                pixelOffset: new Cesium.Cartesian2(0, -10)
+              },
+              description: r['raw'] || ''
+            });
+          }
 
           // Render Polygon/Circle
           let polyCoords = [];
