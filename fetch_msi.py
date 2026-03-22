@@ -11,7 +11,7 @@ import ssl
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 now_utc = datetime.datetime.utcnow()
 
-CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
+CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw','polygon']
 RAW_CSV_HEADERS = ['notam_id','category','from_utc','to_utc','raw']
 
 MONTHS_MAP = {'JAN':1,'FEB':2,'MAR':3,'APR':4,'MAY':5,'JUN':6,
@@ -42,6 +42,7 @@ def parse_msi_cancel_time(text):
 def parse_msi_coords(text):
     coords = []
     # 1. Standard NGA format: DD-MM.mmN DDD-MM.mmW
+    # Handles 71-01.00N and 71-01N
     pattern1 = r'(\d{1,2})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([NS])\s*(\d{2,3})[- \.]*(\d{2})(?:[ \.]*(\d+))?\s*([EW])'
     for m in re.finditer(pattern1, text):
         deg1, min1, dec1, hemi1, deg2, min2, dec2, hemi2 = m.groups()
@@ -51,7 +52,7 @@ def parse_msi_coords(text):
 
     if not coords:
         # 2. Loose format: DDMMN DDDMMW
-        pattern2 = r'(\d{2})(\d{2})\s*([NS])\s+(\d{3})(\d{2})\s*([EW])'
+        pattern2 = r'(\d{2})(\d{2})\s*([NS])\s*(\d{3})(\d{2})\s*([EW])'
         for m in re.finditer(pattern2, text):
             d1, m1, h1, d2, m2, h2 = m.groups()
             coords.append((msi_coord_to_dd(d1, m1, '0', h1), msi_coord_to_dd(d2, m2, '0', h2)))
@@ -254,8 +255,28 @@ def csv_to_kml(csv_path, kml_path):
         pm = ET.SubElement(doc, 'Placemark')
         ET.SubElement(pm, 'name').text = pm_row.get('notam_id', 'MSI')
         ET.SubElement(pm, 'description').text = pm_row.get('raw', '')[:500]
-        point = ET.SubElement(pm, 'Point')
-        ET.SubElement(point, 'coordinates').text = f"{lon},{lat},0"
+        
+        poly = pm_row.get('polygon', '')
+        if poly and poly.startswith('['):
+            try:
+                import json
+                coords_list = json.loads(poly)
+                if coords_list and isinstance(coords_list[0], list):
+                    multi = ET.SubElement(pm, 'Polygon')
+                    bi = ET.SubElement(multi, 'outerBoundaryIs')
+                    lr = ET.SubElement(bi, 'LinearRing')
+                    cs = []
+                    for pt in coords_list[0]: cs.append(f"{pt[1]},{pt[0]},0")
+                    # Close the ring
+                    if cs[0] != cs[-1]: cs.append(cs[0])
+                    ET.SubElement(lr, 'coordinates').text = " ".join(cs)
+                else: raise ValueError()
+            except:
+                point = ET.SubElement(pm, 'Point')
+                ET.SubElement(point, 'coordinates').text = f"{lon},{lat},0"
+        else:
+            point = ET.SubElement(pm, 'Point')
+            ET.SubElement(point, 'coordinates').text = f"{lon},{lat},0"
     tree = ET.ElementTree(kml)
     ET.indent(tree, space='  ')
     tree.write(kml_path, xml_declaration=True, encoding='UTF-8')
@@ -306,7 +327,11 @@ def main():
             if not coords: continue
             clat = sum(c[0] for c in coords)/len(coords)
             clon = sum(c[1] for c in coords)/len(coords)
-            writer.writerow(['Maritime', '', r['notam_id'], 'MSI', r.get('from_utc', ''), r.get('to_utc', ''), round(clat, 6), round(clon, 6), '', '', r['raw']])
+            poly_json = ""
+            if len(coords) >= 3:
+                import json
+                poly_json = json.dumps([coords])
+            writer.writerow(['Maritime', '', r['notam_id'], 'MSI', r.get('from_utc', ''), r.get('to_utc', ''), round(clat, 6), round(clon, 6), '', '', r['raw'], poly_json])
     csv_to_kml('msi.csv', 'msi.kml')
     archive_weekly('msi.csv', 'msi')
 
