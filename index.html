@@ -138,6 +138,9 @@
       display: inline-block;
       flex-shrink: 0;
     }
+    .glow-path {
+      filter: drop-shadow(0 0 20px #fff) drop-shadow(0 0 10px #fff);
+    }
   </style>
 </head>
 
@@ -179,8 +182,8 @@
         <div class="legend-row"><span class="dot" style="background:#2b5bff; border:1px solid #fff;"></span> 🚀 即将发射 (远)</div>
         <div class="legend-row" style="margin-left:2px;">📡 发射场站</div>
         <div class="legend-row" style="margin-top:5px; border-top:1px solid #eee; padding-top:5px;">
-          <div style="width:14px; height:14px; border:2px solid #fff; box-shadow:0 0 8px #fff; border-radius:50%; background:#888; margin-right:6px;"></div>
-          <span style="font-size:11px; color:#444;">外发光轮廓 = 处于天文晨昏光(可见火箭云)</span>
+          <div style="width:14px; height:14px; border:1px solid #fff; box-shadow:0 0 12px #fff; border-radius:50%; background:#888; margin-right:6px;"></div>
+          <span style="font-size:11px; color:#444;">外发光轮廓 = 处于天文晨昏光 (可见火箭云)</span>
         </div>
       </div>
       <div class="small" id="launchStatus"></div>
@@ -382,63 +385,68 @@
              polyCoords.forEach(points => {
                const flatPoints = [];
                points.forEach(p => flatPoints.push(p[1], p[0]));
-               const entityOptions = {
-                 polygon: {
-                   hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
-                   material: color.withAlpha(0.3),
-                   outline: true,
-                   outlineColor: isGlow ? Cesium.Color.WHITE : color,
-                   outlineWidth: isGlow ? 4 : 2,
-                   height: 100
-                 },
-                 description: r['raw'] || ''
-               };
-               // Add Glow for outlines in 3D (approximation using thicker outline or PolylineGlow)
-               if (isGlow) {
-                 cesiumViewer.entities.add({
-                   polyline: {
-                     positions: Cesium.Cartesian3.fromDegreesArray(flatPoints.concat([flatPoints[0], flatPoints[1]])),
-                     width: 8,
-                     material: new Cesium.PolylineGlowMaterialProperty({
-                        glowPower: 0.3,
-                        color: Cesium.Color.WHITE
-                     }),
-                     height: 110
-                   }
-                 });
-               }
+                const entityOptions = {
+                  polygon: {
+                    hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
+                    material: color.withAlpha(0.3),
+                    outline: true,
+                    outlineColor: isGlow ? Cesium.Color.WHITE.withAlpha(0.5) : color,
+                    outlineWidth: isGlow ? 1 : 1, // User wants 1/3 of current? 1 is minimum on some systems.
+                    height: 100
+                  },
+                  description: r['raw'] || ''
+                };
+                // Add Glow for outlines in 3D
+                if (isGlow) {
+                  cesiumViewer.entities.add({
+                    polyline: {
+                      positions: Cesium.Cartesian3.fromDegreesArray(flatPoints.concat([flatPoints[0], flatPoints[1]])),
+                      width: 15, // Expanded gradient area
+                      material: new Cesium.PolylineGlowMaterialProperty({
+                         glowPower: 0.15, // Subtle outer glow
+                         color: Cesium.Color.WHITE
+                      }),
+                      height: 110
+                    }
+                  });
+                }
                cesiumViewer.entities.add(entityOptions);
              });
           } else if (radiusNm > 0 && !isMaritime) {
-             // Approximate circular area if only radius is given
-             cesiumViewer.entities.add({
-               position: Cesium.Cartesian3.fromDegrees(lon, lat),
-               ellipse: {
-                 semiMinorAxis: radiusNm * 1852,
-                 semiMajorAxis: radiusNm * 1852,
-                 material: color.withAlpha(0.3),
-                 outline: true,
-                 outlineColor: isGlow ? Cesium.Color.WHITE : color,
-                 outlineWidth: isGlow ? 4 : 2,
-                 height: 100
-               },
-               description: r['raw'] || ''
-             });
-             if (isGlow) {
-               // Circle glow in 3D
-               cesiumViewer.entities.add({
-                 position: Cesium.Cartesian3.fromDegrees(lon, lat),
-                 ellipse: {
-                   semiMinorAxis: radiusNm * 1852 + 500,
-                   semiMajorAxis: radiusNm * 1852 + 500,
-                   material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.1)),
-                   outline: true,
-                   outlineColor: Cesium.Color.WHITE.withAlpha(0.5),
-                   outlineWidth: 10,
-                   height: 105
-                 }
-               });
-             }
+            // Approximate circular area if only radius is given
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(lon, lat),
+              ellipse: {
+                semiMinorAxis: radiusNm * 1852,
+                semiMajorAxis: radiusNm * 1852,
+                material: color.withAlpha(0.3),
+                outline: true,
+                outlineColor: isGlow ? Cesium.Color.WHITE.withAlpha(0.5) : color,
+                outlineWidth: 1,
+                height: 100
+              },
+              description: r['raw'] || ''
+            });
+            if (isGlow) {
+              const circlePoints = [];
+              for (let i = 0; i <= 360; i += 10) {
+                const angle = i * Math.PI / 180;
+                const dLat = (radiusNm * 1852 * Math.sin(angle)) / 111320;
+                const dLon = (radiusNm * 1852 * Math.cos(angle)) / (111320 * Math.cos(lat * Math.PI / 180));
+                circlePoints.push(lon + dLon, lat + dLat);
+              }
+              cesiumViewer.entities.add({
+                polyline: {
+                  positions: Cesium.Cartesian3.fromDegreesArray(circlePoints),
+                  width: 15,
+                  material: new Cesium.PolylineGlowMaterialProperty({
+                    glowPower: 0.15,
+                    color: Cesium.Color.WHITE
+                  }),
+                  height: 110
+                }
+              });
+            }
           }
         });
 
@@ -696,8 +704,9 @@
 
         const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon);
         const pathOptions = { 
-          color, fillColor: color, fillOpacity: 0.2, weight: isGlow ? 4 : 2,
-          shadowBlur: isGlow ? 12 : 0, shadowColor: isGlow ? '#fff' : 'transparent'
+          color, fillColor: color, fillOpacity: 0.2, 
+          weight: isGlow ? 1 : 2, // 1/3 of ~4? No, 1 is thin enough.
+          className: isGlow ? 'glow-path' : ''
         };
 
         if (coordinatesList.length > 0) {
