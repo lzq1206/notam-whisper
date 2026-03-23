@@ -139,9 +139,8 @@
       flex-shrink: 0;
     }
     .glow-path {
-      filter: drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 8px rgba(255, 255, 0, 1));
+      filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.9)) drop-shadow(0 0 2px rgba(255, 255, 0, 1));
       stroke-opacity: 1;
-      stroke-linejoin: round;
     }
   </style>
 </head>
@@ -758,7 +757,7 @@
         const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
         const pathOptions = { 
           color, fillColor: color, fillOpacity: 0.2, 
-          weight: isGlow ? 5 : 2, 
+          weight: isGlow ? 2.5 : 2, 
           className: isGlow ? 'glow-path' : ''
         };
 
@@ -842,6 +841,15 @@
       if (!dataRows.length) return;
       const s = startEl.value ? new Date(startEl.value + 'T00:00:00Z').getTime() : -Infinity;
       const e = endEl.value ? new Date(endEl.value + 'T23:59:59Z').getTime() : Infinity;
+
+      // 如果筛选了历史日期，自动加载历史 CSV
+      if (isFinite(s) && s < Date.now() - 86400000) {
+          loadHistoryRange(s, e).then(() => {
+              // 完成加载后，这里的 dataRows 已经更新，再次调用渲染即可
+              // 注意：为了避免无限循环，这里如果是由于历史加载触发的，不再重调 applyFilter
+          });
+      }
+
       const filtered = dataRows.filter(r => {
         const isMaritime = r.country === 'Maritime';
         
@@ -1204,6 +1212,63 @@
       const ok = await loadBothCsvs();
       if (!ok) await loadKmlFallback();
     })();
+    function getISOWeek(ts) {
+        const d = new Date(ts);
+        d.setHours(0,0,0,0);
+        d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+        const yearStart = new Date(d.getFullYear(),0,1);
+        const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return `${d.getFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+    }
+
+    const loadedWeeks = new Set();
+    async function loadHistoryRange(startTs, endTs) {
+        const weeks = new Set();
+        for (let t = startTs; t <= endTs; t += 86400000) {
+            weeks.add(getISOWeek(t));
+        }
+        // 也检查当前时间前后的周，确保覆盖
+        weeks.add(getISOWeek(Date.now()));
+
+        let changed = false;
+        for (const wk of weeks) {
+            if (loadedWeeks.has(wk)) continue;
+            loadedWeeks.add(wk);
+            
+            console.log(`[History] Loading week ${wk}...`);
+            const p1 = fetch(`./history/notams/${wk}.csv`).then(res => res.ok ? res.text() : null);
+            const p2 = fetch(`./history/msi/${wk}.csv`).then(res => res.ok ? res.text() : null);
+            
+            const [nText, mText] = await Promise.all([p1, p2]);
+            if (nText) {
+                const newRows = parseCsv(nText).map(r => ({ ...r, type: 'NOTAM', lat: r.lat || r.Latitude, lon: r.lon || r.Longitude }));
+                const currentIds = new Set(dataRows.map(dr => dr.id || dr.notam_id));
+                newRows.forEach(nr => {
+                    const nid = nr.id || nr.notam_id;
+                    if (!currentIds.has(nid)) {
+                        dataRows.push(nr);
+                        changed = true;
+                    }
+                });
+            }
+            if (mText) {
+                const newMsi = parseCsv(mText).map(r => ({ ...r, type: 'MSI', source: 'MSI' }));
+                const currentMsi = new Set(msiRows.map(mr => mr.id));
+                newMsi.forEach(nm => {
+                    if (!currentMsi.has(nm.id)) {
+                        msiRows.push(nm);
+                        changed = true;
+                    }
+                });
+            }
+        }
+        if (changed) {
+            console.log("[History] Data updated, re-rendering...");
+            updateLayers();
+        }
+    }
+
+    init();
   </script>
 </body>
 
