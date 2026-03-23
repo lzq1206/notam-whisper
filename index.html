@@ -174,6 +174,9 @@
     .glow-path {
       stroke-opacity: 1;
     }
+    .cesium-widget-credits {
+      display: none !important;
+    }
   </style>
 </head>
 
@@ -260,7 +263,8 @@
       if (cesiumViewer) return;
       cesiumViewer = new Cesium.Viewer('mapCesium', {
         animation: false, timeline: false, infoBox: true, selectionIndicator: true,
-        navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false
+        navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false,
+        geocoder: false, homeButton: false, fullscreenButton: false, vrButton: false
       });
       // Enable high-resolution satellite imagery (Async init for Cesium 1.107+)
       cesiumViewer.imageryLayers.removeAll();
