@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.11.1/suncalc.min.js"></script>
+  <script src="https://unpkg.com/suncalc@1.11.1/suncalc.js"></script>
   <style>
     html,
     body,
@@ -154,11 +154,11 @@
       <div class="legend"></div>
 
       <div style="margin-top:8px;">
-        <label>开始日期：</label><br />
+        <label for="startDate">开始日期：</label><br />
         <input id="startDate" type="date" />
       </div>
       <div>
-        <label>结束日期：</label><br />
+        <label for="endDate">结束日期：</label><br />
         <input id="endDate" type="date" />
       </div>
       <div class="row" style="margin-top:6px;">
