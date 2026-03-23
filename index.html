@@ -139,7 +139,8 @@
       flex-shrink: 0;
     }
     .glow-path {
-      filter: drop-shadow(0 0 12px rgba(255, 255, 0, 0.8)) drop-shadow(0 0 4px rgba(255, 255, 0, 1));
+      filter: drop-shadow(0 0 15px rgba(255, 255, 0, 0.9)) drop-shadow(0 0 6px rgba(255, 255, 0, 1));
+      stroke-opacity: 1;
     }
   </style>
 </head>
@@ -416,7 +417,7 @@
                          glowPower: 0.25,
                          color: Cesium.Color.YELLOW
                       }),
-                      height: 510
+                      height: 810
                     }
                   });
                 }
@@ -453,7 +454,7 @@
                     glowPower: 0.25,
                     color: Cesium.Color.YELLOW
                   }),
-                  height: 110
+                  height: 810
                 }
               });
             }
@@ -632,17 +633,10 @@
       try {
         const from = new Date(fromStr).getTime();
         const to = new Date(toStr).getTime();
-        const raw = (rawText || '').toUpperCase();
         
-        // 增加 12 小时限制：如果持续时间超过 12 小时，则不显示发光
+        // 12 小时限制：如果持续时间超过 12 小时，则不显示发光
         const duration = to - from;
-        const isDaily = raw.includes('DAILY') || raw.includes('ALTERNATE');
-        const isLaunch = raw.includes('ROCKET') || raw.includes('LAUNCH') || raw.includes('SPACE');
-        
-        if (duration > 12 * 3600 * 1000) {
-           // 如果虽然总时长长，但包含 DAILY/ALTERNATE 且是火箭任务，仍允许发光
-           if (!(isDaily && isLaunch)) return false;
-        }
+        if (duration > 12 * 3600 * 1000) return false;
 
         const checkDays = [];
         const fromDate = new Date(from);
@@ -743,7 +737,7 @@
         const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
         const pathOptions = { 
           color, fillColor: color, fillOpacity: 0.2, 
-          weight: isGlow ? 0.7 : 2, 
+          weight: isGlow ? 1.5 : 2, 
           className: isGlow ? 'glow-path' : ''
         };
 
