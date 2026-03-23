@@ -172,7 +172,6 @@
       border: 1px solid rgba(255, 255, 255, 0.5);
     }
     .glow-path {
-      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 2px rgba(255, 255, 255, 1));
       stroke-opacity: 1;
     }
   </style>
@@ -809,8 +808,17 @@
             
             let shape;
             if (pts.length >= 3 && !isRoute) {
+              if (isGlow) {
+                 // 2D Glow Layers (Double-Stroke for iOS compatibility)
+                 L.polygon(pts, { color: '#fff', weight: 15, opacity: 0.1, fill: false, interactive: false }).addTo(group);
+                 L.polygon(pts, { color: '#fff', weight: 8, opacity: 0.25, fill: false, interactive: false }).addTo(group);
+              }
               shape = L.polygon(pts, pathOptions);
             } else if (pts.length >= 2) {
+              if (isGlow) {
+                 L.polyline(pts, { color: '#fff', weight: 18, opacity: 0.12, interactive: false }).addTo(group);
+                 L.polyline(pts, { color: '#fff', weight: 10, opacity: 0.3, interactive: false }).addTo(group);
+              }
               shape = L.polyline(pts, { ...pathOptions, weight: isGlow ? 5 : 3 });
             }
             if (shape) {
@@ -822,11 +830,18 @@
         } else {
           let shape;
           if (isMaritime && !r.radius_nm) {
+            if (isGlow) {
+              L.circleMarker([lat, lon], { radius: 10, color: '#fff', opacity: 0.2, fill: false, interactive: false }).addTo(group);
+              L.circleMarker([lat, lon], { radius: 8, color: '#fff', opacity: 0.4, fill: false, interactive: false }).addTo(group);
+            }
             shape = L.circleMarker([lat, lon], {
-              radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: isGlow ? 3 : 2,
-              shadowBlur: isGlow ? 10 : 0, shadowColor: '#fff'
+              radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: isGlow ? 3 : 2
             });
           } else {
+            if (isGlow) {
+              L.circle([lat, lon], { radius: radiusNm * 1852 + 500, color: '#fff', fill: false, weight: 12, opacity: 0.1, interactive: false }).addTo(group);
+              L.circle([lat, lon], { radius: radiusNm * 1852 + 200, color: '#fff', fill: false, weight: 6, opacity: 0.3, interactive: false }).addTo(group);
+            }
             shape = L.circle([lat, lon], {
               ...pathOptions, radius: radiusNm * 1852
             });
@@ -1139,9 +1154,11 @@
             const rllUrl = `https://www.rocketlaunch.live/launch/${l.slug}`;
 
             const color = launchColor(t0, now, minLaunchTs, maxLaunchTs);
+            const isLaunchGlow = t0 ? isRocketCloudVisible(t0.toISOString(), t0.toISOString(), lat, lon) : false;
+            const launchGlowStyle = isLaunchGlow ? 'box-shadow: 0 0 15px 4px #fff;' : 'border: 2px solid #fff;';
 
             const lIcon = L.divIcon({
-              html: `<div style="background:${color}; width:24px; height:24px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
+              html: `<div style="background:${color}; width:24px; height:24px; border-radius:50%; ${launchGlowStyle} display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
               className: 'launch-upcoming-icon',
               iconSize: [28, 28],
               iconAnchor: [14, 14]
