@@ -19,11 +19,11 @@
     #mapCesium {
       height: 100%;
       margin: 0;
+      background: #000;
     }
 
     #mapCesium {
       display: none;
-      background: #000;
     }
 
     .view-toggle {
@@ -31,15 +31,23 @@
       bottom: 30px;
       right: 10px;
       z-index: 1000;
-      background: #fff;
-      padding: 8px 12px;
+      background: rgba(45, 45, 45, 0.85);
+      color: #fff;
+      padding: 8px 16px;
       border-radius: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, .2);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, .5);
       cursor: pointer;
       font: bold 12px sans-serif;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s;
+    }
+    .view-toggle:hover {
+      background: rgba(60, 60, 60, 0.95);
+      transform: translateY(-2px);
     }
 
     .panel {
@@ -47,25 +55,29 @@
       z-index: 1000;
       top: 10px;
       left: 10px;
-      background: #fff;
-      padding: 10px 12px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, .2);
-      font: 13px/1.4 sans-serif;
+      background: rgba(30, 30, 30, 0.85);
+      color: #e0e0e0;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .6);
+      font: 13px/1.5 sans-serif;
       min-width: 320px;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .panel.collapsed {
       min-width: 0;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       padding: 0;
       overflow: hidden;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 22px;
     }
 
     .panel.collapsed .panel-content {
@@ -74,18 +86,22 @@
 
     .panel-toggle {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 12px;
+      right: 12px;
       cursor: pointer;
       font-weight: bold;
-      background: #eee;
-      padding: 2px 6px;
-      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .panel-toggle:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .panel.collapsed .panel-toggle {
       position: static;
-      font-size: 18px;
+      font-size: 20px;
       background: none;
       padding: 0;
     }
@@ -93,53 +109,67 @@
     .panel input,
     .panel button {
       font-size: 12px;
-      margin-top: 4px;
+      margin-top: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .panel button {
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.15);
+      transition: background 0.2s;
+    }
+    .panel button:hover {
+      background: rgba(255, 255, 255, 0.25);
     }
 
     .legend {
-      margin-top: 6px;
+      margin-top: 8px;
       font-size: 12px;
-      background: linear-gradient(90deg, #ff2b2b, #2b5bff);
+      background: linear-gradient(90deg, #ff4d4d, #4d79ff);
       height: 10px;
       border-radius: 5px;
     }
 
     .row {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
     }
 
     .small {
       font-size: 11px;
-      color: #555;
+      color: #aaa;
     }
 
     .launch-layer-toggle {
-      margin-top: 8px;
+      margin-top: 10px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .legend-launches {
-      margin-top: 4px;
+      margin-top: 6px;
       font-size: 12px;
     }
 
     .legend-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 3px;
+      gap: 8px;
+      margin-top: 4px;
     }
 
     .dot {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       display: inline-block;
       flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.5);
     }
     .glow-path {
       filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 2px rgba(255, 255, 255, 1));
@@ -186,8 +216,8 @@
         <div class="legend-row"><span class="dot" style="background:#2b5bff; border:1px solid #fff;"></span> 🚀 即将发射 (远)</div>
         <div class="legend-row" style="margin-left:2px;">📡 发射场站</div>
         <div class="legend-row" style="margin-top:5px; border-top:1px solid #eee; padding-top:5px;">
-          <div style="width:14px; height:14px; border:0.5px solid #fff; box-shadow:0 0 10px #ff0; border-radius:50%; background:#888; margin-right:6px;"></div>
-          <span style="font-size:11px; color:#444;">黄色外发光轮廓 = 处于天文晨昏光 (可见火箭云)</span>
+          <div style="width:14px; height:14px; border:2.5px solid #fff; box-shadow:0 0 10px #fff; border-radius:50%; background:#888; margin-right:6px;"></div>
+          <span style="font-size:11px; color:#444;">外发光轮廓 = 处于天文晨昏光 (可见火箭云)</span>
         </div>
       </div>
       <div class="small" id="launchStatus"></div>
@@ -210,9 +240,9 @@
       worldCopyJump: true // 解决跨越经度180度标识消失的问题
     }).setView([34.5, 108.5], 4);
     L.control.zoom({ position: 'topright' }).addTo(map);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; OpenStreetMap contributors'
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 20,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
     }).addTo(map);
 
     const statusEl = document.getElementById('status');
@@ -634,8 +664,13 @@
         const to = toStr ? new Date(toStr) : from;
         if (isNaN(from.getTime())) return false;
 
-        // 12 小时限制
-        if (to.getTime() - from.getTime() > 12 * 3600 * 1000) return false;
+        const durationHr = (to.getTime() - from.getTime()) / 3600000;
+        if (durationHr > 12) return false;
+
+        if (typeof SunCalc === 'undefined' || !SunCalc.getTimes) {
+          console.error('[Glow Debug] SunCalc MISSING!');
+          return false;
+        }
 
         const checkDays = [from];
         if (to.getTime() > from.getTime() && from.getUTCDate() !== to.getUTCDate()) {
@@ -643,20 +678,31 @@
         }
 
         for (const d of checkDays) {
-          if (typeof SunCalc === 'undefined' || !SunCalc.getTimes) return false;
           const times = SunCalc.getTimes(d, lat, lon);
-          if (!times.sunset || !times.astronomicalDusk) continue;
+          // SunCalc 1.9.0 properties: sunset, night (astronomical dusk), nightEnd (astronomical dawn), sunrise
+          const duskLimit = times.night || times.astronomicalDusk || times.dusk;
+          const dawnLimit = times.nightEnd || times.astronomicalDawn || times.dawn;
+
+          if (!times.sunset || !duskLimit) {
+            console.warn(`[Glow Debug] ${notamId} - Missing solar data for ${d.toISOString().slice(0,10)}`, {times});
+            continue;
+          }
 
           const isOverlap = (s1, e1, s2, e2) => s1.getTime() <= e2.getTime() && e1.getTime() >= s2.getTime();
           
-          if (isOverlap(from, to, times.sunset, times.astronomicalDusk) || 
-              isOverlap(from, to, times.astronomicalDawn, times.sunrise)) {
-             console.log(`[Glow Debug] ${notamId} MATCHED: ${fromStr}`);
+          const evOverlap = isOverlap(from, to, times.sunset, duskLimit);
+          const moOverlap = isOverlap(from, to, dawnLimit, times.sunrise);
+
+          if (evOverlap || moOverlap) {
+             console.log(`[Glow Debug] ${notamId} MATCHED! Source: ${fromStr}, Sunset: ${times.sunset.toISOString()}, DuskLimit: ${duskLimit.toISOString()}`);
              return true;
           }
         }
         return false;
-      } catch(e) { return false; }
+      } catch(e) { 
+        console.error(`[Glow Debug] Crash for ${notamId}:`, e);
+        return false; 
+      }
     }
 
     function clearLayers() {
