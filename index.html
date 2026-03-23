@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/suncalc@1.9.0/suncalc.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
   <style>
     html,
     body,
@@ -624,51 +624,36 @@
     }
 
     function isRocketCloudVisible(fromStr, toStr, lat, lon, rawText) {
-      if (!fromStr || !toStr || !isFinite(lat)) return false;
+      if (!fromStr || !isFinite(lat)) return false;
       const notamId = rawText ? (rawText.match(/[A-Z]\d{3,4}\/\d{2}/) || ['Unknown'])[0] : 'Unknown';
       try {
-        const from = new Date(fromStr).getTime();
-        const to = new Date(toStr).getTime();
-        
-        // 12 小时限制：如果持续时间超过 12 小时，则不显示发光
-        const duration = to - from;
-        if (duration > 12 * 3600 * 1000) return false;
+        const from = new Date(fromStr);
+        const to = toStr ? new Date(toStr) : from;
+        if (isNaN(from.getTime())) return false;
 
-        const checkDays = [];
-        const fromDate = new Date(from);
-        const toDate = new Date(to);
+        // 12 小时限制
+        if (to.getTime() - from.getTime() > 12 * 3600 * 1000) return false;
 
-        checkDays.push(fromDate);
-        if (toDate.getTime() > fromDate.getTime() && fromDate.getUTCDate() !== toDate.getUTCDate()) {
-          checkDays.push(toDate);
+        const checkDays = [from];
+        if (to.getTime() > from.getTime() && from.getUTCDate() !== to.getUTCDate()) {
+          checkDays.push(to);
         }
 
         for (const d of checkDays) {
-          if (typeof SunCalc === 'undefined' || !SunCalc.getTimes) {
-             console.warn('[Glow Debug] SunCalc not loaded.');
-             return false;
-          }
+          if (typeof SunCalc === 'undefined' || !SunCalc.getTimes) return false;
           const times = SunCalc.getTimes(d, lat, lon);
-
           if (!times.sunset || !times.astronomicalDusk) continue;
 
-          const isOverlap = (s1, e1, s2, e2) => s1 <= e2 && e1 >= s2;
+          const isOverlap = (s1, e1, s2, e2) => s1.getTime() <= e2.getTime() && e1.getTime() >= s2.getTime();
           
-          // 检查傍晚和凌晨
-          // 注意：s1 <= e2 && e1 >= s2，这里 Date 对象可以直接和 Date 对象比较
-          const isGlow = isOverlap(from, to, times.sunset, times.astronomicalDusk) || 
-                         isOverlap(from, to, times.astronomicalDawn, times.sunrise);
-
-          if (isGlow) {
-             console.log(`[Glow Debug] ${notamId} MATCHED: From:${fromStr} SunWindow:[${times.sunset.toISOString()} - ${times.astronomicalDusk.toISOString()}]`);
+          if (isOverlap(from, to, times.sunset, times.astronomicalDusk) || 
+              isOverlap(from, to, times.astronomicalDawn, times.sunrise)) {
+             console.log(`[Glow Debug] ${notamId} MATCHED: ${fromStr}`);
              return true;
           }
         }
         return false;
-      } catch(e) { 
-        console.error(`[Glow Debug] Error for ${notamId}:`, e);
-        return false; 
-      }
+      } catch(e) { return false; }
     }
 
     function clearLayers() {
