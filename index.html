@@ -519,7 +519,9 @@
     const resetBtn = document.getElementById('resetBtn');
 
     let dataRows = [];
+    let msiRows = [];
     let layers = [];
+    let currentFeatureGroup = null;
 
     function setStatus(txt) { statusEl.textContent = txt; }
 
@@ -742,7 +744,9 @@
       const minTs = now;
       const maxTs = times.length ? Math.max(now + 86400000, ...times) : now + 86400000;
 
+      if (currentFeatureGroup) map.removeLayer(currentFeatureGroup);
       const group = L.featureGroup();
+      currentFeatureGroup = group;
       rows.forEach(r => {
         const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
         const radiusNm = Math.max(1, parseFloat(r.radius_nm || '1'));
@@ -925,7 +929,8 @@
 
     // Load both CSVs in parallel and merge
     async function loadBothCsvs() {
-      let notamRows = [], msiRows = [];
+      let notamRows = [];
+      msiRows = []; // Use global msiRows
       const [notamResp, msiResp] = await Promise.allSettled([
         fetch('./notams.csv', { cache: 'no-store' }),
         fetch('./msi.csv', { cache: 'no-store' })
