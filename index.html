@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-  <script src="https://unpkg.com/suncalc@1.11.1/suncalc.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/suncalc@1.11.1/suncalc.js"></script>
   <style>
     html,
     body,
@@ -651,7 +651,12 @@
         const bufferMs = 30 * 60 * 1000; // 30分钟缓冲
 
         for (const d of checkDays) {
+          if (typeof SunCalc === 'undefined' || !SunCalc.getTimes) {
+             console.warn('[Glow Debug] SunCalc not loaded.');
+             return false;
+          }
           const times = SunCalc.getTimes(d, lat, lon);
+
           if (!times.sunset || !times.astronomicalDusk) continue;
 
           const isOverlap = (s1, e1, s2, e2) => s1 <= e2 && e1 >= s2;
@@ -1208,10 +1213,11 @@
 
     loadLaunchData();
 
-    (async () => {
+    async function init() {
       const ok = await loadBothCsvs();
       if (!ok) await loadKmlFallback();
-    })();
+    }
+    init();
     function getISOWeek(ts) {
         const d = new Date(ts);
         d.setHours(0,0,0,0);
