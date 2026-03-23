@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
   <style>
     html,
     body,
@@ -137,6 +138,10 @@
       display: inline-block;
       flex-shrink: 0;
     }
+    .glow-path {
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 2px rgba(255, 255, 255, 1));
+      stroke-opacity: 1;
+    }
   </style>
 </head>
 
@@ -149,11 +154,11 @@
       <div class="legend"></div>
 
       <div style="margin-top:8px;">
-        <label>开始日期：</label><br />
+        <label for="startDate">开始日期：</label><br />
         <input id="startDate" type="date" />
       </div>
       <div>
-        <label>结束日期：</label><br />
+        <label for="endDate">结束日期：</label><br />
         <input id="endDate" type="date" />
       </div>
       <div class="row" style="margin-top:6px;">
@@ -173,10 +178,14 @@
         <label for="launchToggle" style="font-size:12px;">在地图上显示</label>
       </div>
       <div class="legend-launches">
-        <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> 已发射</div>
-        <div class="legend-row"><span class="dot" style="background:#ef4444; border:1px solid #fff;"></span> 即将发射 (近)</div>
-        <div class="legend-row"><span class="dot" style="background:#3b82f6; border:1px solid #fff;"></span> 即将发射 (远)</div>
-        <div class="legend-row"><span class="dot" style="background:#888; border:1px solid #fff; width:6px; height:6px;"></span> 发射场站</div>
+        <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> 🚀 已发射</div>
+        <div class="legend-row"><span class="dot" style="background:#ef2b2b; border:1px solid #fff;"></span> 🚀 即将发射 (近)</div>
+        <div class="legend-row"><span class="dot" style="background:#2b5bff; border:1px solid #fff;"></span> 🚀 即将发射 (远)</div>
+        <div class="legend-row" style="margin-left:2px;">📡 发射场站</div>
+        <div class="legend-row" style="margin-top:5px; border-top:1px solid #eee; padding-top:5px;">
+          <div style="width:14px; height:14px; border:0.5px solid #fff; box-shadow:0 0 10px #ff0; border-radius:50%; background:#888; margin-right:6px;"></div>
+          <span style="font-size:11px; color:#444;">黄色外发光轮廓 = 处于天文晨昏光 (可见火箭云)</span>
+        </div>
       </div>
       <div class="small" id="launchStatus"></div>
     </div>
@@ -193,7 +202,10 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
   <script>
-    const map = L.map('map', { zoomControl: false }).setView([34.5, 108.5], 4);
+    const map = L.map('map', { 
+      zoomControl: false, 
+      worldCopyJump: true // 解决跨越经度180度标识消失的问题
+    }).setView([34.5, 108.5], 4);
     L.control.zoom({ position: 'topright' }).addTo(map);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -215,15 +227,29 @@
     function initCesium() {
       if (cesiumViewer) return;
       cesiumViewer = new Cesium.Viewer('mapCesium', {
-        terrainProvider: Cesium.createWorldTerrain ? Cesium.createWorldTerrain() : undefined,
-        animation: false, timeline: false, infoBox: false, selectionIndicator: false,
+        animation: false, timeline: false, infoBox: true, selectionIndicator: true,
         navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false
       });
-      // Add OSM layer to Cesium
-      cesiumViewer.imageryLayers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({
-        url: 'https://a.tile.openstreetmap.org/'
-      }));
+      // Enable high-resolution satellite imagery (Async init for Cesium 1.107+)
+      cesiumViewer.imageryLayers.removeAll();
+      Cesium.ArcGisMapServerImageryProvider.fromUrl(
+        'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
+        { enablePickFeatures: false }
+      ).then(provider => {
+        cesiumViewer.imageryLayers.addImageryProvider(provider);
+      }).catch(err => {
+        console.error('ArcGIS Imagery failed:', err);
+        // Fallback to OSM
+        cesiumViewer.imageryLayers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({
+          url: 'https://a.tile.openstreetmap.org/'
+        }));
+      });
+      // Quality settings
       cesiumViewer.scene.globe.depthTestAgainstTerrain = false;
+      if (Cesium.FeatureDetection.supportsImageRenderingPixelated()) {
+        cesiumViewer.resolutionScale = window.devicePixelRatio;
+      }
+      cesiumViewer.scene.postProcessStages.fxaa.enabled = true;
     }
 
     viewToggle.onclick = () => {
@@ -247,100 +273,199 @@
     let pastLaunches = [];
 
     function renderOnGlobe(rows) {
-      if (!cesiumViewer || !rows) return;
-      cesiumViewer.entities.removeAll();
+      try {
+        if (!cesiumViewer || !rows) return;
+        cesiumViewer.entities.removeAll();
 
-      // 1. Render Launch Sites (🚀) - STATIC
-      if (launchToggle.checked) {
-        Object.entries(launchSites).forEach(([abbrev, site]) => {
-          cesiumViewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(site.lon, site.lat),
-            point: { pixelSize: 6, color: Cesium.Color.GRAY, outlineWidth: 1, outlineColor: Cesium.Color.WHITE },
-            label: {
-              text: site.name, font: '9pt sans-serif',
-              style: Cesium.LabelStyle.FILL_AND_OUTLINE, outlineWidth: 1,
-              verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 5)
-            }
+        // 1. Render Launch Sites (🚀) - STATIC
+        if (launchToggle.checked) {
+          Object.entries(launchSites).forEach(([abbrev, site]) => {
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(site.lon, site.lat),
+              billboard: {
+                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">📡</text></svg>'))),
+                verticalOrigin: Cesium.VerticalOrigin.BOTTOM, width: 24, height: 24
+              },
+              label: {
+                text: site.name, font: '9pt sans-serif',
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE, outlineWidth: 1,
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 5)
+              }
+            });
           });
-        });
 
-        // 1b. Render Upcoming Launches (Dynamic)
-        upcomingLaunches.forEach(launch => {
-          if (!launch.lat || !launch.lon) return;
+          // 1c. Render Past Launches (Dynamic) - Render BEFORE upcoming so upcoming are on top
+          pastLaunches.forEach(launch => {
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
+              billboard: {
+                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#22c55e" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>'))),
+                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32,
+                eyeOffset: new Cesium.Cartesian3(0, 0, 500)
+              },
+              label: {
+                text: '已发射: ' + (launch.payload || launch.vehicle), font: '10pt sans-serif',
+                fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
+                eyeOffset: new Cesium.Cartesian3(0, 0, 500)
+              },
+              description: `<b>🚀 ${launch.vehicle}</b><br/>载荷: ${launch.payload}<br/>时间: ${launch.dateStr}<br/>结果: ${launch.success}`
+            });
+          });
+
+          // 1b. Render Upcoming Launches (Dynamic)
+          upcomingLaunches.forEach(launch => {
+            if (!launch.lat || !launch.lon) return;
+            const iconColor = launch.color || 'yellow';
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
+              billboard: {
+                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="${iconColor}" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>`))),
+                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32,
+                eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
+              },
+              label: {
+                text: '即将: ' + (launch.mission || ''), font: 'bold 10pt sans-serif',
+                fillColor: Cesium.Color.fromCssColorString(iconColor), outlineColor: Cesium.Color.BLACK, outlineWidth: 2,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
+                eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
+              },
+              description: `<b>${launch.mission}</b><br/>${launch.dateStr}`
+            });
+          });
+        }
+
+        // 排序：时间早的最后渲染（叠在上方）
+        rows.sort((a,b) => (Date.parse(b.from_utc) || 0) - (Date.parse(a.from_utc) || 0));
+
+        const now = Date.now();
+        const times = rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite);
+        const minTs = now; 
+        const maxTs = times.length ? Math.max(now + 86400000, ...times) : now + 86400000;
+
+        rows.forEach(r => {
+          try {
+          const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
+          if (!isFinite(lat) || !isFinite(lon)) return;
+
+          const fromTs = Date.parse(r.from_utc);
+          const isMaritime = r.country === 'Maritime' || r.source === 'MSI' || r.type === 'MSI';
+          const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
+          const color = Cesium.Color.fromCssColorString(colorHex) || Cesium.Color.RED;
+          const radiusNm = parseFloat(r.radius_nm || '0');
+          const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
+
+          // Render Label (Now for all, including MSI)
           cesiumViewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
-            point: { pixelSize: 12, color: Cesium.Color.fromCssColorString(launch.color || 'yellow'), outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
+            position: Cesium.Cartesian3.fromDegrees(lon, lat),
             label: {
-              text: '即将: ' + (launch.mission || ''), font: 'bold 10pt sans-serif',
-              fillColor: Cesium.Color.fromCssColorString(launch.color || 'yellow'), outlineColor: Cesium.Color.BLACK, outlineWidth: 2,
+              text: (isMaritime ? 'MSI: ' : '') + (r.notam_id || 'NOTAM'),
+              font: '8pt sans-serif',
+              fillColor: color,
+              outlineColor: isGlow ? Cesium.Color.WHITE : Cesium.Color.BLACK,
+              outlineWidth: isGlow ? 3 : 2,
               style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-              verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 8)
+              verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+              pixelOffset: new Cesium.Cartesian2(0, -10),
+              eyeOffset: new Cesium.Cartesian3(0, 0, -500)
             },
-            description: `<b>${launch.mission}</b><br/>${launch.dateStr}`
+            description: r['raw'] || ''
           });
-        });
 
-        // 1c. Render Past Launches (Dynamic)
-        pastLaunches.forEach(launch => {
-          cesiumViewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
-            point: { pixelSize: 12, color: Cesium.Color.fromCssColorString('#22c55e'), outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
-            label: {
-              text: '已发射: ' + (launch.payload || launch.vehicle), font: '10pt sans-serif',
-              fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-              verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 8)
-            },
-            description: `<b>🚀 ${launch.vehicle}</b><br/>载荷: ${launch.payload}<br/>时间: ${launch.dateStr}<br/>结果: ${launch.success}`
-          });
-        });
-      }
+          // Render Polygon/Circle
+          let polyCoords = [];
+          if (r.polygon) {
+             // Handle pre-parsed polygon from CSV (if any)
+             try {
+                if (r.polygon.trim().startsWith('[')) {
+                   let parsed = JSON.parse(r.polygon);
+                   if (parsed.length > 0) {
+                      if (typeof parsed[0][0] === 'number') polyCoords.push(parsed);
+                      else polyCoords = parsed;
+                   }
+                }
+             } catch(e) {}
+          }
 
-      // 2. Render NOTAM / MSI polygons
-      rows.forEach(r => {
-        const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
-        if (!isFinite(lat) || !isFinite(lon)) return;
+          if (polyCoords.length === 0) {
+             polyCoords = parseNotamPolygons(r.raw || '');
+          }
 
-        const type = (r['type'] || 'NOTAM').toUpperCase();
-        const color = r.country === 'Maritime' ? Cesium.Color.ORANGE : Cesium.Color.RED;
-        const radiusNm = parseFloat(r.radius_nm || '1');
-
-        // Render Marker/Point
-        cesiumViewer.entities.add({
-          position: Cesium.Cartesian3.fromDegrees(lon, lat),
-          point: { pixelSize: 10, color: color, outlineWidth: 2, outlineColor: Cesium.Color.WHITE },
-          label: {
-            text: r.notam_id || (isMaritime ? 'Maritime' : 'NOTAM'),
-            font: '8pt sans-serif',
-            fillColor: color,
-            outlineColor: Cesium.Color.BLACK,
-            outlineWidth: 2,
-            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-            pixelOffset: new Cesium.Cartesian2(0, -10)
-          },
-          description: r['raw'] || ''
-        });
-
-        // Render Polygon if exists (from raw text parsing)
-        const polyCoords = parseNotamPolygons(r.raw || '');
-        polyCoords.forEach(points => {
-          const flatPoints = [];
-          points.forEach(p => flatPoints.push(p[1], p[0]));
-          cesiumViewer.entities.add({
-            polygon: {
-              hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
-              material: color.withAlpha(0.3),
-              outline: true,
-              outlineColor: color,
-              height: 100 // Slightly above ground
+          if (polyCoords.length > 0) {
+             polyCoords.forEach(points => {
+               const flatPoints = [];
+               points.forEach(p => flatPoints.push(p[1], p[0]));
+                const entityOptions = {
+                  polygon: {
+                    hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
+                    material: color.withAlpha(0.3),
+                    outline: true,
+                    outlineColor: isGlow ? Cesium.Color.WHITE : color,
+                    outlineWidth: isGlow ? 4 : 2,
+                    height: 100
+                  },
+                  description: r['raw'] || ''
+                };
+                // Add Glow for outlines in 3D
+                if (isGlow) {
+                  cesiumViewer.entities.add({
+                    polyline: {
+                      positions: Cesium.Cartesian3.fromDegreesArray(flatPoints.concat([flatPoints[0], flatPoints[1]])),
+                      width: 8,
+                      material: new Cesium.PolylineGlowMaterialProperty({
+                         glowPower: 0.3,
+                         color: Cesium.Color.WHITE
+                      }),
+                      height: 110
+                    }
+                  });
+                }
+               cesiumViewer.entities.add(entityOptions);
+             });
+          } else if (radiusNm > 0) {
+            // Approximate circular area if only radius is given
+            cesiumViewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(lon, lat),
+              ellipse: {
+                semiMinorAxis: radiusNm * 1852,
+                semiMajorAxis: radiusNm * 1852,
+                material: color.withAlpha(0.3),
+                outline: true,
+                outlineColor: isGlow ? Cesium.Color.WHITE : color,
+                outlineWidth: isGlow ? 4 : 2,
+                height: 100
+              },
+              description: r['raw'] || ''
+            });
+            if (isGlow) {
+              // Circle glow in 3D
+              cesiumViewer.entities.add({
+                position: Cesium.Cartesian3.fromDegrees(lon, lat),
+                ellipse: {
+                  semiMinorAxis: radiusNm * 1852 + 500,
+                  semiMajorAxis: radiusNm * 1852 + 500,
+                  material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.1)),
+                  outline: true,
+                  outlineColor: Cesium.Color.WHITE.withAlpha(0.5),
+                  outlineWidth: 10,
+                  height: 105
+                }
+              });
             }
-          });
-        });
+          }
+        } catch (err) {
+          console.error('[Cesium] Entity Error:', err, r);
+        }
       });
 
-      console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunches.length} upcoming, ${pastLaunches.length} past.`);
-      if (cesiumViewer.entities.values.length > 0) {
-        cesiumViewer.zoomTo(cesiumViewer.entities);
+        console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunches.length} upcoming, ${pastLaunches.length} past.`);
+        if (cesiumViewer.entities.values.length > 0) {
+          cesiumViewer.zoomTo(cesiumViewer.entities);
+        }
+      } catch (cesiumErr) {
+        console.error('[Cesium] Render Error:', cesiumErr);
+        setStatus('3D模式渲染异常: ' + cesiumErr.message);
       }
     }
 
@@ -382,7 +507,11 @@
         }
         vals.push(cur);
         const o = {};
-        headers.forEach((h, idx) => o[h.replace(/^\ufeff/, '')] = vals[idx] ?? '');
+        if (i === 1) console.log('[CSV] Detected Headers:', headers);
+        headers.forEach((h, idx) => {
+          const key = h.replace(/^\ufeff/, '').trim();
+          if (key) o[key] = (vals[idx] ?? '').trim();
+        });
         rows.push(o);
       }
       return rows;
@@ -431,6 +560,13 @@
       let cleanedRaw = raw.replace(/Q\).*?(?=\s*A\))/s, '');
 
       cleanedRaw = cleanedRaw
+        // 1. Normalize dash-separated: 71-01.00N -> 7101.00N
+        .replace(/\b(\d{1,3})-(\d{2}(?:[.,]\d+)?)\s*([NSEW])\b/gi, (match, deg, min, hemi) => {
+          const h = hemi.toUpperCase();
+          const d = deg.padStart((h === 'E' || h === 'W') ? 3 : 2, '0');
+          return d + min.replace(',', '.') + h;
+        })
+        // 2. Normalize space-separated: 71 01 00 N -> 710100N
         .replace(/\b(\d{2,3})\s+(\d{2}(?:[.,]\d+)?)(?:\s+(\d{2}(?:[.,]\d+)?))?\s*([NSEW])\b/gi, (match, d, m, s, hemi) => {
           return d + m + (s || '') + hemi.toUpperCase();
         })
@@ -487,6 +623,39 @@
       return allValidSubGroups;
     }
 
+    function isRocketCloudVisible(fromStr, toStr, lat, lon, rawText) {
+      if (!fromStr || !isFinite(lat)) return false;
+      const notamId = rawText ? (rawText.match(/[A-Z]\d{3,4}\/\d{2}/) || ['Unknown'])[0] : 'Unknown';
+      try {
+        const from = new Date(fromStr);
+        const to = toStr ? new Date(toStr) : from;
+        if (isNaN(from.getTime())) return false;
+
+        // 12 小时限制
+        if (to.getTime() - from.getTime() > 12 * 3600 * 1000) return false;
+
+        const checkDays = [from];
+        if (to.getTime() > from.getTime() && from.getUTCDate() !== to.getUTCDate()) {
+          checkDays.push(to);
+        }
+
+        for (const d of checkDays) {
+          if (typeof SunCalc === 'undefined' || !SunCalc.getTimes) return false;
+          const times = SunCalc.getTimes(d, lat, lon);
+          if (!times.sunset || !times.astronomicalDusk) continue;
+
+          const isOverlap = (s1, e1, s2, e2) => s1.getTime() <= e2.getTime() && e1.getTime() >= s2.getTime();
+          
+          if (isOverlap(from, to, times.sunset, times.astronomicalDusk) || 
+              isOverlap(from, to, times.astronomicalDawn, times.sunrise)) {
+             console.log(`[Glow Debug] ${notamId} MATCHED: ${fromStr}`);
+             return true;
+          }
+        }
+        return false;
+      } catch(e) { return false; }
+    }
+
     function clearLayers() {
       layers.forEach(l => map.removeLayer(l));
       layers = [];
@@ -506,8 +675,20 @@
         return;
       }
 
+      // 排序：将时间更晚（更远未来/蓝色）的排在前面，更早（即将发生/红色）的排在后面（最后渲染，叠在最上方）
+      rows.sort((a, b) => {
+        const ta = Date.parse(a.from_utc) || 0;
+        const tb = Date.parse(b.from_utc) || 0;
+        return tb - ta; 
+      });
+
+      // 排序：时间早的（即将发生/红色）最后渲染，排在最上方
+      rows.sort((a, b) => (Date.parse(b.from_utc) || 0) - (Date.parse(a.from_utc) || 0));
+
+      const now = Date.now();
       const times = rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite);
-      const minTs = Math.min(...times), maxTs = Math.max(...times);
+      const minTs = now;
+      const maxTs = times.length ? Math.max(now + 86400000, ...times) : now + 86400000;
 
       const group = L.featureGroup();
       rows.forEach(r => {
@@ -552,16 +733,36 @@
           <div style="max-width:420px;max-height:260px;overflow:auto;white-space:pre-wrap;">${(r.raw || '').replace(/</g, '&lt;')}</div>
         `;
 
+        const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
+        const pathOptions = { 
+          color, fillColor: color, fillOpacity: 0.2, 
+          weight: isGlow ? 4 : 2, 
+          className: isGlow ? 'glow-path' : '',
+          shadowBlur: isGlow ? 12 : 0, 
+          shadowColor: isGlow ? '#fff' : 'transparent'
+        };
+
         if (coordinatesList.length > 0) {
           const rawText = r.raw || '';
           const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
 
           coordinatesList.forEach(pts => {
+            // 对多边形坐标进行归一化，防止跨越 180 度经线时出现拉伸
+            if (pts.length > 1) {
+              const firstLon = pts[0][1];
+              for (let i = 1; i < pts.length; i++) {
+                let currentLon = pts[i][1];
+                let diff = currentLon - pts[i-1][1];
+                if (diff > 180) pts[i][1] -= 360;
+                else if (diff < -180) pts[i][1] += 360;
+              }
+            }
+            
             let shape;
             if (pts.length >= 3 && !isRoute) {
-              shape = L.polygon(pts, { color, fillColor: color, fillOpacity: 0.2, weight: 2 });
+              shape = L.polygon(pts, pathOptions);
             } else if (pts.length >= 2) {
-              shape = L.polyline(pts, { color, weight: 3 });
+              shape = L.polyline(pts, { ...pathOptions, weight: isGlow ? 5 : 3 });
             }
             if (shape) {
               shape.bindPopup(popup);
@@ -573,11 +774,12 @@
           let shape;
           if (isMaritime && !r.radius_nm) {
             shape = L.circleMarker([lat, lon], {
-              radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: 2
+              radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: isGlow ? 3 : 2,
+              shadowBlur: isGlow ? 10 : 0, shadowColor: '#fff'
             });
           } else {
             shape = L.circle([lat, lon], {
-              radius: radiusNm * 1852, color, fillColor: color, fillOpacity: 0.2, weight: 2
+              ...pathOptions, radius: radiusNm * 1852
             });
           }
           shape.bindPopup(popup);
@@ -620,7 +822,27 @@
       if (!dataRows.length) return;
       const s = startEl.value ? new Date(startEl.value + 'T00:00:00Z').getTime() : -Infinity;
       const e = endEl.value ? new Date(endEl.value + 'T23:59:59Z').getTime() : Infinity;
+
+      // 如果筛选了历史日期，自动加载历史 CSV
+      if (isFinite(s) && s < Date.now() - 86400000) {
+          loadHistoryRange(s, e).then(() => {
+              // 完成加载后，这里的 dataRows 已经更新，再次调用渲染即可
+              // 注意：为了避免无限循环，这里如果是由于历史加载触发的，不再重调 applyFilter
+          });
+      }
+
       const filtered = dataRows.filter(r => {
+        const isMaritime = r.country === 'Maritime';
+        
+        // MSI: 使用重叠逻辑 (AlertStart <= SelectedEnd && AlertEnd >= SelectedStart)
+        if (isMaritime) {
+          const t1 = r.from_utc ? Date.parse(r.from_utc) : -Infinity;
+          const t2 = r.to_utc ? Date.parse(r.to_utc) : (r.from_utc ? t1 + 86400000 * 365 : Infinity);
+          if (!isFinite(t1) && !isFinite(t2)) return true;
+          return t1 <= e && t2 >= s;
+        } 
+        
+        // NOTAM/Legacy: 恢复到 ZIP 中的“开始日期在范围内”逻辑
         if (!r.from_utc) return true;
         const t = Date.parse(r.from_utc);
         if (!isFinite(t)) return true;
@@ -647,7 +869,7 @@
 
       if (notamResp.status === 'fulfilled' && notamResp.value.ok) {
         const text = await notamResp.value.text();
-        notamRows = parseCsv(text);
+        notamRows = parseCsv(text).map(r => ({ ...r, type: 'NOTAM', lat: r.lat || r.Latitude, lon: r.lon || r.Longitude }));
         console.log(`[notams.csv] Loaded ${notamRows.length} rows`);
       } else {
         console.warn('[notams.csv] Failed to load');
@@ -655,7 +877,7 @@
 
       if (msiResp.status === 'fulfilled' && msiResp.value.ok) {
         const text = await msiResp.value.text();
-        msiRows = parseCsv(text);
+        msiRows = parseCsv(text).map(r => ({ ...r, type: 'MSI', lat: r.lat || r.Latitude, lon: r.lon || r.Longitude }));
         console.log(`[msi.csv] Loaded ${msiRows.length} rows`);
       } else {
         console.warn('[msi.csv] Failed to load');
@@ -708,11 +930,12 @@
       'tanegashima-space-center': { lat: 30.4, lon: 131.0 },
       'uchinoura-space-center': { lat: 31.2, lon: 131.1 },
       'naro-space-center': { lat: 34.432, lon: 127.535 },
-      'mahia-peninsula': { lat: -39.261, lon: 177.864 },
-      'andoya': { lat: 69.295, lon: 16.021 },
-      'esrange-space-center': { lat: 67.886, lon: 21.104 },
-      'wallops-flight-facility': { lat: 37.8, lon: -75.5 },
-      'mid-atlantic-regional-spaceport': { lat: 37.84, lon: -75.49 },
+      'mahia-peninsula': { lat: -39.261, lon: 177.865 },
+      'rocket-lab-launch-complex-mahia-peninsula': { lat: -39.261, lon: 177.865 },
+      'andoya': { lat: 69.294, lon: 16.020 },
+      'esrange-space-center': { lat: 67.893, lon: 21.101 },
+      'wallops-flight-facility': { lat: 37.833, lon: -75.483 },
+      'mid-atlantic-regional-spaceport': { lat: 37.833, lon: -75.483 },
       'sea-launch': { lat: 0.0, lon: -154.0 },
       'yellow-sea': { lat: 34.5, lon: 122.0 },
       'imam-khomeini-space-center': { lat: 35.235, lon: 53.921 },
@@ -730,22 +953,56 @@
 
     function parseLaunchDate(s) {
       if (!s) return null;
-      const m = s.match(/^(\d{4})\s+(\w{3})\s+(\d{1,2})\s+(\d{2})(\d{2})/);
-      if (!m) return null;
-      const months = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
-      const mo = months[m[2]];
-      if (mo === undefined) return null;
-      return new Date(Date.UTC(+m[1], mo, +m[3], +m[4], +m[5]));
+      const clean = s.trim().toUpperCase();
+      // Expecting "2026 MAR 20 0000" or similar
+      const m = clean.match(/^(\d{4})\s+([A-Z]{3})\s+(\d{1,2})\s+(\d{2})(\d{2})/);
+      // Fallback for different separators
+      const m2 = clean.match(/(\d{4})\s+(\d{1,2})\s+([A-Z]{3})/);
+      if (!m && !m2) return new Date(s);
+
+      if (m) {
+        const year = parseInt(m[1]), monStr = m[2], day = parseInt(m[3]);
+        const hour = parseInt(m[4]), min = parseInt(m[5]);
+        const months = {
+          'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+          'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11
+        };
+        const month = months[monStr];
+        if (month === undefined) return new Date(s); // Fallback
+        return new Date(Date.UTC(year, month, day, hour, min));
+      }
+      return new Date(s); // Final Fallback
     }
 
-    function launchColor(date, now) {
-      const diff = date - now;
-      if (diff < 0) return '#22c55e'; // past = green
-      const t = Math.min(diff / (7 * 86400000), 1);
-      const r = Math.round(239 * (1 - t) + 59 * t);
-      const g = Math.round(68 * (1 - t) + 130 * t);
-      const b = Math.round(68 * (1 - t) + 246 * t);
+    function launchColor(date, now, minTs, maxTs) {
+      if (!date || !isFinite(date.getTime())) return 'rgb(43, 91, 255)'; // TBD = Blue/Far
+      if (date < now && !minTs) return '#22c55e'; // Only for past CSV if no range provided
+      
+      const ts = date.getTime();
+      const s = minTs || now.getTime();
+      const e = maxTs || (s + 7 * 86400000);
+      
+      if (e <= s) return 'rgb(255, 43, 43)';
+      const t = Math.max(0, Math.min((ts - s) / (e - s), 1));
+      const r = Math.round(255 * (1 - t) + 43 * t);
+      const g = Math.round(43 * (1 - t) + 91 * t);
+      const b = Math.round(43 * (1 - t) + 255 * t);
       return `rgb(${r},${g},${b})`;
+    }
+
+    function parseDescriptionDate(desc) {
+      if (!desc) return null;
+      // Matches "March 22, 2026 at 3:45 PM (UTC)"
+      const m = desc.match(/([A-Z][a-z]+)\s+(\d{1,2}),\s+(\d{4})\s+at\s+(\d{1,2}):(\d{2})\s+([AP]M)/i);
+      if (!m) return null;
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      const monStr = m[1].substring(0, 3).toUpperCase();
+      const month = months.indexOf(monStr);
+      if (month === -1) return null;
+      let hr = parseInt(m[4]);
+      if (m[6].toUpperCase() === 'PM' && hr < 12) hr += 12;
+      if (m[6].toUpperCase() === 'AM' && hr === 12) hr = 0;
+      return new Date(Date.UTC(parseInt(m[3]), month, parseInt(m[2]), hr, parseInt(m[5])));
     }
 
     function coordsForRllLoc(padLoc) {
@@ -786,13 +1043,17 @@
 
         launchLayerGroup.clearLayers();
 
-        // 2. Draw launch site markers (always show all sites)
+        // 2. Draw launch site markers (📡)
         Object.entries(launchSites).forEach(([abbrev, site]) => {
-          const siteIcon = L.circleMarker([site.lat, site.lon], {
-            radius: 4, color: '#fff', fillColor: '#888', fillOpacity: 0.7, weight: 1
+          const siteIcon = L.divIcon({
+            html: '<div style="font-size: 20px; line-height: 1;">📡</div>',
+            className: 'launch-site-icon',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
           });
-          siteIcon.bindTooltip(site.name, {permanent: false, direction: 'top'});
-          siteIcon.addTo(launchLayerGroup);
+          const m = L.marker([site.lat, site.lon], { icon: siteIcon, zIndexOffset: 500 });
+          m.bindTooltip(site.name, { permanent: false, direction: 'top' });
+          m.addTo(launchLayerGroup);
         });
 
         // 3. Fetch upcoming launches from RocketLaunch.Live (free: next 5)
@@ -803,15 +1064,22 @@
           const rllResp = await fetch(RLL_UPCOMING_URL, { cache: 'no-store' });
           const rllData = await rllResp.json();
           const list = rllData.result || [];
-          const total = list.length;
+          upcomingLaunches = [];
+
+          const upcomingTimes = list.map(l => {
+            const d = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
+            return (d && isFinite(d.getTime())) ? d.getTime() : null;
+          }).filter(t => t);
+          const minLaunchTs = upcomingTimes.length ? Math.min(...upcomingTimes) : now.getTime();
+          const maxLaunchTs = upcomingTimes.length ? Math.max(...upcomingTimes) : now.getTime() + 86400000;
 
           list.forEach((l, idx) => {
             const loc = l.pad?.location;
             const slug = loc?.slug;
             let lat = loc?.latitude, lon = loc?.longitude;
-            if (!lat && slug && RLL_LOC_COORDS[slug]) {
-              lat = RLL_LOC_COORDS[slug].lat;
-              lon = RLL_LOC_COORDS[slug].lon;
+            if (!lat && loc) {
+              const coords = coordsForRllLoc(loc);
+              if (coords) { lat = coords.lat; lon = coords.lon; }
             }
             if (!lat) return;
 
@@ -819,19 +1087,21 @@
             const vehicleName = l.vehicle?.name || '';
             const locName = loc?.name || '';
             const padName = l.pad?.name || '';
-            const t0 = l.win_open ? new Date(l.win_open) : null;
+            const t0 = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
             const dateStr = t0 ? t0.toISOString().replace('T', ' ').slice(0, 16) + ' UTC' : '时间待定';
             const weather = l.weather_temp ? ` (${l.weather_temp}°C ${l.weather_condition || ''})` : '';
             const desc = l.launch_description || '';
             const rllUrl = `https://www.rocketlaunch.live/launch/${l.slug}`;
 
-            // Color gradient: Red (0) to Blue (240)
-            const hue = (idx / (total > 1 ? total - 1 : 1)) * 240;
-            const color = `hsl(${hue}, 100%, 50%)`;
+            const color = launchColor(t0, now, minLaunchTs, maxLaunchTs);
 
-            const lMarker = L.circleMarker([lat, lon], {
-              radius: 9, color: '#fff', fillColor: color, fillOpacity: 1, weight: 2
+            const lIcon = L.divIcon({
+              html: `<div style="background:${color}; width:24px; height:24px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
+              className: 'launch-upcoming-icon',
+              iconSize: [28, 28],
+              iconAnchor: [14, 14]
             });
+            const lMarker = L.marker([lat, lon], { icon: lIcon, zIndexOffset: 2000 });
             lMarker.bindPopup(`
               <div style="font-size:12px;color:#666;">即将发射</div>
               <b style="color:${color}">${missionName}</b><br/>
@@ -876,9 +1146,13 @@
             const successText = row['Success'] === 'S' ? '✅ 成功' : row['Success'] === 'F' ? '❌ 失败' : '?';
             const dateStr = d.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
 
-            const marker = L.circleMarker([lat, lon], {
-              radius: 9, color: '#fff', fillColor: '#22c55e', fillOpacity: 1, weight: 2
+            const pIcon = L.divIcon({
+              html: `<div style="background:#22c55e; width:24px; height:24px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
+              className: 'launch-past-icon',
+              iconSize: [28, 28],
+              iconAnchor: [14, 14]
             });
+            const marker = L.marker([lat, lon], { icon: pIcon, zIndexOffset: 1000 });
             marker.bindPopup(`
               <div style="font-size:12px;color:#666;">历史发射</div>
               <b style="color:#16a34a;">🚀 ${vehicle}</b><br/>
@@ -915,10 +1189,68 @@
 
     loadLaunchData();
 
-    (async () => {
+    async function init() {
       const ok = await loadBothCsvs();
       if (!ok) await loadKmlFallback();
-    })();
+    }
+    init();
+    function getISOWeek(ts) {
+        const d = new Date(ts);
+        d.setHours(0,0,0,0);
+        d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+        const yearStart = new Date(d.getFullYear(),0,1);
+        const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return `${d.getFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+    }
+
+    const loadedWeeks = new Set();
+    async function loadHistoryRange(startTs, endTs) {
+        const weeks = new Set();
+        for (let t = startTs; t <= endTs; t += 86400000) {
+            weeks.add(getISOWeek(t));
+        }
+        // 也检查当前时间前后的周，确保覆盖
+        weeks.add(getISOWeek(Date.now()));
+
+        let changed = false;
+        for (const wk of weeks) {
+            if (loadedWeeks.has(wk)) continue;
+            loadedWeeks.add(wk);
+            
+            console.log(`[History] Loading week ${wk}...`);
+            const p1 = fetch(`./history/notams/${wk}.csv`).then(res => res.ok ? res.text() : null);
+            const p2 = fetch(`./history/msi/${wk}.csv`).then(res => res.ok ? res.text() : null);
+            
+            const [nText, mText] = await Promise.all([p1, p2]);
+            if (nText) {
+                const newRows = parseCsv(nText).map(r => ({ ...r, type: 'NOTAM', lat: r.lat || r.Latitude, lon: r.lon || r.Longitude }));
+                const currentIds = new Set(dataRows.map(dr => dr.id || dr.notam_id));
+                newRows.forEach(nr => {
+                    const nid = nr.id || nr.notam_id;
+                    if (!currentIds.has(nid)) {
+                        dataRows.push(nr);
+                        changed = true;
+                    }
+                });
+            }
+            if (mText) {
+                const newMsi = parseCsv(mText).map(r => ({ ...r, type: 'MSI', source: 'MSI' }));
+                const currentMsi = new Set(msiRows.map(mr => mr.id));
+                newMsi.forEach(nm => {
+                    if (!currentMsi.has(nm.id)) {
+                        msiRows.push(nm);
+                        changed = true;
+                    }
+                });
+            }
+        }
+        if (changed) {
+            console.log("[History] Data updated, re-rendering...");
+            updateLayers();
+        }
+    }
+
+    init();
   </script>
 </body>
 
