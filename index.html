@@ -1108,8 +1108,9 @@
       return new Date(Date.UTC(parseInt(m[3]), month, parseInt(m[2]), hr, parseInt(m[5])));
     }
 
-    function coordsForRllLoc(padLoc) {
+    function coordsForRllLoc(padLoc, options = {}) {
       if (!padLoc) return null;
+      const siteOnly = !!options.siteOnly;
       const slug = (padLoc.slug || '').toLowerCase();
       const name = (padLoc.name || '').toLowerCase();
       const mappedAbbr = RLL_LOC_TO_SITE_ABBR[slug];
@@ -1120,6 +1121,7 @@
       if (normalizedName && launchSitesByName[normalizedName]) {
         return launchSitesByName[normalizedName];
       }
+      if (siteOnly) return null;
       if (RLL_LOC_COORDS[slug]) return RLL_LOC_COORDS[slug];
       // Fuzzy fallback: check if any key is contained in the location name
       for (const [k, v] of Object.entries(RLL_LOC_COORDS)) {
@@ -1152,7 +1154,9 @@
           }
           const normalizedName = normalizeLocationKey(name);
           if (normalizedName && isFinite(lat) && isFinite(lon)) {
-            launchSitesByName[normalizedName] = { lat, lon };
+            if (!launchSitesByName[normalizedName]) {
+              launchSitesByName[normalizedName] = { lat, lon };
+            }
           }
         });
         console.log(`[launches] Loaded ${Object.keys(launchSites).length} launch sites`);
@@ -1191,13 +1195,13 @@
 
           list.forEach((l, idx) => {
             const loc = l.pad?.location;
-            const slug = loc?.slug;
             let lat = loc?.latitude, lon = loc?.longitude;
             if (loc) {
-              const coords = coordsForRllLoc(loc);
-              if (coords) { lat = coords.lat; lon = coords.lon; }
+              const hasApiCoords = isFinite(parseFloat(lat)) && isFinite(parseFloat(lon));
+              const coords = coordsForRllLoc(loc, { siteOnly: hasApiCoords });
+              if (!hasApiCoords && coords) { lat = coords.lat; lon = coords.lon; }
             }
-            if (!lat) return;
+            if (!isFinite(parseFloat(lat)) || !isFinite(parseFloat(lon))) return;
 
             const missionName = l.name || '未知任务';
             const vehicleName = l.vehicle?.name || '';
