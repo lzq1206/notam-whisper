@@ -200,6 +200,9 @@
         <button id="applyBtn">应用筛选</button>
         <button id="resetBtn">重置</button>
       </div>
+      <div class="row" style="margin-top:6px;">
+        <button id="downloadKmlBtn">下载当前显示 KML</button>
+      </div>
 
       <div class="small" style="margin-top:6px;">
         数据文件：<code>notams.csv</code> + <code>msi.csv</code>
@@ -517,6 +520,7 @@
     const endEl = document.getElementById('endDate');
     const applyBtn = document.getElementById('applyBtn');
     const resetBtn = document.getElementById('resetBtn');
+    const downloadKmlBtn = document.getElementById('downloadKmlBtn');
 
     let dataRows = [];
     let msiRows = [];
@@ -890,6 +894,101 @@
       return `${utc} / ${local} Local`;
     }
 
+    function cleanWeatherString(weatherText) {
+      return (weatherText || '').replace(/^\s*\(/, '').replace(/\)\s*$/, '').trim();
+    }
+
+    function xmlEscape(s) {
+      return String(s ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+    }
+
+    function buildKmlPlacemark(name, description, lat, lon, styleUrl) {
+      const n = xmlEscape(name || '未命名');
+      const d = xmlEscape(description || '');
+      const style = styleUrl ? `<styleUrl>${xmlEscape(styleUrl)}</styleUrl>` : '';
+      return `
+        <Placemark>
+          <name>${n}</name>
+          <description>${d}</description>
+          ${style}
+          <Point><coordinates>${lon},${lat},0</coordinates></Point>
+        </Placemark>
+      `;
+    }
+
+    function generateCurrentViewKml() {
+      const rows = Array.isArray(filteredDataRows) ? filteredDataRows : [];
+      const launchRows = launchToggle.checked && Array.isArray(upcomingLaunches) ? upcomingLaunches : [];
+      const placemarks = [];
+
+      rows.forEach(r => {
+        const lat = parseFloat(r.lat);
+        const lon = parseFloat(r.lon);
+        if (!isFinite(lat) || !isFinite(lon)) return;
+        const isMaritime = r.country === 'Maritime' || r.source === 'MSI' || r.type === 'MSI';
+        const title = r.notam_id || (isMaritime ? 'Maritime Warning' : 'NOTAM');
+        const details = [
+          isMaritime ? '类型: 海事警告 (MSI)' : '类型: 航空 NOTAM',
+          `编号: ${r.notam_id || ''}`,
+          `FIR: ${r.fir || ''}`,
+          `生效时间: ${r.from_utc || ''}`,
+          `结束时间: ${r.to_utc || ''}`,
+          `QCode: ${r.qcode || ''}`,
+          `半径(海里): ${r.radius_nm || ''}`,
+          `原文: ${r.raw || ''}`,
+        ].join('\n');
+        placemarks.push(buildKmlPlacemark(title, details, lat, lon, isMaritime ? '#msiStyle' : '#notamStyle'));
+      });
+
+      launchRows.forEach(l => {
+        const lat = parseFloat(l.lat);
+        const lon = parseFloat(l.lon);
+        if (!isFinite(lat) || !isFinite(lon)) return;
+        const details = [
+          '类型: 即将发射火箭',
+          `任务: ${l.mission || ''}`,
+          `火箭: ${l.vehicle || ''}`,
+          `发射场: ${l.location || ''}`,
+          `时间: ${l.dateStr || ''}`,
+          `天气: ${l.weather || ''}`,
+          `详情: ${l.description || ''}`,
+          `链接: ${l.url || ''}`,
+        ].join('\n');
+        placemarks.push(buildKmlPlacemark(`🚀 ${l.mission || '未命名任务'}`, details, lat, lon, '#launchStyle'));
+      });
+
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>notam-whisper-current-view</name>
+    <Style id="notamStyle"><IconStyle><color>ff2b2bef</color></IconStyle></Style>
+    <Style id="msiStyle"><IconStyle><color>ff0099ff</color></IconStyle></Style>
+    <Style id="launchStyle"><IconStyle><color>ff2b5bff</color></IconStyle></Style>
+    ${placemarks.join('\n')}
+  </Document>
+</kml>`;
+    }
+
+    function downloadCurrentKml() {
+      const kml = generateCurrentViewKml();
+      const blob = new Blob([kml], { type: 'application/vnd.google-earth.kml+xml;charset=utf-8' });
+      const a = document.createElement('a');
+      const stamp = new Date().toISOString().replace(/:/g, '-').replace(/\..+/, '');
+      a.href = URL.createObjectURL(blob);
+      a.download = `notam-whisper-${stamp}.kml`;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        URL.revokeObjectURL(a.href);
+        a.remove();
+      }, 0);
+    }
+
     function setDefaultDates() {
       const today = isoDate(new Date());
       if (!startEl.value) {
@@ -934,6 +1033,7 @@
       endEl.value = '';
       renderRows(dataRows);
     });
+    downloadKmlBtn.addEventListener('click', downloadCurrentKml);
 
     // Load both CSVs in parallel and merge
     async function loadBothCsvs() {
@@ -1234,7 +1334,13 @@
               <small style="color:#888;">Data by RocketLaunch.Live</small>
             `, { maxWidth: 340 });
             lMarker.addTo(launchLayerGroup);
-            upcomingLaunches.push({ lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color });
+            upcomingLaunches.push({
+              lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color,
+              location: `${locName}${padName ? ' / ' + padName : ''}`,
+              weather: cleanWeatherString(weather),
+              description: desc,
+              url: rllUrl
+            });
             upcomingCount++;
           });
         } catch (rllErr) {
