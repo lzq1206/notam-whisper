@@ -132,7 +132,7 @@ def fetch_past_launches():
         html = response.text
         launches = []
         month_abbrs = "JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC"
-        date_pattern = rf"(?:{month_abbrs})\s+\d+"
+        date_pattern = rf"{month_abbrs}\s+\d+"
         
         # More specific regex for the RLL past launches page structure
         items = re.findall(rf'<span class="launch-date">({date_pattern}).*?<h4 class="mission-name">.*?>(.*?)<.*?vehicle-name-inner">\s*(.*?)\s*<.*?location.*?>(.*?)<', html, re.S)
