@@ -18,5 +18,7 @@ assertContains(/类型:\s*海事警告 \(MSI\)/, 'KML description should include
 assertContains(/类型:\s*即将发射火箭/, 'KML description should include launch type text');
 assertContains(/原文:/, 'KML should include NOTAM/MSI raw text label');
 assertContains(/详情:/, 'KML should include launch details label');
+assertContains(/function\s+buildKmlGeometryForRow\s*\(/, 'KML export should build geometry for NOTAM/MSI');
+assertContains(/<Polygon>|<LineString>|<MultiGeometry>/, 'KML export should include non-point geometry output for outlines');
 
 console.log('test_index_kml_download.js passed');

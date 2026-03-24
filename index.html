@@ -907,7 +907,7 @@
         .replace(/'/g, '&apos;');
     }
 
-    function buildKmlPlacemark(name, description, lat, lon, styleUrl) {
+    function buildKmlPlacemark(name, description, geometryKml, styleUrl) {
       const n = xmlEscape(name || '未命名');
       const d = xmlEscape(description || '');
       const style = styleUrl ? `<styleUrl>${xmlEscape(styleUrl)}</styleUrl>` : '';
@@ -916,9 +916,121 @@
           <name>${n}</name>
           <description>${d}</description>
           ${style}
-          <Point><coordinates>${lon},${lat},0</coordinates></Point>
+          ${geometryKml}
         </Placemark>
       `;
+    }
+
+    function buildKmlPointGeometry(lat, lon) {
+      return `<Point><coordinates>${lon},${lat},0</coordinates></Point>`;
+    }
+
+    function extractRowCoordinatesList(r) {
+      let coordinatesList = [];
+      if (r.polygon) {
+        try {
+          if (r.polygon.trim().startsWith('[')) {
+            const parsed = JSON.parse(r.polygon);
+            if (parsed.length > 0) {
+              if (typeof parsed[0][0] === 'number') coordinatesList.push(parsed);
+              else coordinatesList = parsed;
+            }
+          } else {
+            const pts = r.polygon.split(/[ ;|]/).filter(Boolean);
+            const coords = pts.map(p => {
+              const parts = p.split(',');
+              return [parseFloat(parts[0]), parseFloat(parts[1])];
+            }).filter(p => isFinite(p[0]) && isFinite(p[1]));
+            if (coords.length >= 2) coordinatesList.push(coords);
+          }
+        } catch (e) { }
+      }
+
+      if (coordinatesList.length === 0) {
+        coordinatesList = parseNotamPolygons(r.raw || '');
+      }
+      return coordinatesList;
+    }
+
+    function normalizeDatelineCoordinates(points) {
+      const pts = points.map(p => [p[0], p[1]]);
+      if (pts.length > 1) {
+        for (let i = 1; i < pts.length; i++) {
+          const diff = pts[i][1] - pts[i - 1][1];
+          if (diff > 180) pts[i][1] -= 360;
+          else if (diff < -180) pts[i][1] += 360;
+        }
+      }
+      return pts;
+    }
+
+    function buildKmlCircleCoordinates(lat, lon, radiusMeters, steps = 64) {
+      const earthRadius = 6378137;
+      const angularDistance = radiusMeters / earthRadius;
+      const lat1 = lat * Math.PI / 180;
+      const lon1 = lon * Math.PI / 180;
+      const coords = [];
+      for (let i = 0; i <= steps; i++) {
+        const bearing = (i / steps) * 2 * Math.PI;
+        const lat2 = Math.asin(
+          Math.sin(lat1) * Math.cos(angularDistance) +
+          Math.cos(lat1) * Math.sin(angularDistance) * Math.cos(bearing)
+        );
+        const lon2 = lon1 + Math.atan2(
+          Math.sin(bearing) * Math.sin(angularDistance) * Math.cos(lat1),
+          Math.cos(angularDistance) - Math.sin(lat1) * Math.sin(lat2)
+        );
+        let lonDeg = lon2 * 180 / Math.PI;
+        while (lonDeg > 180) lonDeg -= 360;
+        while (lonDeg < -180) lonDeg += 360;
+        const latDeg = lat2 * 180 / Math.PI;
+        coords.push([latDeg, lonDeg]);
+      }
+      return coords;
+    }
+
+    function buildKmlGeometryForRow(r, lat, lon) {
+      const coordinatesList = extractRowCoordinatesList(r);
+      const radiusNm = parseFloat(r.radius_nm || '0');
+      const geometries = [];
+      const rawText = r.raw || '';
+      const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
+
+      coordinatesList.forEach(points => {
+        const pts = normalizeDatelineCoordinates(points);
+        const coordText = pts.map(p => `${p[1]},${p[0]},0`).join(' ');
+        if (pts.length >= 3 && !isRoute) {
+          const closedCoordText = coordText + ` ${pts[0][1]},${pts[0][0]},0`;
+          geometries.push(`
+            <Polygon>
+              <outerBoundaryIs>
+                <LinearRing><coordinates>${closedCoordText}</coordinates></LinearRing>
+              </outerBoundaryIs>
+            </Polygon>
+          `);
+        } else if (pts.length >= 2) {
+          geometries.push(`<LineString><coordinates>${coordText}</coordinates></LineString>`);
+        }
+      });
+
+      if (geometries.length === 0 && radiusNm > 0) {
+        const circleCoords = buildKmlCircleCoordinates(lat, lon, radiusNm * 1852);
+        const coordText = circleCoords.map(p => `${p[1]},${p[0]},0`).join(' ');
+        geometries.push(`
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing><coordinates>${coordText}</coordinates></LinearRing>
+            </outerBoundaryIs>
+          </Polygon>
+        `);
+      }
+
+      if (geometries.length === 0) {
+        return buildKmlPointGeometry(lat, lon);
+      }
+
+      if (geometries.length === 1) return geometries[0];
+      return `<MultiGeometry>${geometries.join('')}</MultiGeometry>`;
     }
 
     function generateCurrentViewKml() {
@@ -942,7 +1054,8 @@
           `半径(海里): ${r.radius_nm || ''}`,
           `原文: ${r.raw || ''}`,
         ].join('\n');
-        placemarks.push(buildKmlPlacemark(title, details, lat, lon, isMaritime ? '#msiStyle' : '#notamStyle'));
+        const geometry = buildKmlGeometryForRow(r, lat, lon);
+        placemarks.push(buildKmlPlacemark(title, details, geometry, isMaritime ? '#msiStyle' : '#notamStyle'));
       });
 
       launchRows.forEach(l => {
@@ -959,15 +1072,23 @@
           `详情: ${l.description || ''}`,
           `链接: ${l.url || ''}`,
         ].join('\n');
-        placemarks.push(buildKmlPlacemark(`🚀 ${l.mission || '未命名任务'}`, details, lat, lon, '#launchStyle'));
+        placemarks.push(buildKmlPlacemark(`🚀 ${l.mission || '未命名任务'}`, details, buildKmlPointGeometry(lat, lon), '#launchStyle'));
       });
 
       return `<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>notam-whisper-current-view</name>
-    <Style id="notamStyle"><IconStyle><color>ff2b2bef</color></IconStyle></Style>
-    <Style id="msiStyle"><IconStyle><color>ff0099ff</color></IconStyle></Style>
+    <Style id="notamStyle">
+      <IconStyle><color>ff2b2bef</color></IconStyle>
+      <LineStyle><color>ff2b2bef</color><width>2</width></LineStyle>
+      <PolyStyle><color>552b2bef</color></PolyStyle>
+    </Style>
+    <Style id="msiStyle">
+      <IconStyle><color>ff0099ff</color></IconStyle>
+      <LineStyle><color>ff0099ff</color><width>2</width></LineStyle>
+      <PolyStyle><color>550099ff</color></PolyStyle>
+    </Style>
     <Style id="launchStyle"><IconStyle><color>ff2b5bff</color></IconStyle></Style>
     ${placemarks.join('\n')}
   </Document>
