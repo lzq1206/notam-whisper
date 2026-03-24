@@ -139,7 +139,7 @@ def fetch_past_launches():
         html = response.text
         launches = []
         month_abbrs = "JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC"
-        date_pattern = rf"({month_abbrs})\s+\d+"
+        date_pattern = rf"{month_abbrs}\s+\d+"
         
         # More specific regex for the RLL past launches page structure
         items = re.findall(rf'<span class="launch-date">({date_pattern}).*?<h4 class="mission-name">.*?>(.*?)<.*?vehicle-name-inner">\s*(.*?)\s*<.*?location.*?>(.*?)<', html, re.S)
@@ -171,7 +171,24 @@ def fetch_past_launches():
                 "Success": "S",
                 "Launch Site (Full)": location
             })
-            
+
+        # RocketLaunch.Live page structure can change; use API fallback when HTML regex finds nothing.
+        if not launches:
+            for api_url in (
+                "https://fdo.rocketlaunch.live/json/launches/past/100",
+                "https://fdo.rocketlaunch.live/json/launches/past/50",
+            ):
+                try:
+                    api_response = requests.get(api_url, headers=headers, timeout=30)
+                    if api_response.status_code != 200:
+                        continue
+                    api_launches = _parse_rll_api_result(api_response.json(), SITE_MAPPING)
+                    if api_launches:
+                        launches = api_launches
+                        break
+                except Exception:
+                    continue
+
         return launches
     except Exception as e:
         print(f"Error scraping: {e}")
