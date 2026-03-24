@@ -86,8 +86,8 @@ def _load_launch_sites():
                 {
                     "name": name,
                     "abbr": abbr,
-                    "lat": row.get("latitude", ""),
-                    "lon": row.get("longitude", ""),
+                    "latitude": row.get("latitude", ""),
+                    "longitude": row.get("longitude", ""),
                 }
             )
     return sites
@@ -102,7 +102,7 @@ def _resolve_site(location, launch_sites, site_by_abbr):
         if key in normalized:
             site = site_by_abbr.get(abbr.lower())
             if site:
-                return site["lat"], site["lon"], site["abbr"]
+                return site["latitude"], site["longitude"], site["abbr"]
 
     candidates = []
     for site in launch_sites:
@@ -116,8 +116,10 @@ def _resolve_site(location, launch_sites, site_by_abbr):
     if not candidates:
         return "", "", ""
 
-    _, best_site = max(candidates, key=lambda x: x[0])
-    return best_site["lat"], best_site["lon"], best_site["abbr"]
+    best_length, best_site = max(candidates, key=lambda x: x[0])
+    if not best_length:
+        return "", "", ""
+    return best_site["latitude"], best_site["longitude"], best_site["abbr"]
 
 
 def fetch_past_launches():
