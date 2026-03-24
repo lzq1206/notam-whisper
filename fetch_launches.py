@@ -116,9 +116,7 @@ def _resolve_site(location, launch_sites, site_by_abbr):
     if not candidates:
         return "", "", ""
 
-    best_length, best_site = max(candidates, key=lambda x: x[0])
-    if not best_length:
-        return "", "", ""
+    _, best_site = max(candidates, key=lambda x: x[0])
     return best_site["latitude"], best_site["longitude"], best_site["abbr"]
 
 
@@ -151,10 +149,10 @@ def fetch_past_launches():
         for item in items:
             if len(item) < 4:
                 continue
-            date_str = item[0]
-            mission = item[1].strip()
-            vehicle = item[2].strip()
-            location = item[3].strip()
+            date_str, mission_raw, vehicle_raw, location_raw = item[:4]
+            mission = mission_raw.strip()
+            vehicle = vehicle_raw.strip()
+            location = location_raw.strip()
             full_date = _normalize_launch_datetime(date_str)
             if not full_date:
                 continue
