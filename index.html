@@ -1044,13 +1044,7 @@
       const ts = date.getTime();
       const s = minTs || now.getTime();
       const e = maxTs || (s + 7 * 86400000);
-      
-      if (e <= s) return 'rgb(255, 43, 43)';
-      const t = Math.max(0, Math.min((ts - s) / (e - s), 1));
-      const r = Math.round(255 * (1 - t) + 43 * t);
-      const g = Math.round(43 * (1 - t) + 91 * t);
-      const b = Math.round(43 * (1 - t) + 255 * t);
-      return `rgb(${r},${g},${b})`;
+      return colorByTime(ts, s, e);
     }
 
     function parseDescriptionDate(desc) {
@@ -1133,8 +1127,8 @@
             const d = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
             return (d && isFinite(d.getTime())) ? d.getTime() : null;
           }).filter(t => t);
-          const minLaunchTs = upcomingTimes.length ? Math.min(...upcomingTimes) : now.getTime();
-          const maxLaunchTs = upcomingTimes.length ? Math.max(...upcomingTimes) : now.getTime() + 86400000;
+          const minLaunchTs = now.getTime();
+          const maxLaunchTs = upcomingTimes.length ? Math.max(now.getTime() + 86400000, ...upcomingTimes) : now.getTime() + 86400000;
 
           list.forEach((l, idx) => {
             const loc = l.pad?.location;
