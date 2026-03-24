@@ -18,5 +18,9 @@ assertContains(/类型:\s*海事警告 \(MSI\)/, 'KML description should include
 assertContains(/类型:\s*即将发射火箭/, 'KML description should include launch type text');
 assertContains(/原文:/, 'KML should include NOTAM/MSI raw text label');
 assertContains(/详情:/, 'KML should include launch details label');
+assertContains(/<LineStyle><color>ff2b2bef<\/color><width>2<\/width><\/LineStyle>/, 'NOTAM style should include outline line style');
+assertContains(/<PolyStyle><color>552b2bef<\/color><\/PolyStyle>/, 'NOTAM style should include polygon fill style');
+assertContains(/<LineStyle><color>ff0099ff<\/color><width>2<\/width><\/LineStyle>/, 'MSI style should include outline line style');
+assertContains(/<PolyStyle><color>550099ff<\/color><\/PolyStyle>/, 'MSI style should include polygon fill style');
 
 console.log('test_index_kml_download.js passed');
