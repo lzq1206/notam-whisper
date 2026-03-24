@@ -877,9 +877,8 @@
     }
 
     function setDefaultDates() {
-      const remembered = localStorage.getItem('notam_start_date') || '';
       const today = isoDate(new Date());
-      const start = remembered || today;
+      const start = today;
       if (!startEl.value) {
         startEl.value = start;
         endEl.value = plusDays(start, 5);
@@ -913,7 +912,6 @@
         if (!isFinite(t)) return true;
         return t >= s && t <= e;
       });
-      if (startEl.value) localStorage.setItem('notam_start_date', startEl.value);
       renderRows(filtered);
     }
 
