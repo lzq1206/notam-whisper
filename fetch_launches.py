@@ -15,6 +15,30 @@ CSV_HEADERS = [
     "Launch Site (Full)",
 ]
 
+LAUNCH_SITE_ALIASES = {
+    "jiuquan": "JSLC",
+    "taiyuan": "TSLC",
+    "xichang": "XSLC",
+    "wenchang": "WSLC",
+    "hainan commercial": "HCSLS",
+    "haiyang": "OSP",
+    "kennedy": "KSC",
+    "cape canaveral": "CCSFS",
+    "vandenberg": "VSFB",
+    "boca chica": "Starbase",
+    "starbase": "Starbase",
+    "wallops": "WFF",
+    "kodiak": "PSCA",
+    "baikonur": "Baikonur",
+    "kourou": "CSG",
+    "guiana space centre": "CSG",
+    "tanegashima": "TNSC",
+    "satish dhawan": "SDSC",
+    "naro": "Naro",
+    "rocket lab launch complex 1": "LC-1",
+    "new zealand": "LC-1",
+}
+
 
 def _normalize_launch_datetime(date_text):
     text = (date_text or "").strip().upper()
@@ -69,39 +93,16 @@ def _load_launch_sites():
     return sites
 
 
-def _resolve_site(location, launch_sites):
+def _resolve_site(location, launch_sites, site_by_abbr):
     normalized = (location or "").lower()
     if not normalized:
         return "", "", ""
 
-    aliases = {
-        "jiuquan": "JSLC",
-        "taiyuan": "TSLC",
-        "xichang": "XSLC",
-        "wenchang": "WSLC",
-        "hainan commercial": "HCSLS",
-        "haiyang": "OSP",
-        "kennedy": "KSC",
-        "cape canaveral": "CCSFS",
-        "vandenberg": "VSFB",
-        "boca chica": "Starbase",
-        "starbase": "Starbase",
-        "wallops": "WFF",
-        "kodiak": "PSCA",
-        "baikonur": "Baikonur",
-        "kourou": "CSG",
-        "guiana space centre": "CSG",
-        "tanegashima": "TNSC",
-        "satish dhawan": "SDSC",
-        "naro": "Naro",
-        "rocket lab launch complex 1": "LC-1",
-        "new zealand": "LC-1",
-    }
-    for key, abbr in aliases.items():
+    for key, abbr in LAUNCH_SITE_ALIASES.items():
         if key in normalized:
-            for site in launch_sites:
-                if site["abbr"].lower() == abbr.lower():
-                    return site["lat"], site["lon"], site["abbr"]
+            site = site_by_abbr.get(abbr.lower())
+            if site:
+                return site["lat"], site["lon"], site["abbr"]
 
     candidates = []
     for site in launch_sites:
@@ -115,12 +116,13 @@ def _resolve_site(location, launch_sites):
     if not candidates:
         return "", "", ""
 
-    _, best = max(candidates, key=lambda x: x[0])
-    return best["lat"], best["lon"], best["abbr"]
+    _, best_site = max(candidates, key=lambda x: x[0])
+    return best_site["lat"], best_site["lon"], best_site["abbr"]
 
 
 def fetch_past_launches():
     launch_sites = _load_launch_sites()
+    site_by_abbr = {site["abbr"].lower(): site for site in launch_sites if site["abbr"]}
 
     url = "https://www.rocketlaunch.live/?pastOnly=1"
     headers = {
@@ -153,7 +155,7 @@ def fetch_past_launches():
             if not full_date:
                 continue
             
-            lat, lon, abbr = _resolve_site(location, launch_sites)
+            lat, lon, abbr = _resolve_site(location, launch_sites, site_by_abbr)
 
             launches.append({
                 "Launch Date and Time (UTC)": full_date,

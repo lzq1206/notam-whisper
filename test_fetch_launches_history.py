@@ -66,13 +66,14 @@ def test_archive_weekly_creates_history_and_dedupes():
 
 def test_resolve_site_matches_specific_launch_site():
     launch_sites = _load_launch_sites()
+    site_by_abbr = {site["abbr"].lower(): site for site in launch_sites if site["abbr"]}
 
-    lat, lon, abbr = _resolve_site("Wenchang, Hainan, China", launch_sites)
+    lat, lon, abbr = _resolve_site("Wenchang, Hainan, China", launch_sites, site_by_abbr)
     assert abbr == "WSLC"
     assert lat == "19.614"
     assert lon == "110.951"
 
-    lat, lon, abbr = _resolve_site("Cape Canaveral, Florida, United States", launch_sites)
+    lat, lon, abbr = _resolve_site("Cape Canaveral, Florida, United States", launch_sites, site_by_abbr)
     assert abbr == "CCSFS"
     assert lat == "28.488"
     assert lon == "-80.577"
