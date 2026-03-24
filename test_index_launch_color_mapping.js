@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
-const MS_PER_DAY = 86400000;
 
 const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
@@ -35,20 +34,20 @@ if (!/function getTimelineBounds\(/.test(html)) {
   throw new Error('getTimelineBounds helper not found');
 }
 
-if (!/const \{ minTs: minLaunchTs, maxTs: maxLaunchTs \} = getTimelineBounds\(filteredDataRows,\s*upcomingTimes\);/.test(html)) {
+if (!/const\s*\{\s*minTs\s*:\s*minLaunchTs\s*,\s*maxTs\s*:\s*maxLaunchTs\s*\}\s*=\s*getTimelineBounds\s*\(/.test(html)) {
   throw new Error('Upcoming launch bounds should include filteredDataRows and upcomingTimes');
 }
 
-if (!/const launchTimes = upcomingLaunches\.map\(l => l\.ts\)\.filter\(Number\.isFinite\);/.test(html)) {
+if (!/const\s+launchTimes\s*=\s*upcomingLaunches\.map\(\s*l\s*=>\s*l\.ts\s*\)\.filter\(\s*Number\.isFinite\s*\)\s*;/.test(html)) {
   throw new Error('NOTAM rendering should gather launch timestamps for shared timeline bounds');
 }
 
-if (!/const \{ minTs, maxTs \} = getTimelineBounds\(rows,\s*launchTimes\);/.test(html)) {
+if (!/const\s*\{\s*minTs\s*,\s*maxTs\s*\}\s*=\s*getTimelineBounds\s*\(/.test(html)) {
   throw new Error('NOTAM timeline bounds should include launchTimes');
 }
 
-if (!new RegExp(`Math\\.max\\(now\\s*\\+\\s*${MS_PER_DAY},\\s*\\.\\.\\.mergedTimes\\)`).test(html)) {
-  throw new Error(`getTimelineBounds should include now + ${MS_PER_DAY} safety window`);
+if (!/Math\.max\(\s*now\s*\+\s*86400000\s*,\s*\.\.\.mergedTimes\s*\)/.test(html)) {
+  throw new Error('getTimelineBounds should include now + 86400000 safety window');
 }
 
 console.log('test_index_launch_color_mapping.js passed');

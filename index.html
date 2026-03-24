@@ -1535,7 +1535,6 @@
         launchStatusEl.textContent = `🚀 ${upcomingCount} 计划 / ${pastCount} 过去 / ${Object.keys(launchSites).length} 发射场`;
 
         renderRows(filteredDataRows);
-        if (is3D) renderOnGlobe(filteredDataRows);
       } catch (err) {
         console.error('[launches] Error:', err);
         launchStatusEl.textContent = '加载失败';
