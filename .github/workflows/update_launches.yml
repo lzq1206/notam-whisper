@@ -2,12 +2,14 @@ name: Update Rocket Launches
 
 on:
   schedule:
-    - cron: '30 0 * * *'  # 每天 UTC 00:30 运行
+    - cron: '0 */6 * * *'  # 每6小时运行一次
   workflow_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,6 +29,6 @@ jobs:
       - name: Commit and push if changed
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[Auto] Update past_launches.csv"
-          file_pattern: "past_launches.csv"
+          commit_message: "[Auto] Update past_launches.csv and history"
+          file_pattern: "past_launches.csv history/launches/*"
           branch: main
