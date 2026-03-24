@@ -16,9 +16,6 @@ def _write_csv(path, headers, rows):
 
 
 def test_notams_archive_removes_out_of_range():
-    now = datetime.datetime(2026, 3, 24, 2, 0, 0)
-    fetch_notams.now_utc = now
-    fetch_notams.five_days = now + datetime.timedelta(days=5)
     fetch_notams.csv_to_kml = lambda *_args, **_kwargs: None
 
     with tempfile.TemporaryDirectory() as d:
@@ -29,16 +26,23 @@ def test_notams_archive_removes_out_of_range():
             weekly_csv = os.path.join('history', 'notams', '2026-W13.csv')
             headers = fetch_notams.CSV_HEADERS
 
+            expired_from = '2000-01-01T00:00:00Z'
+            expired_to = '2000-01-02T00:00:00Z'
+            no_time_constraint_from = ''
+            no_time_constraint_to = ''
+            far_from = '2999-01-01T00:00:00Z'
+            far_to = '2999-01-02T00:00:00Z'
+
             existing_rows = [
-                {'country': 'X', 'id': '1', 'notam_id': 'EXPIRED', 'fir': 'F', 'from_utc': '2026-03-20T00:00:00Z', 'to_utc': '2026-03-22T00:00:00Z', 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'expired'},
-                {'country': 'X', 'id': '2', 'notam_id': 'VALID_OLD', 'fir': 'F', 'from_utc': '2026-03-24T00:00:00Z', 'to_utc': '2026-03-28T00:00:00Z', 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'valid'},
+                {'country': 'X', 'id': '1', 'notam_id': 'EXPIRED', 'fir': 'F', 'from_utc': expired_from, 'to_utc': expired_to, 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'expired'},
+                {'country': 'X', 'id': '2', 'notam_id': 'VALID_OLD', 'fir': 'F', 'from_utc': no_time_constraint_from, 'to_utc': no_time_constraint_to, 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'valid'},
             ]
             _write_csv(weekly_csv, headers, existing_rows)
 
             source_csv = os.path.join(d, 'notams.csv')
             new_rows = [
-                {'country': 'X', 'id': '3', 'notam_id': 'NEW_VALID', 'fir': 'F', 'from_utc': '2026-03-24T00:00:00Z', 'to_utc': '2026-03-26T00:00:00Z', 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'new valid'},
-                {'country': 'X', 'id': '4', 'notam_id': 'TOO_FAR', 'fir': 'F', 'from_utc': '2026-04-10T00:00:00Z', 'to_utc': '2026-04-12T00:00:00Z', 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'too far'},
+                {'country': 'X', 'id': '3', 'notam_id': 'NEW_VALID', 'fir': 'F', 'from_utc': no_time_constraint_from, 'to_utc': no_time_constraint_to, 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'new valid'},
+                {'country': 'X', 'id': '4', 'notam_id': 'TOO_FAR', 'fir': 'F', 'from_utc': far_from, 'to_utc': far_to, 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'too far'},
             ]
             _write_csv(source_csv, headers, new_rows)
 
@@ -66,9 +70,6 @@ def test_notams_archive_removes_out_of_range():
 
 
 def test_msi_archive_removes_out_of_range():
-    now = datetime.datetime(2026, 3, 24, 2, 0, 0)
-    fetch_msi.now_utc = now
-    fetch_msi.five_days = now + datetime.timedelta(days=5)
     fetch_msi.csv_to_kml = lambda *_args, **_kwargs: None
 
     with tempfile.TemporaryDirectory() as d:
@@ -79,16 +80,23 @@ def test_msi_archive_removes_out_of_range():
             weekly_csv = os.path.join('history', 'msi', '2026-W13.csv')
             headers = fetch_msi.CSV_HEADERS
 
+            expired_from = '2000-01-01T00:00:00Z'
+            expired_to = '2000-01-02T00:00:00Z'
+            no_time_constraint_from = ''
+            no_time_constraint_to = ''
+            far_from = '2999-01-01T00:00:00Z'
+            far_to = '2999-01-02T00:00:00Z'
+
             existing_rows = [
-                {'country': 'M', 'id': '', 'notam_id': 'EXPIRED_MSI', 'fir': 'MSI', 'from_utc': '2026-03-20T00:00:00Z', 'to_utc': '2026-03-21T00:00:00Z', 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'expired', 'polygon': '[]'},
-                {'country': 'M', 'id': '', 'notam_id': 'VALID_OLD_MSI', 'fir': 'MSI', 'from_utc': '2026-03-24T00:00:00Z', 'to_utc': '2026-03-28T00:00:00Z', 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'valid', 'polygon': '[]'},
+                {'country': 'M', 'id': '', 'notam_id': 'EXPIRED_MSI', 'fir': 'MSI', 'from_utc': expired_from, 'to_utc': expired_to, 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'expired', 'polygon': '[]'},
+                {'country': 'M', 'id': '', 'notam_id': 'VALID_OLD_MSI', 'fir': 'MSI', 'from_utc': no_time_constraint_from, 'to_utc': no_time_constraint_to, 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'valid', 'polygon': '[]'},
             ]
             _write_csv(weekly_csv, headers, existing_rows)
 
             source_csv = os.path.join(d, 'msi.csv')
             new_rows = [
-                {'country': 'M', 'id': '', 'notam_id': 'NEW_VALID_MSI', 'fir': 'MSI', 'from_utc': '2026-03-24T00:00:00Z', 'to_utc': '2026-03-25T00:00:00Z', 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'new valid', 'polygon': '[]'},
-                {'country': 'M', 'id': '', 'notam_id': 'TOO_FAR_MSI', 'fir': 'MSI', 'from_utc': '2026-04-10T00:00:00Z', 'to_utc': '2026-04-11T00:00:00Z', 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'too far', 'polygon': '[]'},
+                {'country': 'M', 'id': '', 'notam_id': 'NEW_VALID_MSI', 'fir': 'MSI', 'from_utc': no_time_constraint_from, 'to_utc': no_time_constraint_to, 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'new valid', 'polygon': '[]'},
+                {'country': 'M', 'id': '', 'notam_id': 'TOO_FAR_MSI', 'fir': 'MSI', 'from_utc': far_from, 'to_utc': far_to, 'lat': '1', 'lon': '1', 'radius_nm': '', 'qcode': '', 'raw': 'too far', 'polygon': '[]'},
             ]
             _write_csv(source_csv, headers, new_rows)
 

@@ -33,14 +33,14 @@ RAW_CSV_HEADERS = ['msgID','category','from_utc','to_utc','msgText']
 
 AEROSPACE_KEYWORDS = ["ROCKET", "LAUNCH", "SPACE", "RE-ENTRY", "DEBRIS", "AEROSPACE", "SATELLITE", "MISSILE"]
 
-now_utc = datetime.datetime.utcnow()
-five_days = now_utc + datetime.timedelta(days=5)
-
 def log_to_file(msg):
     with open('msi_fetch_log.txt', 'a', encoding='utf-8') as f:
         f.write(f"{datetime.datetime.now().isoformat()} - {msg}\n")
 
 def _is_in_time_window(from_str, to_str):
+    """Return True if the record is not expired and not too far in the future."""
+    now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    five_days = now_utc + datetime.timedelta(days=5)
     try:
         if from_str:
             from_dt = datetime.datetime.fromisoformat(from_str.replace('Z', '+00:00')).replace(tzinfo=None)
