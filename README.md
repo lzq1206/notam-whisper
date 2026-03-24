@@ -26,7 +26,7 @@ notam-whisper 是一组轻量 Python 脚本与静态页面，用于：
 
 ## 仓库结构（摘要）
 - fetch_notams.py       — 抓取并处理 NOTAM（notammap.org）；输出 notams.csv, notams.kml, history/notams/YYYY-WNN.*
-- fetch_msi.py          — 抓取并处理 NGA MSI（海事通知）；输出 msi_raw.csv, msi.csv, msi.kml, history/msi/YYYY-WNN.*
+- fetch_msi.py          — 抓取并处理 NGA MSI（海事通知）；输出 msi.csv, msi.kml, history/msi/YYYY-WNN.*
 - index.html            — 静态页面（演示 / GitHub Pages）
 - *.csv / *.kml         — 示例输出（latest.csv, latest.kml, notams.kml 等）
 - history/              — 周度归档数据
@@ -78,7 +78,7 @@ python3 fetch_notams.py
 python3 fetch_msi.py
 ```
 
-- 输出文件：msi_raw.csv, msi.csv, msi.kml
+- 输出文件：msi.csv, msi.kml
 - 产生日志 msi_fetch_log.txt
 - 更新 history/msi/YYYY-WNN.csv
 
@@ -99,14 +99,15 @@ CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','
 - qcode: NOTAM Q-code（若存在）
 - raw: 原始文本（处理后的）
 
-MSI 的 raw/coords 解析会先写入 msi_raw.csv（原始文本），再写入 msi.csv（包含经纬度中心点）
+MSI 的 raw/coords 会直接写入 msi.csv（包含经纬度中心点和 polygon 字段）
 
 ## 配置与可调参数
 - fetch_notams.py:
   - KEEP / DROP 列表：用于关键词过滤（文件顶部），可按需修改以扩大或缩小匹配
-  - 时间窗口：脚本默认过滤未来超过 5 天或已过期的 NOTAM（代码变量名：`five_days`，可按需调整）
+  - 时间窗口：脚本会过滤未来超过 5 天或已过期的 NOTAM；周归档合并时也会移除超出时间窗口的历史记录
 - fetch_msi.py:
   - 环境变量 MSI_FALLBACK_URL_TEMPLATE：可设置备用的 MSI 数据源模板 URL（格式中含 {nav_area}）
-  - 日志文件 LOG_FILE（默认 msi_fetch_log.txt）
+  - 周归档合并时会移除超出时间窗口的历史记录（未来超过 5 天或已过期）
+  - 日志文件为 msi_fetch_log.txt
 - 如果想用不同的输出目录或文件名，可在脚本中修改对应常量或通过包装脚本/环境变量实现
 

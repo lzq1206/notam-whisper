@@ -58,7 +58,7 @@ def test_rejects_html_like_response():
     assert rows == [], f"Expected no rows for HTML response, got {rows}"
 
 def test_fallback_used_when_primary_fails():
-    xml = """<root><smapsActiveEntity><msgID>FB</msgID><msgText>Fallback</msgText><category>14</category><msgType>NW</msgType></smapsActiveEntity></root>"""
+    xml = """<root><warning><msgID>FB</msgID><msgText>Fallback</msgText><category>14</category><msgType>NW</msgType></warning></root>"""
     old_get = fetch_msi.requests.get
     old_sleep = fetch_msi.time.sleep
     old_fallback_template = fetch_msi.FALLBACK_MSI_URL_TEMPLATE

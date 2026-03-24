@@ -37,6 +37,23 @@ def log_to_file(msg):
     with open('msi_fetch_log.txt', 'a', encoding='utf-8') as f:
         f.write(f"{datetime.datetime.now().isoformat()} - {msg}\n")
 
+def _is_in_time_window(from_str, to_str):
+    """Return True if the record is not expired and not too far in the future."""
+    now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    five_days = now_utc + datetime.timedelta(days=5)
+    try:
+        if from_str:
+            from_dt = datetime.datetime.fromisoformat(from_str.replace('Z', '+00:00')).replace(tzinfo=None)
+            if from_dt > five_days:
+                return False
+        if to_str:
+            to_dt = datetime.datetime.fromisoformat(to_str.replace('Z', '+00:00')).replace(tzinfo=None)
+            if to_dt < now_utc:
+                return False
+    except Exception:
+        pass
+    return True
+
 # --- Parsing Helpers ---
 def parse_msi_coords_multi(text):
     """
@@ -353,11 +370,15 @@ def archive_weekly(csv_path, history_subdir='msi'):
     seen = set()
     merged = []
     for r in new_rows:
+        if not _is_in_time_window(r.get('from_utc', ''), r.get('to_utc', '')):
+            continue
         nid = r.get('notam_id', '')
         if nid and nid not in seen:
             seen.add(nid)
             merged.append(r)
     for r in existing_rows:
+        if not _is_in_time_window(r.get('from_utc', ''), r.get('to_utc', '')):
+            continue
         nid = r.get('notam_id', '')
         if nid and nid not in seen:
             seen.add(nid)

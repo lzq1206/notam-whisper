@@ -24,9 +24,6 @@ DROP = [
     "AIRSPAICE", "FIR RECIFE", "FIR SECT",
 ]
 
-now_utc = datetime.datetime.utcnow()
-five_days = now_utc + timedelta(days=5)
-
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
 FAA_SEARCH_URL = "https://notams.aim.faa.gov/notamSearch/search"
 FAA_SUPPLEMENTAL_FIRS = ["ZLHW", "ZHWH", "ZXXX"]
@@ -38,15 +35,10 @@ def make_headers():
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
     }
 
-def _passes_filters(notam):
-    raw = notam.get('raw', '')
-    raw_upper = raw.upper()
-    if any(d in raw_upper for d in DROP):
-        return False
-    if not any(k in raw_upper for k in KEEP):
-        return False
-    from_str = notam.get('from', '')
-    to_str = notam.get('to', '')
+def _is_in_time_window(from_str, to_str):
+    """Return True if the record is not expired and not too far in the future."""
+    now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    five_days = now_utc + timedelta(days=5)
     try:
         if from_str:
             from_dt = datetime.datetime.fromisoformat(from_str.replace('Z', '+00:00')).replace(tzinfo=None)
@@ -59,6 +51,17 @@ def _passes_filters(notam):
     except Exception:
         pass
     return True
+
+def _passes_filters(notam):
+    raw = notam.get('raw', '')
+    raw_upper = raw.upper()
+    if any(d in raw_upper for d in DROP):
+        return False
+    if not any(k in raw_upper for k in KEEP):
+        return False
+    from_str = notam.get('from', '')
+    to_str = notam.get('to', '')
+    return _is_in_time_window(from_str, to_str)
 
 def _parse_faa_time(date_str):
     if not date_str:
@@ -400,6 +403,8 @@ def archive_weekly(csv_path, history_subdir='notams'):
     seen = set()
     merged = []
     for r in new_rows:
+        if not _is_in_time_window(r.get('from_utc', ''), r.get('to_utc', '')):
+            continue
         nid = r.get('notam_id', '')
         if nid and nid not in seen:
             seen.add(nid)
@@ -407,6 +412,8 @@ def archive_weekly(csv_path, history_subdir='notams'):
         elif not nid:
             merged.append(r)
     for r in existing_rows:
+        if not _is_in_time_window(r.get('from_utc', ''), r.get('to_utc', '')):
+            continue
         nid = r.get('notam_id', '')
         if nid and nid not in seen:
             seen.add(nid)
