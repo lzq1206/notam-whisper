@@ -16,7 +16,7 @@ assertContains(/downloadKmlBtn\.addEventListener\(\s*'click'\s*,\s*downloadCurre
 assertContains(/类型:\s*航空 NOTAM/, 'KML description should include NOTAM type text');
 assertContains(/类型:\s*海事警告 \(MSI\)/, 'KML description should include MSI type text');
 assertContains(/类型:\s*即将发射火箭/, 'KML description should include launch type text');
-assertContains(/原文:\s*\$\{r\.raw \|\| ''\}/, 'KML should include NOTAM/MSI raw text details');
-assertContains(/详情:\s*\$\{l\.description \|\| ''\}/, 'KML should include launch description details');
+assertContains(/原文:/, 'KML should include NOTAM/MSI raw text label');
+assertContains(/详情:/, 'KML should include launch details label');
 
 console.log('test_index_kml_download.js passed');

@@ -894,6 +894,10 @@
       return `${utc} / ${local} Local`;
     }
 
+    function cleanWeatherString(weatherText) {
+      return (weatherText || '').replace(/^\s*\(/, '').replace(/\)\s*$/, '').trim();
+    }
+
     function xmlEscape(s) {
       return String(s ?? '')
         .replace(/&/g, '&amp;')
@@ -974,7 +978,7 @@
       const kml = generateCurrentViewKml();
       const blob = new Blob([kml], { type: 'application/vnd.google-earth.kml+xml;charset=utf-8' });
       const a = document.createElement('a');
-      const stamp = new Date().toISOString().replace(/[:]/g, '-').replace(/\..+/, '');
+      const stamp = new Date().toISOString().replace(/:/g, '-').replace(/\..+/, '');
       a.href = URL.createObjectURL(blob);
       a.download = `notam-whisper-${stamp}.kml`;
       document.body.appendChild(a);
@@ -1333,7 +1337,7 @@
             upcomingLaunches.push({
               lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color,
               location: `${locName}${padName ? ' / ' + padName : ''}`,
-              weather: weather ? weather.replace(/^\s*\(/, '').replace(/\)\s*$/, '') : '',
+              weather: cleanWeatherString(weather),
               description: desc,
               url: rllUrl
             });
