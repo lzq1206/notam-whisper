@@ -3,7 +3,8 @@ import csv
 import os
 import tempfile
 
-from fetch_launches import archive_weekly, save_to_csv
+import fetch_launches
+from fetch_launches import archive_weekly, fetch_past_launches, save_to_csv
 
 
 def _read_rows(path):
@@ -64,6 +65,54 @@ def test_archive_weekly_creates_history_and_dedupes():
     os.chdir(cwd)
 
 
+def test_fetch_past_launches_falls_back_to_api_when_html_layout_changes():
+    html_no_match = "<html><body>layout changed</body></html>"
+    api_payload = {
+        "result": [
+            {
+                "name": "Starlink Test Mission",
+                "win_open": "2026-03-24T05:30:00Z",
+                "vehicle": {"name": "Falcon 9"},
+                "pad": {"location": {"name": "California", "latitude": 34.742, "longitude": -120.572}},
+            }
+        ]
+    }
+
+    class StubResponse:
+        def __init__(self, status_code=200, text="", payload=None):
+            self.status_code = status_code
+            self.text = text
+            self._payload = payload
+
+        def json(self):
+            return self._payload
+
+    old_get = fetch_launches.requests.get
+    try:
+        calls = []
+
+        def stub_get(url, *args, **kwargs):
+            calls.append(url)
+            if "pastOnly=1" in url:
+                return StubResponse(200, text=html_no_match)
+            if "/json/launches/past/" in url:
+                return StubResponse(200, payload=api_payload)
+            return StubResponse(404, text="")
+
+        fetch_launches.requests.get = stub_get
+        rows = fetch_past_launches()
+        assert len(rows) == 1
+        row = rows[0]
+        assert row["Official Payload Name"] == "Starlink Test Mission"
+        assert row["Launch Vehicle"] == "Falcon 9"
+        assert row["Launch Date and Time (UTC)"] == "2026 MAR 24 0530"
+        assert row["Launch Site (Abbrv.)"] == "VSFB"
+        assert any("/json/launches/past/" in u for u in calls), f"API fallback not called: {calls}"
+    finally:
+        fetch_launches.requests.get = old_get
+
+
 if __name__ == "__main__":
     test_archive_weekly_creates_history_and_dedupes()
+    test_fetch_past_launches_falls_back_to_api_when_html_layout_changes()
     print("test_fetch_launches_history.py passed")

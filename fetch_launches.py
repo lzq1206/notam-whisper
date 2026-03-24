@@ -49,6 +49,60 @@ def _launch_sort_key(item):
         return datetime.min
 
 
+def _parse_iso_datetime(date_text):
+    if not date_text:
+        return ""
+    try:
+        normalized = str(date_text).replace("Z", "+00:00")
+        dt = datetime.fromisoformat(normalized)
+        return dt.strftime("%Y %b %d %H%M").upper()
+    except Exception:
+        return _normalize_launch_datetime(str(date_text))
+
+
+def _parse_rll_api_result(payload, site_mapping):
+    launches = []
+    for item in payload.get("result", []):
+        location_obj = ((item.get("pad") or {}).get("location") or {})
+        location = (location_obj.get("name") or "").strip()
+        mission = str(item.get("name") or "").strip()
+        vehicle_obj = item.get("vehicle") or {}
+        if isinstance(vehicle_obj, dict):
+            vehicle = str(vehicle_obj.get("name") or "").strip()
+        else:
+            vehicle = str(vehicle_obj or "").strip()
+        full_date = _parse_iso_datetime(item.get("win_open"))
+        if not full_date or not mission:
+            continue
+
+        lat = location_obj.get("latitude")
+        lon = location_obj.get("longitude")
+        abbr = ""
+        if location:
+            for key, val in site_mapping.items():
+                if key.lower() in location.lower():
+                    abbr = val["abbr"]
+                    if lat in (None, ""):
+                        lat = val["lat"]
+                    if lon in (None, ""):
+                        lon = val["lon"]
+                    break
+
+        launches.append(
+            {
+                "Launch Date and Time (UTC)": full_date,
+                "Launch Site (Abbrv.)": abbr,
+                "Latitude": lat if lat is not None else "",
+                "Longitude": lon if lon is not None else "",
+                "Launch Vehicle": vehicle,
+                "Official Payload Name": mission,
+                "Success": "S",
+                "Launch Site (Full)": location,
+            }
+        )
+    return launches
+
+
 def fetch_past_launches():
     # Mapping for scraped location names to coordinates/abbreviations
     SITE_MAPPING = {
@@ -78,7 +132,7 @@ def fetch_past_launches():
         html = response.text
         launches = []
         month_abbrs = "JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC"
-        date_pattern = rf"({month_abbrs})\s+\d+"
+        date_pattern = rf"{month_abbrs}\s+\d+"
         
         # More specific regex for the RLL past launches page structure
         items = re.findall(rf'<span class="launch-date">({date_pattern}).*?<h4 class="mission-name">.*?>(.*?)<.*?vehicle-name-inner">\s*(.*?)\s*<.*?location.*?>(.*?)<', html, re.S)
@@ -89,9 +143,9 @@ def fetch_past_launches():
 
         for item in items:
             date_str = item[0]
-            mission = item[2].strip()
-            vehicle = item[3].strip()
-            location = item[4].strip()
+            mission = item[1].strip()
+            vehicle = item[2].strip()
+            location = item[3].strip()
             full_date = _normalize_launch_datetime(date_str)
             if not full_date:
                 continue
@@ -113,7 +167,24 @@ def fetch_past_launches():
                 "Success": "S",
                 "Launch Site (Full)": location
             })
-            
+
+        # RocketLaunch.Live page structure can change; use API fallback when HTML regex finds nothing.
+        if not launches:
+            for api_url in (
+                "https://fdo.rocketlaunch.live/json/launches/past/100",
+                "https://fdo.rocketlaunch.live/json/launches/past/50",
+            ):
+                try:
+                    api_response = requests.get(api_url, headers=headers, timeout=30)
+                    if api_response.status_code != 200:
+                        continue
+                    api_launches = _parse_rll_api_result(api_response.json(), SITE_MAPPING)
+                    if api_launches:
+                        launches = api_launches
+                        break
+                except Exception:
+                    continue
+
         return launches
     except Exception as e:
         print(f"Error scraping: {e}")
