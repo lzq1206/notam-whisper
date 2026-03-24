@@ -1280,7 +1280,6 @@
         // 也检查当前时间前后的周，确保覆盖
         weeks.add(getISOWeek(Date.now()));
 
-        let changed = false;
         for (const wk of weeks) {
             if (loadedWeeks.has(wk)) continue;
             loadedWeeks.add(wk);
@@ -1297,7 +1296,6 @@
                     const nid = nr.id || nr.notam_id;
                     if (!currentIds.has(nid)) {
                         dataRows.push(nr);
-                        changed = true;
                     }
                 });
             }
@@ -1307,12 +1305,10 @@
                 newMsi.forEach(nm => {
                     if (!currentMsi.has(nm.id)) {
                         msiRows.push(nm);
-                        changed = true;
                     }
                 });
             }
         }
-        return changed;
     }
 
     init();
