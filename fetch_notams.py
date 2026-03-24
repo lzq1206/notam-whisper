@@ -30,6 +30,7 @@ five_days = now_utc + timedelta(days=5)
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
 FAA_SEARCH_URL = "https://notams.aim.faa.gov/notamSearch/search"
 FAA_SUPPLEMENTAL_FIRS = ["ZLHW", "ZHWH"]
+FAA_PAGE_SIZE = 30
 
 def make_headers():
     return {
@@ -55,7 +56,7 @@ def _passes_filters(notam):
             to_dt = datetime.datetime.fromisoformat(to_str.replace('Z', '+00:00')).replace(tzinfo=None)
             if to_dt < now_utc:
                 return False
-    except:
+    except Exception:
         pass
     return True
 
@@ -67,7 +68,7 @@ def _parse_faa_time(date_str):
     try:
         dt = datetime.datetime.strptime(date_str, "%m/%d/%Y %H%M")
         return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
-    except:
+    except Exception:
         return ''
 
 def _parse_q_line(raw):
@@ -92,6 +93,7 @@ def _parse_q_line(raw):
 def _normalize_notam_number(number):
     if not number:
         return '', '', ''
+    # FAA `notamNumber` can be like A0787/26 or A0787/2026.
     m = re.match(r'^([A-Z])\s*0*(\d+)\s*/\s*(\d{2,4})$', number.strip(), re.I)
     if not m:
         return '', '', ''
@@ -153,9 +155,9 @@ def fetch_faa_notams():
                         'notam': n
                     })
 
-                if len(notam_list) < 30:
+                if len(notam_list) < FAA_PAGE_SIZE:
                     break
-                offset += 30
+                offset += FAA_PAGE_SIZE
             except Exception as e:
                 print(f"[faa] Error fetching '{fir}' offset {offset}: {e}")
                 break
