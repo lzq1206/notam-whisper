@@ -70,13 +70,13 @@ def test_resolve_site_matches_specific_launch_site():
 
     lat, lon, abbr = _resolve_site("Wenchang, Hainan, China", launch_sites, site_by_abbr)
     assert abbr == "WSLC"
-    assert lat == "19.614"
-    assert lon == "110.951"
+    assert lat == 19.614
+    assert lon == 110.951
 
     lat, lon, abbr = _resolve_site("Cape Canaveral, Florida, United States", launch_sites, site_by_abbr)
     assert abbr == "CCSFS"
-    assert lat == "28.488"
-    assert lon == "-80.577"
+    assert lat == 28.488
+    assert lon == -80.577
 
 
 if __name__ == "__main__":

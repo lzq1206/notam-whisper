@@ -82,12 +82,14 @@ def _load_launch_sites():
             abbr = (row.get("abbreviation") or "").strip()
             if not name:
                 continue
+            latitude = row.get("latitude", "")
+            longitude = row.get("longitude", "")
             sites.append(
                 {
                     "name": name,
                     "abbr": abbr,
-                    "latitude": row.get("latitude", ""),
-                    "longitude": row.get("longitude", ""),
+                    "latitude": float(latitude) if latitude not in ("", None) else "",
+                    "longitude": float(longitude) if longitude not in ("", None) else "",
                 }
             )
     return sites
@@ -147,9 +149,9 @@ def fetch_past_launches():
             items = re.findall(rf'({date_pattern}).*?mission-name.*?>(.*?)<.*?vehicle.*?>(.*?)<.*?location.*?>(.*?)<', html, re.S)
 
         for item in items:
-            if len(item) < 4:
+            if len(item) != 4:
                 continue
-            date_str, mission_raw, vehicle_raw, location_raw = item[:4]
+            date_str, mission_raw, vehicle_raw, location_raw = item
             mission = mission_raw.strip()
             vehicle = vehicle_raw.strip()
             location = location_raw.strip()
