@@ -21,14 +21,14 @@ def run_with_stub(stub_get):
     try:
         fetch_msi.requests.get = stub_get
         fetch_msi.time.sleep = lambda *_: None
-        return fetch_msi.fetch_msi_single('4')
+        return fetch_msi.fetch_msi_single('4', fetch_msi.PRIMARY_MSI_URL_TEMPLATE, 'primary')
     finally:
         fetch_msi.requests.get = old_get
         fetch_msi.time.sleep = old_sleep
 
 
 def test_accepts_xml_and_extracts_entities():
-    xml = """<root><smapsActiveEntity><msgID>A</msgID><msgText>T</msgText><category>14</category><msgType>NW</msgType></smapsActiveEntity></root>"""
+    xml = """<root><warning><msgID>A</msgID><msgText>T</msgText><category>14</category><msgType>NW</msgType></warning></root>"""
 
     def stub_get(*args, **kwargs):
         return StubResponse(xml, 200, {'content-type': 'application/xml'})
@@ -47,7 +47,7 @@ def test_rejects_html_like_response():
     assert rows == [], f"Expected no rows for HTML response, got {rows}"
 
 def test_fallback_used_when_primary_fails():
-    xml = """<root><smapsActiveEntity><msgID>FB</msgID><msgText>Fallback</msgText><category>14</category><msgType>NW</msgType></smapsActiveEntity></root>"""
+    xml = """<root><warning><msgID>FB</msgID><msgText>Fallback</msgText><category>14</category><msgType>NW</msgType></warning></root>"""
     old_get = fetch_msi.requests.get
     old_sleep = fetch_msi.time.sleep
     old_fallback_template = fetch_msi.FALLBACK_MSI_URL_TEMPLATE
