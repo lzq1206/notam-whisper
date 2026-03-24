@@ -3,7 +3,7 @@ import csv
 import os
 import tempfile
 
-from fetch_launches import archive_weekly, save_to_csv
+from fetch_launches import _load_launch_sites, _resolve_site, archive_weekly, save_to_csv
 
 
 def _read_rows(path):
@@ -64,6 +64,21 @@ def test_archive_weekly_creates_history_and_dedupes():
     os.chdir(cwd)
 
 
+def test_resolve_site_matches_specific_launch_site():
+    launch_sites = _load_launch_sites()
+
+    lat, lon, abbr = _resolve_site("Wenchang, Hainan, China", launch_sites)
+    assert abbr == "WSLC"
+    assert lat == "19.614"
+    assert lon == "110.951"
+
+    lat, lon, abbr = _resolve_site("Cape Canaveral, Florida, United States", launch_sites)
+    assert abbr == "CCSFS"
+    assert lat == "28.488"
+    assert lon == "-80.577"
+
+
 if __name__ == "__main__":
     test_archive_weekly_creates_history_and_dedupes()
+    test_resolve_site_matches_specific_launch_site()
     print("test_fetch_launches_history.py passed")

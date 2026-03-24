@@ -49,21 +49,78 @@ def _launch_sort_key(item):
         return datetime.min
 
 
-def fetch_past_launches():
-    # Mapping for scraped location names to coordinates/abbreviations
-    SITE_MAPPING = {
-        "California": {"lat": 34.742, "lon": -120.572, "abbr": "VSFB"},
-        "Florida": {"lat": 28.572, "lon": -80.648, "abbr": "KSC"},
-        "New Zealand": {"lat": -39.261, "lon": 177.864, "abbr": "MP"},
-        "French Guiana": {"lat": 5.232, "lon": -52.776, "abbr": "CSG"},
-        "Kazakhstan": {"lat": 45.965, "lon": 63.305, "abbr": "BC"},
-        "China": {"lat": 28.246, "lon": 102.026, "abbr": "XSLC"},
-        "India": {"lat": 13.720, "lon": 80.231, "abbr": "SDSC"},
-        "Japan": {"lat": 30.375, "lon": 130.955, "abbr": "TNSC"},
-        "South Korea": {"lat": 34.432, "lon": 127.535, "abbr": "NSC"},
-        "Wallops": {"lat": 37.833, "lon": -75.483, "abbr": "WFF"},
-        "Kodiak": {"lat": 57.435, "lon": -152.339, "abbr": "PSCA"},
+def _load_launch_sites():
+    launch_sites_path = os.path.join(os.path.dirname(__file__), "launch_sites.csv")
+    sites = []
+    with open(launch_sites_path, "r", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            name = (row.get("name") or "").strip()
+            abbr = (row.get("abbreviation") or "").strip()
+            if not name:
+                continue
+            sites.append(
+                {
+                    "name": name,
+                    "abbr": abbr,
+                    "lat": row.get("latitude", ""),
+                    "lon": row.get("longitude", ""),
+                }
+            )
+    return sites
+
+
+def _resolve_site(location, launch_sites):
+    normalized = (location or "").lower()
+    if not normalized:
+        return "", "", ""
+
+    aliases = {
+        "jiuquan": "JSLC",
+        "taiyuan": "TSLC",
+        "xichang": "XSLC",
+        "wenchang": "WSLC",
+        "hainan commercial": "HCSLS",
+        "haiyang": "OSP",
+        "kennedy": "KSC",
+        "cape canaveral": "CCSFS",
+        "vandenberg": "VSFB",
+        "boca chica": "Starbase",
+        "starbase": "Starbase",
+        "wallops": "WFF",
+        "kodiak": "PSCA",
+        "baikonur": "Baikonur",
+        "kourou": "CSG",
+        "guiana space centre": "CSG",
+        "tanegashima": "TNSC",
+        "satish dhawan": "SDSC",
+        "naro": "Naro",
+        "rocket lab launch complex 1": "LC-1",
+        "new zealand": "LC-1",
     }
+    for key, abbr in aliases.items():
+        if key in normalized:
+            for site in launch_sites:
+                if site["abbr"].lower() == abbr.lower():
+                    return site["lat"], site["lon"], site["abbr"]
+
+    candidates = []
+    for site in launch_sites:
+        name_l = site["name"].lower()
+        abbr_l = site["abbr"].lower()
+        if name_l and name_l in normalized:
+            candidates.append((len(name_l), site))
+        elif abbr_l and abbr_l in normalized:
+            candidates.append((len(abbr_l), site))
+
+    if not candidates:
+        return "", "", ""
+
+    _, best = max(candidates, key=lambda x: x[0])
+    return best["lat"], best["lon"], best["abbr"]
+
+
+def fetch_past_launches():
+    launch_sites = _load_launch_sites()
 
     url = "https://www.rocketlaunch.live/?pastOnly=1"
     headers = {
@@ -89,19 +146,14 @@ def fetch_past_launches():
 
         for item in items:
             date_str = item[0]
-            mission = item[2].strip()
-            vehicle = item[3].strip()
-            location = item[4].strip()
+            mission = item[-3].strip()
+            vehicle = item[-2].strip()
+            location = item[-1].strip()
             full_date = _normalize_launch_datetime(date_str)
             if not full_date:
                 continue
             
-            # Map location
-            lat, lon, abbr = "", "", ""
-            for key, val in SITE_MAPPING.items():
-                if key.lower() in location.lower():
-                    lat, lon, abbr = val["lat"], val["lon"], val["abbr"]
-                    break
+            lat, lon, abbr = _resolve_site(location, launch_sites)
 
             launches.append({
                 "Launch Date and Time (UTC)": full_date,
