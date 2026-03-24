@@ -987,8 +987,36 @@
     const LAUNCH_LOG_URL = './past_launches.csv';
     const RLL_UPCOMING_URL = 'https://fdo.rocketlaunch.live/json/launches/next/5';
 
+    // Location slug (from RocketLaunch.Live) → launch_sites.csv abbreviation
+    // Prefer launch_sites.csv coordinates when possible to keep map positions consistent.
+    const RLL_LOC_TO_SITE_ABBR = {
+      'baikonur-cosmodrome': 'Baikonur',
+      'cape-canaveral-sfs': 'CCSFS',
+      'cape-canaveral': 'CCSFS',
+      'kennedy-space-center': 'KSC',
+      'vandenberg-sfb': 'VSFB',
+      'vandenberg-space-force-base': 'VSFB',
+      'guiana-space-centre': 'CSG',
+      'jiuquan-satellite-launch-center': 'JSLC',
+      'xichang-satellite-launch-center': 'XSLC',
+      'taiyuan-satellite-launch-center': 'TSLC',
+      'wenchang-space-launch-site': 'WSLC',
+      'satish-dhawan-space-centre': 'SDSC',
+      'plesetsk-cosmodrome': 'Plesetsk',
+      'tanegashima-space-center': 'TNSC',
+      'uchinoura-space-center': 'USC',
+      'naro-space-center': 'Naro',
+      'rocket-lab-launch-complex-mahia-peninsula': 'LC-1',
+      'esrange-space-center': 'Esrange',
+      'wallops-flight-facility': 'WFF',
+      'mid-atlantic-regional-spaceport': 'WFF',
+      'imam-khomeini-space-center': 'Semnan',
+      'starbase': 'Starbase',
+      'boca-chica': 'Starbase',
+    };
+
     // Location slug (from RocketLaunch.Live) → {lat, lon}
-    // Built by merging API response pad.location.slug with known coordinates.
+    // Used only as fallback if launch_sites.csv match fails.
     const RLL_LOC_COORDS = {
       'baikonur-cosmodrome': { lat: 45.6, lon: 63.4 },
       'cape-canaveral-sfs': { lat: 28.391, lon: -80.588 },
@@ -1027,6 +1055,10 @@
     let launchSites = {}; // abbrev -> {lat, lon, name}
     // Also build a by-name index for RLL lookups
     let launchSitesByName = {}; // partial name -> {lat, lon}
+
+    function normalizeLocationKey(s) {
+      return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
 
     function parseLaunchDate(s) {
       if (!s) return null;
@@ -1076,10 +1108,20 @@
       return new Date(Date.UTC(parseInt(m[3]), month, parseInt(m[2]), hr, parseInt(m[5])));
     }
 
-    function coordsForRllLoc(padLoc) {
+    function coordsForRllLoc(padLoc, options = {}) {
       if (!padLoc) return null;
+      const siteOnly = !!options.siteOnly;
       const slug = (padLoc.slug || '').toLowerCase();
       const name = (padLoc.name || '').toLowerCase();
+      const mappedAbbr = RLL_LOC_TO_SITE_ABBR[slug];
+      if (mappedAbbr && launchSites[mappedAbbr]) {
+        return { lat: launchSites[mappedAbbr].lat, lon: launchSites[mappedAbbr].lon };
+      }
+      const normalizedName = normalizeLocationKey(name);
+      if (normalizedName && launchSitesByName[normalizedName]) {
+        return launchSitesByName[normalizedName];
+      }
+      if (siteOnly) return null;
       if (RLL_LOC_COORDS[slug]) return RLL_LOC_COORDS[slug];
       // Fuzzy fallback: check if any key is contained in the location name
       for (const [k, v] of Object.entries(RLL_LOC_COORDS)) {
@@ -1106,8 +1148,15 @@
           const abbrev = (row['abbreviation'] || '').trim();
           const lat = parseFloat(row['latitude']);
           const lon = parseFloat(row['longitude']);
+          const name = (row['name'] || '').trim();
           if (abbrev && isFinite(lat) && isFinite(lon)) {
-            launchSites[abbrev] = { lat, lon, name: (row['name'] || abbrev).trim() };
+            launchSites[abbrev] = { lat, lon, name: name || abbrev };
+          }
+          const normalizedName = normalizeLocationKey(name);
+          if (normalizedName && isFinite(lat) && isFinite(lon)) {
+            if (!launchSitesByName[normalizedName]) {
+              launchSitesByName[normalizedName] = { lat, lon };
+            }
           }
         });
         console.log(`[launches] Loaded ${Object.keys(launchSites).length} launch sites`);
@@ -1146,13 +1195,13 @@
 
           list.forEach((l, idx) => {
             const loc = l.pad?.location;
-            const slug = loc?.slug;
             let lat = loc?.latitude, lon = loc?.longitude;
-            if (!lat && loc) {
-              const coords = coordsForRllLoc(loc);
-              if (coords) { lat = coords.lat; lon = coords.lon; }
+            if (loc) {
+              const hasApiCoords = isFinite(parseFloat(lat)) && isFinite(parseFloat(lon));
+              const coords = coordsForRllLoc(loc, { siteOnly: hasApiCoords });
+              if (!hasApiCoords && coords) { lat = coords.lat; lon = coords.lon; }
             }
-            if (!lat) return;
+            if (!isFinite(parseFloat(lat)) || !isFinite(parseFloat(lon))) return;
 
             const missionName = l.name || '未知任务';
             const vehicleName = l.vehicle?.name || '';
