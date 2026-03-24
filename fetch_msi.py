@@ -178,7 +178,7 @@ def _find_warning_entities(root):
         return [root]
     return []
 
-def fetch_msi_single(nav_area, url_template=PRIMARY_MSI_URL_TEMPLATE, label='primary'):
+def fetch_msi_single(nav_area, url_template, label):
     url = url_template.format(nav_area=nav_area)
     log_to_file(f"Fetching {label} NAVAREA {nav_area}...")
     for attempt in range(1, MAX_RETRIES + 1):

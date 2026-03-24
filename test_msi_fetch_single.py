@@ -21,7 +21,7 @@ def run_with_stub(stub_get):
     try:
         fetch_msi.requests.get = stub_get
         fetch_msi.time.sleep = lambda *_: None
-        return fetch_msi.fetch_msi_single('4')
+        return fetch_msi.fetch_msi_single('4', fetch_msi.PRIMARY_MSI_URL_TEMPLATE, 'primary')
     finally:
         fetch_msi.requests.get = old_get
         fetch_msi.time.sleep = old_sleep
