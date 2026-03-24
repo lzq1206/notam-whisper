@@ -782,8 +782,8 @@
           <b>${r.notam_id || (isMaritime ? 'Maritime Warning' : '')}</b><br/>
           ${isMaritime ? '<b style="color:#ff9900;">[Maritime NavWarning]</b><br/>' : ''}
           FIR: ${r.fir || ''}<br/>
-          from: ${r.from_utc || ''}<br/>
-          to: ${r.to_utc || ''}<br/>
+          from: ${formatUtcWithLocal(r.from_utc)}<br/>
+          to: ${formatUtcWithLocal(r.to_utc)}<br/>
           qcode: ${r.qcode || ''}<br/>
           <hr/>
           <div style="max-width:420px;max-height:260px;overflow:auto;white-space:pre-wrap;">${(r.raw || '').replace(/</g, '&lt;')}</div>
@@ -874,6 +874,20 @@
       const d = new Date(dateStr + 'T00:00:00Z');
       d.setUTCDate(d.getUTCDate() + n);
       return isoDate(d);
+    }
+    function formatUtcWithLocal(utcText) {
+      const utc = (utcText || '').trim();
+      if (!utc) return '';
+      const ts = Date.parse(utc);
+      if (!Number.isFinite(ts)) return utc;
+      const local = new Date(ts).toLocaleString();
+      return `${utc} / ${local} Local`;
+    }
+    function formatLaunchDateWithLocal(d) {
+      if (!d || !isFinite(d.getTime())) return '时间待定';
+      const utc = d.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+      const local = d.toLocaleString();
+      return `${utc} / ${local} Local`;
     }
 
     function setDefaultDates() {
@@ -1145,7 +1159,7 @@
             const locName = loc?.name || '';
             const padName = l.pad?.name || '';
             const t0 = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
-            const dateStr = t0 ? t0.toISOString().replace('T', ' ').slice(0, 16) + ' UTC' : '时间待定';
+            const dateStr = formatLaunchDateWithLocal(t0);
             const weather = l.weather_temp ? ` (${l.weather_temp}°C ${l.weather_condition || ''})` : '';
             const desc = l.launch_description || '';
             const rllUrl = `https://www.rocketlaunch.live/launch/${l.slug}`;
@@ -1203,7 +1217,7 @@
             const vehicle = row['Launch Vehicle'] || '未知';
             const payload = row['Official Payload Name'] || '';
             const successText = row['Success'] === 'S' ? '✅ 成功' : row['Success'] === 'F' ? '❌ 失败' : '?';
-            const dateStr = d.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+            const dateStr = formatLaunchDateWithLocal(d);
 
             const pIcon = L.divIcon({
               html: `<div style="background:#22c55e; width:24px; height:24px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
