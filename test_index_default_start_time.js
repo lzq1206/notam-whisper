@@ -30,8 +30,8 @@ if (/localStorage\.getItem\(['"]notam_start_date['"]\)/.test(setDefaultDatesBloc
   throw new Error('setDefaultDates should not read notam_start_date from localStorage');
 }
 
-if (!/const\s+start\s*=\s*today\s*;/.test(setDefaultDatesBlock)) {
-  throw new Error('setDefaultDates should default start to today');
+if (!/startEl\.value\s*=\s*today\s*;?/.test(setDefaultDatesBlock)) {
+  throw new Error('setDefaultDates should set startEl.value to today');
 }
 
 if (/localStorage\.setItem\(['"]notam_start_date['"]/.test(html)) {

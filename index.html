@@ -878,10 +878,9 @@
 
     function setDefaultDates() {
       const today = isoDate(new Date());
-      const start = today;
       if (!startEl.value) {
-        startEl.value = start;
-        endEl.value = plusDays(start, 5);
+        startEl.value = today;
+        endEl.value = plusDays(today, 5);
       }
     }
 
