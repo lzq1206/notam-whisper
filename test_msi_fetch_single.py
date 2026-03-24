@@ -21,7 +21,7 @@ def run_with_stub(stub_get):
     try:
         fetch_msi.requests.get = stub_get
         fetch_msi.time.sleep = lambda *_: None
-        return fetch_msi.fetch_msi_single('4')
+        return fetch_msi.fetch_msi_single('4', fetch_msi.PRIMARY_MSI_URL_TEMPLATE, 'primary')
     finally:
         fetch_msi.requests.get = old_get
         fetch_msi.time.sleep = old_sleep
@@ -37,6 +37,17 @@ def test_accepts_xml_and_extracts_entities():
     assert len(rows) == 1
     assert rows[0]['msgID'] == 'A'
     assert rows[0]['msgText'] == 'T'
+
+def test_accepts_warning_entities():
+    xml = """<root><warning><msgID>W1</msgID><msgText>Warning text</msgText><category>14</category><msgType>NW</msgType></warning></root>"""
+
+    def stub_get(*args, **kwargs):
+        return StubResponse(xml, 200, {'content-type': 'application/xml'})
+
+    rows = run_with_stub(stub_get)
+    assert len(rows) == 1
+    assert rows[0]['msgID'] == 'W1'
+    assert rows[0]['msgText'] == 'Warning text'
 
 
 def test_rejects_html_like_response():
@@ -74,6 +85,7 @@ def test_fallback_used_when_primary_fails():
 
 
 test_accepts_xml_and_extracts_entities()
+test_accepts_warning_entities()
 test_rejects_html_like_response()
 test_fallback_used_when_primary_fails()
 print("test_msi_fetch_single passed")
