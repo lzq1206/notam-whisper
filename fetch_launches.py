@@ -147,10 +147,12 @@ def fetch_past_launches():
             items = re.findall(rf'({date_pattern}).*?mission-name.*?>(.*?)<.*?vehicle.*?>(.*?)<.*?location.*?>(.*?)<', html, re.S)
 
         for item in items:
+            if len(item) < 4:
+                continue
             date_str = item[0]
-            mission = item[-3].strip()
-            vehicle = item[-2].strip()
-            location = item[-1].strip()
+            mission = item[1].strip()
+            vehicle = item[2].strip()
+            location = item[3].strip()
             full_date = _normalize_launch_datetime(date_str)
             if not full_date:
                 continue
