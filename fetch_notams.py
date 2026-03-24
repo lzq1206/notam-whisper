@@ -28,12 +28,169 @@ now_utc = datetime.datetime.utcnow()
 five_days = now_utc + timedelta(days=5)
 
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
+FAA_SEARCH_URL = "https://notams.aim.faa.gov/notamSearch/search"
+FAA_SUPPLEMENTAL_FIRS = ["ZLHW", "ZHWH"]
+FAA_PAGE_SIZE = 30
 
 def make_headers():
     return {
         "Accept": "application/json, text/plain, */*",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
     }
+
+def _passes_filters(notam):
+    raw = notam.get('raw', '')
+    raw_upper = raw.upper()
+    if any(d in raw_upper for d in DROP):
+        return False
+    if not any(k in raw_upper for k in KEEP):
+        return False
+    from_str = notam.get('from', '')
+    to_str = notam.get('to', '')
+    try:
+        if from_str:
+            from_dt = datetime.datetime.fromisoformat(from_str.replace('Z', '+00:00')).replace(tzinfo=None)
+            if from_dt > five_days:
+                return False
+        if to_str:
+            to_dt = datetime.datetime.fromisoformat(to_str.replace('Z', '+00:00')).replace(tzinfo=None)
+            if to_dt < now_utc:
+                return False
+    except Exception:
+        pass
+    return True
+
+def _parse_faa_time(date_str):
+    if not date_str:
+        return ''
+    if date_str == 'PERM':
+        return ''
+    try:
+        dt = datetime.datetime.strptime(date_str, "%m/%d/%Y %H%M")
+        return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    except Exception:
+        return ''
+
+def _parse_q_line(raw):
+    qcode_match = re.search(r'Q\)\s*[A-Z0-9]{4}/([A-Z0-9]{5})/', raw)
+    qcode = qcode_match.group(1) if qcode_match else ''
+
+    center_match = re.search(
+        r'Q\)\s*[A-Z0-9]{4}/[A-Z0-9]{5}/[^/]+/[^/]+/[^/]+/\d{3}/\d{3}/(\d{4,6})([NS])(\d{5,7})([EW])(\d{3})',
+        raw,
+        re.I
+    )
+    if not center_match:
+        return '', '', '', qcode
+
+    lat = _parse_coord_val(center_match.group(1), center_match.group(2))
+    lon = _parse_coord_val(center_match.group(3), center_match.group(4))
+    radius = center_match.group(5)
+    if radius == '999':
+        radius = ''
+    return lat, lon, radius, qcode
+
+def _normalize_notam_number(number):
+    if not number:
+        return '', '', ''
+    # FAA `notamNumber` can be like A0787/26 or A0787/2026.
+    m = re.match(r'^([A-Z])\s*0*(\d+)\s*/\s*(\d{2,4})$', number.strip(), re.I)
+    if not m:
+        return '', '', ''
+    series, num, year = m.group(1).upper(), int(m.group(2)), m.group(3)
+    if len(year) == 2:
+        year = f"20{year}"
+    return series, num, year
+
+def fetch_faa_notams():
+    rows = []
+    headers = {
+        **make_headers(),
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "Origin": "https://notams.aim.faa.gov",
+        "Referer": "https://notams.aim.faa.gov/notamSearch/nsapp.html",
+    }
+
+    for fir in FAA_SUPPLEMENTAL_FIRS:
+        session = requests.Session()
+        session.headers.update(headers)
+        offset = 0
+        while True:
+            payload = {
+                "searchType": "0",
+                "designatorsForLocation": fir,
+                "offset": str(offset),
+                "notamsOnly": "false"
+            }
+            try:
+                resp = session.post(FAA_SEARCH_URL, data=payload, timeout=30)
+                if resp.status_code != 200:
+                    break
+                notam_list = resp.json().get('notamList', [])
+                if not notam_list:
+                    break
+                for item in notam_list:
+                    raw = item.get('icaoMessage', '')
+                    notam_num = item.get('notamNumber', '')
+                    series, number, year = _normalize_notam_number(notam_num)
+                    lat, lon, radius, qcode = _parse_q_line(raw)
+                    n = {
+                        'raw': raw,
+                        'series': series,
+                        'number': number,
+                        'year': year,
+                        'fir': fir,
+                        'from': _parse_faa_time(item.get('startDate')),
+                        'to': _parse_faa_time(item.get('endDate')),
+                        'latitude': lat,
+                        'longitude': lon,
+                        'radius': radius,
+                        'notamCode': qcode
+                    }
+                    if not _passes_filters(n):
+                        continue
+                    rows.append({
+                        'id': item.get('transactionID', f"faa-{fir}-{notam_num}"),
+                        '_country': 'FAA',
+                        'notam': n
+                    })
+
+                if len(notam_list) < FAA_PAGE_SIZE:
+                    break
+                offset += FAA_PAGE_SIZE
+            except Exception as e:
+                print(f"[faa] Error fetching '{fir}' offset {offset}: {e}")
+                break
+    print(f"[faa] Supplemental NOTAMs after filter: {len(rows)}")
+    return rows
+
+def _item_key(item):
+    n = item.get('notam', {})
+    series = str(n.get('series', '')).strip().upper()
+    number = str(n.get('number', '')).strip()
+    year = str(n.get('year', '')).strip()
+    if series and number and year:
+        return f"NOTAM:{series}{number}/{year}"
+    nid = str(item.get('id', '')).strip()
+    if nid:
+        return f"ID:{nid}"
+    raw = str(n.get('raw', '')).strip()
+    if raw:
+        return f"RAW:{raw[:120]}"
+    return ''
+
+def merge_notams(primary, supplemental):
+    merged = []
+    seen = set()
+    for source in (primary, supplemental):
+        for item in source:
+            key = _item_key(item)
+            if key and key in seen:
+                continue
+            if key:
+                seen.add(key)
+            merged.append(item)
+    return merged
 
 # ═══════════════════════════════════════════════════════════════
 # notammap.org
@@ -97,25 +254,8 @@ def fetch_notammap():
     filtered = []
     for item in unique:
         n = item.get('notam', {})
-        raw = n.get('raw', '')
-        raw_upper = raw.upper()
-        if any(d in raw_upper for d in DROP):
+        if not _passes_filters(n):
             continue
-        if not any(k in raw_upper for k in KEEP):
-            continue
-        from_str = n.get('from', '')
-        to_str = n.get('to', '')
-        try:
-            if from_str:
-                from_dt = datetime.datetime.fromisoformat(from_str.replace('Z', '+00:00')).replace(tzinfo=None)
-                if from_dt > five_days:
-                    continue
-            if to_str:
-                to_dt = datetime.datetime.fromisoformat(to_str.replace('Z', '+00:00')).replace(tzinfo=None)
-                if to_dt < now_utc:
-                    continue
-        except:
-            pass
         filtered.append(item)
 
     print(f"[notammap] After KEEP/DROP + time filter: {len(filtered)}")
@@ -291,6 +431,8 @@ def main():
     print("=" * 60)
 
     items = fetch_notammap()
+    supplemental = fetch_faa_notams()
+    items = merge_notams(items, supplemental)
 
     # Write notams.csv
     with open('notams.csv', 'w', newline='', encoding='utf-8') as f:
