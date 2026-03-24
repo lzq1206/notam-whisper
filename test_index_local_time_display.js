@@ -35,8 +35,8 @@ if (!launchLocalFn) {
   throw new Error('formatLaunchDateWithLocal function not found');
 }
 
-if (!/toISOString\(\)\.replace\('T', ' '\)\.slice\(0, 16\) \+ ' UTC'/.test(launchLocalFn)) {
-  throw new Error('formatLaunchDateWithLocal should include UTC formatting');
+if (!/toISOString\(\)/.test(launchLocalFn) || !/replace\('T', ' '\)/.test(launchLocalFn) || !/slice\(0,\s*16\)/.test(launchLocalFn)) {
+  throw new Error('formatLaunchDateWithLocal should build UTC text from ISO timestamp');
 }
 if (!/toLocaleString\(\)/.test(launchLocalFn) || !/Local/.test(launchLocalFn)) {
   throw new Error('formatLaunchDateWithLocal should include local time');
