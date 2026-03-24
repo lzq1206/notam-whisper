@@ -196,7 +196,7 @@ def fetch_msi_single(nav_area, url_template=PRIMARY_MSI_URL_TEMPLATE, label='pri
                             'category': entity.findtext('category'),
                             'msgType': entity.findtext('msgType')
                         })
-                    return [r for r in res if r['msgText']]
+                    return res
         except Exception as e:
             log_to_file(f"  Request error: {e}")
         if attempt < MAX_RETRIES:
