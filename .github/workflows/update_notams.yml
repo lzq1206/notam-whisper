@@ -6,7 +6,7 @@ on:
     paths:
       - 'fetch_notams.py'
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 jobs:

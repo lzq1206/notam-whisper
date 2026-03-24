@@ -4,6 +4,51 @@ import csv
 from datetime import datetime
 import os
 
+CSV_HEADERS = [
+    "Launch Date and Time (UTC)",
+    "Launch Site (Abbrv.)",
+    "Latitude",
+    "Longitude",
+    "Launch Vehicle",
+    "Official Payload Name",
+    "Success",
+    "Launch Site (Full)",
+]
+
+
+def _normalize_launch_datetime(date_text):
+    text = (date_text or "").strip().upper()
+    if not text:
+        return ""
+
+    # Try common formats first (with year).
+    for fmt in ("%b %d, %Y", "%b %d %Y", "%Y-%m-%d", "%Y/%m/%d"):
+        try:
+            dt = datetime.strptime(text.title(), fmt)
+            return dt.strftime("%Y %b %d 0000").upper()
+        except ValueError:
+            pass
+
+    month_day_match = re.search(
+        r"\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\s+(\d{1,2})\b", text
+    )
+    if month_day_match:
+        month, day = month_day_match.groups()
+        year_match = re.search(r"\b(20\d{2})\b", text)
+        year = year_match.group(1) if year_match else str(datetime.now().year)
+        return f"{year} {month} {int(day):02d} 0000"
+
+    return ""
+
+
+def _launch_sort_key(item):
+    launch_date = item.get("Launch Date and Time (UTC)", "")
+    try:
+        return datetime.strptime(launch_date, "%Y %b %d %H%M")
+    except Exception:
+        return datetime.min
+
+
 def fetch_past_launches():
     # Mapping for scraped location names to coordinates/abbreviations
     SITE_MAPPING = {
@@ -33,7 +78,7 @@ def fetch_past_launches():
         html = response.text
         launches = []
         month_abbrs = "JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC"
-        date_pattern = rf"({month_abbrs})\s+(\d+)"
+        date_pattern = rf"({month_abbrs})\s+\d+"
         
         # More specific regex for the RLL past launches page structure
         items = re.findall(rf'<span class="launch-date">({date_pattern}).*?<h4 class="mission-name">.*?>(.*?)<.*?vehicle-name-inner">\s*(.*?)\s*<.*?location.*?>(.*?)<', html, re.S)
@@ -47,9 +92,9 @@ def fetch_past_launches():
             mission = item[2].strip()
             vehicle = item[3].strip()
             location = item[4].strip()
-            
-            dt = datetime.now()
-            full_date = f"{dt.year} {date_str} 0000"
+            full_date = _normalize_launch_datetime(date_str)
+            if not full_date:
+                continue
             
             # Map location
             lat, lon, abbr = "", "", ""
@@ -75,8 +120,6 @@ def fetch_past_launches():
         return []
 
 def save_to_csv(launches, filename):
-    keys = ["Launch Date and Time (UTC)", "Launch Site (Abbrv.)", "Latitude", "Longitude", "Launch Vehicle", "Official Payload Name", "Success", "Launch Site (Full)"]
-    
     existing_data = []
     if os.path.exists(filename):
         with open(filename, 'r', encoding='utf-8') as f:
@@ -93,18 +136,57 @@ def save_to_csv(launches, filename):
             unique[k] = item
     
     # Sort by date (descending)
-    final_list = sorted(unique.values(), key=lambda x: x.get('Launch Date and Time (UTC)', ''), reverse=True)
+    final_list = sorted(unique.values(), key=_launch_sort_key, reverse=True)
 
     with open(filename, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, fieldnames=keys)
+        writer = csv.DictWriter(f, fieldnames=CSV_HEADERS)
         writer.writeheader()
         writer.writerows(final_list)
+
+
+def archive_weekly(csv_path, history_subdir='launches'):
+    history_dir = os.path.join('history', history_subdir)
+    os.makedirs(history_dir, exist_ok=True)
+
+    today = datetime.utcnow().date()
+    iso_year, iso_week, _ = today.isocalendar()
+    week_tag = f"{iso_year}-W{iso_week:02d}"
+    weekly_csv = os.path.join(history_dir, f"{week_tag}.csv")
+
+    new_rows = []
+    with open(csv_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        headers = reader.fieldnames or CSV_HEADERS
+        new_rows = list(reader)
+
+    existing_rows = []
+    if os.path.exists(weekly_csv):
+        with open(weekly_csv, 'r', encoding='utf-8') as f:
+            existing_rows = list(csv.DictReader(f))
+
+    seen = set()
+    merged = []
+    for row in new_rows + existing_rows:
+        key = f"{row.get('Launch Date and Time (UTC)')}|{row.get('Launch Vehicle')}|{row.get('Official Payload Name')}"
+        if key in seen:
+            continue
+        seen.add(key)
+        merged.append(row)
+
+    merged = sorted(merged, key=_launch_sort_key, reverse=True)
+    with open(weekly_csv, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=headers)
+        writer.writeheader()
+        writer.writerows(merged)
+
 
 if __name__ == "__main__":
     launches = fetch_past_launches()
     if launches:
         # Only save if we actually got something from the scrape
-        save_to_csv(launches, os.path.join(os.path.dirname(__file__), "past_launches.csv"))
+        csv_path = os.path.join(os.path.dirname(__file__), "past_launches.csv")
+        save_to_csv(launches, csv_path)
+        archive_weekly(csv_path, "launches")
         print(f"Merged {len(launches)} new/recent launches into past_launches.csv")
     else:
         print("No new launches found or scrape failed.")
