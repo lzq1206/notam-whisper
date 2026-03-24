@@ -31,24 +31,24 @@ if (!/return\s+colorByTime\(([^)]*)\)\s*;/.test(launchColorBlock)) {
   throw new Error('launchColor should delegate gradient mapping to colorByTime');
 }
 
-if (!/const minLaunchTs = now\.getTime\(\)\s*;/.test(html)) {
-  throw new Error('Upcoming launch minLaunchTs should be anchored to now.getTime()');
+if (!/function getTimelineBounds\(/.test(html)) {
+  throw new Error('getTimelineBounds helper not found');
 }
 
-if (!/const maxLaunchTs\s*=/.test(html)) {
-  throw new Error('maxLaunchTs declaration not found');
+if (!/const \{ minTs: minLaunchTs, maxTs: maxLaunchTs \} = getTimelineBounds\(filteredDataRows,\s*upcomingTimes\);/.test(html)) {
+  throw new Error('Upcoming launch bounds should include filteredDataRows and upcomingTimes');
 }
 
-if (!/Math\.max\(/.test(html)) {
-  throw new Error('maxLaunchTs should use Math.max');
+if (!/const launchTimes = upcomingLaunches\.map\(l => l\.ts\)\.filter\(Number\.isFinite\);/.test(html)) {
+  throw new Error('NOTAM rendering should gather launch timestamps for shared timeline bounds');
 }
 
-if (!new RegExp(`now\\.getTime\\(\\)\\s*\\+\\s*${MS_PER_DAY}`).test(html)) {
-  throw new Error(`maxLaunchTs should include now.getTime() + ${MS_PER_DAY}`);
+if (!/const \{ minTs, maxTs \} = getTimelineBounds\(rows,\s*launchTimes\);/.test(html)) {
+  throw new Error('NOTAM timeline bounds should include launchTimes');
 }
 
-if (!/\.\.\.upcomingTimes/.test(html)) {
-  throw new Error('maxLaunchTs should include ...upcomingTimes spread');
+if (!new RegExp(`Math\\.max\\(now\\s*\\+\\s*${MS_PER_DAY},\\s*\\.\\.\\.mergedTimes\\)`).test(html)) {
+  throw new Error(`getTimelineBounds should include now + ${MS_PER_DAY} safety window`);
 }
 
 console.log('test_index_launch_color_mapping.js passed');

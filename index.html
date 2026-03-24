@@ -378,10 +378,8 @@
         // 排序：时间早的最后渲染（叠在上方）
         rows.sort((a,b) => (Date.parse(b.from_utc) || 0) - (Date.parse(a.from_utc) || 0));
 
-        const now = Date.now();
-        const times = rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite);
-        const minTs = now; 
-        const maxTs = times.length ? Math.max(now + 86400000, ...times) : now + 86400000;
+        const launchTimes = upcomingLaunches.map(l => l.ts).filter(Number.isFinite);
+        const { minTs, maxTs } = getTimelineBounds(rows, launchTimes);
 
         rows.forEach(r => {
           try {
@@ -568,6 +566,17 @@
       return `rgb(${r},${g},${b})`;
     }
 
+    function getTimelineBounds(rows, extraTimes = []) {
+      const now = Date.now();
+      const rowTimes = Array.isArray(rows)
+        ? rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite)
+        : [];
+      const mergedTimes = rowTimes.concat((extraTimes || []).filter(Number.isFinite));
+      const minTs = now;
+      const maxTs = mergedTimes.length ? Math.max(now + 86400000, ...mergedTimes) : now + 86400000;
+      return { minTs, maxTs };
+    }
+
     function parseCoordinate(s, isLon) {
       let parts = s.split('.');
       let intPart = parts[0];
@@ -743,10 +752,8 @@
       // 排序：时间早的（即将发生/红色）最后渲染，排在最上方
       rows.sort((a, b) => (Date.parse(b.from_utc) || 0) - (Date.parse(a.from_utc) || 0));
 
-      const now = Date.now();
-      const times = rows.map(r => Date.parse(r.from_utc)).filter(Number.isFinite);
-      const minTs = now;
-      const maxTs = times.length ? Math.max(now + 86400000, ...times) : now + 86400000;
+      const launchTimes = upcomingLaunches.map(l => l.ts).filter(Number.isFinite);
+      const { minTs, maxTs } = getTimelineBounds(rows, launchTimes);
 
       if (currentFeatureGroup) map.removeLayer(currentFeatureGroup);
       const group = L.featureGroup();
@@ -1419,8 +1426,7 @@
             const d = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
             return (d && isFinite(d.getTime())) ? d.getTime() : null;
           }).filter(t => t);
-          const minLaunchTs = now.getTime();
-          const maxLaunchTs = upcomingTimes.length ? Math.max(now.getTime() + 86400000, ...upcomingTimes) : now.getTime() + 86400000;
+          const { minTs: minLaunchTs, maxTs: maxLaunchTs } = getTimelineBounds(filteredDataRows, upcomingTimes);
 
           list.forEach((l, idx) => {
             const loc = l.pad?.location;
@@ -1464,7 +1470,7 @@
             `, { maxWidth: 340 });
             lMarker.addTo(launchLayerGroup);
             upcomingLaunches.push({
-              lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color,
+              lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color, ts: t0 ? t0.getTime() : null,
               location: `${locName}${padName ? ' / ' + padName : ''}`,
               weather: cleanWeatherString(weather),
               description: desc,
@@ -1528,6 +1534,7 @@
 
         launchStatusEl.textContent = `🚀 ${upcomingCount} 计划 / ${pastCount} 过去 / ${Object.keys(launchSites).length} 发射场`;
 
+        renderRows(filteredDataRows);
         if (is3D) renderOnGlobe(filteredDataRows);
       } catch (err) {
         console.error('[launches] Error:', err);
