@@ -936,6 +936,7 @@
               else coordinatesList = parsed;
             }
           } else {
+            // Legacy polygon text may separate points with space / semicolon / pipe.
             const pts = r.polygon.split(/[ ;|]/).filter(Boolean);
             const coords = pts.map(p => {
               const parts = p.split(',');
@@ -943,7 +944,7 @@
             }).filter(p => isFinite(p[0]) && isFinite(p[1]));
             if (coords.length >= 2) coordinatesList.push(coords);
           }
-        } catch (e) { }
+        } catch (e) { /* ignore malformed polygon and fallback to raw-text parsing */ }
       }
 
       if (coordinatesList.length === 0) {
@@ -964,13 +965,14 @@
       return pts;
     }
 
+    // Build a geodesic-like circle on WGS84 sphere, output as [lat, lon] coordinates for KML Polygon.
     function buildKmlCircleCoordinates(lat, lon, radiusMeters, steps = 64) {
-      const earthRadius = 6378137;
-      const angularDistance = radiusMeters / earthRadius;
+      const EARTH_RADIUS_METERS = 6378137;
+      const angularDistance = radiusMeters / EARTH_RADIUS_METERS;
       const lat1 = lat * Math.PI / 180;
       const lon1 = lon * Math.PI / 180;
       const coords = [];
-      for (let i = 0; i <= steps; i++) {
+      for (let i = 0; i < steps; i++) {
         const bearing = (i / steps) * 2 * Math.PI;
         const lat2 = Math.asin(
           Math.sin(lat1) * Math.cos(angularDistance) +
@@ -986,7 +988,13 @@
         const latDeg = lat2 * 180 / Math.PI;
         coords.push([latDeg, lonDeg]);
       }
+      if (coords.length > 0) coords.push([coords[0][0], coords[0][1]]);
       return coords;
+    }
+
+    function isRouteGeometry(rawText) {
+      // Treat route/corridor NOTAM as line geometry instead of polygon fill.
+      return /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
     }
 
     function buildKmlGeometryForRow(r, lat, lon) {
@@ -994,7 +1002,7 @@
       const radiusNm = parseFloat(r.radius_nm || '0');
       const geometries = [];
       const rawText = r.raw || '';
-      const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
+      const isRoute = isRouteGeometry(rawText);
 
       coordinatesList.forEach(points => {
         const pts = normalizeDatelineCoordinates(points);
