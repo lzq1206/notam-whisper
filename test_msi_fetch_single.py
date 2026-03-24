@@ -38,6 +38,17 @@ def test_accepts_xml_and_extracts_entities():
     assert rows[0]['msgID'] == 'A'
     assert rows[0]['msgText'] == 'T'
 
+def test_accepts_warning_entities():
+    xml = """<root><warning><msgID>W1</msgID><msgText>Warning text</msgText><category>14</category><msgType>NW</msgType></warning></root>"""
+
+    def stub_get(*args, **kwargs):
+        return StubResponse(xml, 200, {'content-type': 'application/xml'})
+
+    rows = run_with_stub(stub_get)
+    assert len(rows) == 1
+    assert rows[0]['msgID'] == 'W1'
+    assert rows[0]['msgText'] == 'Warning text'
+
 
 def test_rejects_html_like_response():
     def stub_get(*args, **kwargs):
@@ -74,6 +85,7 @@ def test_fallback_used_when_primary_fails():
 
 
 test_accepts_xml_and_extracts_entities()
+test_accepts_warning_entities()
 test_rejects_html_like_response()
 test_fallback_used_when_primary_fails()
 print("test_msi_fetch_single passed")

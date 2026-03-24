@@ -167,7 +167,18 @@ def parse_msi_active_times(text):
     return min(found_dts), max(found_dts)
 
 # --- Fetching ---
-def fetch_msi_single(nav_area, url_template, label):
+def _find_warning_entities(root):
+    entities = root.findall('.//warning')
+    if entities:
+        return entities
+    entities = root.findall('.//smapsActiveEntity')
+    if entities:
+        return entities
+    if root.tag in ('warning', 'smapsActiveEntity'):
+        return [root]
+    return []
+
+def fetch_msi_single(nav_area, url_template=PRIMARY_MSI_URL_TEMPLATE, label='primary'):
     url = url_template.format(nav_area=nav_area)
     log_to_file(f"Fetching {label} NAVAREA {nav_area}...")
     for attempt in range(1, MAX_RETRIES + 1):
@@ -175,17 +186,17 @@ def fetch_msi_single(nav_area, url_template, label):
             resp = requests.get(url, timeout=30, verify=False)
             if resp.status_code == 200:
                 root = ET.fromstring(resp.text)
-                entities = root.findall('.//warning')
+                entities = _find_warning_entities(root)
                 if entities:
                     res = []
                     for entity in entities:
                         res.append({
-                            'msgID': entity.findtext('msgID'),
-                            'msgText': entity.findtext('msgText'),
+                            'msgID': entity.findtext('msgID') or '',
+                            'msgText': entity.findtext('msgText') or '',
                             'category': entity.findtext('category'),
                             'msgType': entity.findtext('msgType')
                         })
-                    return res
+                    return [r for r in res if r['msgText']]
         except Exception as e:
             log_to_file(f"  Request error: {e}")
         if attempt < MAX_RETRIES:
