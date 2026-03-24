@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-from fetch_notams import _normalize_notam_number, _parse_q_line, merge_notams
+from fetch_notams import (
+    FAA_SUPPLEMENTAL_FIRS,
+    _normalize_notam_number,
+    _parse_q_line,
+    merge_notams,
+)
 
 
 def test_normalize_notam_number():
@@ -32,9 +37,13 @@ def test_merge_notams_dedupes_by_notam_id():
     merged = merge_notams(primary, supplemental)
     assert [item['id'] for item in merged] == ['1', '2', '3']
 
+def test_faa_supplemental_firs_include_zxxx():
+    assert 'ZXXX' in FAA_SUPPLEMENTAL_FIRS
+
 
 if __name__ == '__main__':
     test_normalize_notam_number()
     test_parse_q_line()
     test_merge_notams_dedupes_by_notam_id()
+    test_faa_supplemental_firs_include_zxxx()
     print('test_fetch_notams_supplemental.py passed')
