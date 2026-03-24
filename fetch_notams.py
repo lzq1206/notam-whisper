@@ -26,7 +26,7 @@ DROP = [
 
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
 FAA_SEARCH_URL = "https://notams.aim.faa.gov/notamSearch/search"
-FAA_SUPPLEMENTAL_FIRS = ["ZLHW", "ZHWH"]
+FAA_SUPPLEMENTAL_FIRS = ["ZLHW", "ZHWH", "ZXXX"]
 FAA_PAGE_SIZE = 30
 
 def make_headers():
