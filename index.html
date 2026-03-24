@@ -886,17 +886,14 @@
       }
     }
 
-    function applyFilter() {
+    async function applyFilter() {
       if (!dataRows.length) return;
       const s = startEl.value ? new Date(startEl.value + 'T00:00:00Z').getTime() : -Infinity;
       const e = endEl.value ? new Date(endEl.value + 'T23:59:59Z').getTime() : Infinity;
 
       // 如果筛选了历史日期，自动加载历史 CSV
       if (isFinite(s) && s < Date.now() - 86400000) {
-          loadHistoryRange(s, e).then(() => {
-              // 完成加载后，这里的 dataRows 已经更新，再次调用渲染即可
-              // 注意：为了避免无限循环，这里如果是由于历史加载触发的，不再重调 applyFilter
-          });
+          await loadHistoryRange(s, e);
       }
 
       const filtered = dataRows.filter(r => {
@@ -1283,7 +1280,6 @@
         // 也检查当前时间前后的周，确保覆盖
         weeks.add(getISOWeek(Date.now()));
 
-        let changed = false;
         for (const wk of weeks) {
             if (loadedWeeks.has(wk)) continue;
             loadedWeeks.add(wk);
@@ -1300,7 +1296,6 @@
                     const nid = nr.id || nr.notam_id;
                     if (!currentIds.has(nid)) {
                         dataRows.push(nr);
-                        changed = true;
                     }
                 });
             }
@@ -1310,14 +1305,9 @@
                 newMsi.forEach(nm => {
                     if (!currentMsi.has(nm.id)) {
                         msiRows.push(nm);
-                        changed = true;
                     }
                 });
             }
-        }
-        if (changed) {
-            console.log("[History] Data updated, re-rendering...");
-            updateLayers();
         }
     }
 
