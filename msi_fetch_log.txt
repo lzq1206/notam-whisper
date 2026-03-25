@@ -993,3 +993,7 @@ AttributeError: module 'datetime' has no attribute 'UTC'
     now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
 AttributeError: module 'datetime' has no attribute 'UTC'
 
+2026-03-25T01:41:18.117150 - Fetching primary NAVAREA 4...
+2026-03-25T01:41:18.119142 -   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Max retries exceeded with url: /api/publications/ntm/warnings?output=xml&navArea=4 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f422d464890>: Failed to resolve 'msi.nga.mil' ([Errno -5] No address associated with hostname)"))
+2026-03-25T01:41:20.121047 -   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Max retries exceeded with url: /api/publications/ntm/warnings?output=xml&navArea=4 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f422d467140>: Failed to resolve 'msi.nga.mil' ([Errno -5] No address associated with hostname)"))
+2026-03-25T01:41:24.122852 -   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Max retries exceeded with url: /api/publications/ntm/warnings?output=xml&navArea=4 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f422d4676b0>: Failed to resolve 'msi.nga.mil' ([Errno -5] No address associated with hostname)"))

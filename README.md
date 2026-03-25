@@ -183,6 +183,8 @@ sudo apt install -y certbot python3-certbot-nginx
 sudo certbot --nginx -d rocket.rainywhisper.com
 ```
 
+上面是一键脚本；如果你希望分步骤执行并逐步检查结果，可以继续参考下面的手动步骤。
+
 1) 安装基础环境：
 
 ```bash
@@ -194,7 +196,7 @@ sudo apt install -y git python3-venv python3-pip nginx rsync
 
 ```bash
 sudo mkdir -p /opt
-sudo chown -R ubuntu:ubuntu /opt
+sudo chown -R "$USER":"$USER" /opt
 cd /opt
 git clone https://github.com/lzq1206/notam-whisper.git
 cd /opt/notam-whisper
