@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 from fetch_notams import (
+    COUNTRY_FETCH_RETRIES,
     FAA_SUPPLEMENTAL_FIRS,
     _normalize_notam_number,
     _parse_q_line,
+    fetch_country,
+    fetch_notammap,
     merge_notams,
 )
 
@@ -41,9 +44,73 @@ def test_faa_supplemental_firs_include_zxxx():
     assert 'ZXXX' in FAA_SUPPLEMENTAL_FIRS
 
 
+def test_fetch_country_retries_retryable_status():
+    import fetch_notams
+
+    class FakeResponse:
+        def __init__(self, status_code, payload=None):
+            self.status_code = status_code
+            self._payload = payload or {}
+
+        def json(self):
+            return self._payload
+
+    calls = {'count': 0}
+
+    def fake_get(url, headers=None, timeout=None):
+        calls['count'] += 1
+        if calls['count'] < COUNTRY_FETCH_RETRIES:
+            return FakeResponse(503)
+        return FakeResponse(200, {'notams': [{'id': 'ok'}]})
+
+    original_get = fetch_notams.requests.get
+    original_sleep = fetch_notams.time.sleep
+    fetch_notams.requests.get = fake_get
+    fetch_notams.time.sleep = lambda _: None
+    try:
+        result = fetch_country('Testland')
+    finally:
+        fetch_notams.requests.get = original_get
+        fetch_notams.time.sleep = original_sleep
+
+    assert calls['count'] == COUNTRY_FETCH_RETRIES
+    assert result == [{'id': 'ok'}]
+
+
+def test_fetch_notammap_sequential_retry_for_failed_country():
+    import fetch_notams
+
+    attempts = {'A': 0, 'B': 0}
+
+    def fake_fetch_countries():
+        return ['A', 'B']
+
+    def fake_fetch_country(country):
+        attempts[country] += 1
+        if country == 'A' and attempts[country] == 1:
+            return None
+        return [{'id': country, 'notam': {'raw': 'ROCKET UNL', 'from': '', 'to': ''}}]
+
+    original_fetch_countries = fetch_notams.fetch_countries
+    original_fetch_country = fetch_notams.fetch_country
+    fetch_notams.fetch_countries = fake_fetch_countries
+    fetch_notams.fetch_country = fake_fetch_country
+    try:
+        items = fetch_notammap()
+    finally:
+        fetch_notams.fetch_countries = original_fetch_countries
+        fetch_notams.fetch_country = original_fetch_country
+
+    assert attempts['A'] == 2
+    assert attempts['B'] == 1
+    assert sorted(item['id'] for item in items) == ['A', 'B']
+
+
 if __name__ == '__main__':
     test_normalize_notam_number()
     test_parse_q_line()
     test_merge_notams_dedupes_by_notam_id()
     test_faa_supplemental_firs_include_zxxx()
+    test_fetch_country_retries_retryable_status()
+    test_fetch_notammap_sequential_retry_for_failed_country()
     print('test_fetch_notams_supplemental.py passed')
