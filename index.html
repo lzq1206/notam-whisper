@@ -261,9 +261,11 @@
 
     let is3D = false;
     let cesiumViewer = null;
+    const CESIUM_ION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzY2ZlZjYxZi1kOGM1LTRhN2MtOGRhNi1mMDBkMWEwNjZlYTkiLCJpZCI6NDA4NzUzLCJpYXQiOjE3NzQ0MDkwMTl9.StFh8-TIWbpATRQHRmTiHtxHGeRWFSc6SNsUcESHmhc';
 
     function initCesium() {
       if (cesiumViewer) return;
+      Cesium.Ion.defaultAccessToken = CESIUM_ION_TOKEN;
       cesiumViewer = new Cesium.Viewer('mapCesium', {
         animation: false, timeline: false, infoBox: true, selectionIndicator: true,
         navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false,
