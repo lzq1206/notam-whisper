@@ -245,9 +245,9 @@
       worldCopyJump: true // 解决跨越经度180度标识消失的问题
     }).setView([34.5, 108.5], 4);
     L.control.zoom({ position: 'topright' }).addTo(map);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://webrd02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}', {
       maxZoom: 19,
-      attribution: '本项目仅作为摄影爱好者的拍照需求使用，不要用于非法用途，希望能帮助大家拍摄到壮观的火箭云，地图瓦片 © OpenStreetMap 贡献者'
+      attribution: '本项目仅作为摄影爱好者的拍照需求使用，不要用于非法用途，希望能帮助大家拍摄到壮观的火箭云，Tiles © AutoNavi'
     }).addTo(map);
 
     const statusEl = document.getElementById('status');
