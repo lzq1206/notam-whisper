@@ -28,6 +28,7 @@ CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','
 FAA_SEARCH_URL = "https://notams.aim.faa.gov/notamSearch/search"
 FAA_SUPPLEMENTAL_FIRS = ["ZLHW", "ZHWH", "ZXXX"]
 FAA_PAGE_SIZE = 30
+MAX_FUTURE_DAYS = 5
 
 def make_headers():
     return {
@@ -37,8 +38,8 @@ def make_headers():
 
 def _is_in_time_window(from_str, to_str):
     """Return True if the record is not expired and not too far in the future."""
-    now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
-    five_days = now_utc + timedelta(days=5)
+    now_utc = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+    five_days = now_utc + timedelta(days=MAX_FUTURE_DAYS)
     try:
         if from_str:
             from_dt = datetime.datetime.fromisoformat(from_str.replace('Z', '+00:00')).replace(tzinfo=None)
