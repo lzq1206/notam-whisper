@@ -6,7 +6,7 @@ id,name,abbreviation,country,latitude,longitude,type,status
 5,Hainan Commercial Spacecraft Launch Site,HCSLS,China,19.598,110.955,Orbital,Active
 6,Oriental Spaceport (Haiyang),OSP,China,36.678,121.233,Orbital (Sea),Active
 7,Sonmiani Flight Test Range,Sonmiani,Pakistan,25.200,66.750,Suborbital/Test,Active
-8,Base 603 (Guangde),Base603,China,30.933,119.200,Suborbital,Historic
+8,Broglio Space Centre (San Marco),SanMarco,Kenya/Italy,-2.940,40.213,Orbital (Sea),Historic
 9,Kennedy Space Center,KSC,USA,28.572,-80.648,Orbital,Active
 10,Cape Canaveral Space Force Station,CCSFS,USA,28.488,-80.577,Orbital,Active
 11,Vandenberg Space Force Base,VSFB,USA,34.742,-120.572,Orbital,Active
@@ -47,4 +47,3 @@ id,name,abbreviation,country,latitude,longitude,type,status
 46,Spaceport Cornwall,Cornwall,UK,50.440,-4.995,Air Launch,Active
 47,Woomera Test Range,Woomera,Australia,-30.958,136.532,Test/Suborbital,Historic
 48,Arnhem Space Centre,ASC,Australia,-12.381,136.819,Suborbital,Active
-49,Broglio Space Centre (San Marco),SanMarco,Kenya/Italy,-2.940,40.213,Orbital (Sea),Historic
