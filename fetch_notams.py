@@ -214,7 +214,7 @@ def fetch_countries():
         print(f"[notammap] Error fetching countries: {e}")
     return []
 
-def fetch_country(country):
+def fetch_country(country, report_failure=False):
     safe_name = country.replace(' ', '_')
     url = f"https://www.notammap.org/notamdata/{safe_name}.json"
     for attempt in range(1, COUNTRY_FETCH_RETRIES + 1):
@@ -224,14 +224,14 @@ def fetch_country(country):
                 return resp.json().get('notams', [])
             if resp.status_code not in RETRYABLE_STATUS_CODES:
                 print(f"[notammap] Error fetching '{country}': HTTP {resp.status_code}")
-                return []
+                return None if report_failure else []
             print(f"[notammap] Retryable status for '{country}': HTTP {resp.status_code} (attempt {attempt}/{COUNTRY_FETCH_RETRIES})")
         except Exception as e:
             print(f"[notammap] Error fetching '{country}' (attempt {attempt}/{COUNTRY_FETCH_RETRIES}): {e}")
 
         if attempt < COUNTRY_FETCH_RETRIES:
             time.sleep(attempt)
-    return None
+    return None if report_failure else []
 
 def fetch_notammap():
     countries = fetch_countries()
@@ -242,7 +242,7 @@ def fetch_notammap():
     all_notams = []
     failed_countries = []
     with ThreadPoolExecutor(max_workers=NOTAMMAP_MAX_WORKERS) as pool:
-        future_map = {pool.submit(fetch_country, c): c for c in countries}
+        future_map = {pool.submit(fetch_country, c, True): c for c in countries}
         for fut in as_completed(future_map):
             country = future_map[fut]
             try:
@@ -260,7 +260,7 @@ def fetch_notammap():
     if failed_countries:
         print(f"[notammap] Retrying failed countries sequentially: {len(failed_countries)}")
         for country in failed_countries:
-            notams = fetch_country(country)
+            notams = fetch_country(country, True)
             if notams is None:
                 print(f"[notammap] Giving up on '{country}' after retries.")
                 continue

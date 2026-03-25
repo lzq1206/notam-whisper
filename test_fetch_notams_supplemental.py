@@ -77,6 +77,32 @@ def test_fetch_country_retries_retryable_status():
     assert result == [{'id': 'ok'}]
 
 
+def test_fetch_country_returns_empty_list_by_default_after_retries():
+    import fetch_notams
+
+    class FakeResponse:
+        def __init__(self, status_code):
+            self.status_code = status_code
+
+        def json(self):
+            return {}
+
+    def fake_get(url, headers=None, timeout=None):
+        return FakeResponse(503)
+
+    original_get = fetch_notams.requests.get
+    original_sleep = fetch_notams.time.sleep
+    fetch_notams.requests.get = fake_get
+    fetch_notams.time.sleep = lambda _: None
+    try:
+        result = fetch_country('AlwaysFailLand')
+    finally:
+        fetch_notams.requests.get = original_get
+        fetch_notams.time.sleep = original_sleep
+
+    assert result == []
+
+
 def test_fetch_notammap_sequential_retry_for_failed_country():
     import fetch_notams
 
@@ -85,7 +111,7 @@ def test_fetch_notammap_sequential_retry_for_failed_country():
     def fake_fetch_countries():
         return ['A', 'B']
 
-    def fake_fetch_country(country):
+    def fake_fetch_country(country, report_failure=False):
         attempts[country] += 1
         if country == 'A' and attempts[country] == 1:
             return None
@@ -112,5 +138,6 @@ if __name__ == '__main__':
     test_merge_notams_dedupes_by_notam_id()
     test_faa_supplemental_firs_include_zxxx()
     test_fetch_country_retries_retryable_status()
+    test_fetch_country_returns_empty_list_by_default_after_retries()
     test_fetch_notammap_sequential_retry_for_failed_country()
     print('test_fetch_notams_supplemental.py passed')
