@@ -37,7 +37,7 @@ def make_headers():
 
 def _is_in_time_window(from_str, to_str):
     """Return True if the record is not expired and not too far in the future."""
-    now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    now_utc = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
     five_days = now_utc + timedelta(days=5)
     try:
         if from_str:
