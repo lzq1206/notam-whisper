@@ -86,7 +86,7 @@ python3 fetch_msi.py
 
 ## 云服务器部署（Ubuntu + Nginx，含定时同步）
 
-如果你已经通过 Termius 连上服务器（`ubuntu@193.123.252.251`），可以按下面顺序执行。以下命令会把站点部署到 `rocket.rainywhisper.com`，并每 6 小时自动同步仓库与数据文件。
+如果你已经通过 Termius 连上服务器（例如 `ubuntu@<你的服务器IP>`），可以按下面顺序执行。以下命令会把站点部署到 `rocket.rainywhisper.com`，并每 6 小时自动同步仓库与数据文件。
 
 1) 安装基础环境：
 
@@ -156,7 +156,7 @@ cat >/opt/notam-whisper/scripts/sync_site.sh <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 cd /opt/notam-whisper
-git pull --ff-only
+git pull --ff-only || { echo "[sync] git pull failed"; exit 1; }
 source .venv/bin/activate
 python fetch_notams.py
 python fetch_msi.py
