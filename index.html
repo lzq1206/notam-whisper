@@ -385,7 +385,9 @@
       }
     };
     function t(key, vars = {}) {
-      const dict = I18N[locale] || I18N.zh;
+      const hasLocale = !!I18N[locale];
+      if (!hasLocale) console.warn('Unknown locale:', locale);
+      const dict = hasLocale ? I18N[locale] : I18N.zh;
       const fallback = I18N.zh[key] || key;
       return (dict[key] || fallback).replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? ''));
     }
