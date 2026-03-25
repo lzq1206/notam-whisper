@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NOTAM / MSI / 火箭发射 地图</title>
+  <title>NOTAM / MSI / Rocket Launch Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
@@ -184,16 +184,16 @@
   <div class="panel collapsed" id="mainPanel">
     <div class="panel-toggle" id="panelToggle">☰</div>
     <div class="panel-content">
-      <div><b>发射相关 NOTAM 地图</b></div>
-      <div class="small">红(近) → 蓝(远)</div>
+      <div><b id="panelTitle">发射相关 NOTAM 地图</b></div>
+      <div class="small" id="panelSubtitle">红(近) → 蓝(远)</div>
       <div class="legend"></div>
 
       <div style="margin-top:8px;">
-        <label for="startDate">开始日期：</label><br />
+        <label for="startDate" id="startDateLabel">开始日期：</label><br />
         <input id="startDate" type="date" />
       </div>
       <div>
-        <label for="endDate">结束日期：</label><br />
+        <label for="endDate" id="endDateLabel">结束日期：</label><br />
         <input id="endDate" type="date" />
       </div>
       <div class="row" style="margin-top:6px;">
@@ -204,25 +204,25 @@
         <button id="downloadKmlBtn">下载当前显示 KML</button>
       </div>
 
-      <div class="small" style="margin-top:6px;">
+      <div class="small" style="margin-top:6px;" id="dataFilesText">
         数据文件：<code>notams.csv</code> + <code>msi.csv</code>
       </div>
       <div class="small" id="status"></div>
 
       <hr style="margin:8px 0;" />
-      <div style="font-size:13px;"><b>🚀 火箭发射（±1周）</b></div>
+      <div style="font-size:13px;"><b id="launchSectionTitle">🚀 火箭发射（±1周）</b></div>
       <div class="launch-layer-toggle">
         <input type="checkbox" id="launchToggle" checked />
-        <label for="launchToggle" style="font-size:12px;">在地图上显示</label>
+        <label for="launchToggle" style="font-size:12px;" id="launchToggleLabel">在地图上显示</label>
       </div>
       <div class="legend-launches">
-        <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> 🚀 已发射</div>
-        <div class="legend-row"><span class="dot" style="background:#ef2b2b; border:1px solid #fff;"></span> 🚀 即将发射 (近)</div>
-        <div class="legend-row"><span class="dot" style="background:#2b5bff; border:1px solid #fff;"></span> 🚀 即将发射 (远)</div>
-        <div class="legend-row" style="margin-left:2px;">📡 发射场站</div>
+        <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> <span id="launchPastLegend">🚀 已发射</span></div>
+        <div class="legend-row"><span class="dot" style="background:#ef2b2b; border:1px solid #fff;"></span> <span id="launchUpcomingNearLegend">🚀 即将发射 (近)</span></div>
+        <div class="legend-row"><span class="dot" style="background:#2b5bff; border:1px solid #fff;"></span> <span id="launchUpcomingFarLegend">🚀 即将发射 (远)</span></div>
+        <div class="legend-row" style="margin-left:2px;" id="launchSiteLegend">📡 发射场站</div>
         <div class="legend-row" style="margin-top:5px; border-top:1px solid #eee; padding-top:5px;">
           <div style="width:14px; height:14px; border:2.5px solid #fff; box-shadow:0 0 10px #fff; border-radius:50%; background:#888; margin-right:6px;"></div>
-          <span style="font-size:11px; color:#FFF;">外发光轮廓 = 处于天文晨昏光 (可见火箭云)</span>
+          <span style="font-size:11px; color:#FFF;" id="launchGlowHint">外发光轮廓 = 处于天文晨昏光 (可见火箭云)</span>
         </div>
       </div>
       <div class="small" id="launchStatus"></div>
@@ -234,12 +234,164 @@
 
   <div class="view-toggle" id="viewToggle">
     <span id="viewToggleIcon">🌍</span>
-    <span id="viewToggleText">3D 地球模式</span>
+    <span id="viewToggleText">3D Globe Mode</span>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
   <script>
+    const deviceLanguage = ((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
+    const locale = /^zh\b/.test(deviceLanguage) ? 'zh' : 'en';
+    const I18N = {
+      zh: {
+        page_title: 'NOTAM / MSI / 火箭发射 地图',
+        panel_title: '发射相关 NOTAM 地图',
+        panel_subtitle: '红(近) → 蓝(远)',
+        start_date_label: '开始日期：',
+        end_date_label: '结束日期：',
+        apply_btn: '应用筛选',
+        reset_btn: '重置',
+        download_kml_btn: '下载当前显示 KML',
+        data_files_html: '数据文件：<code>notams.csv</code> + <code>msi.csv</code>',
+        launch_section_title: '🚀 火箭发射（±1周）',
+        launch_toggle_label: '在地图上显示',
+        launch_past_legend: '🚀 已发射',
+        launch_upcoming_near_legend: '🚀 即将发射 (近)',
+        launch_upcoming_far_legend: '🚀 即将发射 (远)',
+        launch_site_legend: '📡 发射场站',
+        launch_glow_hint: '外发光轮廓 = 处于天文晨昏光 (可见火箭云)',
+        view_3d: '3D 地球模式',
+        view_2d: '2D 平面模式',
+        status_3d_error: '3D模式渲染异常: {message}',
+        status_no_data: '当前筛选无数据',
+        status_loaded_counts: '已加载 {total} 条记录（航空 NOTAM: {notam} | 海事警告: {msi}）',
+        time_tbd: '时间待定',
+        unnamed: '未命名',
+        unnamed_mission: '未命名任务',
+        kml_type_notam: '类型: 航空 NOTAM',
+        kml_type_msi: '类型: 海事警告 (MSI)',
+        kml_number: '编号',
+        kml_effective_from: '生效时间',
+        kml_effective_to: '结束时间',
+        kml_radius_nm: '半径(海里)',
+        kml_raw: '原文',
+        kml_type_launch: '类型: 即将发射火箭',
+        kml_mission: '任务',
+        kml_vehicle: '火箭',
+        kml_location: '发射场',
+        kml_time: '时间',
+        kml_weather: '天气',
+        kml_details: '详情',
+        kml_link: '链接',
+        maritime_warning: '海事警告',
+        maritime_navwarning: '[海事航行警告]',
+        fir_label: 'FIR',
+        from_label: 'from',
+        to_label: 'to',
+        qcode_label: 'qcode',
+        status_csv_fallback: 'CSV不可用，已回退显示 notams.kml',
+        status_all_failed: '所有数据源均加载失败',
+        launch_loading: '加载火箭数据…',
+        launch_unknown_mission: '未知任务',
+        launch_unknown_vehicle: '未知',
+        launch_success: '✅ 成功',
+        launch_failed: '❌ 失败',
+        launch_result_unknown: '?',
+        launch_upcoming: '即将发射',
+        launch_site_label: '发射场',
+        launch_time_label: '时间',
+        launch_details_link: '🔗 详情 / 直播',
+        launch_past: '历史发射',
+        launch_payload_label: '载荷',
+        launch_result_label: '结果',
+        launch_summary: '🚀 {upcoming} 计划 / {past} 过去 / {sites} 发射场',
+        launch_load_failed: '加载失败',
+        tile_attribution: '本项目仅作为摄影爱好者的拍照需求使用，不要用于非法用途，希望能帮助大家拍摄到壮观的火箭云，Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        cesium_past_prefix: '已发射: ',
+        cesium_upcoming_prefix: '即将: ',
+        cesium_payload_label: '载荷',
+        cesium_time_label: '时间',
+        cesium_result_label: '结果',
+      },
+      en: {
+        page_title: 'NOTAM / MSI / Rocket Launch Map',
+        panel_title: 'Launch-related NOTAM Map',
+        panel_subtitle: 'Red (near) → Blue (far)',
+        start_date_label: 'Start date:',
+        end_date_label: 'End date:',
+        apply_btn: 'Apply Filter',
+        reset_btn: 'Reset',
+        download_kml_btn: 'Download Current KML',
+        data_files_html: 'Data files: <code>notams.csv</code> + <code>msi.csv</code>',
+        launch_section_title: '🚀 Rocket Launches (±1 week)',
+        launch_toggle_label: 'Show on map',
+        launch_past_legend: '🚀 Launched',
+        launch_upcoming_near_legend: '🚀 Upcoming (near)',
+        launch_upcoming_far_legend: '🚀 Upcoming (far)',
+        launch_site_legend: '📡 Launch sites',
+        launch_glow_hint: 'Outer glow = astronomical twilight (rocket plume visible)',
+        view_3d: '3D Globe Mode',
+        view_2d: '2D Map Mode',
+        status_3d_error: '3D render error: {message}',
+        status_no_data: 'No data for the current filter',
+        status_loaded_counts: 'Loaded {total} records (Aviation NOTAM: {notam} | Maritime warning: {msi})',
+        time_tbd: 'TBD',
+        unnamed: 'Unnamed',
+        unnamed_mission: 'Unnamed mission',
+        kml_type_notam: 'Type: Aviation NOTAM',
+        kml_type_msi: 'Type: Maritime warning (MSI)',
+        kml_number: 'ID',
+        kml_effective_from: 'Effective from',
+        kml_effective_to: 'Effective to',
+        kml_radius_nm: 'Radius (NM)',
+        kml_raw: 'Raw text',
+        kml_type_launch: 'Type: Upcoming rocket launch',
+        kml_mission: 'Mission',
+        kml_vehicle: 'Vehicle',
+        kml_location: 'Launch site',
+        kml_time: 'Time',
+        kml_weather: 'Weather',
+        kml_details: 'Details',
+        kml_link: 'Link',
+        maritime_warning: 'Maritime Warning',
+        maritime_navwarning: '[Maritime NavWarning]',
+        fir_label: 'FIR',
+        from_label: 'from',
+        to_label: 'to',
+        qcode_label: 'qcode',
+        status_csv_fallback: 'CSV unavailable, showing notams.kml fallback',
+        status_all_failed: 'All data sources failed to load',
+        launch_loading: 'Loading launch data…',
+        launch_unknown_mission: 'Unknown mission',
+        launch_unknown_vehicle: 'Unknown',
+        launch_success: '✅ Success',
+        launch_failed: '❌ Failure',
+        launch_result_unknown: '?',
+        launch_upcoming: 'Upcoming launch',
+        launch_site_label: 'Launch site',
+        launch_time_label: 'Time',
+        launch_details_link: '🔗 Details / Stream',
+        launch_past: 'Past launch',
+        launch_payload_label: 'Payload',
+        launch_result_label: 'Result',
+        launch_summary: '🚀 {upcoming} planned / {past} past / {sites} launch sites',
+        launch_load_failed: 'Load failed',
+        tile_attribution: 'This project is for photography planning only. Do not use it for illegal purposes. Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        cesium_past_prefix: 'Launched: ',
+        cesium_upcoming_prefix: 'Upcoming: ',
+        cesium_payload_label: 'Payload',
+        cesium_time_label: 'Time',
+        cesium_result_label: 'Result',
+      }
+    };
+    function t(key, vars = {}) {
+      const dict = I18N[locale] || I18N.zh;
+      const fallback = I18N.zh[key] || key;
+      return (dict[key] || fallback).replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? ''));
+    }
+    document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
+    document.title = t('page_title');
+
     const map = L.map('map', { 
       zoomControl: false, 
       worldCopyJump: true // 解决跨越经度180度标识消失的问题
@@ -247,7 +399,7 @@
     L.control.zoom({ position: 'topright' }).addTo(map);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
-      attribution: '本项目仅作为摄影爱好者的拍照需求使用，不要用于非法用途，希望能帮助大家拍摄到壮观的火箭云，Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+      attribution: t('tile_attribution')
     }).addTo(map);
 
     const statusEl = document.getElementById('status');
@@ -324,14 +476,14 @@
         mapDiv.style.display = 'none';
         cesiumDiv.style.display = 'block';
         viewToggleIcon.textContent = '🗺️';
-        viewToggleText.textContent = '2D 平面模式';
+        viewToggleText.textContent = t('view_2d');
         initCesium();
         renderOnGlobe(filteredDataRows);
       } else {
         mapDiv.style.display = 'block';
         cesiumDiv.style.display = 'none';
         viewToggleIcon.textContent = '🌍';
-        viewToggleText.textContent = '3D 地球模式';
+        viewToggleText.textContent = t('view_3d');
       }
     };
 
@@ -370,12 +522,12 @@
                 eyeOffset: new Cesium.Cartesian3(0, 0, 500)
               },
               label: {
-                text: '已发射: ' + (launch.payload || launch.vehicle), font: '10pt sans-serif',
+                text: t('cesium_past_prefix') + (launch.payload || launch.vehicle), font: '10pt sans-serif',
                 fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                 verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
                 eyeOffset: new Cesium.Cartesian3(0, 0, 500)
               },
-              description: `<b>🚀 ${launch.vehicle}</b><br/>载荷: ${launch.payload}<br/>时间: ${launch.dateStr}<br/>结果: ${launch.success}`
+              description: `<b>🚀 ${launch.vehicle}</b><br/>${t('cesium_payload_label')}: ${launch.payload}<br/>${t('cesium_time_label')}: ${launch.dateStr}<br/>${t('cesium_result_label')}: ${launch.success}`
             });
           });
 
@@ -391,7 +543,7 @@
                 eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
               label: {
-                text: '即将: ' + (launch.mission || ''), font: 'bold 10pt sans-serif',
+                text: t('cesium_upcoming_prefix') + (launch.mission || ''), font: 'bold 10pt sans-serif',
                 fillColor: Cesium.Color.fromCssColorString(iconColor), outlineColor: Cesium.Color.BLACK, outlineWidth: 2,
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                 verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
@@ -529,7 +681,7 @@
         }
       } catch (cesiumErr) {
         console.error('[Cesium] Render Error:', cesiumErr);
-        setStatus('3D模式渲染异常: ' + cesiumErr.message);
+        setStatus(t('status_3d_error', { message: cesiumErr.message }));
       }
     }
 
@@ -546,6 +698,38 @@
     const applyBtn = document.getElementById('applyBtn');
     const resetBtn = document.getElementById('resetBtn');
     const downloadKmlBtn = document.getElementById('downloadKmlBtn');
+    const panelTitleEl = document.getElementById('panelTitle');
+    const panelSubtitleEl = document.getElementById('panelSubtitle');
+    const startDateLabelEl = document.getElementById('startDateLabel');
+    const endDateLabelEl = document.getElementById('endDateLabel');
+    const dataFilesTextEl = document.getElementById('dataFilesText');
+    const launchSectionTitleEl = document.getElementById('launchSectionTitle');
+    const launchToggleLabelEl = document.getElementById('launchToggleLabel');
+    const launchPastLegendEl = document.getElementById('launchPastLegend');
+    const launchUpcomingNearLegendEl = document.getElementById('launchUpcomingNearLegend');
+    const launchUpcomingFarLegendEl = document.getElementById('launchUpcomingFarLegend');
+    const launchSiteLegendEl = document.getElementById('launchSiteLegend');
+    const launchGlowHintEl = document.getElementById('launchGlowHint');
+
+    function applyLocaleTexts() {
+      panelTitleEl.textContent = t('panel_title');
+      panelSubtitleEl.textContent = t('panel_subtitle');
+      startDateLabelEl.textContent = t('start_date_label');
+      endDateLabelEl.textContent = t('end_date_label');
+      applyBtn.textContent = t('apply_btn');
+      resetBtn.textContent = t('reset_btn');
+      downloadKmlBtn.textContent = t('download_kml_btn');
+      dataFilesTextEl.innerHTML = t('data_files_html');
+      launchSectionTitleEl.textContent = t('launch_section_title');
+      launchToggleLabelEl.textContent = t('launch_toggle_label');
+      launchPastLegendEl.textContent = t('launch_past_legend');
+      launchUpcomingNearLegendEl.textContent = t('launch_upcoming_near_legend');
+      launchUpcomingFarLegendEl.textContent = t('launch_upcoming_far_legend');
+      launchSiteLegendEl.textContent = t('launch_site_legend');
+      launchGlowHintEl.textContent = t('launch_glow_hint');
+      viewToggleText.textContent = t('view_3d');
+    }
+    applyLocaleTexts();
 
     let dataRows = [];
     let msiRows = [];
@@ -765,7 +949,7 @@
 
       clearLayers();
       if (!rows.length) {
-        setStatus('当前筛选无数据');
+        setStatus(t('status_no_data'));
         return;
       }
 
@@ -817,12 +1001,12 @@
         }
 
         const popup = `
-          <b>${r.notam_id || (isMaritime ? 'Maritime Warning' : '')}</b><br/>
-          ${isMaritime ? '<b style="color:#ff9900;">[Maritime NavWarning]</b><br/>' : ''}
-          FIR: ${r.fir || ''}<br/>
-          from: ${formatUtcWithLocal(r.from_utc)}<br/>
-          to: ${formatUtcWithLocal(r.to_utc)}<br/>
-          qcode: ${r.qcode || ''}<br/>
+          <b>${r.notam_id || (isMaritime ? t('maritime_warning') : '')}</b><br/>
+          ${isMaritime ? `<b style="color:#ff9900;">${t('maritime_navwarning')}</b><br/>` : ''}
+          ${t('fir_label')}: ${r.fir || ''}<br/>
+          ${t('from_label')}: ${formatUtcWithLocal(r.from_utc)}<br/>
+          ${t('to_label')}: ${formatUtcWithLocal(r.to_utc)}<br/>
+          ${t('qcode_label')}: ${r.qcode || ''}<br/>
           <hr/>
           <div style="max-width:420px;max-height:260px;overflow:auto;white-space:pre-wrap;">${(r.raw || '').replace(/</g, '&lt;')}</div>
         `;
@@ -904,7 +1088,7 @@
       }
       const notamCount = rows.filter(r => r.country !== 'Maritime').length;
       const msiCount = rows.filter(r => r.country === 'Maritime').length;
-      setStatus(`已加载 ${rows.length} 条记录（航空 NOTAM: ${notamCount} | 海事警告: ${msiCount}）`);
+      setStatus(t('status_loaded_counts', { total: rows.length, notam: notamCount, msi: msiCount }));
     }
 
     function isoDate(d) { return d.toISOString().slice(0, 10); }
@@ -922,7 +1106,7 @@
       return `${utc} / ${local} Local`;
     }
     function formatLaunchDateWithLocal(d) {
-      if (!d || !isFinite(d.getTime())) return '时间待定';
+      if (!d || !isFinite(d.getTime())) return t('time_tbd');
       const utc = d.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
       const local = d.toLocaleString();
       return `${utc} / ${local} Local`;
@@ -942,7 +1126,7 @@
     }
 
     function buildKmlPlacemark(name, description, geometryKml, styleUrl) {
-      const n = xmlEscape(name || '未命名');
+      const n = xmlEscape(name || t('unnamed'));
       const d = xmlEscape(description || '');
       const style = styleUrl ? `<styleUrl>${xmlEscape(styleUrl)}</styleUrl>` : '';
       return `
@@ -1085,16 +1269,16 @@
         const lon = parseFloat(r.lon);
         if (!isFinite(lat) || !isFinite(lon)) return;
         const isMaritime = r.country === 'Maritime' || r.source === 'MSI' || r.type === 'MSI';
-        const title = r.notam_id || (isMaritime ? 'Maritime Warning' : 'NOTAM');
+        const title = r.notam_id || (isMaritime ? t('maritime_warning') : 'NOTAM');
         const details = [
-          isMaritime ? '类型: 海事警告 (MSI)' : '类型: 航空 NOTAM',
-          `编号: ${r.notam_id || ''}`,
-          `FIR: ${r.fir || ''}`,
-          `生效时间: ${r.from_utc || ''}`,
-          `结束时间: ${r.to_utc || ''}`,
+          isMaritime ? t('kml_type_msi') : t('kml_type_notam'),
+          `${t('kml_number')}: ${r.notam_id || ''}`,
+          `${t('fir_label')}: ${r.fir || ''}`,
+          `${t('kml_effective_from')}: ${r.from_utc || ''}`,
+          `${t('kml_effective_to')}: ${r.to_utc || ''}`,
           `QCode: ${r.qcode || ''}`,
-          `半径(海里): ${r.radius_nm || ''}`,
-          `原文: ${r.raw || ''}`,
+          `${t('kml_radius_nm')}: ${r.radius_nm || ''}`,
+          `${t('kml_raw')}: ${r.raw || ''}`,
         ].join('\n');
         const geometry = buildKmlGeometryForRow(r, lat, lon);
         placemarks.push(buildKmlPlacemark(title, details, geometry, isMaritime ? '#msiStyle' : '#notamStyle'));
@@ -1105,16 +1289,16 @@
         const lon = parseFloat(l.lon);
         if (!isFinite(lat) || !isFinite(lon)) return;
         const details = [
-          '类型: 即将发射火箭',
-          `任务: ${l.mission || ''}`,
-          `火箭: ${l.vehicle || ''}`,
-          `发射场: ${l.location || ''}`,
-          `时间: ${l.dateStr || ''}`,
-          `天气: ${l.weather || ''}`,
-          `详情: ${l.description || ''}`,
-          `链接: ${l.url || ''}`,
+          t('kml_type_launch'),
+          `${t('kml_mission')}: ${l.mission || ''}`,
+          `${t('kml_vehicle')}: ${l.vehicle || ''}`,
+          `${t('kml_location')}: ${l.location || ''}`,
+          `${t('kml_time')}: ${l.dateStr || ''}`,
+          `${t('kml_weather')}: ${l.weather || ''}`,
+          `${t('kml_details')}: ${l.description || ''}`,
+          `${t('kml_link')}: ${l.url || ''}`,
         ].join('\n');
-        placemarks.push(buildKmlPlacemark(`🚀 ${l.mission || '未命名任务'}`, details, buildKmlPointGeometry(lat, lon), '#launchStyle'));
+        placemarks.push(buildKmlPlacemark(`🚀 ${l.mission || t('unnamed_mission')}`, details, buildKmlPointGeometry(lat, lon), '#launchStyle'));
       });
 
       return `<?xml version="1.0" encoding="UTF-8"?>
@@ -1235,10 +1419,10 @@
     async function loadKmlFallback() {
       const layer = omnivore.kml('./notams.kml').on('ready', function () {
         try { map.fitBounds(layer.getBounds(), { padding: [20, 20] }); } catch (e) { }
-        setStatus('CSV不可用，已回退显示 notams.kml');
+        setStatus(t('status_csv_fallback'));
       }).on('error', function (e) {
         console.error(e);
-        setStatus('所有数据源均加载失败');
+        setStatus(t('status_all_failed'));
       }).addTo(map);
       layers.push(layer);
     }
@@ -1401,7 +1585,7 @@
     }
 
     async function loadLaunchData() {
-      launchStatusEl.textContent = '加载火箭数据…';
+      launchStatusEl.textContent = t('launch_loading');
       try {
         // 1. Load launch sites from GitHub (purple background markers)
         const sitesResp = await fetch(LAUNCH_SITES_URL, { cache: 'no-store' });
@@ -1465,7 +1649,7 @@
             }
             if (!isFinite(parseFloat(lat)) || !isFinite(parseFloat(lon))) return;
 
-            const missionName = l.name || '未知任务';
+            const missionName = l.name || t('launch_unknown_mission');
             const vehicleName = l.vehicle?.name || '';
             const locName = loc?.name || '';
             const padName = l.pad?.name || '';
@@ -1487,12 +1671,12 @@
             });
             const lMarker = L.marker([lat, lon], { icon: lIcon, zIndexOffset: 2000 });
             lMarker.bindPopup(`
-              <div style="font-size:12px;color:#666;">即将发射</div>
+              <div style="font-size:12px;color:#666;">${t('launch_upcoming')}</div>
               <b style="color:${color}">${missionName}</b><br/>
-              发射场: ${locName}${padName ? ' / ' + padName : ''}<br/>
-              时间: ${dateStr}${weather}<br/>
+              ${t('launch_site_label')}: ${locName}${padName ? ' / ' + padName : ''}<br/>
+              ${t('launch_time_label')}: ${dateStr}${weather}<br/>
               ${desc ? '<hr/><div style="max-width:320px;max-height:120px;overflow:auto;font-size:11px;">' + desc + '</div>' : ''}
-              <a href="${rllUrl}" target="_blank" style="font-size:11px;">🔗 详情 / 直播</a><br/>
+              <a href="${rllUrl}" target="_blank" style="font-size:11px;">${t('launch_details_link')}</a><br/>
               <small style="color:#888;">Data by RocketLaunch.Live</small>
             `, { maxWidth: 340 });
             lMarker.addTo(launchLayerGroup);
@@ -1531,9 +1715,9 @@
             }
             if (!isFinite(lat) || !isFinite(lon)) return;
 
-            const vehicle = row['Launch Vehicle'] || '未知';
+            const vehicle = row['Launch Vehicle'] || t('launch_unknown_vehicle');
             const payload = row['Official Payload Name'] || '';
-            const successText = row['Success'] === 'S' ? '✅ 成功' : row['Success'] === 'F' ? '❌ 失败' : '?';
+            const successText = row['Success'] === 'S' ? t('launch_success') : row['Success'] === 'F' ? t('launch_failed') : t('launch_result_unknown');
             const dateStr = formatLaunchDateWithLocal(d);
 
             const pIcon = L.divIcon({
@@ -1544,12 +1728,12 @@
             });
             const marker = L.marker([lat, lon], { icon: pIcon, zIndexOffset: 1000 });
             marker.bindPopup(`
-              <div style="font-size:12px;color:#666;">历史发射</div>
+              <div style="font-size:12px;color:#666;">${t('launch_past')}</div>
               <b style="color:#16a34a;">🚀 ${vehicle}</b><br/>
-              载荷: ${payload}<br/>
-              发射场: ${row['Launch Site (Full)'] || abbrev}<br/>
-              时间: ${dateStr}<br/>
-              结果: ${successText}
+              ${t('launch_payload_label')}: ${payload}<br/>
+              ${t('launch_site_label')}: ${row['Launch Site (Full)'] || abbrev}<br/>
+              ${t('launch_time_label')}: ${dateStr}<br/>
+              ${t('launch_result_label')}: ${successText}
             `);
             marker.addTo(launchLayerGroup);
             pastLaunches.push({ lat, lon, vehicle, payload, dateStr, success: successText });
@@ -1559,12 +1743,12 @@
           console.warn('[launches] Past CSV failed:', csvErr);
         }
 
-        launchStatusEl.textContent = `🚀 ${upcomingCount} 计划 / ${pastCount} 过去 / ${Object.keys(launchSites).length} 发射场`;
+        launchStatusEl.textContent = t('launch_summary', { upcoming: upcomingCount, past: pastCount, sites: Object.keys(launchSites).length });
 
         renderRows(filteredDataRows);
       } catch (err) {
         console.error('[launches] Error:', err);
-        launchStatusEl.textContent = '加载失败';
+        launchStatusEl.textContent = t('launch_load_failed');
       }
     }
 

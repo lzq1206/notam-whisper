@@ -42,10 +42,10 @@ if (!/toLocaleString\(\)/.test(launchLocalFn) || !/Local/.test(launchLocalFn)) {
   throw new Error('formatLaunchDateWithLocal should include local time');
 }
 
-if (!/from:\s*\$\{formatUtcWithLocal\(r\.from_utc\)\}/.test(html)) {
+if (!/formatUtcWithLocal\(r\.from_utc\)/.test(html)) {
   throw new Error('NOTAM/MSI from time should use formatUtcWithLocal');
 }
-if (!/to:\s*\$\{formatUtcWithLocal\(r\.to_utc\)\}/.test(html)) {
+if (!/formatUtcWithLocal\(r\.to_utc\)/.test(html)) {
   throw new Error('NOTAM/MSI to time should use formatUtcWithLocal');
 }
 
