@@ -88,6 +88,101 @@ python3 fetch_msi.py
 
 如果你已经通过 Termius 连上服务器（例如 `ubuntu@<你的服务器IP>`），可以按下面顺序执行。以下命令会把站点部署到 `rocket.rainywhisper.com`，并每 6 小时自动同步仓库与数据文件。
 
+### 一键复制粘贴版（域名/路径已替换）
+
+> 适用于已 SSH 登录服务器后的终端，一次粘贴执行即可。
+
+```bash
+cat >/tmp/install_notam_whisper.sh <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOMAIN="rocket.rainywhisper.com"
+APP_DIR="/opt/notam-whisper"
+WEB_DIR="/var/www/notam-whisper"
+
+sudo apt update
+sudo apt install -y git python3-venv python3-pip nginx rsync
+
+sudo mkdir -p /opt
+sudo chown -R "$USER":"$USER" /opt
+
+if [ ! -d "$APP_DIR/.git" ]; then
+  git clone https://github.com/lzq1206/notam-whisper.git "$APP_DIR"
+fi
+
+cd "$APP_DIR"
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip requests
+
+git pull --ff-only || true
+python fetch_notams.py
+python fetch_msi.py
+python fetch_launches.py
+
+sudo mkdir -p "$WEB_DIR"
+sudo rsync -av --delete \
+  index.html favicon.ico \
+  notams.csv notams.kml \
+  msi.csv msi.kml \
+  past_launches.csv launch_sites.csv \
+  history/ "$WEB_DIR"/
+
+sudo tee /etc/nginx/sites-available/notam-whisper >/dev/null <<NGINX
+server {
+    listen 80;
+    server_name ${DOMAIN};
+    root ${WEB_DIR};
+    index index.html;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+NGINX
+
+sudo ln -sf /etc/nginx/sites-available/notam-whisper /etc/nginx/sites-enabled/notam-whisper
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl reload nginx
+
+mkdir -p "$APP_DIR/scripts" "$APP_DIR/logs"
+cat >"$APP_DIR/scripts/sync_site.sh" <<'SYNC'
+#!/usr/bin/env bash
+set -euo pipefail
+cd /opt/notam-whisper
+git pull --ff-only || { echo "[sync] git pull failed"; exit 1; }
+source .venv/bin/activate
+python fetch_notams.py
+python fetch_msi.py
+python fetch_launches.py
+sudo rsync -av --delete \
+  index.html favicon.ico \
+  notams.csv notams.kml \
+  msi.csv msi.kml \
+  past_launches.csv launch_sites.csv \
+  history/ /var/www/notam-whisper/
+SYNC
+chmod +x "$APP_DIR/scripts/sync_site.sh"
+
+(crontab -l 2>/dev/null | grep -v 'notam-whisper/scripts/sync_site.sh' || true; \
+ echo '0 */6 * * * /usr/bin/flock -n /tmp/notam-whisper.lock /opt/notam-whisper/scripts/sync_site.sh >> /opt/notam-whisper/logs/sync.log 2>&1') | crontab -
+
+"$APP_DIR/scripts/sync_site.sh"
+echo "Done. Open: http://${DOMAIN}"
+EOF
+
+bash /tmp/install_notam_whisper.sh
+```
+
+如需 HTTPS，再执行：
+
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d rocket.rainywhisper.com
+```
+
 1) 安装基础环境：
 
 ```bash
