@@ -2,7 +2,7 @@
 
 Auto-updated Rocket / NOTAM / NavWarnings KML viewer  
 https://lzq1206.github.io/notam-whisper/
-
+或者我的网站: https://rocket.rainywhisper.com/
 本项目希望未来能帮助大家拍摄到火箭云
 
 ## 简介
