@@ -287,15 +287,17 @@
         }))
       ];
       cesiumViewer.imageryLayers.removeAll();
-      for (const loadProvider of loaders) {
+      for (let i = 0; i < loaders.length; i++) {
+        const loadProvider = loaders[i];
         try {
           const provider = await loadProvider();
           cesiumViewer.imageryLayers.addImageryProvider(provider);
           return;
         } catch (err) {
-          console.error('Cesium Imagery failed:', err);
+          console.error(`Cesium Imagery provider #${i + 1} failed:`, err);
         }
       }
+      console.error('Cesium Imagery failed: all base imagery providers are unavailable.');
     }
 
     function initCesium() {
