@@ -84,6 +84,119 @@ python3 fetch_msi.py
 
 5. 在 Google Earth/Maps 中打开生成的 .kml 查看可视化结果，或通过 index.html 在浏览器查看（若托管于 GitHub Pages，会自动显示最新资源）。
 
+## 云服务器部署（Ubuntu + Nginx，含定时同步）
+
+如果你已经通过 Termius 连上服务器（`ubuntu@193.123.252.251`），可以按下面顺序执行。以下命令会把站点部署到 `rocket.rainywhisper.com`，并每 6 小时自动同步仓库与数据文件。
+
+1) 安装基础环境：
+
+```bash
+sudo apt update
+sudo apt install -y git python3-venv python3-pip nginx rsync
+```
+
+2) 拉取代码并安装 Python 依赖：
+
+```bash
+sudo mkdir -p /opt
+sudo chown -R ubuntu:ubuntu /opt
+cd /opt
+git clone https://github.com/lzq1206/notam-whisper.git
+cd /opt/notam-whisper
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip requests
+```
+
+3) 首次生成数据并发布到 Nginx 目录：
+
+```bash
+cd /opt/notam-whisper
+source .venv/bin/activate
+python fetch_notams.py
+python fetch_msi.py
+python fetch_launches.py
+
+sudo mkdir -p /var/www/notam-whisper
+sudo rsync -av --delete \
+  index.html favicon.ico \
+  notams.csv notams.kml \
+  msi.csv msi.kml \
+  past_launches.csv launch_sites.csv \
+  history/ /var/www/notam-whisper/
+```
+
+4) 配置 Nginx：
+
+```bash
+sudo tee /etc/nginx/sites-available/notam-whisper >/dev/null <<'EOF'
+server {
+    listen 80;
+    server_name rocket.rainywhisper.com;
+    root /var/www/notam-whisper;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+EOF
+
+sudo ln -sf /etc/nginx/sites-available/notam-whisper /etc/nginx/sites-enabled/notam-whisper
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+5) 创建定时同步脚本（每次自动 `git pull` + 重新抓取 + 发布）：
+
+```bash
+mkdir -p /opt/notam-whisper/scripts /opt/notam-whisper/logs
+cat >/opt/notam-whisper/scripts/sync_site.sh <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+cd /opt/notam-whisper
+git pull --ff-only
+source .venv/bin/activate
+python fetch_notams.py
+python fetch_msi.py
+python fetch_launches.py
+sudo rsync -av --delete \
+  index.html favicon.ico \
+  notams.csv notams.kml \
+  msi.csv msi.kml \
+  past_launches.csv launch_sites.csv \
+  history/ /var/www/notam-whisper/
+EOF
+chmod +x /opt/notam-whisper/scripts/sync_site.sh
+```
+
+6) 配置 cron（每 6 小时执行一次）：
+
+```bash
+crontab -e
+```
+
+加入这一行：
+
+```cron
+0 */6 * * * /usr/bin/flock -n /tmp/notam-whisper.lock /opt/notam-whisper/scripts/sync_site.sh >> /opt/notam-whisper/logs/sync.log 2>&1
+```
+
+7) 手动验证一次：
+
+```bash
+/opt/notam-whisper/scripts/sync_site.sh
+systemctl status nginx --no-pager
+```
+
+可选（建议）：再配置 HTTPS（Let's Encrypt）：
+
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d rocket.rainywhisper.com
+```
+
 ## 输出文件说明（CSV header）
 
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
