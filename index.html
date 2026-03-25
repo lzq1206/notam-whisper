@@ -263,6 +263,41 @@
     let cesiumViewer = null;
     const CESIUM_ION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzY2ZlZjYxZi1kOGM1LTRhN2MtOGRhNi1mMDBkMWEwNjZlYTkiLCJpZCI6NDA4NzUzLCJpYXQiOjE3NzQ0MDkwMTl9.StFh8-TIWbpATRQHRmTiHtxHGeRWFSc6SNsUcESHmhc';
 
+    async function setCesiumBaseImagery() {
+      if (!cesiumViewer) return;
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const loaders = isIOS ? [
+        () => Cesium.createWorldImageryAsync(),
+        () => Cesium.ArcGisMapServerImageryProvider.fromUrl(
+          'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
+          { enablePickFeatures: false }
+        ),
+        () => Promise.resolve(new Cesium.OpenStreetMapImageryProvider({
+          url: 'https://a.tile.openstreetmap.org/'
+        }))
+      ] : [
+        () => Cesium.ArcGisMapServerImageryProvider.fromUrl(
+          'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
+          { enablePickFeatures: false }
+        ),
+        () => Cesium.createWorldImageryAsync(),
+        () => Promise.resolve(new Cesium.OpenStreetMapImageryProvider({
+          url: 'https://a.tile.openstreetmap.org/'
+        }))
+      ];
+      cesiumViewer.imageryLayers.removeAll();
+      for (const loadProvider of loaders) {
+        try {
+          const provider = await loadProvider();
+          cesiumViewer.imageryLayers.addImageryProvider(provider);
+          return;
+        } catch (err) {
+          console.error('Cesium Imagery failed:', err);
+        }
+      }
+    }
+
     function initCesium() {
       if (cesiumViewer) return;
       Cesium.Ion.defaultAccessToken = CESIUM_ION_TOKEN;
@@ -271,20 +306,8 @@
         navigationHelpButton: false, sceneModePicker: false, baseLayerPicker: false,
         geocoder: false, homeButton: false, fullscreenButton: false, vrButton: false
       });
-      // Enable high-resolution satellite imagery (Async init for Cesium 1.107+)
-      cesiumViewer.imageryLayers.removeAll();
-      Cesium.ArcGisMapServerImageryProvider.fromUrl(
-        'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
-        { enablePickFeatures: false }
-      ).then(provider => {
-        cesiumViewer.imageryLayers.addImageryProvider(provider);
-      }).catch(err => {
-        console.error('ArcGIS Imagery failed:', err);
-        // Fallback to OSM
-        cesiumViewer.imageryLayers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({
-          url: 'https://a.tile.openstreetmap.org/'
-        }));
-      });
+      // Enable high-resolution satellite imagery
+      setCesiumBaseImagery();
       // Quality settings
       cesiumViewer.scene.globe.depthTestAgainstTerrain = false;
       if (Cesium.FeatureDetection.supportsImageRenderingPixelated()) {
