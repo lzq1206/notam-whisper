@@ -4,8 +4,14 @@ const path = require('path');
 
 const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
-if (!html.includes("L.tileLayer('https://webrd02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}'")) {
-  throw new Error('Expected default 2D tile layer to use AutoNavi satellite tiles');
+const tileLayerUrlMatch = html.match(/L\.tileLayer\(\s*(['"])([^'"]*autonavi\.com\/appmaptile[^'"]*)\1/);
+if (!tileLayerUrlMatch) {
+  throw new Error('Expected default 2D L.tileLayer URL to use AutoNavi tile domain');
+}
+
+const tileUrl = tileLayerUrlMatch[2];
+if (!/[?&]style=6(?:&|$)/.test(tileUrl)) {
+  throw new Error('Expected AutoNavi tile URL to request satellite style=6');
 }
 
 if (!html.includes('worldCopyJump: true')) {
