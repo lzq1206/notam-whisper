@@ -1,12 +1,11 @@
 # notam-whisper
 
 Auto-updated Rocket / NOTAM / NavWarnings KML viewer  
-https://lzq1206.github.io/notam-whisper/
 - 
-或者我的网站: https://rocket.rainywhisper.com/
+网站: https://rocket.rainywhisper.com/
 - 
 本项目仅作为摄影爱好者的拍照需求使用，不要用于非法用途，希望能帮助大家拍摄到壮观的火箭云
-
+- 
 ## 简介
 notam-whisper 是一组轻量 Python 脚本与静态页面，用于：
 
