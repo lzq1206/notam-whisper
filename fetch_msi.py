@@ -1,27 +1,40 @@
 #!/usr/bin/env python3
 """
 MSI (Maritime Safety Information) Fetcher
-NGA API: msi.nga.mil
-Outputs: msi.csv, msi.kml, msi_raw.csv
+NGA: msi.nga.mil
+Outputs: msi.csv, msi.kml
 """
 import requests, re, os, datetime, csv, time, json
 import xml.etree.ElementTree as ET
 import urllib3
-import ssl
+from html.parser import HTMLParser
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # --- Configuration ---
-PRIMARY_MSI_URL_TEMPLATE = "https://msi.nga.mil/api/publications/ntm/warnings?output=xml&navArea={nav_area}"
-FALLBACK_MSI_URL_TEMPLATE = None 
 MAX_RETRIES = 3
 RETRY_BACKOFF = 2
+INTER_REQUEST_DELAY = 5  # seconds between URL fetches (conservative, to avoid triggering rate limits)
 
-# For "Daily Memo" textual warnings sometimes found on the site
-DAILY_MEMO_URLS = {
-    '4':  'https://msi.nga.mil/apology_objects/DailyMemLANT.txt',
-    '12': 'https://msi.nga.mil/apology_objects/DailyMemPAC.txt',
-}
+# Daily Memo plain-text files
+TXT_URLS = [
+    'https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt',
+    'https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt',
+    'https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt',
+    'https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt',
+    'https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt',
+]
+
+# HTML query results (active warnings, category 14)
+HTML_URLS = [
+    'https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html',
+    'https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html',
+    'https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html',
+    'https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html',
+    'https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html',
+]
+
+MIN_BLOCK_LENGTH = 50  # minimum characters for a text block to be considered a valid warning record
 
 MONTHS_MAP = {
     'JAN':1,'FEB':2,'MAR':3,'APR':4,'MAY':5,'JUN':6,
@@ -183,73 +196,91 @@ def parse_msi_active_times(text):
     if not found_dts: return None, None
     return min(found_dts), max(found_dts)
 
-# --- Fetching ---
-def _find_warning_entities(root):
-    entities = root.findall('.//warning')
-    if entities:
-        return entities
-    entities = root.findall('.//smapsActiveEntity')
-    if entities:
-        return entities
-    if root.tag in ('warning', 'smapsActiveEntity'):
-        return [root]
-    return []
+# --- HTML text extractor ---
+class _TextExtractor(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self._parts = []
+        self._skip = False
 
-def fetch_msi_single(nav_area, url_template, label):
-    url = url_template.format(nav_area=nav_area)
-    log_to_file(f"Fetching {label} NAVAREA {nav_area}...")
+    def handle_starttag(self, tag, attrs):
+        t = tag.lower()
+        if t in ('script', 'style'):
+            self._skip = True
+        if t in ('tr', 'p', 'div', 'li', 'br'):
+            self._parts.append('\n\n')
+        elif t in ('td', 'th'):
+            self._parts.append(' ')
+
+    def handle_endtag(self, tag):
+        if tag.lower() in ('script', 'style'):
+            self._skip = False
+
+    def handle_data(self, data):
+        if not self._skip:
+            self._parts.append(data)
+
+    def get_text(self):
+        return ''.join(self._parts)
+
+# --- Fetching ---
+def fetch_txt_url(url):
+    """Fetch a plain-text Daily Memo URL and return warning records."""
+    log_to_file(f"Fetching TXT: {url}")
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             resp = requests.get(url, timeout=30, verify=False)
             if resp.status_code == 200:
-                root = ET.fromstring(resp.text)
-                entities = _find_warning_entities(root)
-                if entities:
-                    res = []
-                    for entity in entities:
+                blocks = re.split(r'\n\s*\n', resp.text)
+                res = []
+                for block in blocks:
+                    block = block.strip()
+                    if len(block) > MIN_BLOCK_LENGTH:
                         res.append({
-                            'msgID': entity.findtext('msgID') or '',
-                            'msgText': entity.findtext('msgText') or '',
-                            'category': entity.findtext('category'),
-                            'msgType': entity.findtext('msgType')
+                            'msgID': '',
+                            'msgText': block,
+                            'category': 'Daily Memo',
+                            'msgType': 'NavWarning'
                         })
-                    return res
+                log_to_file(f"  Got {len(res)} blocks from TXT")
+                return res
+            else:
+                log_to_file(f"  HTTP {resp.status_code}")
         except Exception as e:
             log_to_file(f"  Request error: {e}")
         if attempt < MAX_RETRIES:
             time.sleep(RETRY_BACKOFF ** attempt)
     return []
 
-def fetch_msi_from_txt(nav_area):
-    url = DAILY_MEMO_URLS.get(nav_area)
-    if not url: return []
-    try:
-        resp = requests.get(url, timeout=30, verify=False)
-        if resp.status_code == 200:
-            text = resp.text
-            # Split by double newline or typical warning separator
-            blocks = re.split(r'\n\s*\n', text)
-            res = []
-            for block in blocks:
-                if len(block.strip()) > 50:
-                    res.append({
-                        'msgID': '', # Will be hashed
-                        'msgText': block.strip(),
-                        'category': 'Daily Memo',
-                        'msgType': 'NavWarning'
-                    })
-            return res
-    except: pass
-    return []
-
-def fetch_msi_single_with_fallback(nav_area):
-    res = fetch_msi_single(nav_area, PRIMARY_MSI_URL_TEMPLATE, 'primary')
-    if res: return res
-    if FALLBACK_MSI_URL_TEMPLATE:
-        res = fetch_msi_single(nav_area, FALLBACK_MSI_URL_TEMPLATE, 'fallback')
-        if res: return res
-    if nav_area in DAILY_MEMO_URLS:
-        return fetch_msi_from_txt(nav_area)
+def fetch_html_url(url):
+    """Fetch an HTML query-results URL, extract plain text, and return warning records."""
+    log_to_file(f"Fetching HTML: {url}")
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            resp = requests.get(url, timeout=30, verify=False)
+            if resp.status_code == 200:
+                extractor = _TextExtractor()
+                extractor.feed(resp.text)
+                text = extractor.get_text()
+                blocks = re.split(r'\n\s*\n', text)
+                res = []
+                for block in blocks:
+                    block = block.strip()
+                    if len(block) > MIN_BLOCK_LENGTH:
+                        res.append({
+                            'msgID': '',
+                            'msgText': block,
+                            'category': '14',
+                            'msgType': 'NavWarning'
+                        })
+                log_to_file(f"  Got {len(res)} blocks from HTML")
+                return res
+            else:
+                log_to_file(f"  HTTP {resp.status_code}")
+        except Exception as e:
+            log_to_file(f"  Request error: {e}")
+        if attempt < MAX_RETRIES:
+            time.sleep(RETRY_BACKOFF ** attempt)
     return []
 
 def process_msi_data(all_smaps):
@@ -294,12 +325,15 @@ def process_msi_data(all_smaps):
     return rows
 
 def fetch_msi():
-    nav_areas = ['4', '12', 'A', 'P', 'C', '1', '2', '3', '5', '6', '7', '8', '9', '10', '11']
     all_smaps = []
-    for na in nav_areas:
-        res = fetch_msi_single_with_fallback(na)
+    for url in TXT_URLS:
+        res = fetch_txt_url(url)
         all_smaps.extend(res)
-        time.sleep(2)
+        time.sleep(INTER_REQUEST_DELAY)
+    for url in HTML_URLS:
+        res = fetch_html_url(url)
+        all_smaps.extend(res)
+        time.sleep(INTER_REQUEST_DELAY)
     return process_msi_data(all_smaps)
 
 def csv_to_kml(csv_path, kml_path):

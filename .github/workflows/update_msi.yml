@@ -2,7 +2,7 @@ name: Update MSI Warnings
 
 on:
   schedule:
-    - cron: '20 */6 * * *'
+    - cron: '20 */4 * * *'
   workflow_dispatch:
 
 jobs:

@@ -1407,3 +1407,39 @@ AttributeError: module 'datetime' has no attribute 'UTC'
     now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
 AttributeError: module 'datetime' has no attribute 'UTC'
 
+2026-03-28T01:02:20.743294 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-03-28T01:02:20.743383 -   Got 2 blocks from TXT
+2026-03-28T01:02:20.743415 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-03-28T01:02:20.743439 -   HTTP 503
+2026-03-28T01:02:20.743461 -   HTTP 503
+2026-03-28T01:02:20.743481 -   HTTP 503
+2026-03-28T01:02:20.743504 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-03-28T01:02:20.743708 -   Got 0 blocks from HTML
+2026-03-28T01:02:47.278620 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-03-28T01:02:47.278710 -   Got 2 blocks from TXT
+2026-03-28T01:02:47.278741 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-03-28T01:02:47.278766 -   HTTP 503
+2026-03-28T01:02:47.278788 -   HTTP 503
+2026-03-28T01:02:47.278809 -   HTTP 503
+2026-03-28T01:02:47.278831 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-03-28T01:02:47.279007 -   Got 1 blocks from HTML
+2026-03-28T01:02:47.279038 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-03-28T01:02:47.279111 -   Got 1 blocks from HTML
+2026-03-28T01:02:47.279138 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-03-28T01:02:47.279174 -   HTTP 503
+2026-03-28T01:02:47.279228 -   HTTP 503
+2026-03-28T01:02:47.279252 -   HTTP 503
+2026-03-28T01:03:59.958042 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-03-28T01:03:59.958133 -   Got 2 blocks from TXT
+2026-03-28T01:03:59.958163 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-03-28T01:03:59.958211 -   HTTP 503
+2026-03-28T01:03:59.958240 -   HTTP 503
+2026-03-28T01:03:59.958262 -   HTTP 503
+2026-03-28T01:03:59.958284 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-03-28T01:03:59.958466 -   Got 1 blocks from HTML
+2026-03-28T01:03:59.958498 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-03-28T01:03:59.958573 -   Got 1 blocks from HTML
+2026-03-28T01:03:59.958605 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-03-28T01:03:59.958628 -   HTTP 503
+2026-03-28T01:03:59.958649 -   HTTP 503
+2026-03-28T01:03:59.958669 -   HTTP 503
