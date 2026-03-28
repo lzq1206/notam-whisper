@@ -44,7 +44,7 @@ MONTHS_MAP = {
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw','polygon']
 RAW_CSV_HEADERS = ['msgID','category','from_utc','to_utc','msgText']
 
-AEROSPACE_KEYWORDS = ["ROCKET", "LAUNCH", "SPACE", "RE-ENTRY", "DEBRIS", "AEROSPACE", "SATELLITE", "MISSILE"]
+AEROSPACE_KEYWORDS = ["ROCKET", "LAUNCH", "SPACE", "RE-ENTRY", "REENTRY", "DEBRIS", "AEROSPACE", "SATELLITE", "MISSILE", "SPACECRAFT"]
 
 def log_to_file(msg):
     with open('msi_fetch_log.txt', 'a', encoding='utf-8') as f:
@@ -294,8 +294,9 @@ def process_msi_data(all_smaps):
         msg_text = s.get('msgText', '')
         if not msg_text: continue
         
-        # Aerospace Filter
-        is_aerospace = any(k in msg_text.upper() for k in AEROSPACE_KEYWORDS)
+        # Aerospace Filter: category-14 records are pre-filtered as aerospace by NGA;
+        # for all others, require at least one aerospace keyword in the text.
+        is_aerospace = (s.get('category') == '14') or any(k in msg_text.upper() for k in AEROSPACE_KEYWORDS)
         if not is_aerospace:
             continue
 
