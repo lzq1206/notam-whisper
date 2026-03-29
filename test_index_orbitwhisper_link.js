@@ -20,6 +20,9 @@ assertContains(/>在轨卫星风险检测系统<\//, 'OrbitWhisper link text sho
 assertContains(/aria-label="在轨卫星风险检测系统（新窗口打开）"/, 'OrbitWhisper link should include aria-label for new window behavior');
 const footerLinkCss = getCssBlock(/\.panel-footer-link[\s\S]*?a\s*\{([^}]*)\}/);
 if (!/color:\s*#fff/.test(footerLinkCss)) throw new Error('OrbitWhisper link CSS should set white color');
-if (!/text-decoration:\s*none/.test(footerLinkCss)) throw new Error('OrbitWhisper link CSS should remove underline');
+if (!/text-decoration:\s*underline/.test(footerLinkCss)) throw new Error('OrbitWhisper link CSS should set underline');
+const footerContainerCss = getCssBlock(/\.panel-footer-link\s*\{([^}]*)\}/);
+if (!/border-top:\s*1px\s+solid\s+#eee/.test(footerContainerCss)) throw new Error('OrbitWhisper footer should have top separator line');
+if (!/font-size:\s*13px/.test(footerContainerCss)) throw new Error('OrbitWhisper link area should match launch title size');
 
 console.log('test_index_orbitwhisper_link.js passed');
