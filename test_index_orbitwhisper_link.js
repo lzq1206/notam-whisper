@@ -17,7 +17,7 @@ function getCssBlock(selectorRegex) {
 
 assertContains(/href="https:\/\/lzq1206\.github\.io\/OrbitWhisper\/"/, 'OrbitWhisper link href should exist');
 assertContains(/>在轨卫星风险检测系统OrbitWhisper<\//, 'OrbitWhisper link text should exist');
-assertContains(/aria-label="在轨卫星风险检测系统（新窗口打开）"/, 'OrbitWhisper link should include aria-label for new window behavior');
+assertContains(/aria-label="在轨卫星风险检测系统OrbitWhisper（新窗口打开）"/, 'OrbitWhisper link should include aria-label for new window behavior');
 const footerLinkCss = getCssBlock(/\.panel-footer-link[\s\S]*?a\s*\{([^}]*)\}/);
 if (!/color:\s*#fff/.test(footerLinkCss)) throw new Error('OrbitWhisper link CSS should set white color');
 if (!/text-decoration:\s*underline/.test(footerLinkCss)) throw new Error('OrbitWhisper link CSS should set underline');
