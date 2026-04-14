@@ -179,9 +179,7 @@ def _parse_rll_api_result(payload, launch_sites, site_by_abbr):
         lat, lon, abbr = _resolve_site(location_raw, launch_sites, site_by_abbr)
         success_raw = item.get("launch_success")
         if success_raw is None:
-            success_raw = item.get("result")
-        if success_raw is None:
-            success_raw = item.get("status")
+            success_raw = item.get("result") or item.get("status")
 
         success = "S"
         if isinstance(success_raw, bool):
