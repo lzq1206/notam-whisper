@@ -124,6 +124,86 @@ def _resolve_site(location, launch_sites, site_by_abbr):
     return best_site["latitude"], best_site["longitude"], best_site["abbr"]
 
 
+def _extract_rll_api_results(payload):
+    if isinstance(payload, dict):
+        for key in ("result", "results", "launches", "data"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                return value
+    if isinstance(payload, list):
+        return payload
+    return []
+
+
+def _parse_rll_api_result(payload, launch_sites, site_by_abbr):
+    launches = []
+    for item in _extract_rll_api_results(payload):
+        if not isinstance(item, dict):
+            continue
+
+        date_raw = item.get("date_str") or item.get("date") or item.get("win_open")
+        mission = (item.get("name") or item.get("mission_name") or item.get("slug") or "").strip()
+        vehicle = (
+            item.get("vehicle_name")
+            or item.get("vehicle")
+            or item.get("rocket")
+            or item.get("provider")
+            or ""
+        ).strip()
+
+        location_raw = ""
+        pad = item.get("pad")
+        if isinstance(pad, dict):
+            location_raw = (
+                pad.get("name")
+                or pad.get("location")
+                or pad.get("locality")
+                or pad.get("statename")
+                or ""
+            ).strip()
+            if not vehicle:
+                vehicle = (pad.get("vehicle_name") or "").strip()
+        if not location_raw:
+            location_raw = (
+                item.get("location")
+                or item.get("pad_name")
+                or item.get("launch_site")
+                or item.get("state")
+                or ""
+            ).strip()
+
+        full_date = _normalize_launch_datetime(date_raw)
+        if not full_date:
+            continue
+
+        lat, lon, abbr = _resolve_site(location_raw, launch_sites, site_by_abbr)
+        success_raw = item.get("launch_success")
+        if success_raw is None:
+            success_raw = item.get("result") or item.get("status")
+
+        success = "S"
+        if isinstance(success_raw, bool):
+            success = "S" if success_raw else "F"
+        elif isinstance(success_raw, str):
+            lowered = success_raw.strip().lower()
+            if lowered in ("false", "fail", "failed", "failure", "unsuccessful"):
+                success = "F"
+            elif lowered in ("true", "success", "successful", "succeeded"):
+                success = "S"
+
+        launches.append({
+            "Launch Date and Time (UTC)": full_date,
+            "Launch Site (Abbrv.)": abbr,
+            "Latitude": lat,
+            "Longitude": lon,
+            "Launch Vehicle": vehicle,
+            "Official Payload Name": mission,
+            "Success": success,
+            "Launch Site (Full)": location_raw,
+        })
+    return launches
+
+
 def fetch_past_launches():
     launch_sites = _load_launch_sites()
     site_by_abbr = {site["abbr"].lower(): site for site in launch_sites if site["abbr"]}
@@ -184,7 +264,7 @@ def fetch_past_launches():
                     api_response = requests.get(api_url, headers=headers, timeout=30)
                     if api_response.status_code != 200:
                         continue
-                    api_launches = _parse_rll_api_result(api_response.json(), SITE_MAPPING)
+                    api_launches = _parse_rll_api_result(api_response.json(), launch_sites, site_by_abbr)
                     if api_launches:
                         launches = api_launches
                         break
