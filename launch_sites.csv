@@ -4,7 +4,7 @@ id,name,abbreviation,country,latitude,longitude,type,status
 3,Xichang Satellite Launch Center,XSLC,China,28.246,102.026,Orbital,Active
 4,Wenchang Space Launch Site,WSLC,China,19.614,110.951,Orbital,Active
 5,Hainan Commercial Spacecraft Launch Site,HCSLS,China,19.598,110.955,Orbital,Active
-6,Oriental Spaceport (Haiyang),OSP,China,36.678,121.233,Orbital (Sea),Active
+6,Haiyang Sea Launch,YSLA,China,36.641494,121.201445,Orbital (Sea),Active
 7,Sonmiani Flight Test Range,Sonmiani,Pakistan,25.200,66.750,Suborbital/Test,Active
 8,Broglio Space Centre (San Marco),SanMarco,Kenya/Italy,-2.940,40.213,Orbital (Sea),Historic
 9,Kennedy Space Center,KSC,USA,28.572,-80.648,Orbital,Active
@@ -47,3 +47,5 @@ id,name,abbreviation,country,latitude,longitude,type,status
 46,Spaceport Cornwall,Cornwall,UK,50.440,-4.995,Air Launch,Active
 47,Woomera Test Range,Woomera,Australia,-30.958,136.532,Test/Suborbital,Historic
 48,Arnhem Space Centre,ASC,Australia,-12.381,136.819,Suborbital,Active
+49,Yangjiang Sea Launch,SSLA,China,21.283339,112.000012,Orbital (Sea),Active
+50,Rizhao Sea Launch,RSLA,China,35.358220,119.645866,Orbital (Sea),Active
