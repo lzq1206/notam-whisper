@@ -4743,17 +4743,3 @@ AttributeError: module 'datetime' has no attribute 'UTC'
     now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
 AttributeError: module 'datetime' has no attribute 'UTC'
 
-2026-04-14T03:50:52.572303 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
-2026-04-14T03:50:52.572414 -   Got 2 blocks from TXT
-2026-04-14T03:50:52.572457 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
-2026-04-14T03:50:52.572482 -   HTTP 503
-2026-04-14T03:50:52.572504 -   HTTP 503
-2026-04-14T03:50:52.572525 -   HTTP 503
-2026-04-14T03:50:52.572547 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
-2026-04-14T03:50:52.572767 -   Got 1 blocks from HTML
-2026-04-14T03:50:52.572801 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
-2026-04-14T03:50:52.572878 -   Got 1 blocks from HTML
-2026-04-14T03:50:52.572911 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
-2026-04-14T03:50:52.572934 -   HTTP 503
-2026-04-14T03:50:52.572955 -   HTTP 503
-2026-04-14T03:50:52.572974 -   HTTP 503

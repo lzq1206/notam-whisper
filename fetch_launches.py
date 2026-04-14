@@ -120,7 +120,7 @@ def _resolve_site(location, launch_sites, site_by_abbr):
     if not candidates:
         return "", "", ""
 
-    _, best_site = max(candidates, key=lambda x: x[0])
+    best_site = max(candidates, key=lambda x: x[0])[1]
     return best_site["latitude"], best_site["longitude"], best_site["abbr"]
 
 
@@ -177,6 +177,22 @@ def _parse_rll_api_result(payload, launch_sites, site_by_abbr):
             continue
 
         lat, lon, abbr = _resolve_site(location_raw, launch_sites, site_by_abbr)
+        success_raw = item.get("launch_success")
+        if success_raw is None:
+            success_raw = item.get("result")
+        if success_raw is None:
+            success_raw = item.get("status")
+
+        success = "S"
+        if isinstance(success_raw, bool):
+            success = "S" if success_raw else "F"
+        elif isinstance(success_raw, str):
+            lowered = success_raw.strip().lower()
+            if lowered in ("false", "fail", "failed", "failure", "unsuccessful"):
+                success = "F"
+            elif lowered in ("true", "success", "successful", "succeeded"):
+                success = "S"
+
         launches.append({
             "Launch Date and Time (UTC)": full_date,
             "Launch Site (Abbrv.)": abbr,
@@ -184,7 +200,7 @@ def _parse_rll_api_result(payload, launch_sites, site_by_abbr):
             "Longitude": lon,
             "Launch Vehicle": vehicle,
             "Official Payload Name": mission,
-            "Success": "S",
+            "Success": success,
             "Launch Site (Full)": location_raw,
         })
     return launches
