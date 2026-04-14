@@ -120,7 +120,7 @@ def _resolve_site(location, launch_sites, site_by_abbr):
     if not candidates:
         return "", "", ""
 
-    best_site = max(candidates, key=lambda x: x[0])[1]
+    _score, best_site = max(candidates, key=lambda x: x[0])
     return best_site["latitude"], best_site["longitude"], best_site["abbr"]
 
 
