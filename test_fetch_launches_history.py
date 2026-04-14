@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import csv
 import os
-import re
 import tempfile
 from datetime import datetime
 
@@ -97,7 +96,7 @@ def test_parse_rll_api_result_maps_fields():
 
     launches = _parse_rll_api_result(payload, launch_sites, site_by_abbr)
     assert len(launches) == 1
-    assert re.fullmatch(rf"{datetime.now().year} MAR 12 0000", launches[0]["Launch Date and Time (UTC)"])
+    assert launches[0]["Launch Date and Time (UTC)"] == f"{datetime.now().year} MAR 12 0000"
     assert launches[0]["Launch Site (Abbrv.)"] == "CCSFS"
     assert launches[0]["Launch Vehicle"] == "Falcon 9"
     assert launches[0]["Official Payload Name"] == "Starlink Group"
