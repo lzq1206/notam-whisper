@@ -3,7 +3,7 @@ import csv
 import os
 import tempfile
 
-from fetch_launches import _load_launch_sites, _resolve_site, archive_weekly, save_to_csv
+from fetch_launches import _load_launch_sites, _parse_rll_api_result, _resolve_site, archive_weekly, save_to_csv
 
 
 def _read_rows(path):
@@ -79,7 +79,29 @@ def test_resolve_site_matches_specific_launch_site():
     assert lon == -80.577
 
 
+def test_parse_rll_api_result_maps_fields():
+    launch_sites = _load_launch_sites()
+    site_by_abbr = {site["abbr"].lower(): site for site in launch_sites if site["abbr"]}
+    payload = {
+        "result": [
+            {
+                "date_str": "MAR 12",
+                "name": "Starlink Group",
+                "vehicle_name": "Falcon 9",
+                "pad": {"location": "Cape Canaveral, Florida, United States"},
+            }
+        ]
+    }
+
+    launches = _parse_rll_api_result(payload, launch_sites, site_by_abbr)
+    assert len(launches) == 1
+    assert launches[0]["Launch Site (Abbrv.)"] == "CCSFS"
+    assert launches[0]["Launch Vehicle"] == "Falcon 9"
+    assert launches[0]["Official Payload Name"] == "Starlink Group"
+
+
 if __name__ == "__main__":
     test_archive_weekly_creates_history_and_dedupes()
     test_resolve_site_matches_specific_launch_site()
+    test_parse_rll_api_result_maps_fields()
     print("test_fetch_launches_history.py passed")
