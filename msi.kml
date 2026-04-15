@@ -3,13 +3,20 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
-      <name>-796568590</name>
-      <description>141320Z APR 26  NAVAREA IV 350/26.  NORTH ATLANTIC.  TEN METER S/V NICOLA DEUX, WHITE AND BLUE HULL,  ONE PERSON ON BOARD, REQUESTING ASSISTANCE   IN 42-16.94N 037-59.06W AT 140930Z APR.  VESSELS IN VICINITY REQUESTED TO KEEP A SHARP  LOOKOUT, ASSIST IF POSSIBLE.  REPORTS TO MRCC DELGADA,  PHONE: 3512 9628 1777, 3519 1777 7461   EMAIL: MRCC.DELGADA@MARINHA.PT.  132000Z APR 26  NAVAREA IV 349/26.  1. NORTH AMERICAN ICE SERVICE (NAIS)     ICEBERG BULLETIN 140001Z APR.  2. WARNING! THE INTERNATIONA</description>
+      <name>3722434999</name>
+      <description>NAVAREA IV 357/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      200648Z TO 200805Z APR, ALTERNATE      210643Z TO 210801Z, 220639Z TO 220757Z,     230635Z TO 230753Z, 240631Z TO 240749Z,     250627Z TO 250745Z AND      260623Z TO 260741Z APR IN AREAS BOUND BY:     A. 31-54.00N 077-20.00W, 33-53.00N 075-19.00W,        34-16.00N 074-36.00W, 34-02.00N 074-17.00W,        33-23.00N 074-37.00W, 31-40.00N 077-02.00W.     B. 28-36.58N 080-35.70W, 28-49.00N 080-19.00W,      </description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-37.984333,42.282333,0</coordinates>
+              <coordinates>-77.333333,31.9,0 -75.316667,33.883333,0 -74.6,34.266667,0 -74.283333,34.033333,0 -74.616667,33.383333,0 -77.033333,31.666667,0 -77.333333,31.9,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.595,28.609667,0 -80.316667,28.816667,0 -80.266667,28.75,0 -80.383333,28.6,0 -80.5535,28.514333,0 -75.0765,10.932333,0 -75.247167,11.030167,0 -75.188333,11.0975,0 -75.046833,10.992833,0 -81.763333,17.086167,0 -81.7405,17.081833,0 -80.595,28.609667,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -30,7 +37,7 @@
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-75.75,26.216667,0 -75.266667,27.616667,0 -74.166667,27.516667,0 -73.333333,26.95,0 -73.833333,25.783333,0 -74.8,25.766667,0 -61.043167,11.112667,0 -76.833333,8.681333,0 -74.241,11.1755,0 -75.75,26.216667,0</coordinates>
+              <coordinates>-75.75,26.216667,0 -75.266667,27.616667,0 -74.166667,27.516667,0 -73.333333,26.95,0 -73.833333,25.783333,0 -74.8,25.766667,0 -37.984333,42.282333,0 -61.043167,11.112667,0 -76.833333,8.681333,0 -75.75,26.216667,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -268,20 +275,27 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>-190046037</name>
-      <description>141354Z APR 26  NAVAREA XII 255/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS 1630Z TO 2030Z DAILY     14 THRU 20, 24, 27 APR THRU 01 MAY,     AND 21 AND 22 APR IN AREA BOUND BY     32-59.93N 121-00.52W, 33-12.47N 121-07.25W,     33-26.73N 120-21.12W, 33-13.98N 120-16.15W.  2. CANCEL NAVAREA XII 254/26.  3. CANCEL THIS MSG 012130Z MAY 26.  132112Z APR 26  NAVAREA XII 253/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS 1330Z TO 0100Z     DAILY 16 AND 17 APR, ALTERNATE     18</description>
+      <name>-291147540</name>
+      <description>181536Z Mar 26  NAVAREA XII 260/26.  NORTH PACIFIC.  1. CABLE OPERATIONS 20 APR THRU 14 JUN      BY M/V GRACE ALONG TRACKLINES JOINING:     A. 46-31.23N 140-10.57W, 46-08.80N 137-44.99W,        45-38.76N 134-51.65W, 45-20.63N 133-02.11W,        44-41.57N 130-08.51W.     B. 48-55.49N 163-49.45W, 49-00.50N 163-20.00W,        48-54.59N 162-18.29W, 48-49.50N 159-25.00W,        48-47.03N 158-21.26W, 48-39.46N 156-37.36W,        48-34.01N 155-57.90W, 48-38.10N 155-31.96W,        48-31.40N 154-56.10W, </description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-121.008667,32.998833,0 -121.120833,33.207833,0 -120.352,33.4455,0 -120.269167,33.233,0 -119.673667,33.939667,0 -119.281333,33.735333,0 -119.995833,32.845333,0 -120.8005,33.55,0 -120.460833,33.779167,0 -117.288333,32.183333,0 -116.991333,31.583333,0 -117.566667,31.583333,0 -117.566667,32.083333,0 -117.533333,32.216667,0 -121.008667,32.998833,0</coordinates>
+              <coordinates>-140.176167,46.5205,0 -137.749833,46.146667,0 -134.860833,45.646,0 -133.035167,45.343833,0 -130.141833,44.692833,0 -140.176167,46.5205,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-152.966667,46.983333,0 -152.75,48.066667,0 -150.633333,47.8,0 -144.8,46.85,0 -144.983333,46.266667,0 -148.95,46.7,0 -152.966667,46.983333,0</coordinates>
+              <coordinates>-163.824167,48.924833,0 -163.333333,49.008333,0 -162.304833,48.909833,0 -159.416667,48.825,0 -158.354333,48.783833,0 -156.622667,48.657667,0 -155.965,48.566833,0 -155.532667,48.635,0 -154.935,48.523333,0 -153.574167,48.308667,0 -152.133833,48.143833,0 -150.348667,47.985333,0 -149.680667,47.856,0 -163.824167,48.924833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-154.175167,47.517667,0 -153.564167,47.546333,0 -149.820667,47.384833,0 -146.436333,47.178333,0 -142.583,46.809833,0 -140.705333,46.582667,0 -120.8755,34.2955,0 -121.9845,33.980833,0 -122.434167,34.644167,0 -121.3355,35.077833,0 -117.181167,32.597,0 -152.566667,57.766667,0 -152.966667,46.983333,0 -152.75,48.066667,0 -150.633333,47.8,0 -144.8,46.85,0 -144.983333,46.266667,0 -148.95,46.7,0 -121.008667,32.998833,0 -121.120833,33.207833,0 -120.352,33.4455,0 -120.269167,33.233,0 -119.673667,33.939667,0 -119.281333,33.735333,0 -119.995833,32.845333,0 -120.8005,33.55,0 -120.460833,33.779167,0 -154.175167,47.517667,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -309,21 +323,7 @@
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-172.810667,38.779333,0 -170.261667,38.261667,0 -172.531167,31.121333,0 -174.81,31.535,0 -117.666667,31.583333,0 -119.9475,31.583333,0 -119.700833,31.833333,0 -119.700833,32.204167,0 -119.409667,32.473333,0 -118.916667,32.473333,0 -118.916667,32.615333,0 -118.75,32.615333,0 -118.583333,32.75,0 -118.25,32.75,0 -118.25,32.666667,0 -117.577833,32.666667,0 -117.533333,32.583333,0 -118.266667,32.583333,0 -118.416667,32.55,0 -118.416667,31.916667,0 -117.666667,31.916667,0 -172.810667,38.779333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.15,31.75,0 -121.25,31.716667,0 -120.666667,34.65,0 -120.616667,34.666667,0 -120.433333,34.45,0 -120.583333,33.783333,0 -121.15,31.75,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.566667,28.433333,0 -121.916667,28.316667,0 -122.216667,28.516667,0 -122.216667,28.866667,0 -121.75,29.8,0 -121.566667,29.8,0 -121.416667,28.8,0 -121.566667,28.433333,0</coordinates>
+              <coordinates>-172.810667,38.779333,0 -170.261667,38.261667,0 -172.531167,31.121333,0 -174.81,31.535,0 -172.810667,38.779333,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -344,7 +344,7 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>-972474372</name>
+      <name>4508546917</name>
       <description>242359Z JUN 25  NAVAREA XII 392/25(16).  NORTH PACIFIC.  M/V MORNING MIDAS SANK IN 45-16.88N 179-14.13W.  VESSELS IN VICINITY REQUESTED TO NAVIGATE WITH  CAUTION AND REPORT PRESENCE OF OIL SHEENS OR  DEBRIS TO USCG SECTOR WESTERN ALASKA AND US ARCTIC,  PHONE: 907 428 4100, E-MAIL: SOUTHWESTERNAK@USCG.MIL.</description>
       <Polygon>
         <outerBoundaryIs>
@@ -355,7 +355,7 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>-883618198</name>
+      <name>-260781801</name>
       <description>182355Z JUN 24  NAVAREA XII 441/24(21).  EASTERN NORTH PACIFIC.  MEXICO.  MORRO SANTO DOMINGO LIGHT 28-14.37N 114-06.18W UNLIT.  282248Z FEB 23  NAVAREA XII 93/23(19).  NORTH PACIFIC.  HAWAII.  1. INTERMITTENT MISSILE FIRING OPERATIONS CONDUCTED     BY THE PACIFIC MISSILE RANGE FACILITY (PMRF),     BARKING SANDS, KAUAI, HAWAII, IN WHISKEY     188 (W-188) OPERATING AREA. OPERATIONS ARE     CONDUCTED PERIODICALLY THROUGHOUT EACH WEEK     IN AREA BOUND BY     22-00.0N 159-51.0W, 22-00.0N 160-00.0W,</description>
       <Polygon>
         <outerBoundaryIs>
@@ -366,7 +366,7 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>-377508991</name>
+      <name>-771312256</name>
       <description>031744Z FEB 26  HYDROLANT 237/26(54).  AEGEAN SEA.  DNC 09.  1. MISSILE OPERATIONS 0530Z TO SUNSET DAILY EVERY     WEDNESDAY THRU SATURDAY UNTIL 14 JUN AND     16 SEB THRU 31 DEC IN AREAS:     A. BOUND BY        35-36.00N 024-07.00E, 36-18.00N 024-07.00E,        36-18.00N 025-59.00E, 36-25.00N 026-12.00E,        36-16.00N 026-40.00E, 35-36.00N 026-41.00E,        35-31.00N 024-11.00E.     B. WITHIN ONE MILE OF 35-32.00N 024-13.00E.     C. WITHIN ONE MILE OF 35-36.33N 024-10.00E.  2. CANCEL THIS M</description>
       <MultiGeometry>
         <Polygon>
@@ -393,13 +393,55 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>7856781305</name>
-      <description>141104Z APR 26  HYDROPAC 1108/26.  SPENCER GULF.  AUSTRALIA.  PLANK SHOAL LIGHT 33-29.88S 137-28.56E  UNLIT.  131826Z APR 26  HYDROPAC 1107/26.  SINGAPORE STRAIT.  SINGAPORE.  1. BARGE BOARDED IN 01-15.54N 104-05.38E     AT 131330Z APR. VESSELS ARE ADVISED TO     KEEP CLEAR OF THIS POSITION AND TO     EXERCISE EXTREME CAUTION.  2. CANCEL THIS MSG 161926Z APR 26.  131443Z APR 26  HYDROPAC 1106/26.  ARABIAN SEA.  PAKISTAN.  1. HAZARDOUS OPERATIONS 0300Z TO 1300Z DAILY     14 THRU 15 APR 26 IN AREA</description>
+      <name>-253298998</name>
+      <description>151238Z APR 26  HYDROPAC 1119/26.  BAY OF BENGAL.  INDIA.  1. HAZARDOUS OPERATIONS 180330Z TO 180730Z     APR IN AREA BOUND BY     21-49.28N 087-56.30E, 20-38.83N 088-33.23E,     19-34.40N 087-11.06E, 20-03.78N 086-31.50E,     20-42.18N 087-08.98E, 20-57.35N 086-54.46E,     21-14.91N 086-48.63E, 21-35.51N 087-10.70E.  2. CANCEL HYDROPAC 1071/26.  3. CANCEL THIS MSG 180830Z APR 26.  151217Z APR 26  HYDROPAC 1118/26.  BAY OF BENGAL.  INDIA.  1. HAZARDOUS OPERATIONS 160001Z TO      171300Z APR IN A</description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>137.476,-33.498,0 104.089667,1.259,0 64.366667,24.7,0 63.55,25.0,0 63.716667,25.35,0 64.2,25.3,0 67.533333,23.833333,0 67.3,23.6,0 137.476,-33.498,0</coordinates>
+              <coordinates>87.938333,21.821333,0 88.553833,20.647167,0 87.184333,19.573333,0 86.525,20.063,0 87.149667,20.703,0 86.907667,20.955833,0 86.8105,21.2485,0 87.178333,21.591833,0 84.0,16.916667,0 84.666667,16.916667,0 84.666667,16.25,0 84.0,16.25,0 87.938333,21.821333,0 88.553833,20.647167,0 87.5525,19.863333,0 86.8625,21.2675,0 87.938333,21.821333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.984833,20.316167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>72.494667,20.173,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.247333,19.326833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.301333,19.350167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.3015,19.5295,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.362333,19.573333,0 71.232667,20.4805,0 72.5105,20.458167,0 72.462167,20.005833,0 71.239,20.016667,0 93.2,17.983333,0 93.75,17.85,0 93.533333,16.983333,0 92.983333,17.1,0 108.5,15.733333,0 115.7,-19.4,0 115.7,-19.9,0 116.6,-19.9,0 116.6,-19.4,0 22.6,-43.65,0 40.85,-51.283333,0 38.666667,-53.333333,0 20.733333,-45.7,0 137.476,-33.498,0 104.089667,1.259,0 64.366667,24.7,0 63.55,25.0,0 63.716667,25.35,0 64.2,25.3,0 67.533333,23.833333,0 67.3,23.6,0 71.362333,19.573333,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -567,7 +609,7 @@
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>70.9785,18.655333,0 71.056333,18.6545,0 71.0555,18.576333,0 70.9775,18.577167,0 87.938333,21.821333,0 88.553833,20.647167,0 87.184333,19.573333,0 86.525,20.063,0 87.149667,20.703,0 86.907667,20.955833,0 86.8105,21.2485,0 87.178333,21.591833,0 -149.416667,-17.666667,0 -149.833333,-17.533333,0 71.833333,18.3715,0 72.008333,18.635167,0 72.0595,18.666,0 72.068667,18.649833,0 72.021833,18.622333,0 71.849667,18.361667,0 70.9785,18.655333,0</coordinates>
+              <coordinates>70.9785,18.655333,0 71.056333,18.6545,0 71.0555,18.576333,0 70.9775,18.577167,0 71.833333,18.3715,0 72.008333,18.635167,0 72.0595,18.666,0 72.068667,18.649833,0 72.021833,18.622333,0 71.849667,18.361667,0 70.9785,18.655333,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -588,7 +630,7 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>-270127835</name>
+      <name>-574129628</name>
       <description>232211Z MAR 26  HYDROPAC 934/26.  EASTERN INDIAN OCEAN.  SOUTH PACIFIC.  TASMAN SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     01 THRU 30 APR IN AREA BOUND BY     39-52.00S 082-05.00E, 46-48.00S 097-01.00E,     51-17.00S 115-27.00E, 51-19.00S 138-10.00E,     47-11.00S 158-59.00E, 48-02.00S 159-55.00E,     49-27.00S 159-48.00E, 53-45.00S 138-13.00E,     53-37.00S 114-28.00E, 48-53.00S 095-17.00E,     41-36.00S 080-09.00E.  2. CANCEL THIS MSG 010001Z MAY 26.</description>
       <Polygon>
         <outerBoundaryIs>
@@ -599,7 +641,7 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>9675766317</name>
+      <name>3281594796</name>
       <description>242359Z JUN 25  HYDROPAC 1650/25(16).  NORTH PACIFIC.  DNC 25.  M/V MORNING MIDAS SANK IN 45-16.88N 179-14.13W.  VESSELS IN VICINITY REQUESTED TO NAVIGATE WITH  CAUTION AND REPORT PRESENCE OF OIL SHEENS OR  DEBRIS TO USCG SECTOR WESTERN ALASKA AND US ARCTIC,  PHONE: 907 428 4100, E-MAIL: SOUTHWESTERNAK@USCG.MIL.</description>
       <Polygon>
         <outerBoundaryIs>
@@ -610,7 +652,7 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>8594325531</name>
+      <name>3213023957</name>
       <description>HYDROARC 47/26.  1. HYDROARC WARNINGS IN FORCE AS OF 102030Z APR.     ALL THE INFORCE WARNINGS ARE LISTED HERE.     46/2026, 44/2026, 4/2026.      180/2025, 178/2025, 175/2025, 148/2025, 145/2025,     103/2025.     283/2024.     163/2023.      198/2022.  2. THE COMPLETE TEXT OF ALL IN-FORCE HYDROARC       BROADCAST WARNINGS ARE AVAILABLE ON THE NGA      MARITIME SAFETY INFORMATION WEBSITE AT:      msi.nga.mil/NavWarnings.      ALTERNATIVELY, THESE MAY BE REQUESTED BY E-MAIL      FROM NGA AT NAVS</description>
       <MultiGeometry>
         <Polygon>
