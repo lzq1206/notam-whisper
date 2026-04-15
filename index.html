@@ -1195,7 +1195,7 @@
     }
 
     /**
-     * Calculate great-circle distance in kilometers between [lat, lon] points.
+     * Calculate great-circle distance in kilometers between two points where a and b are [lat, lon] arrays.
      */
     function haversineDistanceKm(a, b) {
       const toRad = deg => deg * Math.PI / 180;
@@ -1214,7 +1214,7 @@
      * Split [lat, lon] path into contiguous segments when jump distance is too large.
      */
     function splitDisconnectedCoordinatePath(points, maxSegmentKm = 900) {
-      if (!Array.isArray(points) || points.length === 0) return [[]];
+      if (!Array.isArray(points) || points.length === 0) return [];
       const normalized = normalizeDatelineCoordinates(points);
       if (normalized.length <= 1) return [normalized];
 
