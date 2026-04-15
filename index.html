@@ -1214,7 +1214,8 @@
      * Split [lat, lon] path into contiguous segments when jump distance is too large.
      */
     function splitDisconnectedCoordinatePath(points, maxSegmentKm = 900) {
-      const normalized = normalizeDatelineCoordinates(points || []);
+      if (!Array.isArray(points) || points.length === 0) return [[]];
+      const normalized = normalizeDatelineCoordinates(points);
       if (normalized.length <= 1) return [normalized];
 
       const segments = [];
@@ -1223,13 +1224,13 @@
         const p = normalized[i];
         const prev = current[current.length - 1];
         if (haversineDistanceKm(prev, p) > maxSegmentKm) {
-          if (current.length) segments.push(current);
+          segments.push(current);
           current = [p];
         } else {
           current.push(p);
         }
       }
-      if (current.length) segments.push(current);
+      segments.push(current);
       return segments;
     }
 
