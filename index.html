@@ -1194,6 +1194,9 @@
       return pts;
     }
 
+    /**
+     * Calculate great-circle distance in kilometers between [lat, lon] points.
+     */
     function haversineDistanceKm(a, b) {
       const toRad = deg => deg * Math.PI / 180;
       const lat1 = toRad(a[0]);
@@ -1207,6 +1210,9 @@
       return 6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
     }
 
+    /**
+     * Split [lat, lon] path into contiguous segments when jump distance is too large.
+     */
     function splitDisconnectedCoordinatePath(points, maxSegmentKm = 900) {
       const normalized = normalizeDatelineCoordinates(points || []);
       if (normalized.length <= 1) return [normalized];
