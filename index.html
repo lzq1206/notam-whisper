@@ -1042,37 +1042,31 @@
           const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
 
           coordinatesList.forEach(pts => {
-            // 对多边形坐标进行归一化，防止跨越 180 度经线时出现拉伸
-            if (pts.length > 1) {
-              const firstLon = pts[0][1];
-              for (let i = 1; i < pts.length; i++) {
-                let currentLon = pts[i][1];
-                let diff = currentLon - pts[i-1][1];
-                if (diff > 180) pts[i][1] -= 360;
-                else if (diff < -180) pts[i][1] += 360;
+            const segments = isMaritime
+              ? splitDisconnectedCoordinatePath(pts)
+              : [normalizeDatelineCoordinates(pts)];
+            segments.forEach(segPts => {
+              let shape;
+              if (segPts.length >= 3 && !isRoute) {
+                if (isGlow) {
+                   // 2D Glow Layers (Double-Stroke for iOS compatibility)
+                   L.polygon(segPts, { color: '#fff', weight: 15, opacity: 0.1, fill: false, interactive: false }).addTo(group);
+                   L.polygon(segPts, { color: '#fff', weight: 8, opacity: 0.25, fill: false, interactive: false }).addTo(group);
+                }
+                shape = L.polygon(segPts, pathOptions);
+              } else if (segPts.length >= 2) {
+                if (isGlow) {
+                   L.polyline(segPts, { color: '#fff', weight: 18, opacity: 0.12, interactive: false }).addTo(group);
+                   L.polyline(segPts, { color: '#fff', weight: 10, opacity: 0.3, interactive: false }).addTo(group);
+                }
+                shape = L.polyline(segPts, { ...pathOptions, weight: isGlow ? 5 : 3 });
               }
-            }
-            
-            let shape;
-            if (pts.length >= 3 && !isRoute) {
-              if (isGlow) {
-                 // 2D Glow Layers (Double-Stroke for iOS compatibility)
-                 L.polygon(pts, { color: '#fff', weight: 15, opacity: 0.1, fill: false, interactive: false }).addTo(group);
-                 L.polygon(pts, { color: '#fff', weight: 8, opacity: 0.25, fill: false, interactive: false }).addTo(group);
+              if (shape) {
+                shape.bindPopup(popup);
+                shape.addTo(group);
+                layers.push(shape);
               }
-              shape = L.polygon(pts, pathOptions);
-            } else if (pts.length >= 2) {
-              if (isGlow) {
-                 L.polyline(pts, { color: '#fff', weight: 18, opacity: 0.12, interactive: false }).addTo(group);
-                 L.polyline(pts, { color: '#fff', weight: 10, opacity: 0.3, interactive: false }).addTo(group);
-              }
-              shape = L.polyline(pts, { ...pathOptions, weight: isGlow ? 5 : 3 });
-            }
-            if (shape) {
-              shape.bindPopup(popup);
-              shape.addTo(group);
-              layers.push(shape);
-            }
+            });
           });
         } else {
           let shape;
@@ -1200,6 +1194,46 @@
       return pts;
     }
 
+    /**
+     * Calculate great-circle distance in kilometers between two points where a and b are [lat, lon] arrays.
+     */
+    function haversineDistanceKm(a, b) {
+      const toRad = deg => deg * Math.PI / 180;
+      const lat1 = toRad(a[0]);
+      const lon1 = toRad(a[1]);
+      const lat2 = toRad(b[0]);
+      const lon2 = toRad(b[1]);
+      const dLat = lat2 - lat1;
+      const dLon = lon2 - lon1;
+      const h = Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+      return 6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+    }
+
+    /**
+     * Split [lat, lon] path into contiguous segments when jump distance is too large.
+     */
+    function splitDisconnectedCoordinatePath(points, maxSegmentKm = 900) {
+      if (!Array.isArray(points) || points.length === 0) return [];
+      const normalized = normalizeDatelineCoordinates(points);
+      if (normalized.length <= 1) return [normalized];
+
+      const segments = [];
+      let current = [normalized[0]];
+      for (let i = 1; i < normalized.length; i++) {
+        const p = normalized[i];
+        const prev = current[current.length - 1];
+        if (haversineDistanceKm(prev, p) > maxSegmentKm) {
+          segments.push(current);
+          current = [p];
+        } else {
+          current.push(p);
+        }
+      }
+      segments.push(current);
+      return segments;
+    }
+
     // Build a geodesic-like circle on WGS84 sphere, output as [lat, lon] coordinates for KML Polygon.
     function buildKmlCircleCoordinates(lat, lon, radiusMeters, steps = 64) {
       const EARTH_RADIUS_METERS = 6378137;
@@ -1238,22 +1272,27 @@
       const geometries = [];
       const rawText = r.raw || '';
       const isRoute = isRouteGeometry(rawText);
+      const isMaritime = r.country === 'Maritime';
 
       coordinatesList.forEach(points => {
-        const pts = normalizeDatelineCoordinates(points);
-        const coordText = pts.map(p => `${p[1]},${p[0]},0`).join(' ');
-        if (pts.length >= 3 && !isRoute) {
-          const closedCoordText = coordText + ` ${pts[0][1]},${pts[0][0]},0`;
-          geometries.push(`
-            <Polygon>
-              <outerBoundaryIs>
-                <LinearRing><coordinates>${closedCoordText}</coordinates></LinearRing>
-              </outerBoundaryIs>
-            </Polygon>
-          `);
-        } else if (pts.length >= 2) {
-          geometries.push(`<LineString><coordinates>${coordText}</coordinates></LineString>`);
-        }
+        const segments = isMaritime
+          ? splitDisconnectedCoordinatePath(points)
+          : [normalizeDatelineCoordinates(points)];
+        segments.forEach(pts => {
+          const coordText = pts.map(p => `${p[1]},${p[0]},0`).join(' ');
+          if (pts.length >= 3 && !isRoute) {
+            const closedCoordText = coordText + ` ${pts[0][1]},${pts[0][0]},0`;
+            geometries.push(`
+              <Polygon>
+                <outerBoundaryIs>
+                  <LinearRing><coordinates>${closedCoordText}</coordinates></LinearRing>
+                </outerBoundaryIs>
+              </Polygon>
+            `);
+          } else if (pts.length >= 2) {
+            geometries.push(`<LineString><coordinates>${coordText}</coordinates></LineString>`);
+          }
+        });
       });
 
       if (geometries.length === 0 && radiusNm > 0) {
