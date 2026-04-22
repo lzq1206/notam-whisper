@@ -3,36 +3,268 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
-      <name>-258893319</name>
-      <description>072000Z APR 26  NAVAREA IV 363/26.  NORTH ATLANTIC.  VIRGINIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      220001Z TO 220500Z APR, ALTERNATE     0001Z TO 0500Z DAILY 23 THRU 29 APR     IN AREAS BOUND BY:     A. 37-51.00N 075-31.00W, 37-52.00N 075-29.00W,        37-55.00N 075-21.00W, 38-04.00N 075-04.00W,        38-04.00N 074-55.00W, 38-01.00N 074-51.00W,        37-51.00N 074-42.00W, 37-44.00N 074-45.00W,        37-09.00N 072-38.00W, 36-49.00N 072-43.00W,        37-17.00N 074-57.00W, 37-37.00</description>
+      <name>1860996035</name>
+      <description>220840Z APR 26  NAVAREA IV 377/26.  NORTH ATLANTIC.  Florida.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      271414Z TO 271644Z, ALTERNATE     281410Z TO 281640Z, 291406Z TO 291636Z,     301402Z TO 301632Z APR, 011358Z TO 011628Z,     021354Z TO 021624Z AND 031350Z TO 031620Z MAY      IN AREAS BOUND BY:     A. 27-14.00N 069-53.00W, 28-25.00N 069-38.00W,        27-30.00N 063-38.00W, 26-08.00N 063-53.00W.     B. 28-45.89N 080-42.92W, 28-36.00N 077-24.00W,        28-30.00N 076-27.00W, 28-15.00N 07</description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-75.516667,37.85,0 -75.483333,37.866667,0 -75.35,37.916667,0 -75.066667,38.066667,0 -74.916667,38.066667,0 -74.85,38.016667,0 -74.7,37.85,0 -74.75,37.733333,0 -72.633333,37.15,0 -72.716667,36.816667,0 -74.95,37.283333,0 -75.55,37.616667,0 -75.516667,37.85,0</coordinates>
+              <coordinates>-69.883333,27.233333,0 -69.633333,28.416667,0 -63.633333,27.5,0 -63.883333,26.133333,0 -69.883333,27.233333,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-71.466667,37.583333,0 -66.666667,36.466667,0 -67.25,34.883333,0 -72.116667,36.05,0 -71.466667,37.583333,0</coordinates>
+              <coordinates>-80.715333,28.764833,0 -77.4,28.6,0 -76.45,28.5,0 -76.2,28.25,0 -76.583333,28.033333,0 -77.633333,28.183333,0 -80.574,28.427833,0 -80.715333,28.764833,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-65.483333,36.0,0 -59.483333,34.5,0 -54.0,31.9,0 -54.5,30.516667,0 -59.9,32.0,0 -66.0,34.5,0 -65.483333,36.0,0</coordinates>
+              <coordinates>-52.666667,5.4565,0 -52.544667,5.456833,0 -52.545,5.3335,0 -52.590167,5.3335,0 -52.675,5.406167,0 -52.666667,5.4565,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>6673009421</name>
-      <description>140902Z APR 26  NAVAREA IV 357/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      200648Z TO 200805Z APR, ALTERNATE      210643Z TO 210801Z, 220639Z TO 220757Z,     230635Z TO 230753Z, 240631Z TO 240749Z,     250627Z TO 250745Z AND      260623Z TO 260741Z APR IN AREAS BOUND BY:     A. 31-54.00N 077-20.00W, 33-53.00N 075-19.00W,        34-16.00N 074-36.00W, 34-02.00N 074-17.00W,        33-23.00N 074-37.00W, 31-40.00N 077-02.00W.     B. 28-36.58N 080-35.70W, 28-49.00N 0</description>
-      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-52.5,6.0,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-70.516667,41.716667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-76.016667,36.733333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-81.7,32.133333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.383333,25.5,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-89.95,29.883333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-66.1,18.45,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-73.133333,13.133333,0 -79.708833,9.727833,0 -70.516667,41.716667,0 -73.133333,13.133333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-92.051667,19.383333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-70.363333,11.64,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-90.366667,27.173333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-92.038333,19.398333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-92.443333,27.545,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-93.123333,18.545,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-93.795,18.4,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-90.026667,27.195,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-97.135,21.128333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-92.045,19.576667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-92.77,18.573333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-93.94,18.383333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-92.203333,27.203333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-90.743333,27.358333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-91.556667,26.665,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-91.093333,26.295,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-92.641667,26.706667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-88.001667,28.386667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-94.73,26.23,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-95.405,25.75,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-91.211667,27.151667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-94.031667,18.476667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-61.65,10.641667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-61.816667,10.353333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-91.761667,18.858333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-92.526667,19.601667,0 -92.091667,19.57,0 -92.246667,19.041667,0 -92.346667,19.385,0 -94.005,18.496667,0 -89.218333,28.16,0 -89.955,28.141667,0 -94.886667,26.113333,0 -90.261667,27.41,0 -94.753333,26.201667,0 -92.365,19.11,0 -92.151667,19.513333,0 -91.261667,26.235,0 -60.343333,10.233333,0 -94.06,18.273333,0 -93.285,18.511667,0 -93.295,18.613333,0 -56.991667,8.011667,0 -56.915,8.01,0 -90.268333,27.188333,0 -73.706667,11.551667,0 -87.945,29.108333,0 -89.223333,28.173333,0 -93.77,18.405,0 -62.15,10.246667,0 -88.725,28.208333,0 -90.201667,28.103333,0 -90.523333,26.933333,0 -97.68,22.653333,0 -93.261667,18.506667,0 -92.058333,26.078333,0 -90.031667,27.225,0 -90.318333,27.146667,0 -89.836667,28.155,0 -56.766667,7.958333,0 -55.821667,7.313333,0 -57.1,7.96,0 -61.62,10.651667,0 -56.89,8.026667,0 -90.526667,26.516667,0 -56.963333,8.063333,0 -90.74,28.701667,0 -89.213333,28.16,0 -56.716667,7.956667,0 -92.051667,19.418333,0 -93.87,18.336667,0 -90.51,26.695,0 -57.003333,8.195,0 -93.893333,18.34,0 -91.983333,19.516667,0 -48.013333,46.786667,0 -94.725,27.03,0 -94.673333,26.223333,0 -56.948333,8.181667,0 -88.961667,28.158333,0 -90.715,27.326667,0 -48.465,46.471667,0 -92.443333,19.043333,0 -91.761667,18.763333,0 -96.931667,20.821667,0 -87.966667,28.923333,0 -60.603333,10.373333,0 -89.21,28.025,0 -92.0,19.506667,0 -92.258333,19.608333,0 -89.01,28.461667,0 -89.936667,27.943333,0 -88.65,29.461667,0 -60.828333,10.113333,0 -92.298333,19.611667,0 -92.526667,19.601667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
@@ -43,16 +275,86 @@
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-80.595,28.609667,0 -80.316667,28.816667,0 -80.266667,28.75,0 -80.383333,28.6,0 -80.5535,28.514333,0 -80.595,28.609667,0</coordinates>
+              <coordinates>-80.595,28.609667,0 -80.316667,28.816667,0 -80.266667,28.75,0 -80.383333,28.6,0 -80.5535,28.514333,0 -81.763333,17.086167,0 -81.7405,17.081833,0 -37.984333,42.282333,0 -76.833333,8.681333,0 -80.595,28.609667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.193167,10.564667,0 -80.192833,10.565167,0 -80.094,10.728833,0 -80.0155,10.777167,0 -79.913167,10.788,0 -79.601333,10.757,0 -79.46,10.805667,0 -79.3595,10.8685,0 -79.2595,10.988,0 -79.1875,11.098667,0 -78.572833,11.5995,0 -78.4825,11.774833,0 -78.150833,12.137167,0 -77.682667,12.604,0 -77.554333,12.731833,0 -77.432667,12.7695,0 -77.401333,12.909167,0 -76.727667,13.997,0 -76.570667,14.209667,0 -76.429,14.279667,0 -76.369833,14.351833,0 -76.304167,14.431833,0 -76.237167,14.618667,0 -76.165,14.819833,0 -76.149833,15.037333,0 -75.782833,15.999833,0 -75.731,16.184,0 -75.591667,16.508,0 -75.584333,16.546333,0 -80.193167,10.564667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-74.947167,11.038833,0 -74.9625,11.046667,0 -74.972833,11.049667,0 -74.982,11.0445,0 -74.990833,11.0425,0 -74.997833,11.040333,0 -75.002833,11.035833,0 -75.005,11.031167,0 -75.01,11.026167,0 -75.017833,11.019167,0 -75.0225,11.017167,0 -75.027,11.017,0 -75.045833,11.021333,0 -75.0505,11.020833,0 -75.058667,11.025,0 -75.083,11.035333,0 -75.107833,11.048667,0 -75.143333,11.059667,0 -75.213667,11.078833,0 -75.232833,11.084667,0 -75.253667,11.088833,0 -75.275,11.096333,0 -75.372833,11.124167,0 -75.4075,11.133333,0 -75.515333,11.1625,0 -75.596333,11.191333,0 -75.642167,11.226167,0 -75.676333,11.271333,0 -75.697,11.346667,0 -75.8325,11.6705,0 -75.873333,11.712167,0 -76.073667,11.813667,0 -76.161667,11.85,0 -76.161667,11.861167,0 -76.464167,11.892833,0 -57.885167,6.952167,0 -57.859333,6.942833,0 -57.937167,6.716833,0 -57.961833,6.733167,0 -38.923333,41.978333,0 -39.063333,42.218333,0 -40.161667,41.91,0 -40.018333,41.67,0 -74.947167,11.038833,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>2053514801</name>
-      <description>141734Z APR 26  NAVAREA XII 278/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 251400Z TO 251824Z APR, ALTERNATE        1400Z TO 1824Z DAILY 26 APR THRU 01 MAY        IN AREA BOUND BY        31-45.00N 121-09.00W, 31-43.00N 121-15.00W,        34-39.00N 120-40.00W, 34-40.00N 120-37.00W,        34-27.00N 120-26.00W, 33-47.00N 120-35.00W.     B. 251400Z TO 251843Z APR, ALTERNATE        1400Z TO 1843Z DAILY 26 APR THRU 01 MAY        IN AREA BOUND BY        28-26.0</description>
+      <name>-207086559</name>
+      <description>212148Z APR 26  NAVAREA XII 282/26.  NORTH PACIFIC.  1. BROADCAST SERVICES UNRELIABLE     221730Z TO 222130Z APR AT USCG     REMOTE COMMUNICATION FACILITIES:     A. PT REYES 37-55.00N 122-24.00W.     B. HONOLULU 21-22.00N 158-09.00W.     C. KODIAK 57-46.00N 152-34.00W.     D. ASTORIA 46-10.00N 123-49.00W.     E. CAMBRIA 33-44.00N 118-24.00W.  2. CANCEL NAVAREA XII 265/26.  3. CANCEL THIS MSG 222230Z APR 26.  201921Z APR 26  NAVAREA XII 281/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATION</description>
       <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-122.4,37.916667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-158.15,21.366667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-152.566667,57.766667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-123.816667,46.166667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-118.4,33.733333,0 -117.181167,32.597833,0 -118.4,33.733333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-152.186667,47.486667,0 -146.65,47.2,0 -140.703333,46.586667,0 -152.186667,47.486667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-140.17,46.52,0 -139.45,46.45,0 -140.17,46.52,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-163.824167,48.924833,0 -163.333333,49.008333,0 -162.304833,48.909833,0 -159.416667,48.825,0 -158.354333,48.783833,0 -156.622667,48.657667,0 -155.965,48.566833,0 -155.532667,48.635,0 -154.935,48.523333,0 -153.574167,48.308667,0 -152.133833,48.143833,0 -150.348667,47.985333,0 -149.680667,47.856,0 -163.824167,48.924833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
@@ -63,16 +365,24 @@
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-121.566667,28.433333,0 -121.916667,28.316667,0 -122.216667,28.516667,0 -122.216667,28.866667,0 -121.75,29.8,0 -121.566667,29.8,0 -121.416667,28.8,0 -121.566667,28.433333,0</coordinates>
+              <coordinates>-121.566667,28.433333,0 -121.916667,28.316667,0 -122.216667,28.516667,0 -122.216667,28.866667,0 -121.75,29.8,0 -121.566667,29.8,0 -121.416667,28.8,0 -158.15,21.366667,0 144.833333,13.416667,0 -122.733333,37.933333,0 -121.566667,28.433333,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>-720655546</name>
-      <description>111103Z APR 26  NAVAREA XII 270/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 220200Z TO 220624Z APR, ALTERNATE        0200Z TO 0624Z DAILY 23 THRU 28 APR        IN AREA BOUND BY        31-45.00N 121-09.00W, 31-43.00N 121-15.00W,        34-39.00N 120-40.00W, 34-40.00N 120-37.00W,        34-27.00N 120-26.00W, 33-47.00N 120-35.00W.     B. 220200Z TO 220643Z APR, ALTERNATE        0200Z TO 0643Z DAILY 23 THRU 28 APR        IN AREA BOUND BY        28-26.00N 121-3</description>
-      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-120.8755,34.2955,0 -121.9845,33.980833,0 -122.434167,34.644167,0 -121.3355,35.077833,0 -120.8755,34.2955,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.008667,32.998833,0 -121.120833,33.207833,0 -120.352,33.4455,0 -120.269167,33.233,0 -120.7,33.1,0 -120.3,33.516667,0 -119.883333,33.783333,0 -119.516667,33.366667,0 -119.933333,33.1,0 -120.533333,32.916667,0 -121.008667,32.998833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
@@ -83,16 +393,10 @@
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-121.566667,28.433333,0 -121.916667,28.316667,0 -122.216667,28.516667,0 -122.216667,28.866667,0 -121.75,29.8,0 -121.566667,29.8,0 -121.416667,28.8,0 -121.566667,28.433333,0</coordinates>
+              <coordinates>-121.566667,28.433333,0 -121.916667,28.316667,0 -122.216667,28.516667,0 -122.216667,28.866667,0 -121.75,29.8,0 -121.566667,29.8,0 -121.416667,28.8,0 -117.24,32.543333,0 -117.181333,32.597,0 -120.8755,34.2955,0 -121.9845,33.980833,0 -122.434167,34.644167,0 -121.3355,35.077833,0 -121.008667,32.998833,0 -121.120833,33.207833,0 -120.352,33.4455,0 -120.269167,33.233,0 -121.566667,28.433333,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>2435621908</name>
-      <description>090910Z APR 26  NAVAREA XII 241/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2100Z TO 1600Z DAILY 13 THRU 29 APR     IN AREAS BOUND BY:     A. 33-06.05N 128-42.07W, 32-50.48N 127-12.41W,        28-19.72N 128-15.70W, 28-36.02N 129-37.43W.     B. 38-46.76N 172-48.64W, 38-15.70N 170-15.70W,        31-07.28N 172-31.87W, 31-32.10N 174-48.60W.  2. CANCEL THIS MSG 301700Z APR 26.</description>
-      <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
@@ -107,10 +411,80 @@
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-122.4,37.916667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-158.15,21.366667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-152.566667,57.766667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-165.25,64.483333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-162.7,55.183333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-170.233333,57.15,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>174.116667,52.716667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-131.816667,55.45,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-123.816667,46.166667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-152.566667,57.766667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>-390558775</name>
+      <name>4788800933</name>
       <description>242359Z JUN 25  NAVAREA XII 392/25(16).  NORTH PACIFIC.  M/V MORNING MIDAS SANK IN 45-16.88N 179-14.13W.  VESSELS IN VICINITY REQUESTED TO NAVIGATE WITH  CAUTION AND REPORT PRESENCE OF OIL SHEENS OR  DEBRIS TO USCG SECTOR WESTERN ALASKA AND US ARCTIC,  PHONE: 907 428 4100, E-MAIL: SOUTHWESTERNAK@USCG.MIL.</description>
       <Polygon>
         <outerBoundaryIs>
@@ -121,7 +495,7 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>6965055066</name>
+      <name>5663886053</name>
       <description>182355Z JUN 24  NAVAREA XII 441/24(21).  EASTERN NORTH PACIFIC.  MEXICO.  MORRO SANTO DOMINGO LIGHT 28-14.37N 114-06.18W UNLIT.  282248Z FEB 23  NAVAREA XII 93/23(19).  NORTH PACIFIC.  HAWAII.  1. INTERMITTENT MISSILE FIRING OPERATIONS CONDUCTED     BY THE PACIFIC MISSILE RANGE FACILITY (PMRF),     BARKING SANDS, KAUAI, HAWAII, IN WHISKEY     188 (W-188) OPERATING AREA. OPERATIONS ARE     CONDUCTED PERIODICALLY THROUGHOUT EACH WEEK     IN AREA BOUND BY     22-00.0N 159-51.0W, 22-00.0N 160-00.0W,</description>
       <Polygon>
         <outerBoundaryIs>
@@ -132,7 +506,7 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>-119122988</name>
+      <name>-633905704</name>
       <description>031744Z FEB 26  HYDROLANT 237/26(54).  AEGEAN SEA.  DNC 09.  1. MISSILE OPERATIONS 0530Z TO SUNSET DAILY EVERY     WEDNESDAY THRU SATURDAY UNTIL 14 JUN AND     16 SEB THRU 31 DEC IN AREAS:     A. BOUND BY        35-36.00N 024-07.00E, 36-18.00N 024-07.00E,        36-18.00N 025-59.00E, 36-25.00N 026-12.00E,        36-16.00N 026-40.00E, 35-36.00N 026-41.00E,        35-31.00N 024-11.00E.     B. WITHIN ONE MILE OF 35-32.00N 024-13.00E.     C. WITHIN ONE MILE OF 35-36.33N 024-10.00E.  2. CANCEL THIS M</description>
       <MultiGeometry>
         <Polygon>
@@ -159,42 +533,44 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>-202457705</name>
-      <description>211123Z APR 26  HYDROPAC 1191/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     251000Z TO 251600Z APR IN AREA BOUND BY     17-54.00S 164-55.00W, 19-34.00S 162-41.00W,     20-09.00S 163-09.00W, 18-27.00S 165-23.00W.  2. CANCEL THIS MSG 251700Z APR 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-164.916667,-17.9,0 -162.683333,-19.566667,0 -163.15,-20.15,0 -165.383333,-18.45,0 -164.916667,-17.9,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>4020184197</name>
-      <description>201408Z APR 26  HYDROPAC 1178/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1030Z TO 1430Z DAILY 21 THRU 30 APR     IN AREA WITHIN 216 MILES OF 39-36.00N 163-56.00E.  2. CANCEL HYDROPAC 1150/26.  3. CANCEL THIS MSG 301530Z APR 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>163.933333,39.6,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>-162865411</name>
-      <description>171619Z APR 26  HYDROPAC 1166/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      1543Z TO 2029Z DAILY 25 APR THRU 01 MAY      IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 012129Z MAY 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 -156.933333,-25.383333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>-355377543</name>
-      <description>180454Z APR 26  HYDROPAC 1156/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     230100Z APR TO 050400Z MAY     IN AREAS BOUND BY:     A. 39-18.00S 177-36.00E, 39-12.00S 177-49.00E,        39-12.00S 177-57.00E, 39-09.00S 178-18.00E,        39-42.00S 178-18.00E, 39-54.00S 177-48.00E,        39-54.00S 177-36.00E.     B. 43-30.00S 175-36.00E, 43-45.00S 177-30.00E,        47-06.00S 176-42.00E, 46-54.00S 174-42.00E.  2. CANCEL THIS MSG 050500Z MAY 26.</description>
+      <name>-834223369</name>
+      <description>221309Z APR 26  HYDROPAC 1207/26.  NORTH PACIFIC.  NORTHERN MARIANA ISLANDS.  OKINO REEF LIGHTED BUOY 1  IN 15-12.42N 145-41.45E.  OFF STATION.  221302Z APR 26  HYDROPAC 1206/26.  NORTH PACIFIC.  NORTHERN MARIANA ISLANDS.  TANAPAG HARBOR APPROACH LIGHTED BUOY T  IN 15-12.11N 145-40.28E.  OFF STATION.  221237Z APR 26  HYDROPAC 1205/26.  NORTH PACIFIC.  NORTHERN MARIANA ISLANDS.  TANAPAG HARBOR CHANNEL LIGHTED BUOY 2  IN 15-13.12N 145-41.24E.  OFF STATION.  221103Z APR 26  HYDROPAC 1203/26.  GULF </description>
       <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>145.690833,15.207,0 145.671333,15.201833,0 145.687333,15.218667,0 72.548167,21.6595,0 164.983333,-35.183333,0 162.7,-34.85,0 148.922167,21.982167,0 148.8875,20.241,0 110.75,11.55,0 144.833333,13.483333,0 103.625,1.056667,0 71.232667,20.4805,0 72.5105,20.458167,0 72.462167,20.005833,0 71.239,20.016667,0 55.202333,-20.891667,0 -164.916667,-17.9,0 -162.683333,-19.566667,0 -163.15,-20.15,0 -165.383333,-18.45,0 145.9655,-16.908667,0 144.355167,-38.3485,0 145.614,-39.130833,0 146.483,-39.3,0 148.8365,-39.378167,0 151.633333,-34.35,0 153.5,-35.0,0 154.433333,-34.55,0 154.4,-34.216667,0 155.05,-33.95,0 155.566667,-32.9,0 155.616667,-30.833333,0 156.966667,-29.783333,0 157.316667,-28.866667,0 142.451667,-10.496667,0 131.243,41.829667,0 130.773,42.267833,0 131.2105,42.533667,0 133.096333,42.655,0 133.891167,42.826667,0 135.179167,43.492833,0 137.934167,45.975833,0 139.024167,47.291167,0 139.293667,47.784167,0 139.461167,47.727833,0 140.100833,47.388667,0 140.818,48.000333,0 141.068,48.000833,0 141.400833,46.240833,0 141.302833,45.957,0 141.277833,45.871333,0 140.675,45.989667,0 140.0155,46.0975,0 139.701333,46.123,0 139.3425,45.706333,0 139.234167,45.434667,0 139.182833,45.305833,0 139.046667,44.9625,0 138.926333,44.656667,0 138.492833,44.204167,0 138.395333,44.111167,0 137.6775,43.341667,0 137.06,42.563333,0 136.121667,41.1555,0 135.847167,40.575833,0 134.450833,40.071167,0 133.743833,39.744667,0 133.235,39.892,0 151.25,-33.933333,0 153.35,-33.933333,0 153.35,-37.316667,0 151.25,-37.316667,0 110.45,-6.208333,0 110.45,-5.6,0 111.266667,-5.6,0 111.266667,-6.208333,0 141.346667,47.016667,0 141.575,46.958333,0 141.491667,46.816667,0 141.266667,46.875,0 93.5,13.45,0 93.5,12.133333,0 93.133333,12.133333,0 92.983333,12.266667,0 92.983333,12.883333,0 93.016667,13.0,0 93.033333,13.066667,0 93.066667,13.233333,0 93.1,13.333333,0 93.1,13.45,0 163.933333,39.6,0 70.3,15.25,0 68.616667,16.25,0 69.55,16.8,0 70.583333,17.383333,0 71.55,16.866667,0 72.15,16.4,0 72.8035,15.803167,0 73.119833,14.933333,0 73.339833,14.819167,0 74.416667,14.266667,0 74.55,13.766667,0 73.6015,14.266667,0 73.385667,13.766667,0 73.3,13.733333,0 72.433333,14.0,0 71.433333,14.55,0 87.938333,21.821333,0 88.105833,21.498333,0 86.968333,21.052167,0 86.8625,21.2675,0 83.581167,17.503833,0 83.615333,17.488833,0 83.599167,17.456167,0 83.565,17.471333,0 145.690833,15.207,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>145.7375,15.226,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>144.6535,13.453333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>145.134833,14.139167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>145.621,14.965833,0 137.476,-33.498,0 113.9975,-21.481167,0 -156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 103.611,1.069833,0 104.483333,8.966667,0 115.736667,-32.4765,0 115.596167,-32.542833,0 121.559667,15.778333,0 121.831833,15.657,0 122.760833,16.842833,0 123.087833,18.232,0 123.102333,19.8625,0 145.621,14.965833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
@@ -205,69 +581,224 @@
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>175.6,-43.5,0 177.5,-43.75,0 176.7,-47.1,0 174.7,-46.9,0 175.6,-43.5,0</coordinates>
+              <coordinates>175.6,-43.5,0 177.5,-43.75,0 176.7,-47.1,0 174.7,-46.9,0 171.9,-53.4,0 173.9,-53.7,0 172.1,-58.0,0 170.1,-57.7,0 114.195,-21.728333,0 114.195,-19.911833,0 115.4065,-19.911833,0 115.4065,-21.728333,0 -71.971667,-32.883333,0 -71.833333,-32.883333,0 -71.833333,-33.0,0 -71.971667,-33.0,0 144.652667,-14.3465,0 70.150167,19.117333,0 70.340333,19.095167,0 70.335833,19.059,0 70.144,19.081667,0 108.35,10.716667,0 175.6,-43.5,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.100167,19.704,0 71.595333,19.6975,0 71.587,19.176167,0 71.0935,19.1825,0 71.100167,19.704,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.709167,20.76,0 72.351333,20.748667,0 72.335667,20.018,0 71.696333,20.029,0 71.709167,20.76,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.6925,19.695833,0 72.162,19.687833,0 72.335167,18.938833,0 71.682333,18.9495,0 71.6925,19.695833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>72.1575,18.7925,0 72.402833,18.788167,0 72.395833,18.432667,0 72.151,18.436833,0 72.1575,18.7925,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>70.9785,18.655333,0 71.056333,18.6545,0 71.0555,18.576333,0 70.9775,18.577167,0 86.9,20.95,0 87.383333,21.216667,0 87.7,21.516667,0 87.75,21.683333,0 87.12,21.52,0 86.82,21.19,0 84.895,19.243333,0 85.599,19.123167,0 85.499167,18.866667,0 85.4035,18.75,0 85.168333,18.608333,0 84.895667,18.560167,0 151.903333,-23.185,0 70.9785,18.655333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>145.133333,13.45,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>144.6,13.7,0 -168.966667,-59.216667,0 -164.75,-59.666667,0 -154.55,-25.833333,0 -156.933333,-25.383333,0 -70.505,-52.918333,0 48.158167,13.949667,0 174.1605,-36.4775,0 107.05,6.75,0 87.938333,21.821333,0 88.553833,20.647167,0 87.5525,19.863333,0 86.8625,21.2675,0 144.6,13.7,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.984833,20.316167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>72.494667,20.173,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.247333,19.326833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.301333,19.350167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.3015,19.5295,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.362333,19.573333,0 71.232667,20.4805,0 72.5105,20.458167,0 72.462167,20.005833,0 71.239,20.016667,0 115.7,-19.4,0 115.7,-19.9,0 116.6,-19.9,0 116.6,-19.4,0 22.6,-43.65,0 40.85,-51.283333,0 38.666667,-53.333333,0 20.733333,-45.7,0 71.362333,19.573333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.100167,19.704,0 71.595333,19.6975,0 71.587,19.176167,0 71.0935,19.1825,0 71.100167,19.704,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.709167,20.76,0 72.351333,20.748667,0 72.335667,20.018,0 71.696333,20.029,0 71.709167,20.76,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.6925,19.695833,0 72.162,19.687833,0 72.335167,18.938833,0 71.682333,18.9495,0 71.6925,19.695833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>72.1575,18.7925,0 72.402833,18.788167,0 72.395833,18.432667,0 72.151,18.436833,0 72.1575,18.7925,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>70.9785,18.655333,0 71.056333,18.6545,0 71.0555,18.576333,0 70.9775,18.577167,0 71.3025,19.529667,0 70.9785,18.655333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>72.463167,20.460333,0 72.453333,20.0145,0 71.226333,20.034167,0 71.232667,20.4805,0 72.463167,20.460333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.114333,19.6845,0 71.607167,19.678167,0 71.5995,19.202333,0 71.108167,19.208667,0 71.114333,19.6845,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.930333,19.404667,0 72.266833,19.399,0 72.261667,19.142,0 71.925667,19.147667,0 71.930333,19.404667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>72.175167,18.608167,0 72.320833,18.605667,0 72.318667,18.493833,0 72.173167,18.496333,0 72.175167,18.608167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.965833,20.887,0 72.509,20.674667,0 72.453333,20.0145,0 71.633,20.023333,0 71.650333,20.474,0 71.965833,20.887,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.114333,19.6845,0 71.607167,19.678167,0 71.5995,19.202333,0 71.108167,19.208667,0 71.114333,19.6845,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.930333,19.404833,0 72.266833,19.399,0 72.261833,19.142,0 71.925667,19.147667,0 71.930333,19.404833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.100167,19.704,0 71.595333,19.6975,0 71.587,19.176167,0 71.0935,19.1825,0 71.100167,19.704,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.709167,20.76,0 72.351333,20.748667,0 72.335667,20.018,0 71.696333,20.029,0 71.709167,20.76,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>71.6925,19.695833,0 72.162,19.687833,0 72.335167,18.938833,0 71.682333,18.9495,0 71.6925,19.695833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>72.1575,18.7925,0 72.402833,18.788167,0 72.395833,18.432667,0 72.151,18.436833,0 72.1575,18.7925,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>70.9785,18.655333,0 71.056333,18.6545,0 71.0555,18.576333,0 70.9775,18.577167,0 71.833333,18.3715,0 72.008333,18.635167,0 72.0595,18.666,0 72.068667,18.649833,0 72.021833,18.622333,0 71.849667,18.361667,0 -149.775,-17.473333,0 76.241667,9.96,0 76.276667,9.79,0 76.193333,9.78,0 76.126667,9.833333,0 76.466667,8.966667,0 51.534833,26.082833,0 51.625,26.065,0 51.5815,25.930667,0 51.517667,25.950833,0 70.9785,18.655333,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>3528066705</name>
-      <description>180448Z APR 26  HYDROPAC 1155/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     230100Z APR TO 050400Z MAY IN AREA BOUND BY     53-24.00S 171-54.00E, 53-42.00S 173-54.00E,     58-00.00S 172-06.00E, 57-42.00S 170-06.00E.  2. CANCEL THIS MSG 050500Z MAY 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>171.9,-53.4,0 173.9,-53.7,0 172.1,-58.0,0 170.1,-57.7,0 171.9,-53.4,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>7550044083</name>
-      <description>171033Z APR 26  HYDROPAC 1143/26.  EASTERN INDIAN OCEAN.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      220530Z TO 220700Z APR IN AREA BOUND BY     08-31.98N 076-52.05E, 08-34.48N 076-47.68E,     08-18.85N 075-37.45E, 08-06.23N 075-40.90E,     07-54.42N 075-46.52E, 07-43.73N 075-54.10E,     07-34.50N 076-03.45E, 08-27.07N 076-51.17E.  2. CANCEL THIS MSG 220800Z APR 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>76.8675,8.533,0 76.794667,8.574667,0 75.624167,8.314167,0 75.681667,8.103833,0 75.775333,7.907,0 75.901667,7.728833,0 76.0575,7.575,0 76.852833,8.451167,0 76.8675,8.533,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>2290096078</name>
-      <description>140524Z APR 26  HYDROPAC 1135/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0343Z TO 0818Z DAILY 22 THRU 28 APR     IN AREA BOUND BY     59-13.00S 168-58.00W, 59-40.00S 164-45.00W,     25-50.00S 154-33.00W, 25-23.00S 156-56.00W.  2. CANCEL THIS MSG 280918Z APR 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-168.966667,-59.216667,0 -164.75,-59.666667,0 -154.55,-25.833333,0 -156.933333,-25.383333,0 -168.966667,-59.216667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>1689726487</name>
-      <description>161305Z APR 26  HYDROPAC 1131/26.  SOUTH PACIFIC.  HAZARDOUS OPERATIONS, SPACE DEBRIS     0100Z TO 0400Z DAILY 21 AND 22 APR     IN AREA BOUND BY     27-51.00S 167-44.00W, 32-49.00S 162-02.00W,     44-54.00S 140-22.00W, 48-02.00S 130-01.00W,     49-04.00S 107-09.00W, 51-18.00S 106-02.00W,     52-30.00S 113-11.00W, 52-44.00S 123-15.00W,     52-23.00S 135-17.00W, 45-57.00S 161-59.00W,     41-57.00S 171-00.00W.  2. CANCEL THIS MSG 220500Z APR 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-167.733333,-27.85,0 -162.033333,-32.816667,0 -140.366667,-44.9,0 -130.016667,-48.033333,0 -107.15,-49.066667,0 -106.033333,-51.3,0 -113.183333,-52.5,0 -123.25,-52.733333,0 -135.283333,-52.383333,0 -161.983333,-45.95,0 -171.0,-41.95,0 -167.733333,-27.85,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>-134311232</name>
-      <description>120830Z APR 26  HYDROPAC 1111/26.  INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     201319Z TO 201428Z, 211314Z TO 211424Z,      221310Z TO 221420Z, 231306Z TO 231416Z,      241302Z TO 241412Z, 251258Z TO 251408Z      AND 261254Z TO 261404Z APR     IN AREA BOUND BY      43-39.00S 022-36.00E, 51-17.00S 040-51.00E,      53-20.00S 038-40.00E, 45-42.00S 020-44.00E.  2. CANCEL THIS MSG 261504Z APR 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>22.6,-43.65,0 40.85,-51.283333,0 38.666667,-53.333333,0 20.733333,-45.7,0 22.6,-43.65,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>2434852539</name>
+      <name>7034001472</name>
       <description>232211Z MAR 26  HYDROPAC 934/26.  EASTERN INDIAN OCEAN.  SOUTH PACIFIC.  TASMAN SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     01 THRU 30 APR IN AREA BOUND BY     39-52.00S 082-05.00E, 46-48.00S 097-01.00E,     51-17.00S 115-27.00E, 51-19.00S 138-10.00E,     47-11.00S 158-59.00E, 48-02.00S 159-55.00E,     49-27.00S 159-48.00E, 53-45.00S 138-13.00E,     53-37.00S 114-28.00E, 48-53.00S 095-17.00E,     41-36.00S 080-09.00E.  2. CANCEL THIS MSG 010001Z MAY 26.</description>
       <Polygon>
         <outerBoundaryIs>
@@ -278,7 +809,7 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>-753364946</name>
+      <name>-893413783</name>
       <description>242359Z JUN 25  HYDROPAC 1650/25(16).  NORTH PACIFIC.  DNC 25.  M/V MORNING MIDAS SANK IN 45-16.88N 179-14.13W.  VESSELS IN VICINITY REQUESTED TO NAVIGATE WITH  CAUTION AND REPORT PRESENCE OF OIL SHEENS OR  DEBRIS TO USCG SECTOR WESTERN ALASKA AND US ARCTIC,  PHONE: 907 428 4100, E-MAIL: SOUTHWESTERNAK@USCG.MIL.</description>
       <Polygon>
         <outerBoundaryIs>
@@ -289,20 +820,16 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>-521667936</name>
-      <description>201855Z APR 26  HYDROARC 50/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 231200Z TO 241700Z APR     IN AREA BOUND BY     70-45.00N 033-23.70E, 70-45.00N 035-20.00E,     69-47.60N 035-20.00E, 69-47.60N 033-23.70E.  2. CANCEL THIS MSG 241800Z APR 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>33.395,70.75,0 35.333333,70.75,0 35.333333,69.793333,0 33.395,69.793333,0 33.395,70.75,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>1661187893</name>
-      <description>201502Z APR 26  HYDROARC 49/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0001Z TO 1600Z AND 2100Z TO 2359Z DAILY      UNTIL 29 APR AND 300001Z TO 301600Z APR     IN AREAS BOUND BY:     A. 70-15.00N 031-50.00E, 70-30.11N 031-50.00E,        70-36.37N 031-43.30E, 70-56.00N 032-04.97E,        70-46.27N 033-52.16E, 69-45.82N 035-13.22E,        69-37.70N 034-18.22E, 69-52.00N 033-11.00E,        69-54.11N 032-40.00E.     B. 72-47.18N 029-27.88E, 73-01.54N 030-54.23E,      </description>
+      <name>-763079826</name>
+      <description>201855Z APR 26  HYDROARC 50/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 231200Z TO 241700Z APR     IN AREA BOUND BY     70-45.00N 033-23.70E, 70-45.00N 035-20.00E,     69-47.60N 035-20.00E, 69-47.60N 033-23.70E.  2. CANCEL THIS MSG 241800Z APR 26.  201502Z APR 26  HYDROARC 49/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0001Z TO 1600Z AND 2100Z TO 2359Z DAILY      UNTIL 29 APR AND 300001Z TO 301600Z APR     IN AREAS BOUND BY:     A. 70-15.00N 031-50.00E, 70-30</description>
       <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>33.395,70.75,0 35.333333,70.75,0 35.333333,69.793333,0 33.395,69.793333,0 33.395,70.75,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
@@ -317,12 +844,6 @@
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>-790989578</name>
-      <description>100604Z APR 26  HYDROARC 46/26.  BARENTS SEA.  NORWAY.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2100Z TO 1600Z DAILY 13 THRU 29 APR     IN AREAS BOUND BY:     A. 73-01.32N 030-54.14E, 71-53.10N 032-54.52E,        71-39.33N 031-25.13E, 72-47.11N 029-27.53E.     B. 76-22.00N 021-55.00E, 75-24.00N 024-43.00E,        74-51.00N 021-45.00E, 75-50.00N 018-50.00E.  2. CANCEL THIS MSG 301700Z APR 26.</description>
-      <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
@@ -334,6 +855,27 @@
           <outerBoundaryIs>
             <LinearRing>
               <coordinates>21.916667,76.366667,0 24.716667,75.4,0 21.75,74.85,0 18.833333,75.833333,0 21.916667,76.366667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-123.8505,69.9335,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-123.983667,69.900167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-124.123667,69.809833,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
