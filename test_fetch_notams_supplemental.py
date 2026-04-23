@@ -132,6 +132,40 @@ def test_fetch_notammap_sequential_retry_for_failed_country():
     assert sorted(item['id'] for item in items) == ['A', 'B']
 
 
+def test_fetch_country_fallback_slug_handles_accents_and_apostrophe():
+    import fetch_notams
+
+    class FakeResponse:
+        def __init__(self, status_code, payload=None):
+            self.status_code = status_code
+            self._payload = payload or {}
+
+        def json(self):
+            return self._payload
+
+    urls = []
+
+    def fake_get(url, headers=None, timeout=None):
+        urls.append(url)
+        if url.endswith('Cote_dIvoire.json'):
+            return FakeResponse(200, {'notams': [{'id': 'ok'}]})
+        return FakeResponse(404)
+
+    original_get = fetch_notams.requests.get
+    original_sleep = fetch_notams.time.sleep
+    fetch_notams.requests.get = fake_get
+    fetch_notams.time.sleep = lambda _: None
+    try:
+        result = fetch_country("Côte d'Ivoire")
+    finally:
+        fetch_notams.requests.get = original_get
+        fetch_notams.time.sleep = original_sleep
+
+    assert result == [{'id': 'ok'}]
+    assert len(urls) >= 2
+    assert any(url.endswith('Cote_dIvoire.json') for url in urls)
+
+
 if __name__ == '__main__':
     test_normalize_notam_number()
     test_parse_q_line()
@@ -140,4 +174,5 @@ if __name__ == '__main__':
     test_fetch_country_retries_retryable_status()
     test_fetch_country_returns_empty_list_by_default_after_retries()
     test_fetch_notammap_sequential_retry_for_failed_country()
+    test_fetch_country_fallback_slug_handles_accents_and_apostrophe()
     print('test_fetch_notams_supplemental.py passed')
