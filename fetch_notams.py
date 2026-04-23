@@ -3,10 +3,11 @@
 Aerospace NOTAM fetcher — notammap.org only.
 Outputs: notams.csv, notams.kml, history/notams/YYYY-WNN.*
 """
-import requests, re, os, datetime, csv, math, time
+import requests, re, os, datetime, csv, math, time, unicodedata
 from datetime import timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import xml.etree.ElementTree as ET
+from urllib.parse import quote
 
 # ─── Keyword Filters ───
 KEEP = ["UNL", "AEROSPACE", "RE-ENTRY", "ROCKET"]
@@ -215,22 +216,62 @@ def fetch_countries():
     return []
 
 def fetch_country(country, report_failure=False):
-    safe_name = country.replace(' ', '_')
-    url = f"https://www.notammap.org/notamdata/{safe_name}.json"
+    raw_name = country.strip()
+    if not raw_name:
+        return None if report_failure else []
+
+    variants = []
+    seen_variants = set()
+
+    def _add_variant(name):
+        cleaned = re.sub(r'__+', '_', name.strip('_'))
+        if not cleaned or cleaned in seen_variants:
+            return
+        seen_variants.add(cleaned)
+        variants.append(cleaned)
+
+    base = raw_name.replace(' ', '_')
+    _add_variant(base)
+
+    ascii_base = unicodedata.normalize('NFKD', base).encode('ascii', 'ignore').decode('ascii')
+    _add_variant(ascii_base)
+
+    for name in list(variants):
+        _add_variant(name.replace("'", ''))
+        _add_variant(name.replace("'", '_'))
+        _add_variant(name.replace('’', ''))
+        _add_variant(name.replace('’', '_'))
+
     for attempt in range(1, COUNTRY_FETCH_RETRIES + 1):
+        should_retry = False
+        last_status = None
         try:
-            resp = requests.get(url, headers=make_headers(), timeout=30)
-            if resp.status_code == 200:
-                return resp.json().get('notams', [])
-            if resp.status_code not in RETRYABLE_STATUS_CODES:
+            for idx, safe_name in enumerate(variants):
+                encoded_name = quote(safe_name)
+                url = f"https://www.notammap.org/notamdata/{encoded_name}.json"
+                resp = requests.get(url, headers=make_headers(), timeout=30)
+                last_status = resp.status_code
+                if resp.status_code == 200:
+                    return resp.json().get('notams', [])
+                if resp.status_code == 404 and idx < len(variants) - 1:
+                    continue
+                if resp.status_code in RETRYABLE_STATUS_CODES:
+                    should_retry = True
+                    print(f"[notammap] Retryable status for '{country}': HTTP {resp.status_code} (attempt {attempt}/{COUNTRY_FETCH_RETRIES})")
+                    break
                 print(f"[notammap] Error fetching '{country}': HTTP {resp.status_code}")
                 return None if report_failure else []
-            print(f"[notammap] Retryable status for '{country}': HTTP {resp.status_code} (attempt {attempt}/{COUNTRY_FETCH_RETRIES})")
         except Exception as e:
             print(f"[notammap] Error fetching '{country}' (attempt {attempt}/{COUNTRY_FETCH_RETRIES}): {e}")
+            should_retry = True
 
-        if attempt < COUNTRY_FETCH_RETRIES:
+        if should_retry and attempt < COUNTRY_FETCH_RETRIES:
             time.sleep(attempt)
+            continue
+
+        if last_status is not None:
+            print(f"[notammap] Error fetching '{country}': HTTP {last_status}")
+        break
     return None if report_failure else []
 
 def fetch_notammap():
