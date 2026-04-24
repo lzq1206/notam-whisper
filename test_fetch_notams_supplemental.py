@@ -4,6 +4,7 @@ from fetch_notams import (
     FAA_SUPPLEMENTAL_FIRS,
     _normalize_notam_number,
     _parse_q_line,
+    _passes_filters,
     fetch_country,
     fetch_notammap,
     merge_notams,
@@ -166,6 +167,22 @@ def test_fetch_country_fallback_slug_handles_accents_and_apostrophe():
     assert any(url.endswith('Cote_dIvoire.json') for url in urls)
 
 
+def test_passes_filters_accepts_qrdca_without_keep_keyword():
+    assert _passes_filters({
+        'raw': 'A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY ...',
+        'notamCode': 'QRDCA',
+        'from': '',
+        'to': '',
+    }) is True
+
+    assert _passes_filters({
+        'raw': 'A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY ...',
+        'notamCode': 'QXXXX',
+        'from': '',
+        'to': '',
+    }) is False
+
+
 if __name__ == '__main__':
     test_normalize_notam_number()
     test_parse_q_line()
@@ -175,4 +192,5 @@ if __name__ == '__main__':
     test_fetch_country_returns_empty_list_by_default_after_retries()
     test_fetch_notammap_sequential_retry_for_failed_country()
     test_fetch_country_fallback_slug_handles_accents_and_apostrophe()
+    test_passes_filters_accepts_qrdca_without_keep_keyword()
     print('test_fetch_notams_supplemental.py passed')

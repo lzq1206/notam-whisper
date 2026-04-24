@@ -11,6 +11,7 @@ from urllib.parse import quote
 
 # ─── Keyword Filters ───
 KEEP = ["UNL", "AEROSPACE", "RE-ENTRY", "ROCKET"]
+KEEP_QCODES = {"QRDCA"}
 DROP = [
     "KWAJALEIN","BALLOON","BALLON","TRANSMITTER","GUNFIRING","AERIAL","GUN FRNG",
     "AIR EXER","REF AIP","MISSILES","KOLKATA","MWARA","ZS(D)","ZY(R)","ZG(R)",
@@ -60,9 +61,10 @@ def _is_in_time_window(from_str, to_str):
 def _passes_filters(notam):
     raw = notam.get('raw', '')
     raw_upper = raw.upper()
+    qcode = str(notam.get('notamCode', '')).strip().upper()
     if any(d in raw_upper for d in DROP):
         return False
-    if not any(k in raw_upper for k in KEEP):
+    if not any(k in raw_upper for k in KEEP) and qcode not in KEEP_QCODES:
         return False
     from_str = notam.get('from', '')
     to_str = notam.get('to', '')
