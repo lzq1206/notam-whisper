@@ -121,7 +121,7 @@ def test_fetch_past_launches_falls_back_to_api_on_html_request_failure():
 
     def fake_get(url, headers=None, timeout=None):
         if url == html_url:
-            raise RuntimeError("dns failure")
+            raise RuntimeError("DNS failure")
         if url == api_url:
             resp = Mock()
             resp.status_code = 200
@@ -137,6 +137,7 @@ def test_fetch_past_launches_falls_back_to_api_on_html_request_failure():
     assert len(launches) == 1
     assert launches[0]["Official Payload Name"] == "Starlink Group"
     assert launches[0]["Launch Site (Abbrv.)"] == "CCSFS"
+    assert launches[0]["Launch Date and Time (UTC)"] == f"{datetime.now().year} MAR 12 0000"
 
 
 if __name__ == "__main__":

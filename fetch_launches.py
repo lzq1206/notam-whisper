@@ -14,6 +14,7 @@ CSV_HEADERS = [
     "Success",
     "Launch Site (Full)",
 ]
+REQUEST_TIMEOUT = 30
 
 LAUNCH_SITE_ALIASES = {
     "jiuquan": "JSLC",
@@ -218,7 +219,7 @@ def fetch_past_launches():
     date_pattern = rf"{month_abbrs}\s+\d+"
 
     try:
-        response = requests.get(url, headers=headers, timeout=30)
+        response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
         if response.status_code == 200:
             html = response.text
             # More specific regex for the RLL past launches page structure
@@ -263,7 +264,7 @@ def fetch_past_launches():
             "https://fdo.rocketlaunch.live/json/launches/past/50",
         ):
             try:
-                api_response = requests.get(api_url, headers=headers, timeout=30)
+                api_response = requests.get(api_url, headers=headers, timeout=REQUEST_TIMEOUT)
                 if api_response.status_code != 200:
                     continue
                 api_launches = _parse_rll_api_result(api_response.json(), launch_sites, site_by_abbr)
