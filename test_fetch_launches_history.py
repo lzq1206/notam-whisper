@@ -2,7 +2,6 @@
 import csv
 import os
 import tempfile
-from datetime import datetime
 from unittest.mock import Mock, patch
 
 from fetch_launches import _load_launch_sites, _parse_rll_api_result, _resolve_site, archive_weekly, fetch_past_launches, save_to_csv
@@ -87,7 +86,7 @@ def test_parse_rll_api_result_maps_fields():
     payload = {
         "result": [
             {
-                "date_str": "MAR 12",
+                "date_str": "MAR 12 2026",
                 "name": "Starlink Group",
                 "vehicle_name": "Falcon 9",
                 "pad": {"location": "Cape Canaveral, Florida, United States"},
@@ -97,7 +96,7 @@ def test_parse_rll_api_result_maps_fields():
 
     launches = _parse_rll_api_result(payload, launch_sites, site_by_abbr)
     assert len(launches) == 1
-    assert launches[0]["Launch Date and Time (UTC)"] == f"{datetime.now().year} MAR 12 0000"
+    assert launches[0]["Launch Date and Time (UTC)"] == "2026 MAR 12 0000"
     assert launches[0]["Launch Site (Abbrv.)"] == "CCSFS"
     assert launches[0]["Launch Vehicle"] == "Falcon 9"
     assert launches[0]["Official Payload Name"] == "Starlink Group"
@@ -111,7 +110,7 @@ def test_fetch_past_launches_falls_back_to_api_on_html_request_failure():
     api_payload = {
         "result": [
             {
-                "date_str": "MAR 12",
+                "date_str": "MAR 12 2026",
                 "name": "Starlink Group",
                 "vehicle_name": "Falcon 9",
                 "pad": {"location": "Cape Canaveral, Florida, United States"},
@@ -137,7 +136,7 @@ def test_fetch_past_launches_falls_back_to_api_on_html_request_failure():
     assert len(launches) == 1
     assert launches[0]["Official Payload Name"] == "Starlink Group"
     assert launches[0]["Launch Site (Abbrv.)"] == "CCSFS"
-    assert launches[0]["Launch Date and Time (UTC)"] == f"{datetime.now().year} MAR 12 0000"
+    assert launches[0]["Launch Date and Time (UTC)"] == "2026 MAR 12 0000"
 
 
 if __name__ == "__main__":
