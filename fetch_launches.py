@@ -14,6 +14,7 @@ CSV_HEADERS = [
     "Success",
     "Launch Site (Full)",
 ]
+REQUEST_TIMEOUT = 30
 
 LAUNCH_SITE_ALIASES = {
     "jiuquan": "JSLC",
@@ -213,68 +214,67 @@ def fetch_past_launches():
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     }
     
+    launches = []
+    month_abbrs = "JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC"
+    date_pattern = rf"{month_abbrs}\s+\d+"
+
     try:
-        response = requests.get(url, headers=headers)
-        if response.status_code != 200:
-            return []
-        
-        html = response.text
-        launches = []
-        month_abbrs = "JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC"
-        date_pattern = rf"{month_abbrs}\s+\d+"
-        
-        # More specific regex for the RLL past launches page structure
-        items = re.findall(rf'<span class="launch-date">({date_pattern}).*?<h4 class="mission-name">.*?>(.*?)<.*?vehicle-name-inner">\s*(.*?)\s*<.*?location.*?>(.*?)<', html, re.S)
-        
-        if not items:
-            # Fallback regex if inner tags differ
-            items = re.findall(rf'({date_pattern}).*?mission-name.*?>(.*?)<.*?vehicle.*?>(.*?)<.*?location.*?>(.*?)<', html, re.S)
+        response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+        if response.status_code == 200:
+            html = response.text
+            # More specific regex for the RLL past launches page structure
+            items = re.findall(rf'<span class="launch-date">({date_pattern}).*?<h4 class="mission-name">.*?>(.*?)<.*?vehicle-name-inner">\s*(.*?)\s*<.*?location.*?>(.*?)<', html, re.S)
 
-        for item in items:
-            if len(item) != 4:
-                continue
-            date_str, mission_raw, vehicle_raw, location_raw = item
-            mission = mission_raw.strip()
-            vehicle = vehicle_raw.strip()
-            location = location_raw.strip()
-            full_date = _normalize_launch_datetime(date_str)
-            if not full_date:
-                continue
-            
-            lat, lon, abbr = _resolve_site(location, launch_sites, site_by_abbr)
+            if not items:
+                # Fallback regex if inner tags differ
+                items = re.findall(rf'({date_pattern}).*?mission-name.*?>(.*?)<.*?vehicle.*?>(.*?)<.*?location.*?>(.*?)<', html, re.S)
 
-            launches.append({
-                "Launch Date and Time (UTC)": full_date,
-                "Launch Site (Abbrv.)": abbr,
-                "Latitude": lat,
-                "Longitude": lon,
-                "Launch Vehicle": vehicle,
-                "Official Payload Name": mission,
-                "Success": "S",
-                "Launch Site (Full)": location
-            })
-
-        # RocketLaunch.Live page structure can change; use API fallback when HTML regex finds nothing.
-        if not launches:
-            for api_url in (
-                "https://fdo.rocketlaunch.live/json/launches/past/100",
-                "https://fdo.rocketlaunch.live/json/launches/past/50",
-            ):
-                try:
-                    api_response = requests.get(api_url, headers=headers, timeout=30)
-                    if api_response.status_code != 200:
-                        continue
-                    api_launches = _parse_rll_api_result(api_response.json(), launch_sites, site_by_abbr)
-                    if api_launches:
-                        launches = api_launches
-                        break
-                except Exception:
+            for item in items:
+                if len(item) != 4:
+                    continue
+                date_str, mission_raw, vehicle_raw, location_raw = item
+                mission = mission_raw.strip()
+                vehicle = vehicle_raw.strip()
+                location = location_raw.strip()
+                full_date = _normalize_launch_datetime(date_str)
+                if not full_date:
                     continue
 
-        return launches
+                lat, lon, abbr = _resolve_site(location, launch_sites, site_by_abbr)
+
+                launches.append({
+                    "Launch Date and Time (UTC)": full_date,
+                    "Launch Site (Abbrv.)": abbr,
+                    "Latitude": lat,
+                    "Longitude": lon,
+                    "Launch Vehicle": vehicle,
+                    "Official Payload Name": mission,
+                    "Success": "S",
+                    "Launch Site (Full)": location
+                })
+        else:
+            print(f"Warning: HTML source unavailable, status={response.status_code}, switching to API fallback.")
     except Exception as e:
-        print(f"Error scraping: {e}")
-        return []
+        print(f"Warning: HTML source request failed ({e}), switching to API fallback.")
+
+    # RocketLaunch.Live page structure can change; use API fallback when HTML parsing fails or source is unavailable.
+    if not launches:
+        for api_url in (
+            "https://fdo.rocketlaunch.live/json/launches/past/100",
+            "https://fdo.rocketlaunch.live/json/launches/past/50",
+        ):
+            try:
+                api_response = requests.get(api_url, headers=headers, timeout=REQUEST_TIMEOUT)
+                if api_response.status_code != 200:
+                    continue
+                api_launches = _parse_rll_api_result(api_response.json(), launch_sites, site_by_abbr)
+                if api_launches:
+                    launches = api_launches
+                    break
+            except Exception:
+                continue
+
+    return launches
 
 def save_to_csv(launches, filename):
     existing_data = []

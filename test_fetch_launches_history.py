@@ -2,9 +2,9 @@
 import csv
 import os
 import tempfile
-from datetime import datetime
+from unittest.mock import Mock, patch
 
-from fetch_launches import _load_launch_sites, _parse_rll_api_result, _resolve_site, archive_weekly, save_to_csv
+from fetch_launches import _load_launch_sites, _parse_rll_api_result, _resolve_site, archive_weekly, fetch_past_launches, save_to_csv
 
 
 def _read_rows(path):
@@ -86,7 +86,7 @@ def test_parse_rll_api_result_maps_fields():
     payload = {
         "result": [
             {
-                "date_str": "MAR 12",
+                "date_str": "MAR 12 2026",
                 "name": "Starlink Group",
                 "vehicle_name": "Falcon 9",
                 "pad": {"location": "Cape Canaveral, Florida, United States"},
@@ -96,15 +96,52 @@ def test_parse_rll_api_result_maps_fields():
 
     launches = _parse_rll_api_result(payload, launch_sites, site_by_abbr)
     assert len(launches) == 1
-    assert launches[0]["Launch Date and Time (UTC)"] == f"{datetime.now().year} MAR 12 0000"
+    assert launches[0]["Launch Date and Time (UTC)"] == "2026 MAR 12 0000"
     assert launches[0]["Launch Site (Abbrv.)"] == "CCSFS"
     assert launches[0]["Launch Vehicle"] == "Falcon 9"
     assert launches[0]["Official Payload Name"] == "Starlink Group"
     assert launches[0]["Success"] == "S"
 
 
+def test_fetch_past_launches_falls_back_to_api_on_html_request_failure():
+    html_url = "https://www.rocketlaunch.live/?pastOnly=1"
+    api_url = "https://fdo.rocketlaunch.live/json/launches/past/100"
+
+    api_payload = {
+        "result": [
+            {
+                "date_str": "MAR 12 2026",
+                "name": "Starlink Group",
+                "vehicle_name": "Falcon 9",
+                "pad": {"location": "Cape Canaveral, Florida, United States"},
+            }
+        ]
+    }
+
+    def fake_get(url, headers=None, timeout=None):
+        if url == html_url:
+            raise RuntimeError("DNS failure")
+        if url == api_url:
+            resp = Mock()
+            resp.status_code = 200
+            resp.json.return_value = api_payload
+            return resp
+        resp = Mock()
+        resp.status_code = 404
+        return resp
+
+    with patch("fetch_launches.requests.get", side_effect=fake_get):
+        launches = fetch_past_launches()
+
+    assert len(launches) == 1
+    assert launches[0]["Official Payload Name"] == "Starlink Group"
+    assert launches[0]["Launch Site (Abbrv.)"] == "CCSFS"
+    assert launches[0]["Launch Date and Time (UTC)"] == "2026 MAR 12 0000"
+
+
 if __name__ == "__main__":
     test_archive_weekly_creates_history_and_dedupes()
     test_resolve_site_matches_specific_launch_site()
     test_parse_rll_api_result_maps_fields()
+    test_fetch_past_launches_falls_back_to_api_on_html_request_failure()
     print("test_fetch_launches_history.py passed")
