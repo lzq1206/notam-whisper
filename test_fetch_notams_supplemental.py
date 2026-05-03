@@ -186,7 +186,6 @@ def test_passes_filters_accepts_qrdca_without_keep_keyword():
 def test_fetch_notammap_exits_when_country_list_empty():
     """fetch_notammap() must abort (sys.exit(1)) when notammap.org returns no countries."""
     import fetch_notams
-    import subprocess, sys
 
     def fake_fetch_countries():
         return []
@@ -215,23 +214,7 @@ def test_fetch_faa_notams_logs_non_200():
         def __init__(self, status_code):
             self.status_code = status_code
 
-    class FakeSession:
-        def update(self, h):
-            pass
-        def post(self, url, data=None, timeout=None):
-            return FakeResponse(503)
-
     original_session_cls = fetch_notams.requests.Session
-
-    class FakeSessionFactory:
-        def headers(self):
-            return self
-
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *a):
-            pass
 
     class _Session:
         headers = type('H', (), {'update': lambda self, h: None})()
