@@ -183,6 +183,106 @@ def test_passes_filters_accepts_qrdca_without_keep_keyword():
     }) is False
 
 
+def test_fetch_notammap_exits_when_country_list_empty():
+    """fetch_notammap() must abort (sys.exit(1)) when notammap.org returns no countries."""
+    import fetch_notams
+    import subprocess, sys
+
+    def fake_fetch_countries():
+        return []
+
+    original_fetch_countries = fetch_notams.fetch_countries
+    fetch_notams.fetch_countries = fake_fetch_countries
+    try:
+        exited = False
+        try:
+            fetch_notams.fetch_notammap()
+        except SystemExit as e:
+            exited = True
+            assert e.code == 1, f"Expected exit code 1, got {e.code}"
+        assert exited, "fetch_notammap() should have called sys.exit(1) for empty country list"
+    finally:
+        fetch_notams.fetch_countries = original_fetch_countries
+
+
+def test_fetch_faa_notams_logs_non_200():
+    """fetch_faa_notams() logs a message when the FAA endpoint returns non-200."""
+    import fetch_notams
+    import io
+    from contextlib import redirect_stdout
+
+    class FakeResponse:
+        def __init__(self, status_code):
+            self.status_code = status_code
+
+    class FakeSession:
+        def update(self, h):
+            pass
+        def post(self, url, data=None, timeout=None):
+            return FakeResponse(503)
+
+    original_session_cls = fetch_notams.requests.Session
+
+    class FakeSessionFactory:
+        def headers(self):
+            return self
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            pass
+
+    class _Session:
+        headers = type('H', (), {'update': lambda self, h: None})()
+        def post(self, url, data=None, timeout=None):
+            return FakeResponse(503)
+
+    fetch_notams.requests.Session = lambda: _Session()
+    buf = io.StringIO()
+    try:
+        with redirect_stdout(buf):
+            fetch_notams.fetch_faa_notams()
+    finally:
+        fetch_notams.requests.Session = original_session_cls
+
+    output = buf.getvalue()
+    assert 'Non-200' in output or '503' in output, (
+        f"Expected non-200 log in output, got: {output!r}"
+    )
+
+
+def test_fetch_faa_notams_logs_non_json_response():
+    """fetch_faa_notams() logs a message when the FAA endpoint returns non-JSON."""
+    import fetch_notams
+    import io
+    from contextlib import redirect_stdout
+
+    class FakeResponse:
+        status_code = 200
+        def json(self):
+            raise ValueError("not valid JSON")
+
+    class _Session:
+        headers = type('H', (), {'update': lambda self, h: None})()
+        def post(self, url, data=None, timeout=None):
+            return FakeResponse()
+
+    original_session_cls = fetch_notams.requests.Session
+    fetch_notams.requests.Session = lambda: _Session()
+    buf = io.StringIO()
+    try:
+        with redirect_stdout(buf):
+            fetch_notams.fetch_faa_notams()
+    finally:
+        fetch_notams.requests.Session = original_session_cls
+
+    output = buf.getvalue()
+    assert 'Non-JSON' in output or 'not valid JSON' in output, (
+        f"Expected non-JSON log in output, got: {output!r}"
+    )
+
+
 if __name__ == '__main__':
     test_normalize_notam_number()
     test_parse_q_line()
@@ -193,4 +293,7 @@ if __name__ == '__main__':
     test_fetch_notammap_sequential_retry_for_failed_country()
     test_fetch_country_fallback_slug_handles_accents_and_apostrophe()
     test_passes_filters_accepts_qrdca_without_keep_keyword()
+    test_fetch_notammap_exits_when_country_list_empty()
+    test_fetch_faa_notams_logs_non_200()
+    test_fetch_faa_notams_logs_non_json_response()
     print('test_fetch_notams_supplemental.py passed')
