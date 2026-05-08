@@ -627,34 +627,39 @@
 
           if (polyCoords.length > 0) {
              polyCoords.forEach(points => {
-               const flatPoints = [];
-               points.forEach(p => flatPoints.push(p[1], p[0]));
-                const entityOptions = {
-                  polygon: {
-                    hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
-                    material: color.withAlpha(0.3),
-                    outline: true,
-                    outlineColor: isGlow ? Cesium.Color.WHITE : color,
-                    outlineWidth: isGlow ? 4 : 2,
-                    height: 100
-                  },
-                  description: r['raw'] || ''
-                };
-                // Add Glow for outlines in 3D
-                if (isGlow) {
-                  cesiumViewer.entities.add({
-                    polyline: {
-                      positions: Cesium.Cartesian3.fromDegreesArray(flatPoints.concat([flatPoints[0], flatPoints[1]])),
-                      width: 8,
-                      material: new Cesium.PolylineGlowMaterialProperty({
-                         glowPower: 0.3,
-                         color: Cesium.Color.WHITE
-                      }),
-                      height: 110
-                    }
-                  });
-                }
-               cesiumViewer.entities.add(entityOptions);
+               const segments = isMaritime
+                 ? splitDisconnectedCoordinatePath(points)
+                 : [normalizeDatelineCoordinates(points)];
+               segments.forEach(segPts => {
+                 if (segPts.length < 2) return;
+                 const flatPoints = [];
+                 segPts.forEach(p => flatPoints.push(p[1], p[0]));
+                 const entityOptions = {
+                   polygon: {
+                     hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
+                     material: color.withAlpha(0.3),
+                     outline: true,
+                     outlineColor: isGlow ? Cesium.Color.WHITE : color,
+                     outlineWidth: isGlow ? 4 : 2,
+                     height: 100
+                   },
+                   description: r['raw'] || ''
+                 };
+                 if (isGlow) {
+                   cesiumViewer.entities.add({
+                     polyline: {
+                       positions: Cesium.Cartesian3.fromDegreesArray(flatPoints.concat([flatPoints[0], flatPoints[1]])),
+                       width: 8,
+                       material: new Cesium.PolylineGlowMaterialProperty({
+                          glowPower: 0.3,
+                          color: Cesium.Color.WHITE
+                       }),
+                       height: 110
+                     }
+                   });
+                 }
+                 cesiumViewer.entities.add(entityOptions);
+               });
              });
           } else if (radiusNm > 0) {
             // Approximate circular area if only radius is given
