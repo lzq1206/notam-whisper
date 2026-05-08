@@ -1505,5 +1505,25 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
+    <Placemark>
+      <name>A871/2026</name>
+      <description>A0871/26 NOTAMN   Q) MHCC/QRALW/IV/NBO/AW/000/999/1209N08617W001  A) MNXX B)2605042145 C)2605050500  E) AIRSPACE RESERVATION WILL TAKE PLACE (AVENIDA BOLIVAR) CENTERED  COORD 120918.57N 0861754.59W 120858.60N 0861510.07W 120747.10N  0861803.19W 120804.59N 0861803.19W RADIUS 1NM  F) SFC  G) UNL    CREATED: 04 MAY 2026 21:43  SOURCE: MHTGYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-86.308167,12.1645,0 -86.253944,12.159444,0 -86.304,12.131389,0 -86.304,12.144278,0 -86.308167,12.1645,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A224/2026</name>
+      <description>A0224/26 NOTAMN  Q) OOMM/QPFLT/IV/NBO/E/000/999/2105N05736E999  A) OOMM B) 2604141700 C) 2607120230  D) DLY BTN 1700 / 0230  E) FLOW CONTROL MEASURES HAVE BEEN IMPLEMENTED FOR UAE DEPARTURES FROM  1700 TO 0230  UTC:    1) 3 MINUTES LONGITUDINAL SEPARATION BETWEEN ANY TWO SUCCESSIVE  DEPARTURES ENTERING OOMM FIR VIA POSITIONS LABRI OR TARDI (LABRI AND  TARDI SHALL BE CONSIDERED AS TWO POINTS).    NOTES:  1- ALL UAE DEPARTURES LANDING AT OOMS/OOSH/OOSA ARE EXEMPTED FROM  THESE FLOW MEASURES.    2-</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>57.6,21.083333333333332,0</coordinates>
+      </Point>
+    </Placemark>
   </Document>
 </kml>
