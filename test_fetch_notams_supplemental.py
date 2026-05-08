@@ -43,6 +43,8 @@ def test_merge_notams_dedupes_by_notam_id():
 
 def test_faa_supplemental_firs_include_zxxx():
     assert 'ZXXX' in FAA_SUPPLEMENTAL_FIRS
+    assert 'ZBPE' in FAA_SUPPLEMENTAL_FIRS
+    assert 'RPHI' in FAA_SUPPLEMENTAL_FIRS
 
 
 def test_fetch_country_retries_retryable_status():

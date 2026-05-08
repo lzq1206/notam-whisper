@@ -28,9 +28,15 @@ DROP = [
 
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
 FAA_SEARCH_URL = "https://notams.aim.faa.gov/notamSearch/search"
-FAA_SUPPLEMENTAL_FIRS = ["ZLHW", "ZHWH", "ZXXX"]
+FAA_SUPPLEMENTAL_FIRS = [
+    # Keep the existing supplemental Chinese FIRs, and expand to the
+    # other FIRs that frequently surface on FAA search but are easy to miss
+    # from the notammap feed alone.
+    "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
+    "VHHK", "RPHI", "ZXXX",
+]
 FAA_PAGE_SIZE = 30
-MAX_FUTURE_DAYS = 5
+MAX_FUTURE_DAYS = 30
 NOTAMMAP_MAX_WORKERS = 10
 COUNTRY_FETCH_RETRIES = 3
 RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
