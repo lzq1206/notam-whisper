@@ -3,7 +3,7 @@
 Aerospace NOTAM fetcher — notammap.org only.
 Outputs: notams.csv, notams.kml, history/notams/YYYY-WNN.*
 """
-import requests, re, os, datetime, csv, math, time, unicodedata
+import requests, re, os, sys, datetime, csv, math, time, unicodedata
 from datetime import timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import xml.etree.ElementTree as ET
@@ -135,8 +135,14 @@ def fetch_faa_notams():
             try:
                 resp = session.post(FAA_SEARCH_URL, data=payload, timeout=30)
                 if resp.status_code != 200:
+                    print(f"[faa] Non-200 response for '{fir}' offset {offset}: HTTP {resp.status_code}")
                     break
-                notam_list = resp.json().get('notamList', [])
+                try:
+                    data = resp.json()
+                except ValueError as e:
+                    print(f"[faa] Non-JSON response for '{fir}' offset {offset}: {e}")
+                    break
+                notam_list = data.get('notamList', [])
                 if not notam_list:
                     break
                 for item in notam_list:
@@ -279,8 +285,9 @@ def fetch_country(country, report_failure=False):
 def fetch_notammap():
     countries = fetch_countries()
     if not countries:
-        print("[notammap] Failed to get country list!")
-        return []
+        print("[notammap] FATAL: Unable to reach notammap.org (empty country list). "
+              "Aborting to preserve existing data.")
+        sys.exit(1)
 
     all_notams = []
     failed_countries = []
