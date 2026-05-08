@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Aerospace NOTAM fetcher — notammap.org only.
+Aerospace NOTAM fetcher — notammap.org + FAA + global supplement.
 Outputs: notams.csv, notams.kml, history/notams/YYYY-WNN.*
 """
 import requests, re, os, sys, datetime, csv, math, time, unicodedata
@@ -40,6 +40,8 @@ MAX_FUTURE_DAYS = 30
 NOTAMMAP_MAX_WORKERS = 10
 COUNTRY_FETCH_RETRIES = 3
 RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
+GLOBAL_SUPPLEMENT_URL = "https://raw.githubusercontent.com/Joey0609/notams/main/notams/notam_data.json"
+GLOBAL_SUPPLEMENT_TYPES = {"launch", "missile", "reentry"}
 
 def make_headers():
     return {
@@ -117,6 +119,76 @@ def _normalize_notam_number(number):
     if len(year) == 2:
         year = f"20{year}"
     return series, num, year
+
+def _parse_notam_time(code):
+    code = str(code or '').strip()
+    if not code or code.upper() == 'PERM':
+        return ''
+    try:
+        dt = datetime.datetime.strptime(code, "%y%m%d%H%M")
+        return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    except Exception:
+        return ''
+
+def _extract_notam_id(raw, fallback=''):
+    raw = str(raw or '')
+    m = re.search(r'\b([A-Z]\d{1,4}/\d{2})\b', raw)
+    if m:
+        return m.group(1).upper()
+    return str(fallback or '').strip().upper()
+
+def fetch_global_notam_supplement():
+    rows = []
+    try:
+        resp = requests.get(GLOBAL_SUPPLEMENT_URL, headers=make_headers(), timeout=45)
+        if resp.status_code != 200:
+            print(f"[global] Non-200 response: HTTP {resp.status_code}")
+            return rows
+        data = resp.json()
+    except Exception as e:
+        print(f"[global] Error fetching supplement: {e}")
+        return rows
+
+    feats = data.get('features', []) if isinstance(data, dict) else []
+    for feat in feats:
+        if feat.get('eventType') not in GLOBAL_SUPPLEMENT_TYPES:
+            continue
+        raw = str(feat.get('description', '') or '')
+        if not raw:
+            continue
+        notam_id = _extract_notam_id(raw, feat.get('name', ''))
+        q_m = re.search(r'Q\)\s*([A-Z0-9]{4})/([A-Z0-9]{5})/', raw)
+        fir = q_m.group(1).strip() if q_m else str(feat.get('site', '') or '')
+        qcode = q_m.group(2).strip() if q_m else ''
+        lat, lon, radius, parsed_qcode = _parse_q_line(raw)
+        if not qcode:
+            qcode = parsed_qcode
+        b_m = re.search(r'\bB\)\s*([0-9]{10}|PERM)\b', raw)
+        c_m = re.search(r'\bC\)\s*([0-9]{10}|PERM)\b', raw)
+        from_utc = _parse_notam_time(b_m.group(1)) if b_m else ''
+        to_utc = _parse_notam_time(c_m.group(1)) if c_m else ''
+        n = {
+            'raw': raw,
+            'series': notam_id[:1] if notam_id else '',
+            'number': int(notam_id[1:].split('/')[0]) if notam_id and '/' in notam_id and notam_id[1:].split('/')[0].isdigit() else '',
+            'year': f"20{notam_id.split('/')[-1]}" if notam_id and '/' in notam_id and len(notam_id.split('/')[-1]) == 2 else '',
+            'fir': fir,
+            'from': from_utc,
+            'to': to_utc,
+            'latitude': lat,
+            'longitude': lon,
+            'radius': radius,
+            'notamCode': qcode,
+        }
+        if not _passes_filters(n):
+            continue
+        rows.append({
+            'id': feat.get('id', notam_id or feat.get('name', '')),
+            '_country': str(feat.get('country', 'GLOBAL') or 'GLOBAL'),
+            'notam': n,
+        })
+    print(f"[global] Supplemental NOTAMs after filter: {len(rows)}")
+    return rows
 
 def fetch_faa_notams():
     rows = []
@@ -523,7 +595,9 @@ def main():
 
     items = fetch_notammap()
     supplemental = fetch_faa_notams()
+    global_supplement = fetch_global_notam_supplement()
     items = merge_notams(items, supplemental)
+    items = merge_notams(items, global_supplement)
 
     # Write notams.csv
     with open('notams.csv', 'w', newline='', encoding='utf-8') as f:

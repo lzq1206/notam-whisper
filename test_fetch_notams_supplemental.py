@@ -2,6 +2,7 @@
 from fetch_notams import (
     COUNTRY_FETCH_RETRIES,
     FAA_SUPPLEMENTAL_FIRS,
+    fetch_global_notam_supplement,
     _normalize_notam_number,
     _parse_q_line,
     _passes_filters,
@@ -268,6 +269,61 @@ def test_fetch_faa_notams_logs_non_json_response():
     )
 
 
+def test_global_supplement_parses_key_notams():
+    import fetch_notams
+
+    class FakeResponse:
+        status_code = 200
+        def json(self):
+            return {
+                'features': [
+                    {
+                        'id': 'x1',
+                        'eventType': 'launch',
+                        'country': 'china',
+                        'name': 'A1417/26',
+                        'description': (
+                            '05/03/2026 0502 A1417/26 NOTAMN\n'
+                            'Q)ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\n'
+                            'A)ZBPE B)2605121149 C)2605121209\n'
+                            'E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: ...'
+                        )
+                    },
+                    {
+                        'id': 'x2',
+                        'eventType': 'missile',
+                        'country': 'philippines',
+                        'name': 'B1768/26',
+                        'description': (
+                            '04/28/2026 0358 B1768/26 NOTAMN\n'
+                            'Q) RPHI/QWMLW/IV/BO /W /000/999/1921N11925E047\n'
+                            'A) RPHI B) 2605261600 C) 2605302200\n'
+                            'E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.'
+                        )
+                    },
+                    {
+                        'id': 'x3',
+                        'eventType': 'other',
+                        'country': 'china',
+                        'name': 'IGNORED',
+                        'description': 'IGNORED'
+                    }
+                ]
+            }
+
+    original_get = fetch_notams.requests.get
+    fetch_notams.requests.get = lambda *args, **kwargs: FakeResponse()
+    try:
+        rows = fetch_global_notam_supplement()
+    finally:
+        fetch_notams.requests.get = original_get
+
+    ids = {f"{r['notam']['series']}{r['notam']['number']}/{r['notam']['year'][-2:]}" for r in rows}
+    assert 'A1417/26' in ids
+    assert 'B1768/26' in ids
+    assert all(r['notam']['notamCode'] in {'QRDCA', 'QWMLW'} for r in rows)
+
+
 if __name__ == '__main__':
     test_normalize_notam_number()
     test_parse_q_line()
@@ -281,4 +337,5 @@ if __name__ == '__main__':
     test_fetch_notammap_exits_when_country_list_empty()
     test_fetch_faa_notams_logs_non_200()
     test_fetch_faa_notams_logs_non_json_response()
+    test_global_supplement_parses_key_notams()
     print('test_fetch_notams_supplemental.py passed')
