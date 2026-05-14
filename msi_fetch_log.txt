@@ -10503,3 +10503,35 @@ AttributeError: module 'datetime' has no attribute 'UTC'
     now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
 AttributeError: module 'datetime' has no attribute 'UTC'
 
+2026-05-14T18:11:07.925955 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-05-14T18:11:08.404311 -   Got 88 blocks from TXT
+2026-05-14T18:11:13.410519 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-05-14T18:11:13.522393 -   Got 18 blocks from TXT
+2026-05-14T18:11:18.528592 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-05-14T18:11:19.489902 -   Got 45 blocks from TXT
+2026-05-14T18:11:24.491738 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-05-14T18:11:25.151029 -   Got 55 blocks from TXT
+2026-05-14T18:11:30.157138 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-05-14T18:11:30.664594 -   Got 11 blocks from TXT
+2026-05-14T18:11:35.667732 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-14T18:11:36.324822 -   Got 1 blocks from HTML
+2026-05-14T18:11:41.331069 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-05-14T18:11:41.850133 -   Got 1 blocks from HTML
+2026-05-14T18:11:46.856275 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-05-14T18:11:47.084852 -   Got 1 blocks from HTML
+2026-05-14T18:11:52.091004 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-05-14T18:11:53.075094 -   Got 1 blocks from HTML
+2026-05-14T18:11:58.081390 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-05-14T18:11:58.765274 -   Got 1 blocks from HTML
+2026-05-14T18:12:03.795180 - CRITICAL ERROR: module 'datetime' has no attribute 'UTC'
+2026-05-14T18:12:03.795393 - Traceback (most recent call last):
+  File "/home/runner/work/notam-whisper/notam-whisper/fetch_msi.py", line 441, in <module>
+    try: main()
+  File "/home/runner/work/notam-whisper/notam-whisper/fetch_msi.py", line 438, in main
+    archive_weekly('msi.csv', 'msi')
+  File "/home/runner/work/notam-whisper/notam-whisper/fetch_msi.py", line 408, in archive_weekly
+    if not _is_in_time_window(r.get('from_utc', ''), r.get('to_utc', '')):
+  File "/home/runner/work/notam-whisper/notam-whisper/fetch_msi.py", line 55, in _is_in_time_window
+    now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+AttributeError: module 'datetime' has no attribute 'UTC'
+
