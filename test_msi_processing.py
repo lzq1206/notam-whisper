@@ -74,4 +74,26 @@ reentry_sample = [
 reentry_rows = process_msi_data(reentry_sample)
 assert len(reentry_rows) == 1, f"Expected REENTRY keyword record to be kept, got {len(reentry_rows)}"
 
+merged_sample = [
+    {
+        'msgID': '',
+        'msgText': (
+            '031744Z FEB 26  HYDROLANT 237/26(54).  AEGEAN SEA.  DNC 09.  1. MISSILE OPERATIONS 0530Z TO SUNSET DAILY EVERY '
+            'WEDNESDAY THRU SATURDAY UNTIL 14 JUN AND 16 SEB THRU 31 DEC IN AREAS: '
+            'A. 35-36.00N 024-07.00E, 36-18.00N 024-07.00E, 36-18.00N 025-59.00E, 36-25.00N 026-12.00E. '
+            '2. CANCEL THIS MSG 010001Z JAN 27. '
+            '040658Z MAR 26  NAVAREA IV 207/26(11,26).  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING '
+            '100304Z TO 100636Z MAR, ALTERNATE 0304Z TO 0636Z DAILY 11 THRU 16 MAR IN AREAS BOUND BY: '
+            'A. 29-01.00N 075-00.00W, 29-21.00N 073-51.00W, 29-20.00N 072-05.00W, 28-29.00N 072-05.00W. '
+            '2. CANCEL THIS MSG 160736Z MAR 26.'
+        ),
+        'category': '14',
+        'msgType': 'NavWarning'
+    }
+]
+merged_rows = process_msi_data(merged_sample)
+assert len(merged_rows) == 2, f"Expected concatenated warnings to split into 2 rows, got {len(merged_rows)}"
+assert merged_rows[0]['notam_id'].startswith('HYDROLANT 237/26'), merged_rows[0]['notam_id']
+assert merged_rows[1]['notam_id'].startswith('NAVAREA IV 207/26'), merged_rows[1]['notam_id']
+
 print("test_msi_processing passed")

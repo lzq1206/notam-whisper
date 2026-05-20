@@ -46,6 +46,10 @@ RAW_CSV_HEADERS = ['msgID','category','from_utc','to_utc','msgText']
 
 AEROSPACE_KEYWORDS = ["ROCKET", "LAUNCH", "SPACE", "RE-ENTRY", "REENTRY", "DEBRIS", "AEROSPACE", "SATELLITE", "MISSILE", "SPACECRAFT"]
 
+WARNING_START_RE = re.compile(
+    r'\d{6}Z\s+[A-Z]{3}\s+\d{2}\s+(?:NAVAREA\s+[A-Z0-9]+|HYDROLANT|HYDROPAC|HYDROARC)\b'
+)
+
 def log_to_file(msg):
     with open('msi_fetch_log.txt', 'a', encoding='utf-8') as f:
         f.write(f"{datetime.datetime.now().isoformat()} - {msg}\n")
@@ -66,6 +70,35 @@ def _is_in_time_window(from_str, to_str):
     except Exception:
         pass
     return True
+
+def split_msi_messages(msg_text):
+    """Split a concatenated MSI payload into individual warning messages."""
+    if not msg_text:
+        return []
+    starts = [m.start() for m in WARNING_START_RE.finditer(msg_text)]
+    if not starts:
+        return [msg_text.strip()]
+    if starts[0] > 0 and msg_text[:starts[0]].strip():
+        starts = [0] + starts
+    segments = []
+    for i, start in enumerate(starts):
+        end = starts[i + 1] if i + 1 < len(starts) else len(msg_text)
+        seg = msg_text[start:end].strip()
+        if seg:
+            segments.append(seg)
+    return segments or [msg_text.strip()]
+
+def extract_warning_id(msg_text):
+    """Derive a stable warning id from the leading header when msgID is absent."""
+    if not msg_text:
+        return ''
+    m = re.match(
+        r'^\d{6}Z\s+[A-Z]{3}\s+\d{2}\s+((?:NAVAREA\s+[A-Z0-9]+|HYDROLANT|HYDROPAC|HYDROARC)\s+\d+/\d{2,4}(?:\([^)]*\))?)',
+        msg_text.strip(),
+    )
+    if not m:
+        return ''
+    return re.sub(r'\s+', ' ', m.group(1)).strip().rstrip('.,;')
 
 # --- Parsing Helpers ---
 def parse_msi_coords_multi(text):
@@ -287,42 +320,45 @@ def process_msi_data(all_smaps):
     rows = []
     seen = set()
     for s in all_smaps:
-        msg_id = s.get('msgID', '')
-        if not msg_id: msg_id = str(hash(s.get('msgText','')))[:10]
-        if msg_id in seen: continue
-        seen.add(msg_id)
         msg_text = s.get('msgText', '')
         if not msg_text: continue
-        
-        # Aerospace Filter: category-14 records are pre-filtered as aerospace by NGA;
-        # for all others, require at least one aerospace keyword in the text.
-        is_aerospace = (s.get('category') == '14') or any(k in msg_text.upper() for k in AEROSPACE_KEYWORDS)
-        if not is_aerospace:
-            continue
 
-        multi_coords = parse_msi_coords_multi(msg_text)
-        if not multi_coords: continue
-        
-        # Calculate center for backwards compatibility and single-point representation
-        all_flattened = []
-        for area in multi_coords: all_flattened.extend(area)
-        clat = sum(c[0] for c in all_flattened)/len(all_flattened)
-        clon = sum(c[1] for c in all_flattened)/len(all_flattened)
+        for msg_part in split_msi_messages(msg_text):
+            msg_id = s.get('msgID', '') or extract_warning_id(msg_part) or str(hash(msg_part))[:10]
+            if msg_id in seen:
+                continue
+            seen.add(msg_id)
 
-        from_dt, to_dt = parse_msi_active_times(msg_text)
-        clean_text = msg_text.replace('\n', '  ').replace('\r', '').replace('"', "'")
-        
-        rows.append({
-            'notam_id': msg_id,
-            'raw': clean_text,
-            'coords': multi_coords, # Now list of lists
-            'lat': clat,
-            'lon': clon,
-            'source': 'MSI',
-            'category': s.get('category', 'MARITIME'),
-            'from_utc': from_dt.isoformat() + "Z" if from_dt else "",
-            'to_utc': to_dt.isoformat() + "Z" if to_dt else ""
-        })
+            # Aerospace Filter: category-14 records are pre-filtered as aerospace by NGA;
+            # for all others, require at least one aerospace keyword in the text.
+            is_aerospace = (s.get('category') == '14') or any(k in msg_part.upper() for k in AEROSPACE_KEYWORDS)
+            if not is_aerospace:
+                continue
+
+            multi_coords = parse_msi_coords_multi(msg_part)
+            if not multi_coords:
+                continue
+
+            # Calculate center for backwards compatibility and single-point representation
+            all_flattened = []
+            for area in multi_coords: all_flattened.extend(area)
+            clat = sum(c[0] for c in all_flattened)/len(all_flattened)
+            clon = sum(c[1] for c in all_flattened)/len(all_flattened)
+
+            from_dt, to_dt = parse_msi_active_times(msg_part)
+            clean_text = msg_part.replace('\n', '  ').replace('\r', '').replace('"', "'")
+
+            rows.append({
+                'notam_id': msg_id,
+                'raw': clean_text,
+                'coords': multi_coords, # Now list of lists
+                'lat': clat,
+                'lon': clon,
+                'source': 'MSI',
+                'category': s.get('category', 'MARITIME'),
+                'from_utc': from_dt.isoformat() + "Z" if from_dt else "",
+                'to_utc': to_dt.isoformat() + "Z" if to_dt else ""
+            })
     return rows
 
 def fetch_msi():
