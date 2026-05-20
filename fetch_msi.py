@@ -4,7 +4,7 @@ MSI (Maritime Safety Information) Fetcher
 NGA: msi.nga.mil
 Outputs: msi.csv, msi.kml
 """
-import requests, re, os, datetime, csv, time, json
+import requests, re, os, datetime, csv, time, json, hashlib
 import xml.etree.ElementTree as ET
 import urllib3
 from html.parser import HTMLParser
@@ -56,7 +56,7 @@ def log_to_file(msg):
 
 def _is_in_time_window(from_str, to_str):
     """Return True if the record is not expired and not too far in the future."""
-    now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    now_utc = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
     five_days = now_utc + datetime.timedelta(days=5)
     try:
         if from_str:
@@ -99,6 +99,11 @@ def extract_warning_id(msg_text):
     if not m:
         return ''
     return re.sub(r'\s+', ' ', m.group(1)).strip().rstrip('.,;')
+
+def stable_msg_hash(msg_text):
+    if not msg_text:
+        return ''
+    return hashlib.sha1(msg_text.encode('utf-8', errors='ignore')).hexdigest()[:12]
 
 # --- Parsing Helpers ---
 def parse_msi_coords_multi(text):
@@ -316,6 +321,31 @@ def fetch_html_url(url):
             time.sleep(RETRY_BACKOFF ** attempt)
     return []
 
+def collect_msi_sources():
+    all_smaps = []
+    for url in TXT_URLS:
+        res = fetch_txt_url(url)
+        all_smaps.extend(res)
+        time.sleep(INTER_REQUEST_DELAY)
+    for url in HTML_URLS:
+        res = fetch_html_url(url)
+        all_smaps.extend(res)
+        time.sleep(INTER_REQUEST_DELAY)
+    return all_smaps
+
+def write_raw_csv(all_smaps, path='msi_raw.csv'):
+    with open(path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(RAW_CSV_HEADERS)
+        for s in all_smaps:
+            writer.writerow([
+                s.get('msgID', ''),
+                s.get('category', ''),
+                s.get('from_utc', ''),
+                s.get('to_utc', ''),
+                s.get('msgText', ''),
+            ])
+
 def process_msi_data(all_smaps):
     rows = []
     seen = set()
@@ -324,7 +354,7 @@ def process_msi_data(all_smaps):
         if not msg_text: continue
 
         for msg_part in split_msi_messages(msg_text):
-            msg_id = s.get('msgID', '') or extract_warning_id(msg_part) or str(hash(msg_part))[:10]
+            msg_id = s.get('msgID', '') or extract_warning_id(msg_part) or stable_msg_hash(msg_part)
             if msg_id in seen:
                 continue
             seen.add(msg_id)
@@ -362,15 +392,7 @@ def process_msi_data(all_smaps):
     return rows
 
 def fetch_msi():
-    all_smaps = []
-    for url in TXT_URLS:
-        res = fetch_txt_url(url)
-        all_smaps.extend(res)
-        time.sleep(INTER_REQUEST_DELAY)
-    for url in HTML_URLS:
-        res = fetch_html_url(url)
-        all_smaps.extend(res)
-        time.sleep(INTER_REQUEST_DELAY)
+    all_smaps = collect_msi_sources()
     return process_msi_data(all_smaps)
 
 def csv_to_kml(csv_path, kml_path):
@@ -461,7 +483,9 @@ def archive_weekly(csv_path, history_subdir='msi'):
     csv_to_kml(weekly_csv, weekly_csv.replace('.csv', '.kml'))
 
 def main():
-    msi_rows = fetch_msi()
+    all_smaps = collect_msi_sources()
+    write_raw_csv(all_smaps, 'msi_raw.csv')
+    msi_rows = process_msi_data(all_smaps)
     with open('msi.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(CSV_HEADERS)
