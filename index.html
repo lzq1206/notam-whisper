@@ -924,8 +924,12 @@
         }
 
         const checkDays = [from];
-        if (to.getTime() > from.getTime() && from.getUTCDate() !== to.getUTCDate()) {
-          checkDays.push(to);
+        if (to.getTime() > from.getTime()) {
+          const noonFrom = SunCalc.getTimes(from, lat, lon).solarNoon;
+          const noonTo = SunCalc.getTimes(to, lat, lon).solarNoon;
+          if (noonFrom && noonTo && noonFrom.getTime() !== noonTo.getTime()) {
+            checkDays.push(to);
+          }
         }
 
         for (const d of checkDays) {
