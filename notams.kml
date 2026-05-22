@@ -698,22 +698,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A318/2026</name>
-      <description>A0318/26 NOTAMR A0314/26   Q) GOOO/QRRCA/IV/BO/W/050/999/0700N01729W999  A) GOOO B) 2604091406 C) 2606302359 EST  E) GOR 34 ACTIVATED  F) 5000FT AMSL G) UNL    CREATED: 09 APR 2026 14:19  SOURCE: GOOOYNYX</description>
-      <styleUrl>#circleStyle</styleUrl>
-      <Point>
-        <coordinates>-17.483333333333334,7.0,0</coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>A315/2026</name>
-      <description>A0315/26 NOTAMR A1381/25   Q) GOOO/QRDCA/IV/BO/W/000/050/0700N01729W999  A) GOOO B) 2604091357 C) 2606302359 EST  E) GOD 38 ACTIVATED  F) GND G) FL050    CREATED: 09 APR 2026 14:14  SOURCE: GOOOYNYX</description>
-      <styleUrl>#circleStyle</styleUrl>
-      <Point>
-        <coordinates>-17.483333333333334,7.0,0</coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>A8/2026</name>
       <description>A0008/26 NOTAMN  Q) UKFV/QRDCA/IV/BO /W /000/055/4259N03115E025  A) UKFV B) 2603010430 C) 2606011725  D) DAILY SR-SS  E) DANGER AREA BOUNDED BY COORDINATES:  430857N 0314514E  430150N 0314522E  424800N 0314313E  424800N 0304544E  425617N 0310143E  430845N 0313157E  430857N 0314514E ACTIVATED.  EXERCISE AREA. PERSONNEL/MATERIAL TRANSFER.  PROCEDURES FOR NON-EXERCISE AIRCRAFT  IN THE INTEREST OF FLYING SAFETY DURING  THE EXERCISE.  NON-EXERCISE AIRCRAFT ARE STRONGLY  RECOMMEND TO AVOID AREA DESCRI</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -820,6 +804,22 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A318/2026</name>
+      <description>A0318/26 NOTAMR A0314/26   Q) GOOO/QRRCA/IV/BO/W/050/999/0700N01729W999  A) GOOO B) 2604091406 C) 2606302359 EST  E) GOR 34 ACTIVATED  F) 5000FT AMSL G) UNL    CREATED: 09 APR 2026 14:19  SOURCE: GOOOYNYX</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>-17.483333333333334,7.0,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>A315/2026</name>
+      <description>A0315/26 NOTAMR A1381/25   Q) GOOO/QRDCA/IV/BO/W/000/050/0700N01729W999  A) GOOO B) 2604091357 C) 2606302359 EST  E) GOD 38 ACTIVATED  F) GND G) FL050    CREATED: 09 APR 2026 14:14  SOURCE: GOOOYNYX</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>-17.483333333333334,7.0,0</coordinates>
+      </Point>
     </Placemark>
     <Placemark>
       <name>K270/2026</name>
