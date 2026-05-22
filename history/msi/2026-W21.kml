@@ -121,6 +121,17 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 1512/26</name>
+      <description>211653Z MAY 26  HYDROPAC 1512/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     261231Z TO 271333Z MAY IN AREA BOUND BY     46-00.00S 138-00.00W, 46-00.00S 095-00.00W,     54-00.00S 091-00.00W, 54-00.00S 142-00.00W,     53-00.00S 155-00.00W.  2. CANCEL THIS MSG 271433Z MAY 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-138.0,-46.0,0 -95.0,-46.0,0 -91.0,-54.0,0 -142.0,-54.0,0 -155.0,-53.0,0 -138.0,-46.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 1500/26</name>
       <description>210627Z MAY 26  HYDROPAC 1500/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS:     A. 261240Z TO 261342Z MAY         IN AREA BOUND BY        47-00.00S 133-00.00W, 47-00.00S 095-00.00W,        53-00.00S 095-00.00W, 53-00.00S 133-00.00W.     B. 271231Z TO 271333Z MAY        IN AREA BOUND BY        47-00.00S 138-00.00W, 47-00.00S 101-00.00W,        53-00.00S 101-00.00W, 53-00.00S 138-00.00W.  2. CANCEL THIS MSG 271433Z MAY 26.</description>
       <MultiGeometry>
@@ -172,37 +183,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1458/26</name>
-      <description>170843Z MAY 26  HYDROPAC 1458/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0200Z TO 1100Z DAILY 22 MAY THRU 04 JUN     IN AREA BOUND BY     43-06.00S 164-42.00W, 43-54.00S 159-18.00W,     45-00.00S 159-36.00W, 44-18.00S 165-06.00W.  2. CANCEL THIS MSG 041200Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-164.7,-43.1,0 -159.3,-43.9,0 -159.6,-45.0,0 -165.1,-44.3,0 -164.7,-43.1,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1457/26</name>
-      <description>170738Z MAY 26  HYDROPAC 1457/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 0200Z TO 1100Z     DAILY 22 MAY THRU 04 JUN:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 177-49.00E, 39-12.00S 177-57.00E,        39-10.50S 178-06.00E, 39-24.00S 178-42.00E,        39-42.00S 178-42.00E, 39-24.00S 177-42.00E,        39-18.00S 177-42.00E.     B. SPACE DEBRIS IN AREA BOUND BY        40-00.00S 177-42.00W, 41-30.00S 172-30.00W,        42-45.00S 173-15.00W, 41-06.00S 178-30.00W.  2. </description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>177.816667,-39.2,0 177.95,-39.2,0 178.1,-39.175,0 178.7,-39.4,0 178.7,-39.7,0 177.7,-39.4,0 177.7,-39.3,0 177.816667,-39.2,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-177.7,-40.0,0 -172.5,-41.5,0 -173.25,-42.75,0 -178.5,-41.1,0 -177.7,-40.0,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 1420/26</name>
@@ -276,6 +256,37 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 1458/26</name>
+      <description>170843Z MAY 26  HYDROPAC 1458/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0200Z TO 1100Z DAILY 22 MAY THRU 04 JUN     IN AREA BOUND BY     43-06.00S 164-42.00W, 43-54.00S 159-18.00W,     45-00.00S 159-36.00W, 44-18.00S 165-06.00W.  2. CANCEL THIS MSG 041200Z JUN 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-164.7,-43.1,0 -159.3,-43.9,0 -159.6,-45.0,0 -165.1,-44.3,0 -164.7,-43.1,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 1457/26</name>
+      <description>170738Z MAY 26  HYDROPAC 1457/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 0200Z TO 1100Z     DAILY 22 MAY THRU 04 JUN:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 177-49.00E, 39-12.00S 177-57.00E,        39-10.50S 178-06.00E, 39-24.00S 178-42.00E,        39-42.00S 178-42.00E, 39-24.00S 177-42.00E,        39-18.00S 177-42.00E.     B. SPACE DEBRIS IN AREA BOUND BY        40-00.00S 177-42.00W, 41-30.00S 172-30.00W,        42-45.00S 173-15.00W, 41-06.00S 178-30.00W.  2. </description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>177.816667,-39.2,0 177.95,-39.2,0 178.1,-39.175,0 178.7,-39.4,0 178.7,-39.7,0 177.7,-39.4,0 177.7,-39.3,0 177.816667,-39.2,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-177.7,-40.0,0 -172.5,-41.5,0 -173.25,-42.75,0 -178.5,-41.1,0 -177.7,-40.0,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>NAVAREA IV 477/26</name>
