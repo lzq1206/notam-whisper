@@ -309,26 +309,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 441/26</name>
-      <description>111836Z MAY 26  NAVAREA IV 441/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      171234Z TO 171352Z MAY, ALTERNATE     181226Z TO 181344Z, 191202Z TO 191320Z,     201154Z TO 201312Z, 211130Z TO 211248Z,     221122Z TO 221239Z AND      231104Z TO 231222Z MAY IN AREAS BOUND BY:     A. 26-08.00N 075-59.00W, 26-18.00N 075-55.00W,        25-33.00N 073-47.00W, 25-08.00N 073-18.00W,        24-39.00N 073-28.00W, 24-54.00N 074-16.00W.     B. 28-36.00N 080-35.19W, 28-36.00N 08</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-75.983333,26.133333,0 -75.916667,26.3,0 -73.783333,25.55,0 -73.3,25.133333,0 -73.466667,24.65,0 -74.266667,24.9,0 -75.983333,26.133333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.5865,28.6,0 -80.45,28.6,0 -80.066667,28.416667,0 -80.133333,28.3,0 -80.551,28.508833,0 -80.5865,28.6,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 356/26</name>
       <description>151516Z MAY 26  NAVAREA XII 356/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     251338Z TO 251450Z, 261324Z TO 261435Z,     271306Z TO 271418Z, 281252Z TO 281403Z,     291235Z TO 291346Z, 301220Z TO 301331Z      AND 311203Z TO 311314Z MAY     IN AREA BOUND BY     41-33.00N 141-35.00W, 38-59.00N 137-13.00W,     36-16.00N 133-09.00W, 33-25.00N 129-22.00W,     30-28.00N 125-50.00W, 27-43.00N 123-17.00W,     24-55.00N 120-52.00W, 24-04.00N 121-54.00W,     26-25.00N 124-40.00W, 28-44.0</description>
       <Polygon>
