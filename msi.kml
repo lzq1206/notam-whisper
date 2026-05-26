@@ -3,6 +3,51 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
+      <name>NAVAREA IV 491/26</name>
+      <description>240845Z MAY 26  NAVAREA IV 491/26.  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      291152Z TO 291634Z MAY, ALTERNATE      301130Z TO 301612Z, 311108Z TO 311550Z MAY,     011045Z TO 011527Z, 021023Z TO 021505Z,     031001Z TO 031443Z, AND 040938Z TO 041420Z JUN     IN AREA BOUND BY     31-42.00N 077-10.00W, 32-23.00N 076-52.00W,     33-08.00N 075-40.00W, 33-28.00N 074-58.00W,     33-19.00N 074-46.00W, 32-36.00N 075-02.00W,     31-51.00N 076-13.00W, 31-31.00N 076-56.00W.  2. CANCE</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-77.166667,31.7,0 -76.866667,32.383333,0 -75.666667,33.133333,0 -74.966667,33.466667,0 -74.766667,33.316667,0 -75.033333,32.6,0 -76.216667,31.85,0 -76.933333,31.516667,0 -77.166667,31.7,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA IV 490/26</name>
+      <description>240720Z MAY 26  NAVAREA IV 490/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      292333Z TO 300105Z MAY, ALTERNATE     302312Z TO 310044Z, 312250Z MAY TO 010022Z JUN,     012229Z TO 020001Z, 022208Z TO 022340Z,      032147Z TO 032319Z AND 042126Z TO 042258Z JUN     IN AREAS BOUND BY:     A. 28-38.79N 080-37.53W, 29-14.00N 080-14.00W,        29-28.00N 079-44.00W, 29-22.00N 079-36.00W,        28-56.00N 079-48.00W, 28-38.00N 080-10.00W,        28-32.26N 080-33.76W.     </description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.6255,28.6465,0 -80.233333,29.233333,0 -79.733333,29.466667,0 -79.6,29.366667,0 -79.8,28.933333,0 -80.166667,28.633333,0 -80.562667,28.537667,0 -80.6255,28.6465,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-79.333333,30.016667,0 -78.316667,31.0,0 -77.983333,30.766667,0 -79.066667,29.8,0 -79.333333,30.016667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-74.933333,34.216667,0 -72.033333,36.433333,0 -71.3,35.8,0 -74.15,33.6,0 -74.933333,34.216667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-50.866667,47.433333,0 -43.766667,49.633333,0 -43.133333,48.65,0 -50.166667,46.483333,0 -50.866667,47.433333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA IV 476/26</name>
       <description>191445Z MAY 26  NAVAREA IV 476/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      251141Z TO 251623Z MAY, ALTERNATE     261119Z T0 261601Z, 271057Z TO 271539Z,     281035Z TO 281517Z, 291012Z TO 291454Z,     300950Z TO 301432Z AND      310928Z TO 311410Z MAY IN AREAS BOUND BY:     A. 31-42.00N 077-10.00W, 32-23.00N 076-52.00W,        33-08.00N 075-40.00W, 33-28.00N 074-58.00W,        33-19.00N 074-46.00W, 32-36.00N 075-02.00W,        31-51.00N 076-13.00W, 31-31.00N 07</description>
       <MultiGeometry>
