@@ -248,33 +248,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1538/26</name>
-      <description>250314Z MAY 26  HYDROPAC 1538/26.  PHILIPPINE SEA.  SOUTH CHINA SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     261500Z TO 262100Z MAY      IN AREAS BOUND BY:     A. 19-42.00N 118-43.00E, 19-37.00N 120-09.00E,        19-00.00N 120-06.00E, 19-04.00N 118-41.00E.     B. 19-20.00N 123-26.00E, 19-14.00N 124-26.00E,        18-43.00N 124-23.00E, 18-47.00N 123-24.00E.     C. 17-29.00N 138-28.00E, 17-01.00N 141-09.00E,        16-13.00N 141-00.00E, 16-41.00N 138-19.00E.  2. CANCEL THIS MSG 2</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.716667,19.7,0 120.15,19.616667,0 120.1,19.0,0 118.683333,19.066667,0 118.716667,19.7,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>123.433333,19.333333,0 124.433333,19.233333,0 124.383333,18.716667,0 123.4,18.783333,0 123.433333,19.333333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>138.466667,17.483333,0 141.15,17.016667,0 141.0,16.216667,0 138.316667,16.683333,0 138.466667,17.483333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1535/26</name>
       <description>241254Z MAY 26  HYDROPAC 1535/26.  EASTERN INDIAN OCEAN.  SOUTH PACIFIC.  TASMAN SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1158Z TO 1908Z DAILY 29 MAY THRU 04 JUN     IN AREA WITHIN 100 MILES OF TRACKLINE JOINING     40-43.00S 081-08.00E, 48-04.00S 097-01.00E,     52-27.00S 115-27.00E, 52-32.00S 138-10.00E,     48-02.00S 159-53.00E.  2. CANCEL THIS MSG 042008Z JUN 26.</description>
       <Polygon>
