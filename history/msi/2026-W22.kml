@@ -283,57 +283,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 76/26</name>
-      <description>201534Z MAY 26  HYDROARC 76/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      202100Z THRU 282100Z MAY IN AREAS BOUND BY:     A. 69-51.60N 035-09.80E, 69-40.00N 035-42.40E,        69-23.65N 034-55.60E, 69-35.25N 034-23.00E.     B. 72-54.00N 034-36.36E, 72-43.12N 037-49.12E,        72-34.48N 039-33.36E, 71-03.00N 038-24.36E,        70-27.00N 037-55.48E, 70-27.00N 037-01.48E,        72-16.48N 034-09.00E.  2. CANCEL THIS MSG 282200Z MAY 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>35.163333,69.86,0 35.706667,69.666667,0 34.926667,69.394167,0 34.383333,69.5875,0 35.163333,69.86,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>34.606,72.9,0 37.818667,72.718667,0 39.556,72.574667,0 38.406,71.05,0 37.924667,70.45,0 37.024667,70.45,0 34.15,72.274667,0 34.606,72.9,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 74/26</name>
-      <description>201516Z MAY 26  HYDROARC 74/26.  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      202100Z THRU 282100Z MAY IN AREAS BOUND BY:     A. 69-24.00N 039-50.00E, 67-52.00N 044-07.00E,        66-44.00N 044-24.00E, 68-56.00N 038-32.00E.     B. 67-31.00N 045-03.00E, 67-15.00N 045-43.00E,        67-11.00N 045-30.00E.  2. CANCEL THIS MSG 282200Z MAY 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>39.833333,69.4,0 44.116667,67.866667,0 44.4,66.733333,0 38.533333,68.933333,0 39.833333,69.4,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>45.05,67.516667,0 45.716667,67.25,0 45.5,67.183333,0 45.05,67.516667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 73/26</name>
-      <description>201501Z MAY 26  HYDROARC 73/26.  ARCTIC.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      202100Z THRU 282100Z MAY IN AREA BOUND BY     81-21.36N 089-42.00E, 81-50.24N 087-38.36E,     82-47.24N 085-28.12E, 83-24.00N 096-39.00E,     83-17.24N 115-13.48E, 82-37.12N 115-58.48E,     81-39.00N 114-36.00E, 81-39.36N 104-09.36E.  2. CANCEL THIS MSG 282200Z MAY 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>89.7,81.356,0 87.639333,81.837333,0 85.468667,82.787333,0 96.65,83.4,0 115.224667,83.287333,0 115.974667,82.618667,0 114.6,81.65,0 104.156,81.656,0 89.7,81.356,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1470/26</name>
       <description>190028Z MAY 26  HYDROPAC 1470/26.  EASTERN INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2321Z TO 0248Z DAILY 21, 22 AND     26 THRU 30 MAY IN AREA BOUND BY     27-00.00S 054-54.00E, 26-55.00S 055-00.00E,     26-44.00S 056-24.00E, 26-33.00S 058-27.00E,     26-21.00S 058-34.00E, 25-55.00S 062-42.00E,     25-28.00S 066-41.00E, 24-26.00S 072-44.00E,     23-05.00S 079-11.00E, 21-58.00S 083-40.00E,     20-48.00S 087-49.00E, 19-42.00S 091-02.00E,     18-43.00S 093-58.00E, 17-42.00S 096-41.0</description>
       <Polygon>
