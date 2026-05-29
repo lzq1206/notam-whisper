@@ -413,6 +413,7 @@
       zoomControl: false, 
       worldCopyJump: true // 解决跨越经度180度标识消失的问题
     }).setView([34.5, 108.5], 4);
+    map.attributionControl.setPrefix(false);
     L.control.zoom({ position: 'topright' }).addTo(map);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
