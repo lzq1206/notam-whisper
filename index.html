@@ -427,9 +427,16 @@
     const viewToggleText = document.getElementById('viewToggleText');
     const mapDiv = document.getElementById('map');
     const cesiumDiv = document.getElementById('mapCesium');
+    const SOLAR_CURVE_COLOR = '#ffcc66';
+    const SOLAR_NIGHT_OPACITY = 0.35;
+    const solarOverlayPane = map.createPane('solarOverlayPane');
+    solarOverlayPane.style.zIndex = 420;
+    const solarOverlayLayer2D = L.layerGroup().addTo(map);
 
     let is3D = false;
     let cesiumViewer = null;
+    let cesiumSolarCurveEntities = [];
+    let selectedNotamSolarState = null;
     const CESIUM_ION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzY2ZlZjYxZi1kOGM1LTRhN2MtOGRhNi1mMDBkMWEwNjZlYTkiLCJpZCI6NDA4NzUzLCJpYXQiOjE3NzQ0MDkwMTl9.StFh8-TIWbpATRQHRmTiHtxHGeRWFSc6SNsUcESHmhc';
 
     async function setCesiumBaseImagery() {
@@ -469,6 +476,170 @@
       console.error('Cesium Imagery failed: all base imagery providers are unavailable.');
     }
 
+    function toValidDate(value) {
+      if (!value) return null;
+      const d = new Date(value);
+      return Number.isFinite(d.getTime()) ? d : null;
+    }
+
+    function getNotamMidpointDate(fromUtc, toUtc) {
+      const fromDate = toValidDate(fromUtc);
+      const toDate = toValidDate(toUtc);
+      if (fromDate && toDate) return new Date((fromDate.getTime() + toDate.getTime()) / 2);
+      return fromDate || toDate;
+    }
+
+    function isMsiOrMaritime(row) {
+      return !!row && (row.country === 'Maritime' || row.source === 'MSI' || row.type === 'MSI');
+    }
+
+    function sunAltitudeRadians(date, lat, lon) {
+      if (typeof SunCalc === 'undefined' || !SunCalc.getPosition) return NaN;
+      try {
+        return SunCalc.getPosition(date, lat, lon).altitude;
+      } catch (e) {
+        return NaN;
+      }
+    }
+
+    function solveTerminatorLatitude(date, lon) {
+      let low = -89.9;
+      let high = 89.9;
+      let altLow = sunAltitudeRadians(date, low, lon);
+      let altHigh = sunAltitudeRadians(date, high, lon);
+      if (!Number.isFinite(altLow) || !Number.isFinite(altHigh)) return 0;
+      if (altLow * altHigh > 0) {
+        let bestLat = 0;
+        let bestAbs = Number.POSITIVE_INFINITY;
+        for (let lat = -89.5; lat <= 89.5; lat += 1) {
+          const alt = sunAltitudeRadians(date, lat, lon);
+          if (!Number.isFinite(alt)) continue;
+          const absAlt = Math.abs(alt);
+          if (absAlt < bestAbs) {
+            bestAbs = absAlt;
+            bestLat = lat;
+          }
+        }
+        return bestLat;
+      }
+      for (let i = 0; i < 30; i++) {
+        const mid = (low + high) / 2;
+        const altMid = sunAltitudeRadians(date, mid, lon);
+        if (!Number.isFinite(altMid)) break;
+        if (Math.abs(altMid) < 1e-7) return mid;
+        if (altLow * altMid <= 0) high = mid;
+        else {
+          low = mid;
+          altLow = altMid;
+        }
+      }
+      return (low + high) / 2;
+    }
+
+    function buildSolarTerminatorPoints(date, lonStep = 2) {
+      const points = [];
+      for (let lon = -180; lon <= 180; lon += lonStep) {
+        points.push([solveTerminatorLatitude(date, lon), lon]);
+      }
+      if (points[points.length - 1][1] !== 180) points.push([solveTerminatorLatitude(date, 180), 180]);
+      return points;
+    }
+
+    function buildNightPolygonFromTerminator(date, terminatorPoints) {
+      const northNight = sunAltitudeRadians(date, 85, 0) < 0;
+      if (northNight) return terminatorPoints.concat([[90, 180], [90, -180]]);
+      return terminatorPoints.slice().reverse().concat([[-90, 180], [-90, -180]]);
+    }
+
+    function clearSolarOverlay2D() {
+      solarOverlayLayer2D.clearLayers();
+    }
+
+    function clearSolarOverlay3D() {
+      if (!cesiumViewer) return;
+      cesiumSolarCurveEntities.forEach(entity => cesiumViewer.entities.remove(entity));
+      cesiumSolarCurveEntities = [];
+      if (cesiumViewer.scene && cesiumViewer.scene.globe) {
+        cesiumViewer.scene.globe.enableLighting = false;
+      }
+    }
+
+    function renderSolarOverlay2D(date) {
+      clearSolarOverlay2D();
+      if (!date) return;
+      const terminator = buildSolarTerminatorPoints(date);
+      const nightPolygon = buildNightPolygonFromTerminator(date, terminator);
+      L.polygon(nightPolygon, {
+        pane: 'solarOverlayPane',
+        stroke: false,
+        fillColor: '#000',
+        fillOpacity: SOLAR_NIGHT_OPACITY,
+        interactive: false
+      }).addTo(solarOverlayLayer2D);
+      L.polyline(terminator, {
+        pane: 'solarOverlayPane',
+        color: SOLAR_CURVE_COLOR,
+        weight: 2,
+        opacity: 0.95,
+        interactive: false
+      }).addTo(solarOverlayLayer2D);
+    }
+
+    function renderSolarOverlay3D(date) {
+      clearSolarOverlay3D();
+      if (!date || !cesiumViewer) return;
+      const terminator = buildSolarTerminatorPoints(date);
+      const degreeArray = [];
+      terminator.forEach(([lat, lon]) => degreeArray.push(lon, lat));
+      const curveEntity = cesiumViewer.entities.add({
+        polyline: {
+          positions: Cesium.Cartesian3.fromDegreesArray(degreeArray),
+          width: 2,
+          material: Cesium.Color.fromCssColorString(SOLAR_CURVE_COLOR),
+          clampToGround: false
+        }
+      });
+      cesiumSolarCurveEntities.push(curveEntity);
+      if (cesiumViewer.scene && cesiumViewer.scene.globe) {
+        cesiumViewer.scene.globe.enableLighting = true;
+      }
+      cesiumViewer.clock.shouldAnimate = false;
+      cesiumViewer.clock.currentTime = Cesium.JulianDate.fromDate(date);
+    }
+
+    function applySelectedNotamSolarOverlay() {
+      if (!selectedNotamSolarState || !selectedNotamSolarState.midpoint) {
+        clearSolarOverlay2D();
+        clearSolarOverlay3D();
+        return;
+      }
+      renderSolarOverlay2D(selectedNotamSolarState.midpoint);
+      if (cesiumViewer) renderSolarOverlay3D(selectedNotamSolarState.midpoint);
+    }
+
+    function selectNotamForSolarOverlay(row, lat, lon) {
+      const midpoint = getNotamMidpointDate(row.from_utc, row.to_utc);
+      if (!midpoint) return;
+      selectedNotamSolarState = {
+        id: row.id || row.notam_id || '',
+        midpoint,
+        lat,
+        lon
+      };
+      applySelectedNotamSolarOverlay();
+    }
+
+    function attachNotamClickForSolarOverlay(shape, row, lat, lon) {
+      if (!shape || isMsiOrMaritime(row)) return;
+      shape.on('click', () => selectNotamForSolarOverlay(row, lat, lon));
+    }
+
+    function addCesiumEntity(options, solarSelection = null) {
+      const entity = cesiumViewer.entities.add(options);
+      if (solarSelection) entity.__notamSolarSelection = solarSelection;
+      return entity;
+    }
+
     function initCesium() {
       if (cesiumViewer) return;
       Cesium.Ion.defaultAccessToken = CESIUM_ION_TOKEN;
@@ -479,6 +650,11 @@
       });
       // Enable high-resolution satellite imagery
       setCesiumBaseImagery();
+      cesiumViewer.selectedEntityChanged.addEventListener(entity => {
+        if (!entity || !entity.__notamSolarSelection) return;
+        selectedNotamSolarState = entity.__notamSolarSelection;
+        applySelectedNotamSolarOverlay();
+      });
       // Quality settings
       cesiumViewer.scene.globe.depthTestAgainstTerrain = false;
       if (Cesium.FeatureDetection.supportsImageRenderingPixelated()) {
@@ -583,14 +759,20 @@
           if (!isFinite(lat) || !isFinite(lon)) return;
 
           const fromTs = Date.parse(r.from_utc);
-          const isMaritime = r.country === 'Maritime' || r.source === 'MSI' || r.type === 'MSI';
+          const isMaritime = isMsiOrMaritime(r);
           const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
           const color = Cesium.Color.fromCssColorString(colorHex) || Cesium.Color.RED;
           const radiusNm = parseFloat(r.radius_nm || '0');
           const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
+          const solarSelection = isMaritime ? null : {
+            id: r.id || r.notam_id || '',
+            midpoint: getNotamMidpointDate(r.from_utc, r.to_utc),
+            lat,
+            lon
+          };
 
           // Render Label (Now for all, including MSI)
-          cesiumViewer.entities.add({
+          addCesiumEntity({
             position: Cesium.Cartesian3.fromDegrees(lon, lat),
             label: {
               text: (isMaritime ? 'MSI: ' : '') + (r.notam_id || 'NOTAM'),
@@ -604,7 +786,7 @@
               eyeOffset: new Cesium.Cartesian3(0, 0, -500)
             },
             description: r['raw'] || ''
-          });
+          }, solarSelection);
 
           // Render Polygon/Circle
           let polyCoords = [];
@@ -646,7 +828,7 @@
                    description: r['raw'] || ''
                  };
                  if (isGlow) {
-                   cesiumViewer.entities.add({
+                   addCesiumEntity({
                      polyline: {
                        positions: Cesium.Cartesian3.fromDegreesArray(flatPoints.concat([flatPoints[0], flatPoints[1]])),
                        width: 8,
@@ -656,14 +838,14 @@
                        }),
                        height: 110
                      }
-                   });
+                   }, solarSelection);
                  }
-                 cesiumViewer.entities.add(entityOptions);
+                 addCesiumEntity(entityOptions, solarSelection);
                });
              });
           } else if (radiusNm > 0) {
             // Approximate circular area if only radius is given
-            cesiumViewer.entities.add({
+            addCesiumEntity({
               position: Cesium.Cartesian3.fromDegrees(lon, lat),
               ellipse: {
                 semiMinorAxis: radiusNm * 1852,
@@ -675,10 +857,10 @@
                 height: 100
               },
               description: r['raw'] || ''
-            });
+            }, solarSelection);
             if (isGlow) {
               // Circle glow in 3D
-              cesiumViewer.entities.add({
+              addCesiumEntity({
                 position: Cesium.Cartesian3.fromDegrees(lon, lat),
                 ellipse: {
                   semiMinorAxis: radiusNm * 1852 + 500,
@@ -689,7 +871,7 @@
                   outlineWidth: 10,
                   height: 105
                 }
-              });
+              }, solarSelection);
             }
           }
         } catch (err) {
@@ -700,6 +882,9 @@
         console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunches.length} upcoming, ${pastLaunches.length} past.`);
         if (cesiumViewer.entities.values.length > 0) {
           cesiumViewer.zoomTo(cesiumViewer.entities);
+        }
+        if (selectedNotamSolarState && selectedNotamSolarState.midpoint) {
+          renderSolarOverlay3D(selectedNotamSolarState.midpoint);
         }
       } catch (cesiumErr) {
         console.error('[Cesium] Render Error:', cesiumErr);
@@ -999,7 +1184,7 @@
         const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
         const radiusNm = Math.max(1, parseFloat(r.radius_nm || '1'));
         if (!isFinite(lat) || !isFinite(lon)) return;
-        const isMaritime = r.country === 'Maritime';
+        const isMaritime = isMsiOrMaritime(r);
         const color = isMaritime ? '#ff9900' : colorByTime(Date.parse(r.from_utc), minTs, maxTs);
 
         let coordinatesList = [];
@@ -1072,6 +1257,7 @@
               }
               if (shape) {
                 shape.bindPopup(popup);
+                attachNotamClickForSolarOverlay(shape, r, lat, lon);
                 shape.addTo(group);
                 layers.push(shape);
               }
@@ -1097,6 +1283,7 @@
             });
           }
           shape.bindPopup(popup);
+          attachNotamClickForSolarOverlay(shape, r, lat, lon);
           shape.addTo(group);
           layers.push(shape);
         }
@@ -1105,6 +1292,11 @@
       if (layers.length) {
         group.addTo(map);
         try { map.fitBounds(group.getBounds(), { padding: [20, 20] }); } catch (e) { }
+      }
+      if (selectedNotamSolarState && selectedNotamSolarState.midpoint) {
+        renderSolarOverlay2D(selectedNotamSolarState.midpoint);
+      } else {
+        clearSolarOverlay2D();
       }
       const notamCount = rows.filter(r => r.country !== 'Maritime').length;
       const msiCount = rows.filter(r => r.country === 'Maritime').length;
@@ -1281,7 +1473,7 @@
       const geometries = [];
       const rawText = r.raw || '';
       const isRoute = isRouteGeometry(rawText);
-      const isMaritime = r.country === 'Maritime';
+      const isMaritime = isMsiOrMaritime(r);
 
       coordinatesList.forEach(points => {
         const segments = isMaritime
@@ -1333,7 +1525,7 @@
         const lat = parseFloat(r.lat);
         const lon = parseFloat(r.lon);
         if (!isFinite(lat) || !isFinite(lon)) return;
-        const isMaritime = r.country === 'Maritime' || r.source === 'MSI' || r.type === 'MSI';
+        const isMaritime = isMsiOrMaritime(r);
         const title = r.notam_id || (isMaritime ? t('maritime_warning') : 'NOTAM');
         const details = [
           isMaritime ? t('kml_type_msi') : t('kml_type_notam'),
@@ -1420,7 +1612,7 @@
       }
 
       const filtered = dataRows.filter(r => {
-        const isMaritime = r.country === 'Maritime';
+        const isMaritime = isMsiOrMaritime(r);
         
         // MSI: 使用重叠逻辑 (AlertStart <= SelectedEnd && AlertEnd >= SelectedStart)
         if (isMaritime) {
