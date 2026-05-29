@@ -428,7 +428,13 @@
     const viewToggleText = document.getElementById('viewToggleText');
     const mapDiv = document.getElementById('map');
     const cesiumDiv = document.getElementById('mapCesium');
-    const SOLAR_CURVE_COLOR = '#ffcc66';
+    const SOLAR_SUNSET_CURVE_COLOR = '#ffcc66';
+    const SOLAR_CURVE_DEFINITIONS = [
+      { altitudeDeg: 0, color: SOLAR_SUNSET_CURVE_COLOR, weight: 2 },
+      { altitudeDeg: -6, color: '#ff9900', weight: 1.8 },
+      { altitudeDeg: -12, color: '#3b82f6', weight: 1.7 },
+      { altitudeDeg: -18, color: '#1e3a8a', weight: 1.6 }
+    ];
     const SOLAR_NIGHT_OPACITY = 0.35;
     const solarOverlayPane = map.createPane('solarOverlayPane');
     solarOverlayPane.style.zIndex = 420;
@@ -503,17 +509,18 @@
       }
     }
 
-    function solveTerminatorLatitude(date, lon) {
+    function solveSolarAltitudeLatitude(date, lon, targetAltitudeDeg = 0) {
+      const targetAltitudeRad = targetAltitudeDeg * Math.PI / 180;
       let low = -89.9;
       let high = 89.9;
-      let altLow = sunAltitudeRadians(date, low, lon);
-      let altHigh = sunAltitudeRadians(date, high, lon);
+      let altLow = sunAltitudeRadians(date, low, lon) - targetAltitudeRad;
+      let altHigh = sunAltitudeRadians(date, high, lon) - targetAltitudeRad;
       if (!Number.isFinite(altLow) || !Number.isFinite(altHigh)) return 0;
       if (altLow * altHigh > 0) {
         let bestLat = 0;
         let bestAbs = Number.POSITIVE_INFINITY;
         for (let lat = -89.5; lat <= 89.5; lat += 1) {
-          const alt = sunAltitudeRadians(date, lat, lon);
+          const alt = sunAltitudeRadians(date, lat, lon) - targetAltitudeRad;
           if (!Number.isFinite(alt)) continue;
           const absAlt = Math.abs(alt);
           if (absAlt < bestAbs) {
@@ -525,7 +532,7 @@
       }
       for (let i = 0; i < 30; i++) {
         const mid = (low + high) / 2;
-        const altMid = sunAltitudeRadians(date, mid, lon);
+        const altMid = sunAltitudeRadians(date, mid, lon) - targetAltitudeRad;
         if (!Number.isFinite(altMid)) break;
         if (Math.abs(altMid) < 1e-7) return mid;
         if (altLow * altMid <= 0) high = mid;
@@ -537,12 +544,12 @@
       return (low + high) / 2;
     }
 
-    function buildSolarTerminatorPoints(date, lonStep = 2) {
+    function buildSolarCurvePoints(date, targetAltitudeDeg = 0, lonStep = 2) {
       const points = [];
       for (let lon = -180; lon <= 180; lon += lonStep) {
-        points.push([solveTerminatorLatitude(date, lon), lon]);
+        points.push([solveSolarAltitudeLatitude(date, lon, targetAltitudeDeg), lon]);
       }
-      if (points[points.length - 1][1] !== 180) points.push([solveTerminatorLatitude(date, 180), 180]);
+      if (points[points.length - 1][1] !== 180) points.push([solveSolarAltitudeLatitude(date, 180, targetAltitudeDeg), 180]);
       return points;
     }
 
@@ -592,8 +599,12 @@
     function renderSolarOverlay2D(date) {
       clearSolarOverlay2D();
       if (!date) return;
-      const terminator = buildSolarTerminatorPoints(date);
-      const nightPolygon = buildNightPolygonFromTerminator(date, terminator);
+      const sunsetTerminator = buildSolarCurvePoints(date, 0);
+      const nightPolygon = buildNightPolygonFromTerminator(date, sunsetTerminator);
+      const solarCurves = SOLAR_CURVE_DEFINITIONS.map(def => ({
+        ...def,
+        points: buildSolarCurvePoints(date, def.altitudeDeg)
+      }));
       const [minWrap, maxWrap] = getVisibleWorldWrapRange();
       for (let wrap = minWrap; wrap <= maxWrap; wrap++) {
         const lonOffset = wrap * 360;
@@ -605,32 +616,36 @@
           interactive: false,
           noClip: true
         }).addTo(solarOverlayLayer2D);
-        L.polyline(shiftLonPath(terminator, lonOffset), {
-          pane: 'solarOverlayPane',
-          color: SOLAR_CURVE_COLOR,
-          weight: 2,
-          opacity: 0.95,
-          interactive: false,
-          noClip: true
-        }).addTo(solarOverlayLayer2D);
+        solarCurves.forEach(curve => {
+          L.polyline(shiftLonPath(curve.points, lonOffset), {
+            pane: 'solarOverlayPane',
+            color: curve.color,
+            weight: curve.weight,
+            opacity: 0.95,
+            interactive: false,
+            noClip: true
+          }).addTo(solarOverlayLayer2D);
+        });
       }
     }
 
     function renderSolarOverlay3D(date) {
       clearSolarOverlay3D();
       if (!date || !cesiumViewer) return;
-      const terminator = buildSolarTerminatorPoints(date);
-      const degreeArray = [];
-      terminator.forEach(([lat, lon]) => degreeArray.push(lon, lat));
-      const curveEntity = cesiumViewer.entities.add({
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray(degreeArray),
-          width: 2,
-          material: Cesium.Color.fromCssColorString(SOLAR_CURVE_COLOR),
-          clampToGround: false
-        }
+      SOLAR_CURVE_DEFINITIONS.forEach(curve => {
+        const points = buildSolarCurvePoints(date, curve.altitudeDeg);
+        const degreeArray = [];
+        points.forEach(([lat, lon]) => degreeArray.push(lon, lat));
+        const curveEntity = cesiumViewer.entities.add({
+          polyline: {
+            positions: Cesium.Cartesian3.fromDegreesArray(degreeArray),
+            width: curve.weight,
+            material: Cesium.Color.fromCssColorString(curve.color),
+            clampToGround: false
+          }
+        });
+        cesiumSolarCurveEntities.push(curveEntity);
       });
-      cesiumSolarCurveEntities.push(curveEntity);
       if (cesiumViewer.scene && cesiumViewer.scene.globe) {
         cesiumViewer.scene.globe.enableLighting = true;
       }
