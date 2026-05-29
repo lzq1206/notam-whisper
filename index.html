@@ -489,6 +489,10 @@
       return fromDate || toDate;
     }
 
+    function isMsiOrMaritime(row) {
+      return !!row && (row.country === 'Maritime' || row.source === 'MSI' || row.type === 'MSI');
+    }
+
     function sunAltitudeRadians(date, lat, lon) {
       if (typeof SunCalc === 'undefined' || !SunCalc.getPosition) return NaN;
       try {
@@ -626,7 +630,7 @@
     }
 
     function attachNotamClickForSolarOverlay(shape, row, lat, lon) {
-      if (!shape || !row || row.country === 'Maritime' || row.source === 'MSI' || row.type === 'MSI') return;
+      if (!shape || isMsiOrMaritime(row)) return;
       shape.on('click', () => selectNotamForSolarOverlay(row, lat, lon));
     }
 
@@ -755,7 +759,7 @@
           if (!isFinite(lat) || !isFinite(lon)) return;
 
           const fromTs = Date.parse(r.from_utc);
-          const isMaritime = r.country === 'Maritime' || r.source === 'MSI' || r.type === 'MSI';
+          const isMaritime = isMsiOrMaritime(r);
           const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
           const color = Cesium.Color.fromCssColorString(colorHex) || Cesium.Color.RED;
           const radiusNm = parseFloat(r.radius_nm || '0');
@@ -1180,7 +1184,7 @@
         const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
         const radiusNm = Math.max(1, parseFloat(r.radius_nm || '1'));
         if (!isFinite(lat) || !isFinite(lon)) return;
-        const isMaritime = r.country === 'Maritime';
+        const isMaritime = isMsiOrMaritime(r);
         const color = isMaritime ? '#ff9900' : colorByTime(Date.parse(r.from_utc), minTs, maxTs);
 
         let coordinatesList = [];
@@ -1469,7 +1473,7 @@
       const geometries = [];
       const rawText = r.raw || '';
       const isRoute = isRouteGeometry(rawText);
-      const isMaritime = r.country === 'Maritime';
+      const isMaritime = isMsiOrMaritime(r);
 
       coordinatesList.forEach(points => {
         const segments = isMaritime
@@ -1521,7 +1525,7 @@
         const lat = parseFloat(r.lat);
         const lon = parseFloat(r.lon);
         if (!isFinite(lat) || !isFinite(lon)) return;
-        const isMaritime = r.country === 'Maritime' || r.source === 'MSI' || r.type === 'MSI';
+        const isMaritime = isMsiOrMaritime(r);
         const title = r.notam_id || (isMaritime ? t('maritime_warning') : 'NOTAM');
         const details = [
           isMaritime ? t('kml_type_msi') : t('kml_type_notam'),
@@ -1608,7 +1612,7 @@
       }
 
       const filtered = dataRows.filter(r => {
-        const isMaritime = r.country === 'Maritime';
+        const isMaritime = isMsiOrMaritime(r);
         
         // MSI: 使用重叠逻辑 (AlertStart <= SelectedEnd && AlertEnd >= SelectedStart)
         if (isMaritime) {

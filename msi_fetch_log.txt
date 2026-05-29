@@ -10183,3 +10183,31 @@ AttributeError: module 'datetime' has no attribute 'UTC'
 2026-05-29T01:27:15.126517 -   HTTP 503
 2026-05-29T01:27:15.126537 -   HTTP 503
 2026-05-29T01:27:15.126556 -   HTTP 503
+2026-05-29T01:30:33.886298 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-05-29T01:30:33.886445 -   Got 2 blocks from TXT
+2026-05-29T01:30:33.886481 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-05-29T01:30:33.886513 -   HTTP 503
+2026-05-29T01:30:33.886543 -   HTTP 503
+2026-05-29T01:30:33.886565 -   HTTP 503
+2026-05-29T01:30:33.886594 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T01:30:33.886793 -   Got 1 blocks from HTML
+2026-05-29T01:30:33.886825 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T01:30:33.886891 -   Got 1 blocks from HTML
+2026-05-29T01:30:33.886916 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T01:30:33.886937 -   HTTP 503
+2026-05-29T01:30:33.886957 -   HTTP 503
+2026-05-29T01:30:33.886978 -   HTTP 503
+2026-05-29T01:30:41.015119 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-05-29T01:30:41.015220 -   Got 2 blocks from TXT
+2026-05-29T01:30:41.015250 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-05-29T01:30:41.015274 -   HTTP 503
+2026-05-29T01:30:41.015315 -   HTTP 503
+2026-05-29T01:30:41.015336 -   HTTP 503
+2026-05-29T01:30:41.015358 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T01:30:41.015535 -   Got 1 blocks from HTML
+2026-05-29T01:30:41.015564 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T01:30:41.015629 -   Got 1 blocks from HTML
+2026-05-29T01:30:41.015663 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T01:30:41.015684 -   HTTP 503
+2026-05-29T01:30:41.015703 -   HTTP 503
+2026-05-29T01:30:41.015722 -   HTTP 503
