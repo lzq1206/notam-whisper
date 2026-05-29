@@ -10239,3 +10239,17 @@ AttributeError: module 'datetime' has no attribute 'UTC'
 2026-05-29T02:12:36.197598 -   HTTP 503
 2026-05-29T02:12:36.197620 -   HTTP 503
 2026-05-29T02:12:36.197640 -   HTTP 503
+2026-05-29T02:24:08.917358 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-05-29T02:24:08.917464 -   Got 2 blocks from TXT
+2026-05-29T02:24:08.917497 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-05-29T02:24:08.917523 -   HTTP 503
+2026-05-29T02:24:08.917546 -   HTTP 503
+2026-05-29T02:24:08.917567 -   HTTP 503
+2026-05-29T02:24:08.917589 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T02:24:08.917772 -   Got 1 blocks from HTML
+2026-05-29T02:24:08.917805 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T02:24:08.917880 -   Got 1 blocks from HTML
+2026-05-29T02:24:08.917909 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T02:24:08.917932 -   HTTP 503
+2026-05-29T02:24:08.917978 -   HTTP 503
+2026-05-29T02:24:08.918002 -   HTTP 503
