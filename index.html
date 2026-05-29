@@ -551,6 +551,20 @@
       return terminatorPoints.slice().reverse().concat([[-90, 180], [-90, -180]]);
     }
 
+    function shiftLonPath(path, lonOffset) {
+      return path.map(([lat, lon]) => [lat, lon + lonOffset]);
+    }
+
+    function getVisibleWorldWrapRange() {
+      const bounds = map.getBounds();
+      const west = bounds.getWest();
+      const east = bounds.getEast();
+      if (!Number.isFinite(west) || !Number.isFinite(east)) return [0, 0];
+      const minWrap = Math.ceil((west - 180) / 360);
+      const maxWrap = Math.floor((east + 180) / 360);
+      return [minWrap, maxWrap];
+    }
+
     function clearSolarOverlay2D() {
       solarOverlayLayer2D.clearLayers();
     }
@@ -569,20 +583,26 @@
       if (!date) return;
       const terminator = buildSolarTerminatorPoints(date);
       const nightPolygon = buildNightPolygonFromTerminator(date, terminator);
-      L.polygon(nightPolygon, {
-        pane: 'solarOverlayPane',
-        stroke: false,
-        fillColor: '#000',
-        fillOpacity: SOLAR_NIGHT_OPACITY,
-        interactive: false
-      }).addTo(solarOverlayLayer2D);
-      L.polyline(terminator, {
-        pane: 'solarOverlayPane',
-        color: SOLAR_CURVE_COLOR,
-        weight: 2,
-        opacity: 0.95,
-        interactive: false
-      }).addTo(solarOverlayLayer2D);
+      const [minWrap, maxWrap] = getVisibleWorldWrapRange();
+      for (let wrap = minWrap; wrap <= maxWrap; wrap++) {
+        const lonOffset = wrap * 360;
+        L.polygon(shiftLonPath(nightPolygon, lonOffset), {
+          pane: 'solarOverlayPane',
+          stroke: false,
+          fillColor: '#000',
+          fillOpacity: SOLAR_NIGHT_OPACITY,
+          interactive: false,
+          noClip: true
+        }).addTo(solarOverlayLayer2D);
+        L.polyline(shiftLonPath(terminator, lonOffset), {
+          pane: 'solarOverlayPane',
+          color: SOLAR_CURVE_COLOR,
+          weight: 2,
+          opacity: 0.95,
+          interactive: false,
+          noClip: true
+        }).addTo(solarOverlayLayer2D);
+      }
     }
 
     function renderSolarOverlay3D(date) {
@@ -628,6 +648,12 @@
       };
       applySelectedNotamSolarOverlay();
     }
+
+    map.on('moveend zoomend resize', () => {
+      if (!is3D && selectedNotamSolarState && selectedNotamSolarState.midpoint) {
+        renderSolarOverlay2D(selectedNotamSolarState.midpoint);
+      }
+    });
 
     function attachNotamClickForSolarOverlay(shape, row, lat, lon) {
       if (!shape || isMsiOrMaritime(row)) return;
