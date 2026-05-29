@@ -556,7 +556,7 @@
 
     function buildNightPolygonFromTerminator(date, terminatorPoints) {
       if (isSouthSideNight(date)) {
-        return terminatorPoints.slice().reverse().concat([[-90, 180], [-90, -180]]);
+        return terminatorPoints.slice().reverse().concat([[-90, -180], [-90, 180]]);
       }
       return terminatorPoints.concat([[90, 180], [90, -180]]);
     }
