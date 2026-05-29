@@ -545,10 +545,20 @@
       return points;
     }
 
+    function isSouthSideNight(date) {
+      const northAlt = sunAltitudeRadians(date, 89.9, 0);
+      const southAlt = sunAltitudeRadians(date, -89.9, 0);
+      if (Number.isFinite(northAlt) && Number.isFinite(southAlt)) {
+        return southAlt < northAlt;
+      }
+      return sunAltitudeRadians(date, -85, 0) < 0;
+    }
+
     function buildNightPolygonFromTerminator(date, terminatorPoints) {
-      const northNight = sunAltitudeRadians(date, 85, 0) < 0;
-      if (northNight) return terminatorPoints.concat([[90, 180], [90, -180]]);
-      return terminatorPoints.slice().reverse().concat([[-90, 180], [-90, -180]]);
+      if (isSouthSideNight(date)) {
+        return terminatorPoints.slice().reverse().concat([[-90, 180], [-90, -180]]);
+      }
+      return terminatorPoints.concat([[90, 180], [90, -180]]);
     }
 
     function shiftLonPath(path, lonOffset) {
