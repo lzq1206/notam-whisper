@@ -10267,3 +10267,23 @@ AttributeError: module 'datetime' has no attribute 'UTC'
 2026-05-29T02:55:12.021460 -   HTTP 503
 2026-05-29T02:55:12.021473 -   HTTP 503
 2026-05-29T02:55:12.021485 -   HTTP 503
+2026-05-29T04:45:44.528950 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-05-29T04:45:45.130085 -   Got 87 blocks from TXT
+2026-05-29T04:45:50.136417 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-05-29T04:45:50.329301 -   Got 18 blocks from TXT
+2026-05-29T04:45:55.335523 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-05-29T04:45:55.465717 -   Got 41 blocks from TXT
+2026-05-29T04:46:00.470667 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-05-29T04:46:00.600512 -   Got 51 blocks from TXT
+2026-05-29T04:46:05.606363 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-05-29T04:46:06.022655 -   Got 10 blocks from TXT
+2026-05-29T04:46:11.028516 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-05-29T04:46:11.436661 -   Got 1 blocks from HTML
+2026-05-29T04:46:16.442859 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-05-29T04:46:17.045576 -   Got 1 blocks from HTML
+2026-05-29T04:46:22.052138 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-05-29T04:46:22.652257 -   Got 1 blocks from HTML
+2026-05-29T04:46:27.658792 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-05-29T04:46:28.655548 -   Got 1 blocks from HTML
+2026-05-29T04:46:33.662051 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-05-29T04:46:33.885994 -   Got 1 blocks from HTML
