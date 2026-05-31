@@ -68,26 +68,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 470/26</name>
-      <description>190055Z MAY 26  NAVAREA IV 470/26.  CARIBBEAN SEA.  GULF OF AMERICA.  YUCATAN CHANNEL.  MEXICO.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      212230Z TO 220043Z MAY, ALTERNATE     2230Z TO 0043Z DAILY 22 THRU 30 MAY     IN AREAS BOUND BY:     A. 25-40.00N 096-47.00W, 25-48.00N 097-05.00W,        25-58.00N 097-12.00W, 26-02.00N 097-12.00W,        26-05.00N 097-05.00W, 26-06.00N 096-58.00W,        26-01.00N 096-36.00W, 25-37.00N 095-19.00W,        24-59.00N 093-33.00W, 24-45.00N 093-09.00W,     </description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-96.783333,25.666667,0 -97.083333,25.8,0 -97.2,25.966667,0 -97.2,26.033333,0 -97.083333,26.083333,0 -96.966667,26.1,0 -96.6,26.016667,0 -95.316667,25.616667,0 -93.55,24.983333,0 -93.15,24.75,0 -93.233333,24.5,0 -93.75,24.55,0 -95.366667,25.15,0 -96.783333,25.666667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-97.2,25.966667,0 -97.2,26.033333,0 -97.15,26.066667,0 -97.05,26.1,0 -96.95,26.133333,0 -96.716667,26.1,0 -96.233333,26.05,0 -95.216667,26.05,0 -94.216667,26.0,0 -93.566667,25.983333,0 -91.95,25.483333,0 -91.583333,24.766667,0 -89.966667,24.1,0 -86.35,22.35,0 -85.066667,21.566667,0 -82.616667,21.066667,0 -81.716667,20.8,0 -80.016667,20.166667,0 -77.616667,19.166667,0 -77.75,19.1,0 -78.35,19.233333,0 -79.133333,19.516667,0 -79.716667,19.75,0 -81.216667,20.3,0 -83.233333,20.55,0 -85.583333,21.266667,0 -86.7,21.716667,0 -89.533333,22.566667,0 -89.666667,22.9,0 -91.166667,23.433333,0 -93.1,23.2,0 -94.566667,23.916667,0 -96.783333,25.666667,0 -97.083333,25.8,0 -97.2,25.966667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA IV 447/26</name>
       <description>111431Z MAY 26  NAVAREA IV 447/26.  NORTH ATLANTIC.  FRENCH GUIANA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0254Z TO 0501Z DAILY 19 MAY THRU 18 JUN      IN AREA BOUND BY     05-50.55N 052-47.95W, 05-50.55N 052-41.80W,     05-12.60N 052-40.98W, 05-23.46N 052-53.80W.  2. CANCEL THIS MSG 180601Z JUN 26.</description>
       <Polygon>
@@ -132,26 +112,6 @@
     <Placemark>
       <name>NAVAREA XII 370/26</name>
       <description>221931Z MAY 26  NAVAREA XII 370/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 281400Z TO 281824Z MAY, ALTERNATE        1400Z TO 1824Z 29 MAY THRU 03 JUN        IN AREA BOUND BY:        31-46.00N 121-08.00W, 31-43.00N 121-15.00W,        34-41.00N 120-39.00W, 34-31.00N 120-26.00W.     B. 281400Z TO 281843Z MAY, ALTERNATE        1400Z TO 1843Z 29 MAY THRU 03 JUN        IN AREA BOUND BY:        28-16.00N 121-48.00W, 28-34.00N 122-21.00W,        29-47.00N 121-46.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.133333,31.766667,0 -121.25,31.716667,0 -120.65,34.683333,0 -120.433333,34.516667,0 -121.133333,31.766667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.8,28.266667,0 -122.35,28.566667,0 -121.766667,29.783333,0 -121.583333,29.783333,0 -121.416667,28.65,0 -121.8,28.266667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 369/26</name>
-      <description>221837Z MAY 26  NAVAREA XII 369/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 241400Z TO 241824Z MAY, ALTERNATE        1400Z TO 1824Z 25 THRU 30 MAY        IN AREA BOUND BY:        31-46.00N 121-08.00W, 31-43.00N 121-15.00W,        34-41.00N 120-39.00W, 34-31.00N 120-26.00W.     B. 241400Z TO 241843Z MAY, ALTERNATE        1400Z TO 1843Z 25 THRU 30 MAY.        IN AREA BOUND BY:        28-16.00N 121-48.00W, 28-34.00N 122-21.00W,        29-47.00N 121-46.00W, 29</description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
@@ -278,17 +238,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-162.719333,-33.140667,0 -142.502833,-41.373167,0 -143.008833,-42.3865,0 -163.318333,-34.102833,0 -162.719333,-33.140667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1470/26</name>
-      <description>190028Z MAY 26  HYDROPAC 1470/26.  EASTERN INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2321Z TO 0248Z DAILY 21, 22 AND     26 THRU 30 MAY IN AREA BOUND BY     27-00.00S 054-54.00E, 26-55.00S 055-00.00E,     26-44.00S 056-24.00E, 26-33.00S 058-27.00E,     26-21.00S 058-34.00E, 25-55.00S 062-42.00E,     25-28.00S 066-41.00E, 24-26.00S 072-44.00E,     23-05.00S 079-11.00E, 21-58.00S 083-40.00E,     20-48.00S 087-49.00E, 19-42.00S 091-02.00E,     18-43.00S 093-58.00E, 17-42.00S 096-41.0</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>54.9,-27.0,0 55.0,-26.916667,0 56.4,-26.733333,0 58.45,-26.55,0 58.566667,-26.35,0 62.7,-25.916667,0 66.683333,-25.466667,0 72.733333,-24.433333,0 79.183333,-23.083333,0 83.666667,-21.966667,0 87.816667,-20.8,0 91.033333,-19.7,0 93.966667,-18.716667,0 96.683333,-17.7,0 103.516667,-15.75,0 106.0,-15.716667,0 109.716667,-16.633333,0 109.5,-17.183333,0 106.9,-18.166667,0 103.266667,-18.216667,0 99.433333,-19.516667,0 95.933333,-20.633333,0 92.15,-21.666667,0 88.9,-22.583333,0 82.733333,-24.05,0 80.016667,-24.566667,0 74.033333,-25.466667,0 63.366667,-26.833333,0 58.583333,-27.116667,0 55.133333,-27.116667,0 54.9,-27.0,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
