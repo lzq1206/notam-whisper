@@ -48,26 +48,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 476/26</name>
-      <description>191445Z MAY 26  NAVAREA IV 476/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      251141Z TO 251623Z MAY, ALTERNATE     261119Z T0 261601Z, 271057Z TO 271539Z,     281035Z TO 281517Z, 291012Z TO 291454Z,     300950Z TO 301432Z AND      310928Z TO 311410Z MAY IN AREAS BOUND BY:     A. 31-42.00N 077-10.00W, 32-23.00N 076-52.00W,        33-08.00N 075-40.00W, 33-28.00N 074-58.00W,        33-19.00N 074-46.00W, 32-36.00N 075-02.00W,        31-51.00N 076-13.00W, 31-31.00N 07</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-77.166667,31.7,0 -76.866667,32.383333,0 -75.666667,33.133333,0 -74.966667,33.466667,0 -74.766667,33.316667,0 -75.033333,32.6,0 -76.216667,31.85,0 -76.933333,31.516667,0 -77.166667,31.7,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.614667,28.6315,0 -80.233333,28.933333,0 -80.15,28.85,0 -80.416667,28.55,0 -80.552833,28.512833,0 -80.614667,28.6315,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA IV 447/26</name>
       <description>111431Z MAY 26  NAVAREA IV 447/26.  NORTH ATLANTIC.  FRENCH GUIANA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0254Z TO 0501Z DAILY 19 MAY THRU 18 JUN      IN AREA BOUND BY     05-50.55N 052-47.95W, 05-50.55N 052-41.80W,     05-12.60N 052-40.98W, 05-23.46N 052-53.80W.  2. CANCEL THIS MSG 180601Z JUN 26.</description>
       <Polygon>
