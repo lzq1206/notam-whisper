@@ -90,6 +90,46 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>NAVAREA XII 393/26</name>
+      <description>271052Z MAY 26  NAVAREA XII 393/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 070200Z TO 070624Z JUN, ALTERNATE        0200Z TO 0624Z DAILY 08 THRU 13 JUN        IN AREA BOUND BY        31-44.00N 121-09.00W, 31-43.00N 121-16.00W,        34-41.00N 120-42.00W, 34-38.00N 120-28.00W.     B. 070200Z TO 070643Z JUN, ALTERNATE        0200Z TO 0643Z DAILY 08 THRU 13 JUN        IN AREA BOUND BY        28-16.00N 121-48.00W, 28-34.00N 122-21.00W,        29-50.00N 121-4</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.15,31.733333,0 -121.266667,31.716667,0 -120.7,34.683333,0 -120.466667,34.633333,0 -121.15,31.733333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.8,28.266667,0 -122.35,28.566667,0 -121.75,29.833333,0 -121.583333,29.8,0 -121.416667,28.65,0 -121.8,28.266667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA XII 375/26</name>
+      <description>270150Z MAY 26  NAVAREA XII 375/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 010200Z TO 010624Z JUN, ALTERNATE        020200Z TO 020624Z, 1400Z TO 1824Z DAILY        02 THRU 06 JUN IN AREA BOUND BY        31-44.00N 121-09.00W, 31-43.00N 121-16.00W,        31-41.00N 120-42.00W, 34-38.00N 120-28.00W.     B. 010200Z TO 010643Z JUN, ALTERNATE        020200Z TO 020643Z, 1400Z TO 1843Z DAILY        02 THRU 06 JUN IN AREA BOUND BY        28-16.00N 121-48.00W, 28-3</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.15,31.733333,0 -121.266667,31.716667,0 -120.7,31.683333,0 -120.466667,34.633333,0 -121.15,31.733333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.8,28.266667,0 -122.35,28.566667,0 -121.75,29.833333,0 -121.583333,29.8,0 -121.416667,28.65,0 -121.8,28.266667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA XII 372/26</name>
       <description>200553Z MAY 26  NAVAREA XII 372/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 310200Z TO 310624Z MAY, ALTERNATE         0200Z TO 0624Z DAILY 01 AND 02 JUN,         1400Z TO 1824Z DAILY 02 THRU 05 JUN        IN AREA BOUND BY        31-46.00N 121-08.00W, 31-43.00N 121-15.00W,        34-41.00N 120-39.00W, 34-31.00N 120-26.00W.     B. 310200Z TO 310643Z MAY, ALTERNATE         0200Z TO 0643Z DAILY 01 AND 02 JUN,         1400Z TO 1843Z DAILY 02 THRU 05 JUN       </description>
       <MultiGeometry>
@@ -119,26 +159,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 370/26</name>
-      <description>221931Z MAY 26  NAVAREA XII 370/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 281400Z TO 281824Z MAY, ALTERNATE        1400Z TO 1824Z 29 MAY THRU 03 JUN        IN AREA BOUND BY:        31-46.00N 121-08.00W, 31-43.00N 121-15.00W,        34-41.00N 120-39.00W, 34-31.00N 120-26.00W.     B. 281400Z TO 281843Z MAY, ALTERNATE        1400Z TO 1843Z 29 MAY THRU 03 JUN        IN AREA BOUND BY:        28-16.00N 121-48.00W, 28-34.00N 122-21.00W,        29-47.00N 121-46.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.133333,31.766667,0 -121.25,31.716667,0 -120.65,34.683333,0 -120.433333,34.516667,0 -121.133333,31.766667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.8,28.266667,0 -122.35,28.566667,0 -121.766667,29.783333,0 -121.583333,29.783333,0 -121.416667,28.65,0 -121.8,28.266667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROLANT 237/26(54)</name>
@@ -314,23 +334,32 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>NAVAREA XII 370/26</name>
+      <description>221931Z MAY 26  NAVAREA XII 370/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 281400Z TO 281824Z MAY, ALTERNATE        1400Z TO 1824Z 29 MAY THRU 03 JUN        IN AREA BOUND BY:        31-46.00N 121-08.00W, 31-43.00N 121-15.00W,        34-41.00N 120-39.00W, 34-31.00N 120-26.00W.     B. 281400Z TO 281843Z MAY, ALTERNATE        1400Z TO 1843Z 29 MAY THRU 03 JUN        IN AREA BOUND BY:        28-16.00N 121-48.00W, 28-34.00N 122-21.00W,        29-47.00N 121-46.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.133333,31.766667,0 -121.25,31.716667,0 -120.65,34.683333,0 -120.433333,34.516667,0 -121.133333,31.766667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.8,28.266667,0 -122.35,28.566667,0 -121.766667,29.783333,0 -121.583333,29.783333,0 -121.416667,28.65,0 -121.8,28.266667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA IV 491/26</name>
       <description>240845Z MAY 26  NAVAREA IV 491/26.  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      291152Z TO 291634Z MAY, ALTERNATE      301130Z TO 301612Z, 311108Z TO 311550Z MAY,     011045Z TO 011527Z, 021023Z TO 021505Z,     031001Z TO 031443Z, AND 040938Z TO 041420Z JUN     IN AREA BOUND BY     31-42.00N 077-10.00W, 32-23.00N 076-52.00W,     33-08.00N 075-40.00W, 33-28.00N 074-58.00W,     33-19.00N 074-46.00W, 32-36.00N 075-02.00W,     31-51.00N 076-13.00W, 31-31.00N 076-56.00W.  2. CANCE</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-77.166667,31.7,0 -76.866667,32.383333,0 -75.666667,33.133333,0 -74.966667,33.466667,0 -74.766667,33.316667,0 -75.033333,32.6,0 -76.216667,31.85,0 -76.933333,31.516667,0 -77.166667,31.7,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1492/26</name>
-      <description>202017Z MAY 26  HYDROPAC 1492/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 22 MAY THRU 02 JUN     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL HYDROPAC 1452/26.  3. CANCEL THIS MSG 022129Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 -156.933333,-25.383333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
