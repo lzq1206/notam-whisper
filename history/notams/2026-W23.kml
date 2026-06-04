@@ -414,30 +414,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>J12/2026</name>
-      <description>J0012/26 NOTAMN  Q) EISN/QRTCA/IV/BO /W /000/025/5245N00934W015  A) EISN B) 2603061000 C) 2606051700  D) MON-FRI 1000-1700 EXC MAR 17 APR 06 MAY 04 JUN 01  E) FLIGHT RESTRICTION IN THE VICINITY OF COUNTY CLARE COASTLINE    A TEMPORARY RESTRICTION ON THE FLYING OF AIRCRAFT, AND ROCKETS AS   DEFINED IN S.I. NO.25 OF 2023, SHALL APPLY IN THE TEMPORARY   RESTRICTED AREA (TRA) CONTAINED WITHIN THE VOLUME OF AIRSPACE   DEFINED BELOW:    LATERAL LIMITS, THE AIRSPACE CONTAINED WITHIN:  524523.14N 009341</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-9.5795,52.758722,0 -9.914722,52.814,0 -9.5135,52.783611,0 -9.776667,52.967111,0 -9.555611,52.814167,0 -9.5135,52.783611,0 -9.5795,52.758722,0 -9.5795,52.758722,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>J11/2026</name>
-      <description>J0011/26 NOTAMN  Q) EISN/QRTCA/IV/BO /W /000/005/5246N00930W003  A) EISN B) 2603061000 C) 2606051700  D) MON-FRI 1000-1700 EXC MAR 17 APR 06 MAY 04 JUN 01  E) FLIGHT RESTRICTION IN THE VICINITY OF COUNTY CLARE COASTLINE    A TEMPORARY RESTRICTION ON THE FLYING OF AIRCRAFT, AND ROCKETS AS   DEFINED IN S.I. NO.25 OF 2023, SHALL APPLY IN THE TEMPORARY   RESTRICTED AREA (TRA) CONTAINED WITHIN THE VOLUME OF AIRSPACE   DEFINED BELOW:    LATERAL LIMITS, THE AIRSPACE CONTAINED WITHIN:  524452.36N 009303</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-9.512,52.753778,0 -9.5795,52.758722,0 -9.5135,52.783611,0 -9.555611,52.814167,0 -9.545056,52.806389,0 -9.500778,52.808056,0 -9.478333,52.789556,0 -9.504167,52.777611,0 -9.502611,52.760611,0 -9.512,52.753778,0 -9.512,52.753778,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>A360/2026</name>
       <description>A0360/26 NOTAMN  Q) VECF/QRDCA/IV/BO/W/000/250/2320N08007E006  A) VECF B) 2603080000 C) 2606052359  E) VED 232 LPR KHAMARAIA JABALPUR ACT  F) SFC  G) 25000FT AMSL    CREATED: 24 FEB 2026 09:45  SOURCE: VECCYNYX</description>
       <styleUrl>#circleStyle</styleUrl>
@@ -482,20 +458,28 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A318/2026</name>
-      <description>A0318/26 NOTAMR A0314/26   Q) GOOO/QRRCA/IV/BO/W/050/999/0700N01729W999  A) GOOO B) 2604091406 C) 2606302359 EST  E) GOR 34 ACTIVATED  F) 5000FT AMSL G) UNL    CREATED: 09 APR 2026 14:19  SOURCE: GOOOYNYX</description>
-      <styleUrl>#circleStyle</styleUrl>
-      <Point>
-        <coordinates>-17.483333333333334,7.0,0</coordinates>
-      </Point>
+      <name>J12/2026</name>
+      <description>J0012/26 NOTAMN  Q) EISN/QRTCA/IV/BO /W /000/025/5245N00934W015  A) EISN B) 2603061000 C) 2606051700  D) MON-FRI 1000-1700 EXC MAR 17 APR 06 MAY 04 JUN 01  E) FLIGHT RESTRICTION IN THE VICINITY OF COUNTY CLARE COASTLINE    A TEMPORARY RESTRICTION ON THE FLYING OF AIRCRAFT, AND ROCKETS AS   DEFINED IN S.I. NO.25 OF 2023, SHALL APPLY IN THE TEMPORARY   RESTRICTED AREA (TRA) CONTAINED WITHIN THE VOLUME OF AIRSPACE   DEFINED BELOW:    LATERAL LIMITS, THE AIRSPACE CONTAINED WITHIN:  524523.14N 009341</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-9.5795,52.758722,0 -9.914722,52.814,0 -9.5135,52.783611,0 -9.776667,52.967111,0 -9.555611,52.814167,0 -9.5135,52.783611,0 -9.5795,52.758722,0 -9.5795,52.758722,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
     </Placemark>
     <Placemark>
-      <name>A315/2026</name>
-      <description>A0315/26 NOTAMR A1381/25   Q) GOOO/QRDCA/IV/BO/W/000/050/0700N01729W999  A) GOOO B) 2604091357 C) 2606302359 EST  E) GOD 38 ACTIVATED  F) GND G) FL050    CREATED: 09 APR 2026 14:14  SOURCE: GOOOYNYX</description>
-      <styleUrl>#circleStyle</styleUrl>
-      <Point>
-        <coordinates>-17.483333333333334,7.0,0</coordinates>
-      </Point>
+      <name>J11/2026</name>
+      <description>J0011/26 NOTAMN  Q) EISN/QRTCA/IV/BO /W /000/005/5246N00930W003  A) EISN B) 2603061000 C) 2606051700  D) MON-FRI 1000-1700 EXC MAR 17 APR 06 MAY 04 JUN 01  E) FLIGHT RESTRICTION IN THE VICINITY OF COUNTY CLARE COASTLINE    A TEMPORARY RESTRICTION ON THE FLYING OF AIRCRAFT, AND ROCKETS AS   DEFINED IN S.I. NO.25 OF 2023, SHALL APPLY IN THE TEMPORARY   RESTRICTED AREA (TRA) CONTAINED WITHIN THE VOLUME OF AIRSPACE   DEFINED BELOW:    LATERAL LIMITS, THE AIRSPACE CONTAINED WITHIN:  524452.36N 009303</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-9.512,52.753778,0 -9.5795,52.758722,0 -9.5135,52.783611,0 -9.555611,52.814167,0 -9.545056,52.806389,0 -9.500778,52.808056,0 -9.478333,52.789556,0 -9.504167,52.777611,0 -9.502611,52.760611,0 -9.512,52.753778,0 -9.512,52.753778,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
     </Placemark>
     <Placemark>
       <name>I5120/2025</name>
@@ -580,6 +564,22 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A318/2026</name>
+      <description>A0318/26 NOTAMR A0314/26   Q) GOOO/QRRCA/IV/BO/W/050/999/0700N01729W999  A) GOOO B) 2604091406 C) 2606302359 EST  E) GOR 34 ACTIVATED  F) 5000FT AMSL G) UNL    CREATED: 09 APR 2026 14:19  SOURCE: GOOOYNYX</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>-17.483333333333334,7.0,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>A315/2026</name>
+      <description>A0315/26 NOTAMR A1381/25   Q) GOOO/QRDCA/IV/BO/W/000/050/0700N01729W999  A) GOOO B) 2604091357 C) 2606302359 EST  E) GOD 38 ACTIVATED  F) GND G) FL050    CREATED: 09 APR 2026 14:14  SOURCE: GOOOYNYX</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>-17.483333333333334,7.0,0</coordinates>
+      </Point>
     </Placemark>
     <Placemark>
       <name>K270/2026</name>
@@ -926,42 +926,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A1871/2026</name>
-      <description>A1871/26 NOTAMN  Q)ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013  A)ZBPE B)2606041131 C)2606041151   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.0,36.083333,0 112.233333,36.1,0 112.3,35.733333,0 112.066667,35.7,0 112.0,36.083333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A1872/2026</name>
-      <description>A1872/26 NOTAMN  Q)ZGZU/QRDCA/IV/BO/W/000/999/2853N11235E021  A)ZGZU B)2606041132 C)2606041157   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N291000E1122200-N291200E1124500-N283600E1124800-N283400E1122500,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.366667,29.166667,0 112.75,29.2,0 112.8,28.6,0 112.416667,28.566667,0 112.366667,29.166667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A1873/2026</name>
-      <description>A1873/26 NOTAMN  Q)ZJSA/QRDCA/IV/BO/W/000/999/1852N11235E039  A)ZJSA B)2606041133 C)2606041158   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N192800E1121900-N192900E1124900-N181700E1125100-N181600E1122200,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  RELATED HONGKONG FIR.AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.316667,19.466667,0 112.816667,19.483333,0 112.85,18.283333,0 112.366667,18.266667,0 112.316667,19.466667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>A2019/2026</name>
       <description>A2019/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/3301N10840E017  A)ZLHW B)2606090811 C)2606090855   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N331500E1082700-N331800E1083300-N331700E1084500-N325900E1085700-  N324900E1085400-N324600E1084700-N325200E1083500-N330500E1082700,BAC  K TO START.  VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -974,18 +938,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A1110/2026</name>
-      <description>A1110/26 NOTAMN  Q) VHHK/QRTCA/IV/NBO/W /000/999/1852N11235E039  A) VHHK B) 2606041133 C) 2606041158  E) (REFER TO NOTAM A1873/26 ORIGINATED BY ZBBBYNYX), A TEMPO DANGER   AREA IS ESTABLISHED BOUNDED BY:  192800N1121900E  192900N1124900E  181700N1125100E  181600N1122200E  ALL TFC MUST REMAIN CLEAR OF THE AREA DURING THE ACTIVATION PERIOD.  ALL TFC ROUTING VIA IKELA A1/P901 AND ESTIMATING TO CROSS THE DANGER   AREA DURING THE ACTIVATION PERIOD SHALL EXPECT RADAR VECTORS BY HONG   KONG ATC TO AVOI</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.316667,19.466667,0 112.816667,19.483333,0 112.85,18.283333,0 112.366667,18.266667,0 112.316667,19.466667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>B2305/2026</name>
       <description>B2305/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1855N12445E031  A) RPHI B) 2606100600 C) 2606131000  D) 0600-1000  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  191100N 1241800E -  190500N 1251500E -  183900N 1251200E -  184400N 1241600E -  191100N 1241800E  (158NM NORTH EAST OF TUGUEGARAO AP)  F) SFC G) UNL)</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -993,6 +945,66 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>124.3,19.183333,0 125.25,19.083333,0 125.2,18.65,0 124.266667,18.733333,0 124.3,19.183333,0 124.3,19.183333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B2544/2026</name>
+      <description>B2544/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1921N11902E034  A) RPHI B) 2606100722 C) 2606100840  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  193700N 1183100E -  193300N 1193400E -  190500N 1193300E -  190900N 1182900E -  193700N 1183100E  (78NM NORTHWEST OF LAOAG AP)  F) SFC G) UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>118.516667,19.616667,0 119.566667,19.55,0 119.55,19.083333,0 118.483333,19.15,0 118.516667,19.616667,0 118.516667,19.616667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B2533/2026</name>
+      <description>B2533/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1115N11646E036  A) RPHI B) 2606160800 C) 2606201200  D) 0800-1200  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA. EST   FALL AREA OF UNBURNED DEBRIS WI:  112300N 1161200E -  114900N 1164700E -  110600N 1172000E -  104000N 1164500E -  112300N 1161200E  (122NM NORTHWEST OF PUERTO PRINCESA AP)  F) SFC G) UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>116.2,11.383333,0 116.783333,11.816667,0 117.333333,11.1,0 116.75,10.666667,0 116.2,11.383333,0 116.2,11.383333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B2532/2026</name>
+      <description>B2532/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/0907N11916E022  A) RPHI B) 2606170200 C) 2606200600  D) 0200-0600  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA. EST   FALL AREA OF UNBURNED DEBRIS WI:  091600N 1185700E -  092800N 1191300E -  085700N 1193500E -  084600N 1192000E -  091600N 1185700E  (29NM SOUTHEAST OF PUERTO PRINCESA AP)  F) SFC G) UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>118.95,9.266667,0 119.216667,9.466667,0 119.583333,8.95,0 119.333333,8.766667,0 118.95,9.266667,0 118.95,9.266667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B2534/2026</name>
+      <description>B2534/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1901N12351E034  A) RPHI B) 2606230200 C) 2606260600  D) 0200-0600  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA. EST   FALL AREA OF UNBURNED DEBRIS WI:  192000N 1232300E -  191500N 1242300E -  184300N 1242000E -  184700N 1232000E -  192000N 1232300E  (114NM NORTH EAST OF TUGUEGARAO AP)  F) SFC G) UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>123.383333,19.333333,0 124.383333,19.25,0 124.333333,18.716667,0 123.333333,18.783333,0 123.383333,19.333333,0 123.383333,19.333333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B2535/2026</name>
+      <description>B2535/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1922N11920E047  A) RPHI B) 2606230200 C) 2606260600  D) 0200-0600  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA. EST   FALL AREA OF UNBURNED DEBRIS WI:  194300N 1183800E -  193800N 1200400E -  190000N 1200200E -  190500N 1183600E -  194300N 1183800E  (56NM NORTH EAST OF LAOAG AP)  F) SFC G) UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>118.633333,19.716667,0 120.066667,19.633333,0 120.033333,19.0,0 118.6,19.083333,0 118.633333,19.716667,0 118.633333,19.716667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
