@@ -143,33 +143,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1606/26</name>
-      <description>020035Z JUN 26  HYDROPAC 1606/26.  SOUTH CHINA SEA.  INDONESIA.  VIETNAM.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     050400Z TO 051000Z JUN, IN AREAS BOUND BY:     A. 11-35.00N 109-34.00E, 11-32.00N 109-56.00E,        10-38.00N 109-48.00E, 10-41.00N 109-26.00E.     B. 02-26.00N 107-41.00E, 02-21.00N 108-14.00E,        01-16.00N 108-04.00E, 01-22.00N 107-31.00E.     C. 02-28.00N 107-36.00E, 02-21.00N 108-19.00E,        01-27.00N 108-10.00E, 01-34.00N 107-27.00E.  2. CANCEL THIS MSG 051100Z JUN 26</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>109.566667,11.583333,0 109.933333,11.533333,0 109.8,10.633333,0 109.433333,10.683333,0 109.566667,11.583333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>107.683333,2.433333,0 108.233333,2.35,0 108.066667,1.266667,0 107.516667,1.366667,0 107.683333,2.433333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>107.6,2.466667,0 108.316667,2.35,0 108.166667,1.45,0 107.45,1.566667,0 107.6,2.466667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1583/26</name>
       <description>271600Z MAY 26  HYDROPAC 1583/26.  EASTERN INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     041721Z TO 042044Z AND 051659Z TO 052022Z JUN     IN AREA BOUND BY     25-38.00S 061-43.00E, 24-57.00S 062-34.00E,      29-23.00S 066-59.00E, 33-40.00S 071-48.00E,     34-15.00S 071-08.00E, 30-03.00S 066-10.00E.  2. CANCEL THIS MSG 052122Z JUN 26.</description>
       <Polygon>
@@ -187,17 +160,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>82.083333,-39.866667,0 97.016667,-46.8,0 115.45,-51.283333,0 138.166667,-51.316667,0 158.983333,-47.183333,0 159.916667,-48.033333,0 159.8,-49.45,0 138.216667,-53.75,0 114.466667,-53.616667,0 95.283333,-48.883333,0 80.15,-41.6,0 82.083333,-39.866667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1402/26</name>
-      <description>130655Z MAY 26  HYDROPAC 1402/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0500Z TO 0900Z DAILY 18 MAY THRU 05 JUN     IN AREA BOUND BY     33-08.44S 162-43.16W, 41-22.39S 142-30.17W,     42-23.19S 143-00.53W, 34-06.17S 163-19.10W.  2. CANCEL THIS MSG 051000Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-162.719333,-33.140667,0 -142.502833,-41.373167,0 -143.008833,-42.3865,0 -163.318333,-34.102833,0 -162.719333,-33.140667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
