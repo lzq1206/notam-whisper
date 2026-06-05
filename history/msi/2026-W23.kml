@@ -194,17 +194,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1583/26</name>
-      <description>271600Z MAY 26  HYDROPAC 1583/26.  EASTERN INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     041721Z TO 042044Z AND 051659Z TO 052022Z JUN     IN AREA BOUND BY     25-38.00S 061-43.00E, 24-57.00S 062-34.00E,      29-23.00S 066-59.00E, 33-40.00S 071-48.00E,     34-15.00S 071-08.00E, 30-03.00S 066-10.00E.  2. CANCEL THIS MSG 052122Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>61.716667,-25.633333,0 62.566667,-24.95,0 66.983333,-29.383333,0 71.8,-33.666667,0 71.133333,-34.25,0 66.166667,-30.05,0 61.716667,-25.633333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 89/26</name>
       <description>290630Z MAY 26  HYDROARC 89/26.  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0100Z TO 1400Z DAILY     05 AND 06 JUN IN AREAS BOUND BY:     A. 69-29.00N 033-54.50E, 69-47.50N 034-00.00E,        69-39.00N 038-04.00E, 69-13.90N 043-01.20E,        68-46.20N 044-58.00E, 68-32.50N 045-04.00E,        68-37.50N 043-18.00E.     B. 67-44.00N 045-26.00E, 67-34.00N 045-30.00E,        67-18.00N 045-00.00E.  2. CANCEL THIS MSG 061500Z JUN 26.</description>
       <MultiGeometry>
@@ -276,17 +265,6 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1622/26</name>
-      <description>031001Z JUN 26  HYDROPAC 1622/26.  EASTERN INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     041721Z TO 042044Z AND 051659Z TO 052022Z JUN     IN AREA BOUND BY     25-38.00S 061-43.00E, 24-57.00S 062-34.00E,     29-23.00S 066-59.00E, 33-40.00S 071-48.00E,     34-15.00S 071-08.00E, 30-03.00S 066-10.00E.  2. CANCEL THIS MSG 052122Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>61.716667,-25.633333,0 62.566667,-24.95,0 66.983333,-29.383333,0 71.8,-33.666667,0 71.133333,-34.25,0 66.166667,-30.05,0 61.716667,-25.633333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 1564/26</name>
