@@ -247,26 +247,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 372/26</name>
-      <description>200553Z MAY 26  NAVAREA XII 372/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 310200Z TO 310624Z MAY, ALTERNATE         0200Z TO 0624Z DAILY 01 AND 02 JUN,         1400Z TO 1824Z DAILY 02 THRU 05 JUN        IN AREA BOUND BY        31-46.00N 121-08.00W, 31-43.00N 121-15.00W,        34-41.00N 120-39.00W, 34-31.00N 120-26.00W.     B. 310200Z TO 310643Z MAY, ALTERNATE         0200Z TO 0643Z DAILY 01 AND 02 JUN,         1400Z TO 1843Z DAILY 02 THRU 05 JUN       </description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.133333,31.766667,0 -121.25,31.716667,0 -120.65,34.683333,0 -120.433333,34.516667,0 -121.133333,31.766667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.8,28.266667,0 -122.35,28.566667,0 -121.766667,29.783333,0 -121.583333,29.783333,0 -121.416667,28.65,0 -121.8,28.266667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1564/26</name>
       <description>251549Z MAY 26  HYDROPAC 1564/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 02 THRU 06 JUNE AND     0343Z TO 0829Z DAILY 07 AND 08 JUNE     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 080929Z JUN 26.</description>
       <Polygon>
