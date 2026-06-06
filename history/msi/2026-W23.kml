@@ -194,26 +194,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 89/26</name>
-      <description>290630Z MAY 26  HYDROARC 89/26.  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0100Z TO 1400Z DAILY     05 AND 06 JUN IN AREAS BOUND BY:     A. 69-29.00N 033-54.50E, 69-47.50N 034-00.00E,        69-39.00N 038-04.00E, 69-13.90N 043-01.20E,        68-46.20N 044-58.00E, 68-32.50N 045-04.00E,        68-37.50N 043-18.00E.     B. 67-44.00N 045-26.00E, 67-34.00N 045-30.00E,        67-18.00N 045-00.00E.  2. CANCEL THIS MSG 061500Z JUN 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>33.908333,69.483333,0 34.0,69.791667,0 38.066667,69.65,0 43.02,69.231667,0 44.966667,68.77,0 45.066667,68.541667,0 43.3,68.625,0 33.908333,69.483333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>45.433333,67.733333,0 45.5,67.566667,0 45.0,67.3,0 45.433333,67.733333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA IV 447/26</name>
       <description>111431Z MAY 26  NAVAREA IV 447/26.  NORTH ATLANTIC.  FRENCH GUIANA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0254Z TO 0501Z DAILY 19 MAY THRU 18 JUN      IN AREA BOUND BY     05-50.55N 052-47.95W, 05-50.55N 052-41.80W,     05-12.60N 052-40.98W, 05-23.46N 052-53.80W.  2. CANCEL THIS MSG 180601Z JUN 26.</description>
       <Polygon>
