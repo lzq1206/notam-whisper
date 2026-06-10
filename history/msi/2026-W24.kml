@@ -169,33 +169,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1656/26</name>
-      <description>060431Z JUN 26  HYDROPAC 1656/26.  NORTH PACIFIC.  PHILIPPINES SEA.  SOUTH CHINA SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     100600Z TO 101200Z JUN     IN AREAS BOUND BY:     A. 19-36.00N 118-31.00E, 19-33.00N 119-34.00E,        19-06.00N 119-32.00E, 19-09.00N 118-29.00E.     B. 19-10.00N 124-21.00E, 19-05.00N 125-18.00E,        18-38.00N 125-15.00E, 18-43.00N 124-19.00E.     C. 15-40.00N 147-28.00E, 15-11.00N 149-39.00E,        14-18.00N 149-27.00E, 14-47.00N 147-16.00E.  2. C</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.516667,19.6,0 119.566667,19.55,0 119.533333,19.1,0 118.483333,19.15,0 118.516667,19.6,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>124.35,19.166667,0 125.3,19.083333,0 125.25,18.633333,0 124.316667,18.716667,0 124.35,19.166667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>147.466667,15.666667,0 149.65,15.183333,0 149.45,14.3,0 147.266667,14.783333,0 147.466667,15.666667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1645/26</name>
       <description>021932Z JUN 26  HYDROPAC 1645/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 10 THRU 16 JUN     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 162129Z JUN 26.</description>
       <Polygon>
