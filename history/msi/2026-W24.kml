@@ -91,6 +91,37 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>NAVAREA XII 410/26</name>
+      <description>101537Z JUN 26  NAVAREA XII 410/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 141400Z TO 141824Z JUN, ALTERNATE        1400Z TO 1824Z DAILY 15 THRU 20 JUN        IN AREA BOUND BY        31-44.00N 121-09.00W, 31-43.00N 121-16.00W,        34-41.00N 120-42.00W, 34-38.00N 120-28.00W.     B. 141400Z TO 141843Z JUN, ALTERNATE        1400Z TO 1843Z DAILY 15 THRU 20 JUN        IN AREA BOUND BY        28-16.00N 121-48.00W, 28-34.00N 122-21.00W,        29-50.00N 121-</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.15,31.733333,0 -121.266667,31.716667,0 -120.7,34.683333,0 -120.466667,34.633333,0 -121.15,31.733333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.8,28.266667,0 -122.35,28.566667,0 -121.75,29.833333,0 -121.583333,29.8,0 -121.416667,28.65,0 -121.8,28.266667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA XII 409/26</name>
+      <description>101527Z JUN 26  NAVAREA XII 409/26.  NORTH PACIFIC.  JOHNSTON ATOLL.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2000Z TO 2100Z DAILY 15 THRU 21 JUN     IN AREA BOUND BY     27-28.71N 171-24.34W, 13-38.98N 174-00.45W,     01-35.98N 175-48.45W, 00-54.72N 172-43.89W,     12-22.59N 170-40.14W, 16-45.76N 170-06.75W,     26-43.75N 168-39.09W.  2. CANCEL THIS MSG 212200Z JUN 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-171.405667,27.4785,0 -174.0075,13.649667,0 -175.8075,1.599667,0 -172.7315,0.912,0 -170.669,12.3765,0 -170.1125,16.762667,0 -168.6515,26.729167,0 -171.405667,27.4785,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA XII 402/26</name>
       <description>050421Z JUN 26  NAVAREA XII 402/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 101400Z TO 101824Z JUN, ALTERNATE         1400Z TO 1824Z DAILY 11 THRU 16 JUN         IN AREA BOUND BY        31-44.00N 121-09.00W, 31-43.00N 121-16.00W,        34-41.00N 120-42.00W, 34-38.00N 120-28.00W.     B. 101400Z TO 101843Z JUN, ALTERNATE         1400Z TO 1843Z DAILY 11 THRU 16 JUN         IN AREA BOUND BY        28-16.00N 121-48.00W, 28-34.00N 122-21.00W,        29-50.00N </description>
       <MultiGeometry>
@@ -138,8 +169,46 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 1687/26</name>
+      <description>101032Z JUN 26  HYDROPAC 1687/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 14 THRU 20 JUN     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 202129Z JUN 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 -156.933333,-25.383333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 1681/26</name>
+      <description>091331Z JUN 26  HYDROPAC 1681/26.  NORTH PACIFIC.  PHILIPPINES SEA.  SOUTH CHINA SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     110600Z TO 111200Z JUN IN AREAS BOUND BY:     A. 19-36.00N 118-31.00E, 19-33.00N 119-34.00E,        19-06.00N 119-32.00E, 19-09.00N 118-29.00E.     B. 19-10.00N 124-21.00E, 19-05.00N 125-18.00E,        18-38.00N 125-15.00E, 18-43.00N 124-19.00E.     C. 15-40.00N 147-28.00E, 15-11.00N 149-39.00E,        14-18.00N 149-27.00E, 14-47.00N 147-16.00E.  2. CANCEL HYDROPAC 165</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>118.516667,19.6,0 119.566667,19.55,0 119.533333,19.1,0 118.483333,19.15,0 118.516667,19.6,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>124.35,19.166667,0 125.3,19.083333,0 125.25,18.633333,0 124.316667,18.716667,0 124.35,19.166667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>147.466667,15.666667,0 149.65,15.183333,0 149.45,14.3,0 147.266667,14.783333,0 147.466667,15.666667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 1680/26</name>
-      <description>091256Z JUN 26  HYDROPAC 1680/26.  NORTH PACIFIC.  PHILIPPINE SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      120107Z TO 120324Z JUN, ALTERNATE      0107Z TO 0324Z DAILY 13 THRU 30 JUN      IN AREAS BOUND BY:        A. 20-17.00N 133-09.00E, 21-28.95N 134-41.98E,           21-13.65N 135-14.42E, 19-09.42N 136-49.50E,           18-49.65N 136-49.50E, 17-35.00N 135-13.00E.        B. 16-20.00N 135-14.00E, 13-55.00N 136-05.00E,           12-48.00N 132-57.00E, 15-12.00N 132-05.00E.  2. CANCEL THIS MSG </description>
+      <description>091256Z JUN 26  HYDROPAC 1680/26.  NORTH PACIFIC.  PHILIPPINE SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      120107Z TO 120324Z JUN, ALTERNATE      0107Z TO 0324Z DAILY 13 THRU 30 JUN     IN AREAS BOUND BY:     A. 20-17.00N 133-09.00E, 21-28.95N 134-41.98E,        21-13.65N 135-14.42E, 19-09.42N 136-49.50E,        18-49.65N 136-49.50E, 17-35.00N 135-13.00E.     B. 16-20.00N 135-14.00E, 13-55.00N 136-05.00E,        12-48.00N 132-57.00E, 15-12.00N 132-05.00E.  2. CANCEL THIS MSG 300424Z JUN 26.</description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
