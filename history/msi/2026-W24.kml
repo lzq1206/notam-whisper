@@ -180,33 +180,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1681/26</name>
-      <description>091331Z JUN 26  HYDROPAC 1681/26.  NORTH PACIFIC.  PHILIPPINES SEA.  SOUTH CHINA SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     110600Z TO 111200Z JUN IN AREAS BOUND BY:     A. 19-36.00N 118-31.00E, 19-33.00N 119-34.00E,        19-06.00N 119-32.00E, 19-09.00N 118-29.00E.     B. 19-10.00N 124-21.00E, 19-05.00N 125-18.00E,        18-38.00N 125-15.00E, 18-43.00N 124-19.00E.     C. 15-40.00N 147-28.00E, 15-11.00N 149-39.00E,        14-18.00N 149-27.00E, 14-47.00N 147-16.00E.  2. CANCEL HYDROPAC 165</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.516667,19.6,0 119.566667,19.55,0 119.533333,19.1,0 118.483333,19.15,0 118.516667,19.6,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>124.35,19.166667,0 125.3,19.083333,0 125.25,18.633333,0 124.316667,18.716667,0 124.35,19.166667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>147.466667,15.666667,0 149.65,15.183333,0 149.45,14.3,0 147.266667,14.783333,0 147.466667,15.666667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1680/26</name>
       <description>091256Z JUN 26  HYDROPAC 1680/26.  NORTH PACIFIC.  PHILIPPINE SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      120107Z TO 120324Z JUN, ALTERNATE      0107Z TO 0324Z DAILY 13 THRU 30 JUN     IN AREAS BOUND BY:     A. 20-17.00N 133-09.00E, 21-28.95N 134-41.98E,        21-13.65N 135-14.42E, 19-09.42N 136-49.50E,        18-49.65N 136-49.50E, 17-35.00N 135-13.00E.     B. 16-20.00N 135-14.00E, 13-55.00N 136-05.00E,        12-48.00N 132-57.00E, 15-12.00N 132-05.00E.  2. CANCEL THIS MSG 300424Z JUN 26.</description>
       <MultiGeometry>
