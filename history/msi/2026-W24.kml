@@ -34,26 +34,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 527/26</name>
-      <description>030607Z JUN 26  NAVAREA IV 527/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      071030Z TO 071512Z JUN, ALTERNATE      081007Z TO 081449Z, 090945Z TO 091427Z,      100923Z TO 101405Z, 110901Z TO 111343Z,      120838Z TO 121320Z AND      130816Z TO 131258Z JUN IN AREAS BOUND BY:     A. 28-39.18N 080-37.81W, 29-33.00N 079-43.00W,        29-24.00N 079-29.00W, 28-29.42N 080-32.52W.     B. 31-36.00N 077-14.00W, 32-23.00N 076-52.00W,        33-08.00N 075-40.00W, 33-28.00N</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.630167,28.653,0 -79.716667,29.55,0 -79.483333,29.4,0 -80.542,28.490333,0 -80.630167,28.653,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-77.233333,31.6,0 -76.866667,32.383333,0 -75.666667,33.133333,0 -74.966667,33.466667,0 -74.766667,33.316667,0 -75.033333,32.6,0 -76.216667,31.85,0 -76.983333,31.483333,0 -77.233333,31.6,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 422/26</name>
       <description>082226Z JUN 26  NAVAREA XII 422/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 191400Z TO 191824Z JUN, ALTRENATE 1400Z TO        1824Z DAILY 20 THRU 25 JUN IN AREA BOUND BY        34-41.00N 120-42.00W, 34-38.00N 120-28.00W,        31-44.00N 121-09.00W, 31-43.00N 121-16.00W.     B. 191400Z TO 191843Z JUN, ALTRENATE 1400Z TO        1843Z DAILY 20 THRU 25 JUN IN AREA BOUND BY        29-50.00N 121-45.00W, 29-48.00N 121-35.00W,        28-39.00N 121-25.00W, 28-16.0</description>
       <MultiGeometry>
