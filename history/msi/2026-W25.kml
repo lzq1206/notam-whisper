@@ -261,17 +261,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1699/26</name>
-      <description>111031Z JUN 26  HYDROPAC 1699/26  1. HAZARDOUS OPERATIONS, SPACE DEBRIS 150200Z TO     150800Z JUN IN AREA BOUND BY     11-09.00S 092-07.00E, 11-13.00S 092-40.00E,     16-34.00S 091-56.00E, 16-30.00S 091-23.00E.  2. CANCEL THIS MSG 150900Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>92.116667,-11.15,0 92.666667,-11.216667,0 91.933333,-16.566667,0 91.383333,-16.5,0 92.116667,-11.15,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1687/26</name>
       <description>101032Z JUN 26  HYDROPAC 1687/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 14 THRU 20 JUN     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 202129Z JUN 26.</description>
       <Polygon>
