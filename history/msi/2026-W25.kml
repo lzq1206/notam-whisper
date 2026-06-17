@@ -365,17 +365,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1645/26</name>
-      <description>021932Z JUN 26  HYDROPAC 1645/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 10 THRU 16 JUN     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 162129Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 -156.933333,-25.383333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 103/26</name>
       <description>151922Z JUN 26  HYDROARC 103/26.  GREENLAND SEA.  NORWEGIAN SEA.  NORWAY  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     2000Z TO 2100Z DAILY UNTIL 21 JUN     IN AREAS BOUND BY:     A. 68-59.33N 015-28.04E, 69-13.36N 015-58.52E,        70-53.82N 014-10.90E, 70-41.62N 012-51.94E,        68-59.33N 015-28.04E.     B. 71-03.42N 015-12.97E, 74-15.83N 009-52.26E,        76-50.36N 003-23.81E, 79-11.76N 006-04.25W,        79-55.85N 010-21.89W, 79-41.45N 011-34.90W,        78-03.47N 004-13.39W, 76-01.02N </description>
       <MultiGeometry>
