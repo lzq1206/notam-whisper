@@ -277,17 +277,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1725/26</name>
-      <description>130710Z JUN 26  HYDROPAC 1725/26  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     170300Z TO 170900Z JUN IN AREA BOUND BY     54-51.00S 147-37.00W, 54-47.00S 137-45.00W,     54-08.00S 129-52.00W, 53-00.00S 122-55.00W,     49-56.00S 111-14.00W, 53-52.00S 122-20.00W,     55-12.00S 131-09.00W, 55-43.00S 139-11.00W,     55-44.00S 147-14.00W.  2. CANCEL THIS MSG 171000Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-147.616667,-54.85,0 -137.75,-54.783333,0 -129.866667,-54.133333,0 -122.916667,-53.0,0 -111.233333,-49.933333,0 -122.333333,-53.866667,0 -131.15,-55.2,0 -139.183333,-55.716667,0 -147.233333,-55.733333,0 -147.616667,-54.85,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>5a22bb713216</name>
       <description>122252Z JUN 26.  HYDROPAC 1721/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1330Z TO 2215Z DAILY 17 THRU 29 JUN     IN AREA BOUND BY     41-24.00S 162-24.00W, 41-21.60S 156-42.00W,     42-48.00S 156-33.00W, 42-48.00S 162-20.40W.  2. CANCEL THIS MSG 292315Z JUN 26.</description>
       <Polygon>
@@ -305,28 +294,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1714/26</name>
-      <description>121228Z JUN 26  HYDROPAC 1714/26.  SULU SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      170001Z TO 170600Z JUN IN AREA BOUND BY     09-28.00N 119-13.00E, 08-57.00N 119-36.00E,     08-45.00N 119-20.00E, 09-16.00N 118-57.00E.  2. CANCEL THIS MSG 170700Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>119.216667,9.466667,0 119.6,8.95,0 119.333333,8.75,0 118.95,9.266667,0 119.216667,9.466667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1710/26</name>
-      <description>121052Z JUN 26  HYDROPAC 1710/26.  EASTERN INDIAN OCEAN.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      170530Z TO 170700Z JUN IN AREA BOUND BY     08-31.98N 076-52.05E, 08-34.48N 076-47.68E,     08-18.85N 075-37.45E, 08-06.23N 075-40.90E,     07-54.42N 075-46.52E, 07-43.73N 075-54.10E,     07-34.50N 076-03.45E, 08-27.07N 076-51.17E.  2. CANCEL THIS MSG 170800Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>76.8675,8.533,0 76.794667,8.574667,0 75.624167,8.314167,0 75.681667,8.103833,0 75.775333,7.907,0 75.901667,7.728833,0 76.0575,7.575,0 76.852833,8.451167,0 76.8675,8.533,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
