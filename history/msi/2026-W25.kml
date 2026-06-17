@@ -226,26 +226,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1745/26</name>
-      <description>160452Z JUN 26  HYDROPAC 1745/26.  SULU SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS:     A. 160940Z TO 161029Z JUN IN AREA BOUND BY        11-24.00N 116-11.00E, 11-50.00N 116-48.00E,        11-06.00N 117-21.00E, 10-39.00N 116-45.00E.     B. 171437Z TO 171506Z JUN IN AREA BOUND BY        09-16.00N 118-57.00E, 09-28.00N 119-12.00E,        08-57.00N 119-36.00E, 08-45.00N 119-20.00E.  2. CANCEL THIS MSG 171606Z JUN 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>116.183333,11.4,0 116.8,11.833333,0 117.35,11.1,0 116.75,10.65,0 116.183333,11.4,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.95,9.266667,0 119.2,9.466667,0 119.6,8.95,0 119.333333,8.75,0 118.95,9.266667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1742/26</name>
       <description>152118Z JUN 26  HYDROPAC 1742/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 1330Z TO 2215Z     DAILY 17 THRU 29 JUN:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-02.00S 178-15.00E, 39-13.00S 179-06.00E,        39-48.00S 178-53.00E, 39-32.00S 177-41.00E,        39-15.00S 177-35.00E, 39-12.00S 177-49.00E,        39-12.00S 177-57.00E.     B. SPACE DEBRIS IN AREA BOUND BY        39-42.00S 177-00.00W, 40-20.40S 172-11.40W,        41-40.80S 172-30.00W, 41-00.00S 177-24.00W.  2. CANC</description>
       <MultiGeometry>
