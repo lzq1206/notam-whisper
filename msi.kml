@@ -85,17 +85,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 424/261</name>
-      <description>130912Z JUN 26  NAVAREA XII 424/261.   NORTH PACIFIC.  JOHNSTON ATOLL.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2143Z TO 2325Z DAILY 15 THRU 21 JUN     IN AREA BOUND BY     27-28.71N 171-24.34W, 13-38.98N 174-00.45W,     01-35.98N 175-48.45W, 00-54.72N 172-43.89W,     12-22.59N 170-40.14W, 16-45.76N 170-06.75W,     26-43.75N 168-39.09W.  2. CANCEL NAVAREA XII 409/26.  3. CANCEL THIS MSG 220025Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-171.405667,27.4785,0 -174.0075,13.649667,0 -175.8075,1.599667,0 -172.7315,0.912,0 -170.669,12.3765,0 -170.1125,16.762667,0 -168.6515,26.729167,0 -171.405667,27.4785,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 422/26</name>
       <description>082226Z JUN 26  NAVAREA XII 422/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 191400Z TO 191824Z JUN, ALTRENATE 1400Z TO        1824Z DAILY 20 THRU 25 JUN IN AREA BOUND BY        34-41.00N 120-42.00W, 34-38.00N 120-28.00W,        31-44.00N 121-09.00W, 31-43.00N 121-16.00W.     B. 191400Z TO 191843Z JUN, ALTRENATE 1400Z TO        1843Z DAILY 20 THRU 25 JUN IN AREA BOUND BY        29-50.00N 121-45.00W, 29-48.00N 121-35.00W,        28-39.00N 121-25.00W, 28-16.0</description>
       <MultiGeometry>
@@ -110,47 +99,6 @@
           <outerBoundaryIs>
             <LinearRing>
               <coordinates>-121.75,29.833333,0 -121.583333,29.8,0 -121.416667,28.65,0 -121.8,28.266667,0 -122.35,28.566667,0 -121.75,29.833333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 419/26</name>
-      <description>052148Z JUN 26  NAVAREA XII 419/26.   NORTH PACIFIC  CALIFORNIA  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0735Z TO 2055Z DAILY 17 THRU 28 JUN     IN AREAS BOUND BY:     A. 33-24.00N 119-19.00W, 33-35.00N 119-30.00W,        33-47.00N 119-30.00W, 33-57.00N 119-19.00W,        33-45.00N 119-02.00W, 33-37.00N 119-02.00W.     B. 32-44.00N 117-54.00W, 32-55.00N 118-06.00W,        33-07.00N 118-06.00W, 33-17.00N 117-54.00W,        33-05.00N 117-38.00W, 32-57.00N 117-38.00W.     C. 32-19.00N 117-51.00W,</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-119.316667,33.4,0 -119.5,33.583333,0 -119.5,33.783333,0 -119.316667,33.95,0 -119.033333,33.75,0 -119.033333,33.616667,0 -119.316667,33.4,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.9,32.733333,0 -118.1,32.916667,0 -118.1,33.116667,0 -117.9,33.283333,0 -117.633333,33.083333,0 -117.633333,32.95,0 -117.9,32.733333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.85,32.316667,0 -118.05,32.5,0 -118.05,32.7,0 -117.85,32.883333,0 -117.583333,32.666667,0 -117.583333,32.533333,0 -117.85,32.316667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-135.7,46.0,0 -139.0,44.8,0 -124.9,37.2,0 -123.7,37.5,0 -124.2,38.6,0 -135.7,46.0,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-134.8,19.8,0 -131.8,17.1,0 -121.9,28.3,0 -124.4,29.9,0 -134.8,19.8,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -248,26 +196,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1745/26</name>
-      <description>160452Z JUN 26  HYDROPAC 1745/26.  SULU SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS:     A. 160940Z TO 161029Z JUN IN AREA BOUND BY        11-24.00N 116-11.00E, 11-50.00N 116-48.00E,        11-06.00N 117-21.00E, 10-39.00N 116-45.00E.     B. 171437Z TO 171506Z JUN IN AREA BOUND BY        09-16.00N 118-57.00E, 09-28.00N 119-12.00E,        08-57.00N 119-36.00E, 08-45.00N 119-20.00E.  2. CANCEL THIS MSG 171606Z JUN 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>116.183333,11.4,0 116.8,11.833333,0 117.35,11.1,0 116.75,10.65,0 116.183333,11.4,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.95,9.266667,0 119.2,9.466667,0 119.6,8.95,0 119.333333,8.75,0 118.95,9.266667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1742/26</name>
       <description>152118Z JUN 26  HYDROPAC 1742/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 1330Z TO 2215Z     DAILY 17 THRU 29 JUN:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-02.00S 178-15.00E, 39-13.00S 179-06.00E,        39-48.00S 178-53.00E, 39-32.00S 177-41.00E,        39-15.00S 177-35.00E, 39-12.00S 177-49.00E,        39-12.00S 177-57.00E.     B. SPACE DEBRIS IN AREA BOUND BY        39-42.00S 177-00.00W, 40-20.40S 172-11.40W,        41-40.80S 172-30.00W, 41-00.00S 177-24.00W.  2. CANC</description>
       <MultiGeometry>
@@ -343,17 +271,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1703/261</name>
-      <description>090941Z JUN 26  HYDROPAC 1703/261.   1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0647Z TO 1142Z DAILY 17 THRU 23 JUN      IN AREA BOUND BY     40-53.00S 081-04.00E, 47-30.00S 097-30.00E,     51-11.00S 117-25.00E, 51-06.00S 138-56.00E,     47-16.00S 158-45.00E, 50-07.00S 157-59.00E,     54-19.00S 130-56.00E, 51-50.00S 102-47.00E,     43-45.00S 080-23.00E.  2. CANCEL THIS MSG 231242Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>81.066667,-40.883333,0 97.5,-47.5,0 117.416667,-51.183333,0 138.933333,-51.1,0 158.75,-47.266667,0 157.983333,-50.116667,0 130.933333,-54.316667,0 102.783333,-51.833333,0 80.383333,-43.75,0 81.066667,-40.883333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1650/25(16)</name>
       <description>242359Z JUN 25  HYDROPAC 1650/25(16).  NORTH PACIFIC.  DNC 25.  M/V MORNING MIDAS SANK IN 45-16.88N 179-14.13W.  VESSELS IN VICINITY REQUESTED TO NAVIGATE WITH  CAUTION AND REPORT PRESENCE OF OIL SHEENS OR  DEBRIS TO USCG SECTOR WESTERN ALASKA AND US ARCTIC,  PHONE: 907 428 4100, E-MAIL: SOUTHWESTERNAK@USCG.MIL.</description>
       <Polygon>
@@ -365,20 +282,20 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 103/26</name>
-      <description>151922Z JUN 26  HYDROARC 103/26.  GREENLAND SEA.  NORWEGIAN SEA.  NORWAY  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     2000Z TO 2100Z DAILY UNTIL 21 JUN     IN AREAS BOUND BY:     A. 68-59.33N 015-28.04E, 69-13.36N 015-58.52E,        70-53.82N 014-10.90E, 70-41.62N 012-51.94E,        68-59.33N 015-28.04E.     B. 71-03.42N 015-12.97E, 74-15.83N 009-52.26E,        76-50.36N 003-23.81E, 79-11.76N 006-04.25W,        79-55.85N 010-21.89W, 79-41.45N 011-34.90W,        78-03.47N 004-13.39W, 76-01.02N </description>
+      <name>HYDROARC 107/26</name>
+      <description>180856Z JUN 26  HYDROARC 107/26.  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0400Z TO 1700Z      DAILY 22 THRU 24 JUN IN AREAS BOUND BY:     A. 68-58.00N 038-52.00E, 68-41.00N 040-28.00E,        68-03.00N 042-10.00E, 66-48.00N 041-10.00E,        67-37.00N 040-06.00E, 68-01.00N 040-58.00E,        68-23.00N 040-03.00E, 68-40.00N 038-26.00E.     B. 68-38.00N 046-32.00E, 68-24.00N 048-03.00E,        67-49.00N 048-56.00E, 67-19.00N 044-54.00E,        67-34.30N 045-13.00E, 68-22.00N 046-</description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>15.467333,68.988833,0 15.975333,69.222667,0 14.181667,70.897,0 12.865667,70.693667,0 15.467333,68.988833,0</coordinates>
+              <coordinates>38.866667,68.966667,0 40.466667,68.683333,0 42.166667,68.05,0 41.166667,66.8,0 40.1,67.616667,0 40.966667,68.016667,0 40.05,68.383333,0 38.433333,68.666667,0 38.866667,68.966667,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>15.216167,71.057,0 9.871,74.263833,0 3.396833,76.839333,0 -6.070833,79.196,0 -10.364833,79.930833,0 -11.581667,79.690833,0 -4.223167,78.057833,0 2.0005,76.017,0 7.204,73.535333,0 11.625,70.502,0 15.216167,71.057,0</coordinates>
+              <coordinates>46.533333,68.633333,0 48.05,68.4,0 48.933333,67.816667,0 44.9,67.316667,0 45.216667,67.571667,0 46.2,68.366667,0 46.533333,68.633333,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
