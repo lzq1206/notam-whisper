@@ -330,22 +330,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A318/2026</name>
-      <description>A0318/26 NOTAMR A0314/26   Q) GOOO/QRRCA/IV/BO/W/050/999/0700N01729W999  A) GOOO B) 2604091406 C) 2606302359 EST  E) GOR 34 ACTIVATED  F) 5000FT AMSL G) UNL    CREATED: 09 APR 2026 14:19  SOURCE: GOOOYNYX</description>
-      <styleUrl>#circleStyle</styleUrl>
-      <Point>
-        <coordinates>-17.483333333333334,7.0,0</coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>A315/2026</name>
-      <description>A0315/26 NOTAMR A1381/25   Q) GOOO/QRDCA/IV/BO/W/000/050/0700N01729W999  A) GOOO B) 2604091357 C) 2606302359 EST  E) GOD 38 ACTIVATED  F) GND G) FL050    CREATED: 09 APR 2026 14:14  SOURCE: GOOOYNYX</description>
-      <styleUrl>#circleStyle</styleUrl>
-      <Point>
-        <coordinates>-17.483333333333334,7.0,0</coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>I5120/2025</name>
       <description>I5120/25 NOTAMN  Q) CZEG/QFAXX/IV/NBO/A/000/999/5357N11308W005  A) CXXX B) 2510031727 C) PERM  E) CRW8 REDWATER (HEALTH CENTRE) (HELI)  AMEND PUBLICATIONS:  CAUTION: DELETE: UNLGTD P-LINE MARKED WITH BALL MARKERS S ON  160DEG FLT PATH.    CREATED: 03 OCT 2025 17:27  SOURCE: CYHQYNYX</description>
       <styleUrl>#circleStyle</styleUrl>
@@ -404,6 +388,22 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A318/2026</name>
+      <description>A0318/26 NOTAMR A0314/26   Q) GOOO/QRRCA/IV/BO/W/050/999/0700N01729W999  A) GOOO B) 2604091406 C) 2606302359 EST  E) GOR 34 ACTIVATED  F) 5000FT AMSL G) UNL    CREATED: 09 APR 2026 14:19  SOURCE: GOOOYNYX</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>-17.483333333333334,7.0,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>A315/2026</name>
+      <description>A0315/26 NOTAMR A1381/25   Q) GOOO/QRDCA/IV/BO/W/000/050/0700N01729W999  A) GOOO B) 2604091357 C) 2606302359 EST  E) GOD 38 ACTIVATED  F) GND G) FL050    CREATED: 09 APR 2026 14:14  SOURCE: GOOOYNYX</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Point>
+        <coordinates>-17.483333333333334,7.0,0</coordinates>
+      </Point>
     </Placemark>
     <Placemark>
       <name>J249/2026</name>
