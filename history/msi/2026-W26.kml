@@ -175,17 +175,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROLANT 1128/26</name>
-      <description>041346Z JUN 26  HYDROLANT 1128/26.  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     0818Z TO 1336Z DAILY 17 JUN THRU 17 JUL     IN AREA BOUND BY     30-37.00N 031-24.00W, 30-05.00N 030-46.00W,     26-52.00N 034-15.00W, 27-22.00N 034-54.00W.  2. CANCEL THIS MSG 171436Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-31.4,30.616667,0 -30.766667,30.083333,0 -34.25,26.866667,0 -34.9,27.366667,0 -31.4,30.616667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROLANT 237/26(54)</name>
       <description>031744Z FEB 26  HYDROLANT 237/26(54).  AEGEAN SEA.  DNC 09.  1. MISSILE OPERATIONS 0530Z TO SUNSET DAILY EVERY     WEDNESDAY THRU SATURDAY UNTIL 14 JUN AND     16 SEB THRU 31 DEC IN AREAS:     A. BOUND BY        35-36.00N 024-07.00E, 36-18.00N 024-07.00E,        36-18.00N 025-59.00E, 36-25.00N 026-12.00E,        36-16.00N 026-40.00E, 35-36.00N 026-41.00E,        35-31.00N 024-11.00E.     B. WITHIN ONE MILE OF 35-32.00N 024-13.00E.     C. WITHIN ONE MILE OF 35-36.33N 024-10.00E.  2. CANCEL THIS M</description>
       <MultiGeometry>
@@ -211,6 +200,57 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 1808/26</name>
+      <description>230944Z JUN 26  HYDROPAC 1808/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2015Z TO 0330Z DAILY 28 JUN THRU 07 JUL     IN AREAS BOUND BY:     A. 39-42.00S 176-36.00W, 40-30.00S 170-54.00W,        41-54.00S 171-06.00W, 41-00.00S 177-12.00W.     B. 41-24.00S 161-42.00W, 41-18.00S 155-54.00W,        42-42.00S 155-48.00W, 42-48.00S 161-54.00W.  2. CANCEL THIS MSG 080430Z JUL 26.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-176.6,-39.7,0 -170.9,-40.5,0 -171.1,-41.9,0 -177.2,-41.0,0 -176.6,-39.7,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-161.7,-41.4,0 -155.9,-41.3,0 -155.8,-42.7,0 -161.9,-42.8,0 -161.7,-41.4,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 1807/26</name>
+      <description>230934Z JUN 26  HYDROPAC 1807/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 2015Z TO 0330Z      DAILY 28 JUN THRU 07 JUL:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 177-49.00E, 39-12.00S 177-57.00E,        39-06.00S 178-13.20E, 39-12.00S 178-42.00E,        39-42.00S 178-42.00E, 39-30.00S 177-45.00E,        39-18.00S 177-36.00E.     B. SPACE DEBRIS IN AREA BOUND BY        39-42.00S 176-36.00W, 40-30.00S 170-54.00W,        41-54.00S 171-06.00W, 41-00.00S 177-12.00W.  2.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>177.816667,-39.2,0 177.95,-39.2,0 178.22,-39.1,0 178.7,-39.2,0 178.7,-39.7,0 177.75,-39.5,0 177.6,-39.3,0 177.816667,-39.2,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-176.6,-39.7,0 -170.9,-40.5,0 -171.1,-41.9,0 -177.2,-41.0,0 -176.6,-39.7,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 1805/26</name>
+      <description>201518Z JUN 26  HYDROPAC 1805/26  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 28 JUN THRU 04 JUL          IN AREA BOUND BY     42-28.00S 161-17.00W, 25-23.00S 156-56.00W,     26-03.00S 153-24.00W, 43-04.00S 157-03.00W,     59-49.00S 163-34.00W, 59-13.00S 168-58.00W.  2. CANCEL THIS MSG 042129Z JUL 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-161.283333,-42.466667,0 -156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 1778/26</name>
@@ -250,6 +290,17 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-162.4,-41.4,0 -156.7,-41.36,0 -156.55,-42.8,0 -162.34,-42.8,0 -162.4,-41.4,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROLANT 1128/26</name>
+      <description>041346Z JUN 26  HYDROLANT 1128/26.  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     0818Z TO 1336Z DAILY 17 JUN THRU 17 JUL     IN AREA BOUND BY     30-37.00N 031-24.00W, 30-05.00N 030-46.00W,     26-52.00N 034-15.00W, 27-22.00N 034-54.00W.  2. CANCEL THIS MSG 171436Z JUL 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-31.4,30.616667,0 -30.766667,30.083333,0 -34.25,26.866667,0 -34.9,27.366667,0 -31.4,30.616667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
