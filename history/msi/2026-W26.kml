@@ -326,34 +326,12 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1715/26</name>
-      <description>121247Z JUN 26  HYDROPAC 1715/26.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0928Z TO 1214Z DAILY 17 THRU 23 JUN     IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL HYDROPAC 1704/26.  3. CANCEL THIS MSG 231314Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1705/26</name>
       <description>041346Z JUN 26  HYDROPAC 1705/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      1118Z TO 1626Z DAILY 17 JUN THRU 17 JUL     IN AREA BOUND BY     00-03.00S 102-59.00W, 00-53.00S 101-46.00W,     13-28.00S 110-50.00W, 12-36.00S 112-03.00W.     2. CANCEL THIS MSG 171726Z JUL 26.</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-102.983333,-0.05,0 -101.766667,-0.883333,0 -110.833333,-13.466667,0 -112.05,-12.6,0 -102.983333,-0.05,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1704/26</name>
-      <description>091208Z JUN 26  HYDROPAC 1704/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0928Z TO 1214Z DAILY 17 THRU 23 JUN     IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL THIS MSG 231150Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
