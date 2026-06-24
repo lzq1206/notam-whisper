@@ -3,6 +3,26 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
+      <name>NAVAREA IV 619/26</name>
+      <description>230436Z JUN 26  NAVAREA IV 619/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      290225Z TO 290704Z JUN, ALTERNATE      0225Z TO 0704Z DAILY 30 JUN THRU 05 JUL        IN AREAS BOUND BY:     A. 28-25.00N 075-20.00W, 28-39.00N 072-33.00W,        28-30.00N 071-54.00W, 27-54.00N 071-54.00W,        27-49.00N 072-24.00W, 28-12.00N 075-20.00W.     B. 28-37.03N 080-36.10W, 28-38.00N 080-00.00W,        28-31.00N 080-00.00W, 28-29.21N 080-32.42W.  2. CANCEL THIS MSG 050804Z JU</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-75.333333,28.416667,0 -72.55,28.65,0 -71.9,28.5,0 -71.9,27.9,0 -72.4,27.816667,0 -75.333333,28.2,0 -75.333333,28.416667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.601667,28.617167,0 -80.0,28.633333,0 -80.0,28.516667,0 -80.540333,28.486833,0 -80.601667,28.617167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA IV 609/26</name>
       <description>210220Z JUN 26  NAVAREA IV 609/26.  NORTH ATLANTIC.  VIRGINIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      261400Z TO 261930Z JUN, ALTERNATE 1400Z TO 1930Z     DAILY 27 JUN THRU 02 JUL IN AREAS WITHIN:     A. 16 MILES OF 37-43.61N 075-12.62W.     B. 24 MILES OF 37-33.38N 074-29.45W.     C. 26 MILES OF 37-20.47N 073-39.65W.     D. 53 MILES OF 36-59.21N 072-17.60W.     E. 151 MILES OF 35-28.66N 069-21.71W.     F. 182 MILES OF 34-01.21N 063-59.21W.  2. CANCEL THIS MSG 022030Z JUL 26.</description>
       <MultiGeometry>
@@ -45,26 +65,6 @@
           <outerBoundaryIs>
             <LinearRing>
               <coordinates>-63.986833,34.020167,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA IV 607/26</name>
-      <description>200700Z JUN 26  NAVAREA IV 607/26.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      240730Z TO 241600Z JUN, ALTERNATE     250730Z TO 251600Z JUN IN AREAS WITHIN:     A. 16 MILES OF 37-43.61N 075-12.62W.     B. 41 MILES OF 37-27.43N 074-24.01W.  2. CANCEL THIS MSG 251700Z JUN 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-75.210333,37.726833,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-74.400167,37.457167,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
