@@ -295,26 +295,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 607/26</name>
-      <description>200700Z JUN 26  NAVAREA IV 607/26.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      240730Z TO 241600Z JUN, ALTERNATE     250730Z TO 251600Z JUN IN AREAS WITHIN:     A. 16 MILES OF 37-43.61N 075-12.62W.     B. 41 MILES OF 37-27.43N 074-24.01W.  2. CANCEL THIS MSG 251700Z JUN 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-75.210333,37.726833,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-74.400167,37.457167,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA IV 567/26</name>
       <description>041346Z JUN 26  NAVAREA IV 567/26.  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0720Z TO 1252Z DAILY 17 JUN THRU 17 JUL     IN AREAS BOUND BY:     A. 11-47.00N 047-50.00W, 11-39.00N 047-38.00W,        10-23.00N 048-39.00W, 10-31.00N 048-50.00W.        B. 12-52.00N 046-58.00W, 12-45.00N 046-47.00W,        11-27.00N 047-48.00W, 11-35.00N 047-59.00W.  2. CANCEL THIS MSG 171352Z JUL 26.</description>
       <MultiGeometry>
