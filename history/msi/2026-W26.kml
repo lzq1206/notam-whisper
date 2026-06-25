@@ -409,25 +409,5 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
-    <Placemark>
-      <name>HYDROARC 107/26</name>
-      <description>180856Z JUN 26  HYDROARC 107/26.  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0400Z TO 1700Z      DAILY 22 THRU 24 JUN IN AREAS BOUND BY:     A. 68-58.00N 038-52.00E, 68-41.00N 040-28.00E,        68-03.00N 042-10.00E, 66-48.00N 041-10.00E,        67-37.00N 040-06.00E, 68-01.00N 040-58.00E,        68-23.00N 040-03.00E, 68-40.00N 038-26.00E.     B. 68-38.00N 046-32.00E, 68-24.00N 048-03.00E,        67-49.00N 048-56.00E, 67-19.00N 044-54.00E,        67-34.30N 045-13.00E, 68-22.00N 046-</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>38.866667,68.966667,0 40.466667,68.683333,0 42.166667,68.05,0 41.166667,66.8,0 40.1,67.616667,0 40.966667,68.016667,0 40.05,68.383333,0 38.433333,68.666667,0 38.866667,68.966667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>46.533333,68.633333,0 48.05,68.4,0 48.933333,67.816667,0 44.9,67.316667,0 45.216667,67.571667,0 46.2,68.366667,0 46.533333,68.633333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
   </Document>
 </kml>
