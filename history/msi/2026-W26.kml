@@ -295,17 +295,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROLANT 1183/26</name>
-      <description>190943Z JUN 26  HYDROLANT 1183/26.  IONIAN SEA.  EASTERN MEDITERRANEAN SEA.  1. MISSILE OPERATIONS 220700Z TO 251200Z JUN     IN AREA BOUND BY     37-20.00N 021-05.00E, 36-35.00N 021-07.00E,     35-45.00N 020-38.00E, 35-45.50N 019-26.00E,     36-28.00N 018-41.00E, 37-18.00N 018-41.00E,     37-59.00N 019-30.00E.  2. CANCEL THIS MSG 251300Z JUN 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>21.083333,37.333333,0 21.116667,36.583333,0 20.633333,35.75,0 19.433333,35.758333,0 18.683333,36.466667,0 18.683333,37.3,0 19.5,37.983333,0 21.083333,37.333333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA IV 607/26</name>
       <description>200700Z JUN 26  NAVAREA IV 607/26.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      240730Z TO 241600Z JUN, ALTERNATE     250730Z TO 251600Z JUN IN AREAS WITHIN:     A. 16 MILES OF 37-43.61N 075-12.62W.     B. 41 MILES OF 37-27.43N 074-24.01W.  2. CANCEL THIS MSG 251700Z JUN 26.</description>
       <MultiGeometry>
