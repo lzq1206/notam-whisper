@@ -204,26 +204,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1871/26</name>
-      <description>291142Z JUN 26  HYDROPAC 1871/26.  PHILIPPINE SEA.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      300500Z TO 300900Z JUN, ALTERNATE 010500Z TO     010900Z JUL IN AREAS BOUND BY:     A. 24-27.70N 132-39.60E, 25-01.93N 133-40.10E,        22-11.38N 135-33.95E, 21-37.48N 134-34.48E.     B. 15-19.16N 139-00.50E, 15-45.65N 139-49.30E,        13-33.10N 141-05.20E, 13-06.73N 140-16.80E.  2. CANCEL HYDROPAC 1849/26.  3. CANCEL THIS MSG 011000Z JUL 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>132.66,24.461667,0 133.668333,25.032167,0 135.565833,22.189667,0 134.574667,21.624667,0 132.66,24.461667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>139.008333,15.319333,0 139.821667,15.760833,0 141.086667,13.551667,0 140.28,13.112167,0 139.008333,15.319333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1868/26</name>
       <description>291025Z JUN 26  HYDROPAC 1868/26.  BAY OF BENGAL.  INDIA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     012200Z TO 020400Z JUL IN AREA BOUND BY     15-50.00N 092-00.00E, 15-42.00N 092-33.00E,     14-49.00N 092-19.00E, 14-57.00N 091-47.00E.  2. CANCEL THIS MSG 020500Z JUL 26.</description>
       <Polygon>
@@ -328,26 +308,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1849/26</name>
-      <description>261207Z JUN 26  HYDROPAC 1849/26.  PHILIPPINE SEA.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      290500Z TO 290900Z JUN, ALTERNATE 0500Z TO 0900Z     DAILY 30 JUN AND 01 JUL IN AREAS BOUND BY:     A. 24-27.70N 132-39.60E, 25-01.93N 133-40.10E,        22-11.38N 135-33.95E, 21-37.48N 134-34.48E.           B. 15-19.16N 139-00.50E, 15-45.65N 139-49.30E,        13-33.10N 141-05.20E, 13-06.73N 140-16.80E.  2. CANCEL THIS MSG 011000Z JUL 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>132.66,24.461667,0 133.668333,25.032167,0 135.565833,22.189667,0 134.574667,21.624667,0 132.66,24.461667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>139.008333,15.319333,0 139.821667,15.760833,0 141.086667,13.551667,0 140.28,13.112167,0 139.008333,15.319333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
   </Document>
 </kml>
