@@ -318,16 +318,5 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
-    <Placemark>
-      <name>HYDROARC 114/26</name>
-      <description>241913Z JUN 26  HYDROARC 114/26.  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0400Z TO 1700Z DAILY      29 JUN THRU 01 JUL IN AREA BOUND BY     68-38.00N 046-32.00E, 68-24.00N 048-03.00E,     67-49.00N 048-56.00E, 67-19.00N 044-54.00E,     67-34.30N 045-13.00E, 68-22.00N 046-12.00E.  2. CANCEL HYDROARC 113/26.  3. CANCEL THIS MSG 011800Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>46.533333,68.633333,0 48.05,68.4,0 48.933333,67.816667,0 44.9,67.316667,0 45.216667,67.571667,0 46.2,68.366667,0 46.533333,68.633333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
   </Document>
 </kml>
