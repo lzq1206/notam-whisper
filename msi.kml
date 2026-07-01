@@ -88,6 +88,26 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>NAVAREA XII 460/26</name>
+      <description>250125Z JUN 26  NAVAREA XII 460/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 051400Z TO 051825Z JUL, ALTERNATE        1400Z TO 1825Z DAILY 06 THRU 11 JUL        IN AREA BOUND BY        34-29.00N 120-29.00W, 34-40.00N 120-37.00W,        34-38.00N 120-42.00W, 33-49.00N 120-55.00W,        29-13.00N 121-56.00W, 29-13.00N 121-36.00W.     B. 051400Z TO 051843Z JUL, ALTERNATE        1400Z TO 1843Z DAILY 06 THRU 11 JUL        IN AREA BOUND BY        29-13.00N 121-3</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-120.483333,34.483333,0 -120.616667,34.666667,0 -120.7,34.633333,0 -120.916667,33.816667,0 -121.933333,29.216667,0 -121.6,29.216667,0 -120.483333,34.483333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-121.516667,29.216667,0 -122.05,29.216667,0 -122.233333,28.816667,0 -122.1,27.683333,0 -121.416667,28.7,0 -121.516667,29.216667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA XII 453/26</name>
       <description>270330Z JUN 26  NAVAREA XII 453/26  NORTH PACIFIC.   CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING 02 JUL,      ALTERNATE 03 THRU 08 JUL:      A. 0200Z TO 0625Z IN AREA BOUND BY        34-29.00N 120-29.00W, 34-40.00N 120-37.00W,        34-38.00N 120-42.00W, 33-49.00N 120-55.00W,        29-13.00N 121-56.00W, 29-13.00N 121-36.00W.     B. 0200Z TO 0643Z IN AREA BOUND BY         29-13.00N 121-31.00W, 29-13.00N 122-03.00W,        28-49.00N 122-14.00W, 27-41.00N 122-06.00W,        28-42.00N 1</description>
       <MultiGeometry>
@@ -117,37 +137,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 442/26</name>
-      <description>210704Z JUN 26  NAVAREA XII 442/26  NORTH PACIFIC.   1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0823Z TO 1251Z DAILY 29 JUN THRU 05 JUL     IN AREA BOUND BY     12-00.00N 100-01.00W, 07-11.00N 090-35.00W,     04-40.00N 090-23.00W, 09-55.00N 101-06.00W.  2. CANCEL THIS MSG 051351Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-100.016667,12.0,0 -90.583333,7.183333,0 -90.383333,4.666667,0 -101.1,9.916667,0 -100.016667,12.0,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 440/26</name>
-      <description>172350Z JUN 26  NAVAREA XII 440/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 281400Z TO 281825Z JUN, ALTERNATE        1400Z TO 1825Z DAILY 29 JUN THRU 04 JUL        IN AREA BOUND BY         34-29.00N 120-29.00W, 34-40.00N 120-37.00W,        34-38.00N 120-42.00W, 33-49.00N 120-55.00W,        29-13.00N 121-56.00W, 29-13.00N 121-36.00W.     B. 281400Z TO 281843Z JUN, ALTERNATE        1400Z TO 1843Z DAILY 29 JUN THRU 04 JUL        IN AREA BOUND BY        29-13.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-120.483333,34.483333,0 -120.616667,34.666667,0 -120.7,34.633333,0 -120.916667,33.816667,0 -121.933333,29.216667,0 -121.6,29.216667,0 -120.483333,34.483333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.516667,29.216667,0 -122.05,29.216667,0 -122.233333,28.816667,0 -122.1,27.683333,0 -121.416667,28.7,0 -121.516667,29.216667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>NAVAREA XII 392/25(16)</name>
@@ -226,26 +215,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1871/26</name>
-      <description>291142Z JUN 26  HYDROPAC 1871/26.  PHILIPPINE SEA.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      300500Z TO 300900Z JUN, ALTERNATE 010500Z TO     010900Z JUL IN AREAS BOUND BY:     A. 24-27.70N 132-39.60E, 25-01.93N 133-40.10E,        22-11.38N 135-33.95E, 21-37.48N 134-34.48E.     B. 15-19.16N 139-00.50E, 15-45.65N 139-49.30E,        13-33.10N 141-05.20E, 13-06.73N 140-16.80E.  2. CANCEL HYDROPAC 1849/26.  3. CANCEL THIS MSG 011000Z JUL 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>132.66,24.461667,0 133.668333,25.032167,0 135.565833,22.189667,0 134.574667,21.624667,0 132.66,24.461667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>139.008333,15.319333,0 139.821667,15.760833,0 141.086667,13.551667,0 140.28,13.112167,0 139.008333,15.319333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1868/26</name>
       <description>291025Z JUN 26  HYDROPAC 1868/26.  BAY OF BENGAL.  INDIA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     012200Z TO 020400Z JUL IN AREA BOUND BY     15-50.00N 092-00.00E, 15-42.00N 092-33.00E,     14-49.00N 092-19.00E, 14-57.00N 091-47.00E.  2. CANCEL THIS MSG 020500Z JUL 26.</description>
       <Polygon>
@@ -290,94 +259,12 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1844/26</name>
-      <description>260745Z JUN 26  HYDROPAC 1844/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 1330Z TO 2215Z     DAILY 17 THRU 29 JUN:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 177-49.00E, 39-12.00S 177-57.00E,        39-02.27S 178-15.00E, 39-12.74S 179-05.56E,        39-48.00S 178-52.66E, 39-32.40S 177-40.80E,        39-15.00S 177-34.80E.     B. SPACE DEBRIS IN AREA BOUND BY        41-00.00S 177-24.00W, 39-42.00S 177-00.00W,        40-20.40S 172-11.40W, 41-40.80S 172-30.00W.  2. CANC</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>177.816667,-39.2,0 177.95,-39.2,0 178.25,-39.037833,0 179.092667,-39.212333,0 178.877667,-39.8,0 177.68,-39.54,0 177.58,-39.25,0 177.816667,-39.2,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-177.4,-41.0,0 -177.0,-39.7,0 -172.19,-40.34,0 -172.5,-41.68,0 -177.4,-41.0,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1808/26</name>
-      <description>230944Z JUN 26  HYDROPAC 1808/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2015Z TO 0330Z DAILY 28 JUN THRU 07 JUL     IN AREAS BOUND BY:     A. 39-42.00S 176-36.00W, 40-30.00S 170-54.00W,        41-54.00S 171-06.00W, 41-00.00S 177-12.00W.     B. 41-24.00S 161-42.00W, 41-18.00S 155-54.00W,        42-42.00S 155-48.00W, 42-48.00S 161-54.00W.  2. CANCEL THIS MSG 080430Z JUL 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-176.6,-39.7,0 -170.9,-40.5,0 -171.1,-41.9,0 -177.2,-41.0,0 -176.6,-39.7,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-161.7,-41.4,0 -155.9,-41.3,0 -155.8,-42.7,0 -161.9,-42.8,0 -161.7,-41.4,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1807/26</name>
-      <description>230934Z JUN 26  HYDROPAC 1807/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 2015Z TO 0330Z      DAILY 28 JUN THRU 07 JUL:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 177-49.00E, 39-12.00S 177-57.00E,        39-06.00S 178-13.20E, 39-12.00S 178-42.00E,        39-42.00S 178-42.00E, 39-30.00S 177-45.00E,        39-18.00S 177-36.00E.     B. SPACE DEBRIS IN AREA BOUND BY        39-42.00S 176-36.00W, 40-30.00S 170-54.00W,        41-54.00S 171-06.00W, 41-00.00S 177-12.00W.  2.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>177.816667,-39.2,0 177.95,-39.2,0 178.22,-39.1,0 178.7,-39.2,0 178.7,-39.7,0 177.75,-39.5,0 177.6,-39.3,0 177.816667,-39.2,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-176.6,-39.7,0 -170.9,-40.5,0 -171.1,-41.9,0 -177.2,-41.0,0 -176.6,-39.7,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1805/26</name>
-      <description>201518Z JUN 26  HYDROPAC 1805/26  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 28 JUN THRU 04 JUL          IN AREA BOUND BY     42-28.00S 161-17.00W, 25-23.00S 156-56.00W,     26-03.00S 153-24.00W, 43-04.00S 157-03.00W,     59-49.00S 163-34.00W, 59-13.00S 168-58.00W.  2. CANCEL THIS MSG 042129Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-161.283333,-42.466667,0 -156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1650/25(16)</name>
       <description>242359Z JUN 25  HYDROPAC 1650/25(16).  NORTH PACIFIC.  DNC 25.  M/V MORNING MIDAS SANK IN 45-16.88N 179-14.13W.  VESSELS IN VICINITY REQUESTED TO NAVIGATE WITH  CAUTION AND REPORT PRESENCE OF OIL SHEENS OR  DEBRIS TO USCG SECTOR WESTERN ALASKA AND US ARCTIC,  PHONE: 907 428 4100, E-MAIL: SOUTHWESTERNAK@USCG.MIL.</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-179.2355,45.281333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 114/26</name>
-      <description>241913Z JUN 26  HYDROARC 114/26.  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0400Z TO 1700Z DAILY      29 JUN THRU 01 JUL IN AREA BOUND BY     68-38.00N 046-32.00E, 68-24.00N 048-03.00E,     67-49.00N 048-56.00E, 67-19.00N 044-54.00E,     67-34.30N 045-13.00E, 68-22.00N 046-12.00E.  2. CANCEL HYDROARC 113/26.  3. CANCEL THIS MSG 011800Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>46.533333,68.633333,0 48.05,68.4,0 48.933333,67.816667,0 44.9,67.316667,0 45.216667,67.571667,0 46.2,68.366667,0 46.533333,68.633333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
