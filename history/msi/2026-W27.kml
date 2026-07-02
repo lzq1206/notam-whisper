@@ -193,17 +193,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1868/26</name>
-      <description>291025Z JUN 26  HYDROPAC 1868/26.  BAY OF BENGAL.  INDIA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     012200Z TO 020400Z JUL IN AREA BOUND BY     15-50.00N 092-00.00E, 15-42.00N 092-33.00E,     14-49.00N 092-19.00E, 14-57.00N 091-47.00E.  2. CANCEL THIS MSG 020500Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>92.0,15.833333,0 92.55,15.7,0 92.316667,14.816667,0 91.783333,14.95,0 92.0,15.833333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1861/26</name>
       <description>251319Z JUN 26  HYDROPAC 1861/26.  EASTERN INDIAN OCEAN.  TASMAN SEA.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     031340Z TO 031836Z, 051256Z TO 051752Z,     061233Z TO 061729Z, 071211Z TO 071707Z,     081149Z TO 081645Z, 091126Z TO 091622Z     AND 101104Z TO 101600Z JUL IN AREA BOUND BY     39-52.00S 082-05.00E, 46-48.00S 097-01.00E,     51-17.00S 115-27.00E, 51-19.00S 138-10.00E,     47-11.00S 158-59.00E, 48-02.00S 159-55.00E,     49-27.00S 159-48.00E, 53-45.00S 138-13.00E,     </description>
       <Polygon>
