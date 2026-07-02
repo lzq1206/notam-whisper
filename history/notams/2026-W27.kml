@@ -566,6 +566,18 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>B3153/2026</name>
+      <description>B3153/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1547N11413E032  A) RPHI B) 2607100513 C) 2607100719  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  161234N 1140000E -  161724N 1140600E -  153448N 1144200E -  151648N 1141948E -  154016N 1140000E -   161234N 1140000E  (305NM WEST OF IBA AP).  F) SFC G) UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>114.0,16.209444,0 114.1,16.29,0 114.7,15.58,0 114.33,15.28,0 114.0,15.671111,0 114.0,16.209444,0 114.0,16.209444,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B2929/2026</name>
       <description>B2929/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1545N11415E032  A) RPHI B) 2607100500 C) 2607130900  D) 0500-0900  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  160751N 1140000E -  161400N 1140800E -  153200N 1144300E -  151500N 1142100E -  154014N 1140000E -   160751N 1140000E  (305NM WEST OF IBA AP).  F) SFC G) UNL</description>
       <styleUrl>#polyStyle</styleUrl>
