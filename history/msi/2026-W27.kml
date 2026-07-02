@@ -166,33 +166,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1872/26</name>
-      <description>291153Z JUN 26  HYDROPAC 1872/26.  SOUTH CHINA SEA.  VIETNAM.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     021200Z TO 021800Z JUL, IN AREAS BOUND BY:     A. 11-32.00N 110-16.00E, 11-31.00N 110-50.00E,        10-25.00N 110-47.00E, 10-27.00N 110-14.00E.     B. 05-35.00N 109-59.00E, 05-34.00N 110-32.00E,        04-29.00N 110-29.00E, 04-30.00N 109-56.00E.     C. 05-42.00N 109-54.00E, 05-40.00N 110-38.00E,        04-35.00N 110-35.00E, 04-37.00N 109-51.00E.  2. CANCEL THIS MSG 021900Z JUL 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>110.266667,11.533333,0 110.833333,11.516667,0 110.783333,10.416667,0 110.233333,10.45,0 110.266667,11.533333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>109.983333,5.583333,0 110.533333,5.566667,0 110.483333,4.483333,0 109.933333,4.5,0 109.983333,5.583333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>109.9,5.7,0 110.633333,5.666667,0 110.583333,4.583333,0 109.85,4.616667,0 109.9,5.7,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1861/26</name>
       <description>251319Z JUN 26  HYDROPAC 1861/26.  EASTERN INDIAN OCEAN.  TASMAN SEA.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     031340Z TO 031836Z, 051256Z TO 051752Z,     061233Z TO 061729Z, 071211Z TO 071707Z,     081149Z TO 081645Z, 091126Z TO 091622Z     AND 101104Z TO 101600Z JUL IN AREA BOUND BY     39-52.00S 082-05.00E, 46-48.00S 097-01.00E,     51-17.00S 115-27.00E, 51-19.00S 138-10.00E,     47-11.00S 158-59.00E, 48-02.00S 159-55.00E,     49-27.00S 159-48.00E, 53-45.00S 138-13.00E,     </description>
       <Polygon>
