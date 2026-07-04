@@ -554,42 +554,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A2558/2026</name>
-      <description>A2558/26 NOTAMN  Q)ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013  A)ZBPE B)2607041326 C)2607041346   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N360400E1120000-N360500E1121400-N354400E1121800-N354200E1120400,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.   F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.0,36.066667,0 112.233333,36.083333,0 112.3,35.733333,0 112.066667,35.7,0 112.0,36.066667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A2559/2026</name>
-      <description>A2559/26 NOTAMN  Q)ZGZU/QRDCA/IV/BO/W/000/999/2852N11234E020  A)ZGZU B)2607041327 C)2607041352   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N290900E1122200-N291100E1124500-N283600E1124800-N283400E1122500,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.366667,29.15,0 112.75,29.183333,0 112.8,28.6,0 112.416667,28.566667,0 112.366667,29.15,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A2560/2026</name>
-      <description>A2560/26 NOTAMN  Q)ZJSA/QRDCA/IV/BO/W/000/999/1818N11210E039  A)ZJSA B)2607041328 C)2607041353   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N185300E1115100-N185400E1122700-N174300E1122800-N174200E1115300,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  RELATED HONGKONG FIR.AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>111.85,18.883333,0 112.45,18.9,0 112.466667,17.716667,0 111.883333,17.7,0 111.85,18.883333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>B2929/2026</name>
       <description>B2929/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1545N11415E032  A) RPHI B) 2607100500 C) 2607130900  D) 0500-0900  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  160751N 1140000E -  161400N 1140800E -  153200N 1144300E -  151500N 1142100E -  154014N 1140000E -   160751N 1140000E  (305NM WEST OF IBA AP).  F) SFC G) UNL</description>
       <styleUrl>#polyStyle</styleUrl>
