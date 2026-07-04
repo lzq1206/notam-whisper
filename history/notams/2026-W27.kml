@@ -482,42 +482,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A2564/2026</name>
-      <description>A2564/26 NOTAMN  Q)ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013  A)ZBPE B)2607040921 C)2607040941   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N360400E1120000-N360500E1121400-N354400E1121800-N354200E1120400,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.   F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.0,36.066667,0 112.233333,36.083333,0 112.3,35.733333,0 112.066667,35.7,0 112.0,36.066667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A2565/2026</name>
-      <description>A2565/26 NOTAMN  Q)ZGZU/QRDCA/IV/BO/W/000/999/2852N11234E020  A)ZGZU B)2607040922 C)2607040947   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N290900E1122200-N291100E1124500-N283600E1124800-N283400E1122500,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.   F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.366667,29.15,0 112.75,29.183333,0 112.8,28.6,0 112.416667,28.566667,0 112.366667,29.15,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A2566/2026</name>
-      <description>A2566/26 NOTAMN  Q)ZJSA/QRDCA/IV/BO/W/000/999/1818N11210E039  A)ZJSA B)2607040923 C)2607040948   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N185300E1115100-N185400E1122700-N174300E1122800-N174200E1115300,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  RELATED HONGKONG FIR.AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>111.85,18.883333,0 112.45,18.9,0 112.466667,17.716667,0 111.883333,17.7,0 111.85,18.883333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>A2500/2026</name>
       <description>A2500/26 NOTAMN  Q)ZJSA/QRDCA/IV/BO/W/000/999/1636N11331E006  A)ZJSA B)2607100512 C)2607100719   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N164236E1133036-N163336E1133748-N163000E1133300-N163900E1132548,BAC  K TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -537,18 +501,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>114.33,15.28,0 113.73,15.99,0 114.1,16.29,0 114.7,15.58,0 114.33,15.28,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A1448/2026</name>
-      <description>A1448/26 NOTAMN  Q) VHHK/QRTCA/IV/NBO/W /000/999/1730N11243E040  A) VHHK B) 2607040923 C) 2607040948  E) (REFER TO NOTAM A2566/26 DTG 031038 ORIGINATED BY ZBBBYNYX). A   TEMPO   DANGER AREA IS ESTABLISHED BOUNDED BY:    185300N1115100E  185400N1122700E  174300N1122800E  174200N1115300E    ALL TFC MUST REMAIN CLEAR OF THE AREA DURING THE ACTIVATION PERIOD.    ALL TFC ROUTING VIA IKELA A1/P901 AND ESTIMATING TO CROSS THE DANGER   AREA DURING THE ACTIVATION PERIOD SHALL EXPECT RADAR VECTORS BY HONG</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>111.85,18.883333,0 112.45,18.9,0 112.466667,17.716667,0 111.883333,17.7,0 111.85,18.883333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -628,54 +580,6 @@
     <Placemark>
       <name>A2560/2026</name>
       <description>A2560/26 NOTAMN  Q)ZJSA/QRDCA/IV/BO/W/000/999/1818N11210E039  A)ZJSA B)2607041328 C)2607041353   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N185300E1115100-N185400E1122700-N174300E1122800-N174200E1115300,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  RELATED HONGKONG FIR.AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>111.85,18.883333,0 112.45,18.9,0 112.466667,17.716667,0 111.883333,17.7,0 111.85,18.883333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A1384/2026</name>
-      <description>A1384/26 NOTAMN  Q) VHHK/QRTCA/IV/NBO/W /000/999/1730N11243E040  A) VHHK B) 2607040923 C) 2607040948  E) (REFER TO NOTAM A2433/26 DTG 250911 ORIGINATED BY ZBBBYNYX). A   TEMPO   DANGER AREA IS ESTABLISHED BOUNDED BY:    185300N1115100E  185400N1122700E  174300N1122800E  174200N1115300E    ALL TFC MUST REMAIN CLEAR OF THE AREA DURING THE ACTIVATION PERIOD.    ALL TFC ROUTING VIA IKELA A1/P901 AND ESTIMATING TO CROSS THE DANGER   AREA DURING THE ACTIVATION PERIOD SHALL EXPECT RADAR VECTORS BY HONG</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>111.85,18.883333,0 112.45,18.9,0 112.466667,17.716667,0 111.883333,17.7,0 111.85,18.883333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A2431/2026</name>
-      <description>A2431/26 NOTAMN  Q)ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013  A)ZBPE B)2607040921 C)2607040941   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N360400E1120000-N360500E1121400-N354400E1121800-N354200E1120400,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.0,36.066667,0 112.233333,36.083333,0 112.3,35.733333,0 112.066667,35.7,0 112.0,36.066667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A2432/2026</name>
-      <description>A2432/26 NOTAMN  Q)ZGZU/QRDCA/IV/BO/W/000/999/2852N11234E020  A)ZGZU B)2607040922 C)2607040947   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N290900E1122200-N291100E1124500-N283600E1124800-N283400E1122500,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>112.366667,29.15,0 112.75,29.183333,0 112.8,28.6,0 112.416667,28.566667,0 112.366667,29.15,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A2433/2026</name>
-      <description>A2433/26 NOTAMN  Q)ZJSA/QRDCA/IV/BO/W/000/999/1818N11210E039  A)ZJSA B)2607040923 C)2607040948   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N185300E1115100-N185400E1122700-N174300E1122800-N174200E1115300,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  RELATED HONGKONG FIR.AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
