@@ -179,17 +179,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 442/26</name>
-      <description>210704Z JUN 26  NAVAREA XII 442/26  NORTH PACIFIC.   1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0823Z TO 1251Z DAILY 29 JUN THRU 05 JUL     IN AREA BOUND BY     12-00.00N 100-01.00W, 07-11.00N 090-35.00W,     04-40.00N 090-23.00W, 09-55.00N 101-06.00W.  2. CANCEL THIS MSG 051351Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-100.016667,12.0,0 -90.583333,7.183333,0 -90.383333,4.666667,0 -101.1,9.916667,0 -100.016667,12.0,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1808/26</name>
       <description>230944Z JUN 26  HYDROPAC 1808/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2015Z TO 0330Z DAILY 28 JUN THRU 07 JUL     IN AREAS BOUND BY:     A. 39-42.00S 176-36.00W, 40-30.00S 170-54.00W,        41-54.00S 171-06.00W, 41-00.00S 177-12.00W.     B. 41-24.00S 161-42.00W, 41-18.00S 155-54.00W,        42-42.00S 155-48.00W, 42-48.00S 161-54.00W.  2. CANCEL THIS MSG 080430Z JUL 26.</description>
       <MultiGeometry>
