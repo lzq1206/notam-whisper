@@ -172,6 +172,28 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 1942/26</name>
+      <description>071340Z JUL 26  HYDROPAC 1942/26.  SOUTH CHINA SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     100512Z TO 100719Z JUL     IN AREA BOUND BY     16-39.00N 113-25.80E, 16-42.60N 113-30.60E,     16-33.60N 113-37.80E, 16-30.00N 113-33.00E.  2. CANCEL THIS MSG 100819Z JUL 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>113.43,16.65,0 113.51,16.71,0 113.63,16.56,0 113.55,16.5,0 113.43,16.65,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 1941/26</name>
+      <description>071324Z JUL 26  HYDROPAC 1941/26.  SOUTH CHINA SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     100513Z TO 100719Z JUL IN AREA BOUND BY     15-59.40N 113-43.80E, 16-17.40N 114-06.00E,     15-34.80N 114-42.00E, 15-16.80N 114-19.80E.  2. CANCEL THIS MSG 100819Z JUL 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>113.73,15.99,0 114.1,16.29,0 114.7,15.58,0 114.33,15.28,0 113.73,15.99,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 1928/26</name>
       <description>060346Z JUL 26  HYDROPAC 1928/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0343Z TO 0829Z DAILY 11 THRU 17 JUL     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 170929Z JUL 26.</description>
       <Polygon>
@@ -211,6 +233,17 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 -156.933333,-25.383333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 122/26</name>
+      <description>061827Z JUL 26  HYDROARC 122/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 0500Z TO 1700Z DAILY     11 THRU 13 JUL IN AREA BOUND BY     70-07.00N 035-56.00E, 69-27.50N 036-07.00E,     69-29.00N 035-11.00E, 69-32.00N 033-41.50E,     69-41.00N 033-04.00E, 69-44.00N 033-04.00E,     70-03.00N 035-02.00E.  2. CANCEL THIS MSG 131800Z JUL 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>35.933333,70.116667,0 36.116667,69.458333,0 35.183333,69.483333,0 33.691667,69.533333,0 33.066667,69.683333,0 33.066667,69.733333,0 35.033333,70.05,0 35.933333,70.116667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
