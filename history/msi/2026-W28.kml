@@ -205,17 +205,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1921/26</name>
-      <description>050550Z JUL 26  HYDROPAC 1921/26  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     060000Z TO 080700Z JUL, IN AREA BOUND BY:     02-53.00S 171-20.00E, 05-06.00S 173-00.00E,     06-00.00S 172-13.00E, 04-32.00S 169-54.00E.  2. CANCEL THIS MSG 080800Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>171.333333,-2.883333,0 173.0,-5.1,0 172.216667,-6.0,0 169.9,-4.533333,0 171.333333,-2.883333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1919/26</name>
       <description>011037Z JUL 26  HYDROPAC 1919/26.  EASTERN INDIAN OCEAN.  TASMAN SEA.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     091125Z TO 091621Z, 101102Z TO 101558Z,     111040Z TO 111536Z, 121018Z TO 121514Z,     130956Z TO 131452Z, 140933Z TO 141429Z,     AND 150911Z TO 151407Z JUL IN AREA BOUND BY     39-52.00S 082-05.00E, 46-48.00S 097-01.00E,     51-17.00S 115-27.00E, 51-19.00S 138-10.00E,     47-11.00S 158-59.00E, 48-02.00S 159-55.00E,     49-27.00S 159-48.00E, 53-45.00S 138-13.00E,    </description>
       <Polygon>
