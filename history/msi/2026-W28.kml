@@ -85,26 +85,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 460/26</name>
-      <description>250125Z JUN 26  NAVAREA XII 460/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 051400Z TO 051825Z JUL, ALTERNATE        1400Z TO 1825Z DAILY 06 THRU 11 JUL        IN AREA BOUND BY        34-29.00N 120-29.00W, 34-40.00N 120-37.00W,        34-38.00N 120-42.00W, 33-49.00N 120-55.00W,        29-13.00N 121-56.00W, 29-13.00N 121-36.00W.     B. 051400Z TO 051843Z JUL, ALTERNATE        1400Z TO 1843Z DAILY 06 THRU 11 JUL        IN AREA BOUND BY        29-13.00N 121-3</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-120.483333,34.483333,0 -120.616667,34.666667,0 -120.7,34.633333,0 -120.916667,33.816667,0 -121.933333,29.216667,0 -121.6,29.216667,0 -120.483333,34.483333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.516667,29.216667,0 -122.05,29.216667,0 -122.233333,28.816667,0 -122.1,27.683333,0 -121.416667,28.7,0 -121.516667,29.216667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROLANT 237/26(54)</name>
       <description>031744Z FEB 26  HYDROLANT 237/26(54).  AEGEAN SEA.  DNC 09.  1. MISSILE OPERATIONS 0530Z TO SUNSET DAILY EVERY     WEDNESDAY THRU SATURDAY UNTIL 14 JUN AND     16 SEB THRU 31 DEC IN AREAS:     A. BOUND BY        35-36.00N 024-07.00E, 36-18.00N 024-07.00E,        36-18.00N 025-59.00E, 36-25.00N 026-12.00E,        36-16.00N 026-40.00E, 35-36.00N 026-41.00E,        35-31.00N 024-11.00E.     B. WITHIN ONE MILE OF 35-32.00N 024-13.00E.     C. WITHIN ONE MILE OF 35-36.33N 024-10.00E.  2. CANCEL THIS M</description>
       <MultiGeometry>
@@ -163,40 +143,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA IV 634/26</name>
-      <description>272041Z JUN 26  NAVAREA IV 634/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      020424Z TO 020555Z JUL, ALTERNATE     070237Z TO 070409Z, 080216Z TO 080347Z     090155Z TO 090326Z, 100133Z TO 100305Z     110112Z TO 110244Z AND 120051Z TO 120222Z JUL     IN AREAS BOUND BY:     A. 28-38.06N 080-37.02W, 28-57.00N 080-28.00W,        29-13.00N 080-18.00W, 29-22.00N 079-55.00W,        29-16.00N 079-47.00W, 28-56.00N 079-57.00W,        28-37.00N 080-21.00W, 28-32.43N 080-3</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.617,28.634333,0 -80.466667,28.95,0 -80.3,29.216667,0 -79.916667,29.366667,0 -79.783333,29.266667,0 -79.95,28.933333,0 -80.35,28.616667,0 -80.563333,28.5405,0 -80.617,28.634333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-79.333333,30.016667,0 -78.316667,31.0,0 -77.983333,30.766667,0 -79.066667,29.8,0 -79.333333,30.016667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-74.933333,34.216667,0 -72.033333,36.433333,0 -71.3,35.8,0 -74.15,33.6,0 -74.933333,34.216667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-50.983333,47.383333,0 -43.85,49.75,0 -43.133333,48.65,0 -50.65,46.333333,0 -50.983333,47.383333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>NAVAREA XII 452/26</name>
