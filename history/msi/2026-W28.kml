@@ -144,27 +144,5 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 452/26</name>
-      <description>270221Z JUN 26  NAVAREA XII 452/26.  PACIFIC OCEAN.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      020537Z TO 020722Z JUL, ALTERNATE     070350Z TO 070536Z, 080329Z TO 080514Z,     090308Z TO 090453Z, 100246Z TO 100432Z,     110225Z TO 110411Z AND 120204Z TO 120349Z JUL     IN AREA BOUND BY     06-49.00S 132-47.00W, 10-24.00N 120-26.00W,     08-56.00N 118-25.00W, 08-16.00S 130-47.00W.  2. CANCEL NAVAREA XII 449/26.   3. CANCEL THIS MSG 120449Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-132.783333,-6.816667,0 -120.433333,10.4,0 -118.416667,8.933333,0 -130.783333,-8.266667,0 -132.783333,-6.816667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1855/26</name>
-      <description>270221Z JUN 26  HYDROPAC 1855/26.  PACIFIC OCEAN.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      020537Z TO 020722Z JUL, ALTERNATE     070350Z TO 070536Z, 080329Z TO 080514Z,     090308Z TO 090453Z, 100246Z TO 100432Z,     110225Z TO 110411Z AND 120204Z TO 120349Z JUL     IN AREA BOUND BY     06-49.00S 132-47.00W, 10-24.00N 120-26.00W,     08-56.00N 118-25.00W, 08-16.00S 130-47.00W.  2. CANCEL THIS MSG 120449Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-132.783333,-6.816667,0 -120.433333,10.4,0 -118.416667,8.933333,0 -130.783333,-8.266667,0 -132.783333,-6.816667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
   </Document>
 </kml>
