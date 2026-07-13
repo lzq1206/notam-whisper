@@ -10,9 +10,24 @@ import xml.etree.ElementTree as ET
 from urllib.parse import quote
 
 # ─── Keyword Filters ───
-KEEP = ["UNL", "AEROSPACE", "RE-ENTRY", "ROCKET", "MISSILE", "SPACE", "SPACEFLIGHT", "SATELLITE"]
-KEEP_QCODES = {"QRDCA", "QWMLW", "QWELW"}
-KEEP_PATTERNS = [re.compile(rf"(?<![A-Z0-9]){re.escape(keyword)}(?![A-Z0-9])") for keyword in KEEP]
+KEEP_PATTERNS = [
+    re.compile(pattern, re.I) for pattern in (
+        r'\bAEROSPACE\b',
+        r'\bSPACE\s+OPERATIONS?\b',
+        r'\bSPACE\s+LAUNCH\b',
+        r'\bSPACE\s+ACTI?VITIES?\b',
+        r'\bSPACEFLIGHT\b',
+        r'\bRE[ -]?ENTRY\b',
+        r'\bROCKET(?:S|RY)?\b',
+        r'\bBALLISTIC\s+MISSILE\b',
+        r'\bMISSILE(?:S)?\s+(?:FIRING|LAUNCH|TEST|ACTIVITY|OPERATIONS?)\b',
+        r'\bLAUNCH\s+(?:VEHICLE|ACTIVITY|AREA|WINDOW|OPERATIONS?)\b',
+        r'\bSATELLITE\s+LAUNCH\b',
+        r'\b(?:UNBURNED\s+)?DEBRIS\b',
+        r'\bFALL\s+AREA\b',
+        r'\bSPLASHDOWN\b',
+    )
+]
 DROP = [
     "KWAJALEIN","BALLOON","BALLON","TRANSMITTER","GUNFIRING","AERIAL","GUN FRNG",
     "AIR EXER","REF AIP","KOLKATA","MWARA","ZS(D)","ZY(R)","ZG(R)",
@@ -88,12 +103,14 @@ def _is_in_time_window(from_str, to_str):
 def _passes_filters(notam):
     raw = notam.get('raw', '')
     raw_upper = raw.upper()
-    qcode = str(notam.get('notamCode', '')).strip().upper()
     if any(d in raw_upper for d in DROP):
         return False
-    # Use token boundaries: substring matching made SPACE match every AIRSPACE
-    # notice and UNL match words such as UNLIT/UNLIGHTED.
-    if not any(pattern.search(raw_upper) for pattern in KEEP_PATTERNS) and qcode not in KEEP_QCODES:
+    # UNL is an altitude, while QRDCA/QWMLW/QWELW are generic danger/activity
+    # codes.  None is sufficient evidence of a launch by itself.  Accept only
+    # explicit aerospace-event language or an upstream source that already
+    # applied a launch-specific classifier.
+    trusted_source = bool(notam.get('_trusted_launch_source'))
+    if not trusted_source and not any(pattern.search(raw_upper) for pattern in KEEP_PATTERNS):
         return False
     from_str = notam.get('from', '')
     to_str = notam.get('to', '')
@@ -498,6 +515,7 @@ def fetch_global_notam_supplement():
             'notamCode': qcode,
             'notam_id': notam_id,
             'polygon': polygon,
+            '_trusted_launch_source': True,
         }
         if not _passes_filters(n):
             continue

@@ -170,20 +170,45 @@ def test_fetch_country_fallback_slug_handles_accents_and_apostrophe():
     assert any(url.endswith('Cote_dIvoire.json') for url in urls)
 
 
-def test_passes_filters_accepts_qrdca_without_keep_keyword():
+def test_passes_filters_rejects_generic_unl_and_qcodes_without_launch_evidence():
     assert _passes_filters({
         'raw': 'A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY ...',
         'notamCode': 'QRDCA',
         'from': '',
         'to': '',
-    }) is True
+    }) is False
 
     assert _passes_filters({
-        'raw': 'A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY ...',
-        'notamCode': 'QXXXX',
+        'raw': (
+            'K0854/26 TEMPORARY RESTRICTED AREA (ARCA 14) ACT. '
+            'LDG/TKOF OPS PPR. F) GND G) UNL'
+        ),
+        'notamCode': 'QRTCA',
         'from': '',
         'to': '',
     }) is False
+
+    assert _passes_filters({
+        'raw': 'FRNG (LIVE FIRE) WILL TAKE PLACE F) GND G) FL330',
+        'notamCode': 'QWMLW',
+        'from': '',
+        'to': '',
+    }) is False
+
+    assert _passes_filters({
+        'raw': 'A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY ... F) GND G) UNL',
+        'notamCode': 'QRDCA',
+        '_trusted_launch_source': True,
+        'from': '',
+        'to': '',
+    }) is True
+
+    assert _passes_filters({
+        'raw': 'SPECIAL OPS (AEROSPACE FLT ACT) WITH EST FALL AREA OF UNBURNED DEBRIS',
+        'notamCode': 'QWMLW',
+        'from': '',
+        'to': '',
+    }) is True
 
 
 def test_passes_filters_does_not_treat_airspace_as_space_keyword():
@@ -449,7 +474,7 @@ if __name__ == '__main__':
     test_fetch_country_returns_empty_list_by_default_after_retries()
     test_fetch_notammap_sequential_retry_for_failed_country()
     test_fetch_country_fallback_slug_handles_accents_and_apostrophe()
-    test_passes_filters_accepts_qrdca_without_keep_keyword()
+    test_passes_filters_rejects_generic_unl_and_qcodes_without_launch_evidence()
     test_passes_filters_does_not_treat_airspace_as_space_keyword()
     test_fetch_notammap_exits_when_country_list_empty()
     test_fetch_faa_notams_logs_non_200()
