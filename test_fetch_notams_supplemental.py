@@ -333,6 +333,67 @@ def test_global_supplement_parses_key_notams():
     assert all(r['notam']['notamCode'] in {'QRDCA', 'QWMLW'} for r in rows)
 
 
+def test_global_supplement_parses_current_joey_data_dict_schema():
+    import fetch_notams
+
+    raws = [
+        (
+            'B3426/26 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1245N11610E038\n'
+            'A) RPHI B) 2607241100 C) 2607301400\n'
+            'E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nF) SFC G) UNL'
+        ),
+        (
+            'B3427/26 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/0811N11926E046\n'
+            'A) RPHI B) 2607241100 C) 2607301400\n'
+            'E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nF) SFC G) UNL'
+        ),
+        (
+            'P3221/26 NOTAMN\nQ)RJJJ/QXXXX/IV/NBO/E/000/999/2208N12739E029\n'
+            'A)RJJJ B)2607231100 C)2607261400\n'
+            'E)DUE TO AN AEROSPACE FLIGHT ACTIVITY.\nF)SFC G)UNL'
+        ),
+    ]
+    payload = {
+        'NOTAM_DATA': {
+            'CODE': ['B3426/26', 'B3427/26', 'P3221/26'],
+            'COORDINATES': [
+                'N130200E1153700-N132100E1160400-N122800E1164300-N121000E1161600-N130200E1153700',
+                'N083500E1184800-N085400E1191500-N084300E1192900-N075000E1200600-N072600E1193000-N081900E1185300-N083500E1184800',
+                'N2206E12809-N2225E12715-N2210E12709-N2151E12803-N2206E12809',
+            ],
+            'PLATID': ['81760689', '81760830', '81648331'],
+            'RAWMESSAGE': raws,
+            'SOURCE': ['NOTAM', 'NOTAM', 'NOTAM'],
+            'FIR': ['RPHI', 'RPHI', 'RJJJ'],
+        }
+    }
+
+    class FakeResponse:
+        status_code = 200
+        def json(self):
+            return payload
+
+    original_get = fetch_notams.requests.get
+    original_window = fetch_notams._is_in_time_window
+    fetch_notams.requests.get = lambda *args, **kwargs: FakeResponse()
+    fetch_notams._is_in_time_window = lambda *_: True
+    try:
+        rows = fetch_notams.fetch_global_notam_supplement()
+    finally:
+        fetch_notams.requests.get = original_get
+        fetch_notams._is_in_time_window = original_window
+
+    by_id = {row['notam']['notam_id']: row for row in rows}
+    assert set(by_id) == {'B3426/26', 'B3427/26', 'P3221/26'}
+    assert len(by_id['B3426/26']['notam']['polygon']) == 4
+    assert len(by_id['B3427/26']['notam']['polygon']) == 6
+    assert len(by_id['P3221/26']['notam']['polygon']) == 4
+    assert by_id['B3426/26']['notam']['polygon'][0] == [13.033333, 115.616667]
+    assert by_id['P3221/26']['notam']['polygon'][0] == [22.1, 128.15]
+    assert by_id['B3426/26']['_country'] == 'PHILIPPINES'
+    assert by_id['P3221/26']['_country'] == 'JAPAN'
+
+
 def test_parse_faa_space_tfr_detail():
     import fetch_notams
 
@@ -394,5 +455,6 @@ if __name__ == '__main__':
     test_fetch_faa_notams_logs_non_200()
     test_fetch_faa_notams_logs_non_json_response()
     test_global_supplement_parses_key_notams()
+    test_global_supplement_parses_current_joey_data_dict_schema()
     test_parse_faa_space_tfr_detail()
     print('test_fetch_notams_supplemental.py passed')

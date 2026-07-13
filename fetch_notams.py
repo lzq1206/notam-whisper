@@ -55,7 +55,7 @@ MAX_FUTURE_DAYS = 30
 NOTAMMAP_MAX_WORKERS = 10
 COUNTRY_FETCH_RETRIES = 3
 RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
-GLOBAL_SUPPLEMENT_URL = "https://raw.githubusercontent.com/Joey0609/notams/main/notams/notam_data.json"
+GLOBAL_SUPPLEMENT_URL = "https://raw.githubusercontent.com/Joey0609/notams/main/data_dict.json"
 GLOBAL_SUPPLEMENT_TYPES = {"launch", "missile", "reentry"}
 FAA_TFR_LIST_URL = "https://tfr.faa.gov/tfrapi/getTfrList"
 FAA_TFR_DETAIL_URL = "https://tfr.faa.gov/tfrapi/getWebText"
@@ -157,6 +157,71 @@ def _extract_notam_id(raw, fallback=''):
     if m:
         return m.group(1).upper()
     return str(fallback or '').strip().upper()
+
+def _parse_supplement_polygon(value):
+    """Parse Joey0609 compact polygon strings (DDMM/DMS + hemisphere prefix)."""
+    points = []
+    pattern = re.compile(r'([NS])(\d{4,6})([EW])(\d{5,7})', re.I)
+    for match in pattern.finditer(str(value or '')):
+        lat_h, lat_digits, lon_h, lon_digits = match.groups()
+        lat = _parse_coord_val(lat_digits, lat_h)
+        lon = _parse_coord_val(lon_digits, lon_h)
+        points.append([round(lat, 6), round(lon, 6)])
+    if len(points) > 1 and points[0] == points[-1]:
+        points.pop()
+    return points if len(points) >= 3 else []
+
+def _supplement_country_from_fir(fir):
+    fir = str(fir or '').strip().upper()
+    if fir == 'RPHI':
+        return 'PHILIPPINES'
+    if fir in {'RJJJ', 'RJTG'}:
+        return 'JAPAN'
+    if fir.startswith('Z'):
+        return 'CHINA'
+    return 'GLOBAL'
+
+def _iter_global_supplement_features(data):
+    """Yield a common feature shape for legacy GeoJSON and current data_dict.json."""
+    if not isinstance(data, dict):
+        return
+
+    legacy = data.get('features')
+    if isinstance(legacy, list):
+        for feat in legacy:
+            if isinstance(feat, dict):
+                item = dict(feat)
+                item['_supplement_schema'] = 'legacy_geojson'
+                yield item
+        return
+
+    section = data.get('NOTAM_DATA')
+    if not isinstance(section, dict) or not isinstance(section.get('CODE'), list):
+        section = data
+    codes = section.get('CODE', [])
+    raws = section.get('RAWMESSAGE', [])
+    coordinates = section.get('COORDINATES', [])
+    platform_ids = section.get('PLATID', [])
+    firs = section.get('FIR', [])
+    sources = section.get('SOURCE', [])
+    size = min(len(codes), len(raws))
+    for index in range(size):
+        source = str(sources[index] if index < len(sources) else 'NOTAM').strip().upper()
+        if source and source != 'NOTAM':
+            continue
+        fir = str(firs[index] if index < len(firs) else '').strip().upper()
+        code = str(codes[index] or '').strip().upper()
+        platform_id = str(platform_ids[index] if index < len(platform_ids) else '').strip()
+        coordinate_text = coordinates[index] if index < len(coordinates) else ''
+        yield {
+            '_supplement_schema': 'joey_data_dict',
+            'id': f"joey-{platform_id or code}",
+            'name': code,
+            'description': str(raws[index] or ''),
+            'fir': fir,
+            'country': _supplement_country_from_fir(fir),
+            'polygon': _parse_supplement_polygon(coordinate_text),
+        }
 
 def _parse_faa_tfr_time(text):
     text = str(text or '').strip()
@@ -394,20 +459,27 @@ def fetch_global_notam_supplement():
         print(f"[global] Error fetching supplement: {e}")
         return rows
 
-    feats = data.get('features', []) if isinstance(data, dict) else []
-    for feat in feats:
-        if feat.get('eventType') not in GLOBAL_SUPPLEMENT_TYPES:
+    for feat in _iter_global_supplement_features(data):
+        if (
+            feat.get('_supplement_schema') == 'legacy_geojson'
+            and feat.get('eventType') not in GLOBAL_SUPPLEMENT_TYPES
+        ):
             continue
         raw = str(feat.get('description', '') or '')
         if not raw:
             continue
         notam_id = _extract_notam_id(raw, feat.get('name', ''))
         q_m = re.search(r'Q\)\s*([A-Z0-9]{4})/([A-Z0-9]{5})/', raw)
-        fir = q_m.group(1).strip() if q_m else str(feat.get('site', '') or '')
+        fir = q_m.group(1).strip() if q_m else str(feat.get('fir', feat.get('site', '')) or '')
         qcode = q_m.group(2).strip() if q_m else ''
         lat, lon, radius, parsed_qcode = _parse_q_line(raw)
         if not qcode:
             qcode = parsed_qcode
+        polygon = feat.get('polygon', [])
+        if polygon:
+            lat = round(sum(point[0] for point in polygon) / len(polygon), 6)
+            lon = round(sum(point[1] for point in polygon) / len(polygon), 6)
+            radius = ''
         b_m = re.search(r'\bB\)\s*([0-9]{10}|PERM)\b', raw)
         c_m = re.search(r'\bC\)\s*([0-9]{10}|PERM)\b', raw)
         from_utc = _parse_notam_time(b_m.group(1)) if b_m else ''
@@ -424,6 +496,8 @@ def fetch_global_notam_supplement():
             'longitude': lon,
             'radius': radius,
             'notamCode': qcode,
+            'notam_id': notam_id,
+            'polygon': polygon,
         }
         if not _passes_filters(n):
             continue
