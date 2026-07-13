@@ -4,7 +4,16 @@ import os
 import tempfile
 from unittest.mock import Mock, patch
 
-from fetch_launches import _load_launch_sites, _parse_rll_api_result, _parse_spacedevs_results, _resolve_site, archive_weekly, fetch_past_launches, save_to_csv
+from fetch_launches import (
+    _load_launch_sites,
+    _parse_rll_api_result,
+    _parse_spacedevs_results,
+    _resolve_site,
+    archive_weekly,
+    fetch_past_launches,
+    fetch_spacedevs_past_launches,
+    save_to_csv,
+)
 
 
 def _read_rows(path):
@@ -133,6 +142,42 @@ def test_parse_spacedevs_results_maps_previous_launches():
     assert launches[0]["Success"] == "S"
 
 
+def test_spacedevs_history_fetches_multiple_pages_with_delay():
+    def result(net, name):
+        return {
+            "net": net,
+            "name": name,
+            "status": {"abbrev": "Success"},
+            "rocket": {"configuration": {"full_name": "Test Rocket"}},
+            "pad": {
+                "name": "Space Launch Complex 40",
+                "latitude": "28.562",
+                "longitude": "-80.577",
+                "location": {"name": "Cape Canaveral SFS, FL, USA"},
+            },
+        }
+
+    first = Mock(status_code=200)
+    first.json.return_value = {
+        "results": [result("2026-07-13T12:00:00Z", "Test Rocket | Page One")],
+        "next": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=20&offset=100",
+    }
+    second = Mock(status_code=200)
+    second.json.return_value = {
+        "results": [result("2026-06-13T12:00:00Z", "Test Rocket | Page Two")],
+        "next": None,
+    }
+
+    with patch("fetch_launches.requests.get", side_effect=[first, second]) as mocked_get, \
+         patch("fetch_launches.time.sleep") as mocked_sleep:
+        launches = fetch_spacedevs_past_launches(max_pages=5)
+
+    assert [item["Official Payload Name"] for item in launches] == ["Page One", "Page Two"]
+    assert mocked_get.call_count == 2
+    assert "limit=100" in mocked_get.call_args_list[1].args[0]
+    mocked_sleep.assert_called_once_with(0.5)
+
+
 def test_fetch_past_launches_falls_back_to_api_on_html_request_failure():
     spacedevs_url = "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100"
     html_url = "https://www.rocketlaunch.live/?pastOnly=1"
@@ -180,5 +225,6 @@ if __name__ == "__main__":
     test_resolve_site_matches_specific_launch_site()
     test_parse_rll_api_result_maps_fields()
     test_parse_spacedevs_results_maps_previous_launches()
+    test_spacedevs_history_fetches_multiple_pages_with_delay()
     test_fetch_past_launches_falls_back_to_api_on_html_request_failure()
     print("test_fetch_launches_history.py passed")

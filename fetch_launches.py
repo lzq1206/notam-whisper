@@ -3,6 +3,7 @@ import re
 import csv
 from datetime import datetime
 import os
+import time
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
 CSV_HEADERS = [
@@ -17,6 +18,8 @@ CSV_HEADERS = [
 ]
 REQUEST_TIMEOUT = 30
 SPACEDEVS_PREVIOUS_URL = "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100"
+SPACEDEVS_HISTORY_PAGES = 5
+SPACEDEVS_REQUEST_DELAY_SECONDS = 0.5
 
 LAUNCH_SITE_ALIASES = {
     "jiuquan": "JSLC",
@@ -198,15 +201,18 @@ def _parse_spacedevs_results(payload, launch_sites, site_by_abbr):
     return launches
 
 
-def fetch_spacedevs_past_launches(max_pages=1):
+def fetch_spacedevs_past_launches(max_pages=SPACEDEVS_HISTORY_PAGES):
     launch_sites = _load_launch_sites()
     site_by_abbr = {site["abbr"].lower(): site for site in launch_sites if site["abbr"]}
     headers = {"User-Agent": "notam-whisper/1.0 (+https://github.com/lzq1206/notam-whisper)"}
     url = SPACEDEVS_PREVIOUS_URL
     launches = []
-    for _ in range(max_pages):
+    page_limit = min(max(int(max_pages), 1), SPACEDEVS_HISTORY_PAGES)
+    for page_index in range(page_limit):
         if not url:
             break
+        if page_index:
+            time.sleep(SPACEDEVS_REQUEST_DELAY_SECONDS)
         try:
             response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
             if response.status_code != 200:
@@ -304,7 +310,7 @@ def fetch_past_launches():
     # Primary source: Launch Library / The Space Devs. RocketLaunch.Live
     # changed its free past endpoint to require an API key, leaving the
     # historical CSV stuck at a few March 2026 rows.
-    spacedevs_launches = fetch_spacedevs_past_launches(max_pages=1)
+    spacedevs_launches = fetch_spacedevs_past_launches(max_pages=SPACEDEVS_HISTORY_PAGES)
     if spacedevs_launches:
         return spacedevs_launches
 

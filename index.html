@@ -168,6 +168,30 @@
       font-size: 12px;
     }
 
+    .launch-history-details {
+      margin-top: 7px;
+      font-size: 11px;
+    }
+
+    .launch-history-details summary {
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .launch-history-list {
+      max-height: 240px;
+      overflow-y: auto;
+      margin-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .launch-history-item {
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ddd;
+      line-height: 1.35;
+    }
+
     .legend-row {
       display: flex;
       align-items: center;
@@ -222,7 +246,7 @@
       <div class="small" id="status"></div>
 
       <hr style="margin:8px 0;" />
-      <div style="font-size:13px;"><b id="launchSectionTitle">🚀 火箭发射（±1周）</b></div>
+      <div style="font-size:13px;"><b id="launchSectionTitle">🚀 火箭发射与历史记录</b></div>
       <div class="launch-layer-toggle">
         <input type="checkbox" id="launchToggle" checked />
         <label for="launchToggle" style="font-size:12px;" id="launchToggleLabel">在地图上显示</label>
@@ -238,6 +262,10 @@
         </div>
       </div>
       <div class="small" id="launchStatus"></div>
+      <details class="launch-history-details">
+        <summary id="launchHistorySummary">查看历史发射记录</summary>
+        <div class="launch-history-list" id="launchHistoryList"></div>
+      </details>
       <div class="panel-footer-link">
         <a href="https://orbit.rainywhisper.com/" target="_blank" rel="noopener noreferrer" aria-label="在轨卫星风险检测系统OrbitWhisper（新窗口打开）">在轨卫星风险检测系统OrbitWhisper</a>
       </div>
@@ -268,7 +296,7 @@
         reset_btn: '重置',
         download_kml_btn: '下载当前显示 KML',
         data_files_html: '数据文件：<code>notams.csv</code> + <code>msi.csv</code>',
-        launch_section_title: '🚀 火箭发射（±1周）',
+        launch_section_title: '🚀 火箭发射与历史记录',
         launch_toggle_label: '在地图上显示',
         launch_past_legend: '🚀 已发射',
         launch_upcoming_near_legend: '🚀 即将发射 (近)',
@@ -319,7 +347,9 @@
         launch_past: '历史发射',
         launch_payload_label: '载荷',
         launch_result_label: '结果',
-        launch_summary: '🚀 {upcoming} 计划 / {past} 过去 / {sites} 发射场',
+        launch_summary: '🚀 {upcoming} 计划 / {past} 历史 / {sites} 发射场 / {range}',
+        launch_history_summary: '查看全部历史发射记录',
+        launch_history_empty: '暂无历史发射记录',
         launch_load_failed: '加载失败',
         tile_attribution: '本项目仅作为摄影爱好者的拍照需求使用，不要用于非法用途，希望能帮助大家拍摄到壮观的火箭云，Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
         cesium_past_prefix: '已发射: ',
@@ -338,7 +368,7 @@
         reset_btn: 'Reset',
         download_kml_btn: 'Download Current KML',
         data_files_html: 'Data files: <code>notams.csv</code> + <code>msi.csv</code>',
-        launch_section_title: '🚀 Rocket Launches (±1 week)',
+        launch_section_title: '🚀 Rocket Launches & History',
         launch_toggle_label: 'Show on map',
         launch_past_legend: '🚀 Launched',
         launch_upcoming_near_legend: '🚀 Upcoming (near)',
@@ -389,7 +419,9 @@
         launch_past: 'Past launch',
         launch_payload_label: 'Payload',
         launch_result_label: 'Result',
-        launch_summary: '🚀 {upcoming} planned / {past} past / {sites} launch sites',
+        launch_summary: '🚀 {upcoming} planned / {past} historical / {sites} launch sites / {range}',
+        launch_history_summary: 'View all historical launches',
+        launch_history_empty: 'No historical launches available',
         launch_load_failed: 'Load failed',
         tile_attribution: 'This project is for photography planning only. Do not use it for illegal purposes. Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
         cesium_past_prefix: 'Launched: ',
@@ -969,6 +1001,8 @@
     const launchUpcomingFarLegendEl = document.getElementById('launchUpcomingFarLegend');
     const launchSiteLegendEl = document.getElementById('launchSiteLegend');
     const launchGlowHintEl = document.getElementById('launchGlowHint');
+    const launchHistorySummaryEl = document.getElementById('launchHistorySummary');
+    const launchHistoryListEl = document.getElementById('launchHistoryList');
 
     function applyLocaleTexts() {
       panelTitleEl.textContent = t('panel_title');
@@ -986,6 +1020,7 @@
       launchUpcomingFarLegendEl.textContent = t('launch_upcoming_far_legend');
       launchSiteLegendEl.textContent = t('launch_site_legend');
       launchGlowHintEl.textContent = t('launch_glow_hint');
+      launchHistorySummaryEl.textContent = t('launch_history_summary');
       viewToggleText.textContent = t('view_3d');
     }
     applyLocaleTexts();
@@ -2012,6 +2047,8 @@
 
         // 4. Load historical CSV (all data)
         let pastCount = 0;
+        const pastDates = [];
+        const historyItems = [];
         pastLaunches = [];
         try {
           const logResp = await fetch(LAUNCH_LOG_URL, { cache: 'no-store' });
@@ -2021,7 +2058,16 @@
           logRows.forEach(row => {
             const dStr = row['Launch Date and Time (UTC)'];
             const d = parseLaunchDate(dStr);
-            if (!d) return;
+            if (!d || !isFinite(d.getTime())) return;
+
+            const vehicle = row['Launch Vehicle'] || t('launch_unknown_vehicle');
+            const payload = row['Official Payload Name'] || '';
+            const siteName = row['Launch Site (Full)'] || row['Launch Site (Abbrv.)'] || '';
+            const successText = row['Success'] === 'S' ? t('launch_success') : row['Success'] === 'F' ? t('launch_failed') : t('launch_result_unknown');
+            const dateStr = formatLaunchDateWithLocal(d);
+            pastDates.push(d.getTime());
+            historyItems.push({ dateStr, vehicle, payload, siteName, successText });
+            pastCount++;
 
             const abbrev = (row['Launch Site (Abbrv.)'] || '').trim();
             let lat = parseFloat(row['Latitude']);
@@ -2031,11 +2077,6 @@
               if (site) { lat = site.lat; lon = site.lon; }
             }
             if (!isFinite(lat) || !isFinite(lon)) return;
-
-            const vehicle = row['Launch Vehicle'] || t('launch_unknown_vehicle');
-            const payload = row['Official Payload Name'] || '';
-            const successText = row['Success'] === 'S' ? t('launch_success') : row['Success'] === 'F' ? t('launch_failed') : t('launch_result_unknown');
-            const dateStr = formatLaunchDateWithLocal(d);
 
             const pIcon = L.divIcon({
               html: `<div style="background:#22c55e; width:24px; height:24px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
@@ -2048,19 +2089,35 @@
               <div style="font-size:12px;color:#666;">${t('launch_past')}</div>
               <b style="color:#16a34a;">🚀 ${vehicle}</b><br/>
               ${t('launch_payload_label')}: ${payload}<br/>
-              ${t('launch_site_label')}: ${row['Launch Site (Full)'] || abbrev}<br/>
+              ${t('launch_site_label')}: ${siteName || abbrev}<br/>
               ${t('launch_time_label')}: ${dateStr}<br/>
               ${t('launch_result_label')}: ${successText}
             `);
             marker.addTo(launchLayerGroup);
             pastLaunches.push({ lat, lon, vehicle, payload, dateStr, success: successText });
-            pastCount++;
           });
         } catch (csvErr) {
           console.warn('[launches] Past CSV failed:', csvErr);
         }
 
-        launchStatusEl.textContent = t('launch_summary', { upcoming: upcomingCount, past: pastCount, sites: Object.keys(launchSites).length });
+        launchHistoryListEl.innerHTML = historyItems.length
+          ? historyItems.map(item => `
+              <div class="launch-history-item">
+                <b>${xmlEscape(item.dateStr)}</b><br/>
+                🚀 ${xmlEscape(item.vehicle)}${item.payload ? ' · ' + xmlEscape(item.payload) : ''}<br/>
+                <span>${xmlEscape(item.siteName)} · ${xmlEscape(item.successText)}</span>
+              </div>`).join('')
+          : `<div class="launch-history-item">${xmlEscape(t('launch_history_empty'))}</div>`;
+
+        const historyRange = pastDates.length
+          ? `${isoDate(new Date(Math.min(...pastDates)))} – ${isoDate(new Date(Math.max(...pastDates)))}`
+          : t('launch_history_empty');
+        launchStatusEl.textContent = t('launch_summary', {
+          upcoming: upcomingCount,
+          past: pastCount,
+          sites: Object.keys(launchSites).length,
+          range: historyRange
+        });
 
         renderRows(filteredDataRows);
       } catch (err) {
