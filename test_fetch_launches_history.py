@@ -4,7 +4,7 @@ import os
 import tempfile
 from unittest.mock import Mock, patch
 
-from fetch_launches import _load_launch_sites, _parse_rll_api_result, _resolve_site, archive_weekly, fetch_past_launches, save_to_csv
+from fetch_launches import _load_launch_sites, _parse_rll_api_result, _parse_spacedevs_results, _resolve_site, archive_weekly, fetch_past_launches, save_to_csv
 
 
 def _read_rows(path):
@@ -103,7 +103,38 @@ def test_parse_rll_api_result_maps_fields():
     assert launches[0]["Success"] == "S"
 
 
+def test_parse_spacedevs_results_maps_previous_launches():
+    launch_sites = _load_launch_sites()
+    site_by_abbr = {site["abbr"].lower(): site for site in launch_sites if site["abbr"]}
+    payload = {
+        "results": [
+            {
+                "net": "2026-07-13T12:34:00Z",
+                "name": "Falcon 9 Block 5 | Starlink Group 17-48",
+                "status": {"abbrev": "Success"},
+                "rocket": {"configuration": {"full_name": "Falcon 9 Block 5"}},
+                "pad": {
+                    "name": "Space Launch Complex 4E",
+                    "latitude": "34.632",
+                    "longitude": "-120.611",
+                    "location": {"name": "Vandenberg SFB, CA, USA"},
+                },
+            }
+        ]
+    }
+
+    launches = _parse_spacedevs_results(payload, launch_sites, site_by_abbr)
+    assert len(launches) == 1
+    assert launches[0]["Launch Date and Time (UTC)"] == "2026 JUL 13 1234"
+    assert launches[0]["Launch Vehicle"] == "Falcon 9 Block 5"
+    assert launches[0]["Official Payload Name"] == "Starlink Group 17-48"
+    assert launches[0]["Latitude"] == 34.632
+    assert launches[0]["Longitude"] == -120.611
+    assert launches[0]["Success"] == "S"
+
+
 def test_fetch_past_launches_falls_back_to_api_on_html_request_failure():
+    spacedevs_url = "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100"
     html_url = "https://www.rocketlaunch.live/?pastOnly=1"
     api_url = "https://fdo.rocketlaunch.live/json/launches/past/100"
 
@@ -119,6 +150,11 @@ def test_fetch_past_launches_falls_back_to_api_on_html_request_failure():
     }
 
     def fake_get(url, headers=None, timeout=None):
+        if url == spacedevs_url:
+            resp = Mock()
+            resp.status_code = 200
+            resp.json.return_value = {"results": []}
+            return resp
         if url == html_url:
             raise RuntimeError("DNS failure")
         if url == api_url:
@@ -143,5 +179,6 @@ if __name__ == "__main__":
     test_archive_weekly_creates_history_and_dedupes()
     test_resolve_site_matches_specific_launch_site()
     test_parse_rll_api_result_maps_fields()
+    test_parse_spacedevs_results_maps_previous_launches()
     test_fetch_past_launches_falls_back_to_api_on_html_request_failure()
     print("test_fetch_launches_history.py passed")

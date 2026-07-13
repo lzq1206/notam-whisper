@@ -10,11 +10,12 @@ import xml.etree.ElementTree as ET
 from urllib.parse import quote
 
 # ─── Keyword Filters ───
-KEEP = ["UNL", "AEROSPACE", "RE-ENTRY", "ROCKET"]
-KEEP_QCODES = {"QRDCA"}
+KEEP = ["UNL", "AEROSPACE", "RE-ENTRY", "ROCKET", "MISSILE", "SPACE", "SPACEFLIGHT", "SATELLITE"]
+KEEP_QCODES = {"QRDCA", "QWMLW", "QWELW"}
+KEEP_PATTERNS = [re.compile(rf"(?<![A-Z0-9]){re.escape(keyword)}(?![A-Z0-9])") for keyword in KEEP]
 DROP = [
     "KWAJALEIN","BALLOON","BALLON","TRANSMITTER","GUNFIRING","AERIAL","GUN FRNG",
-    "AIR EXER","REF AIP","MISSILES","KOLKATA","MWARA","ZS(D)","ZY(R)","ZG(R)",
+    "AIR EXER","REF AIP","KOLKATA","MWARA","ZS(D)","ZY(R)","ZG(R)",
     "SHIQUANHE","MEDEVAC","WOOMERA AIRSPACE","MAVLA","VED-52 ACT",
     "LASER DANGER AREA","ACFT MANEUVERING","ATTENTION ACFT","STNR ALT RESERVATION",
     "UNTIL PERM","MILITARY FLIGHTS","DUE MIL FLYING","EMERALD","SATPHONE",
@@ -29,13 +30,27 @@ DROP = [
 CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
 FAA_SEARCH_URL = "https://notams.aim.faa.gov/notamSearch/search"
 FAA_SUPPLEMENTAL_FIRS = [
-    # Keep the existing supplemental Chinese FIRs, and expand to the
-    # other FIRs that frequently surface on FAA search but are easy to miss
-    # from the notammap feed alone.
+    # China / Hong Kong / Philippines (existing coverage)
     "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
     "VHHK", "RPHI", "ZXXX",
+    # Global launch / re-entry corridors.  The previous supplemental list was
+    # China-heavy, so FAA fallback searches mostly added China-nearby NOTAMs
+    # when notammap missed items.  Keep this list targeted to major launch and
+    # oceanic FIRs to avoid broad crawling / rate pressure.
+    "KZAK", "KZLA", "KZMA", "KZNY", "KZHU", "KZJX", "PAZA",
+    "MMFR", "SBAO", "SBCW", "SBAZ", "SOOO",
+    "GMMM", "GCCC", "LPPO", "EGTT", "EGPX", "EISN",
+    "ENOR", "ENOB", "ESAA", "ESOS", "EFIN",
+    "LFFF", "LFBB", "LFMM", "LSAS", "EDWW",
+    "LTAA", "OJAC", "LLLL", "OIIX", "OAKX",
+    "UAAA", "UATT", "UCFM", "UHHH", "UHPP", "UHMM", "UWWW", "URRV", "UUWV",
+    "RJTG", "RJJJ", "RKRR", "VOMF", "VABF", "VIDF",
+    "YMMM", "NZZC", "NFFF", "AYPM",
+    "FACT", "FAJO", "FMMM", "FIMM", "FSSS",
 ]
 FAA_PAGE_SIZE = 30
+FAA_MAX_PAGES_PER_FIR = 2
+FAA_REQUEST_DELAY_SECONDS = 0.35
 MAX_FUTURE_DAYS = 30
 NOTAMMAP_MAX_WORKERS = 10
 COUNTRY_FETCH_RETRIES = 3
@@ -72,7 +87,9 @@ def _passes_filters(notam):
     qcode = str(notam.get('notamCode', '')).strip().upper()
     if any(d in raw_upper for d in DROP):
         return False
-    if not any(k in raw_upper for k in KEEP) and qcode not in KEEP_QCODES:
+    # Use token boundaries: substring matching made SPACE match every AIRSPACE
+    # notice and UNL match words such as UNLIT/UNLIGHTED.
+    if not any(pattern.search(raw_upper) for pattern in KEEP_PATTERNS) and qcode not in KEEP_QCODES:
         return False
     from_str = notam.get('from', '')
     to_str = notam.get('to', '')
@@ -203,7 +220,8 @@ def fetch_faa_notams():
         session = requests.Session()
         session.headers.update(headers)
         offset = 0
-        while True:
+        pages_fetched = 0
+        while pages_fetched < FAA_MAX_PAGES_PER_FIR:
             payload = {
                 "searchType": "0",
                 "designatorsForLocation": fir,
@@ -223,6 +241,7 @@ def fetch_faa_notams():
                 notam_list = data.get('notamList', [])
                 if not notam_list:
                     break
+                pages_fetched += 1
                 for item in notam_list:
                     raw = item.get('icaoMessage', '')
                     notam_num = item.get('notamNumber', '')
@@ -252,9 +271,11 @@ def fetch_faa_notams():
                 if len(notam_list) < FAA_PAGE_SIZE:
                     break
                 offset += FAA_PAGE_SIZE
+                time.sleep(FAA_REQUEST_DELAY_SECONDS)
             except Exception as e:
                 print(f"[faa] Error fetching '{fir}' offset {offset}: {e}")
                 break
+        time.sleep(FAA_REQUEST_DELAY_SECONDS)
     print(f"[faa] Supplemental NOTAMs after filter: {len(rows)}")
     return rows
 

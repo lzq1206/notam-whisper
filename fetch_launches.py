@@ -3,6 +3,7 @@ import re
 import csv
 from datetime import datetime
 import os
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
 CSV_HEADERS = [
     "Launch Date and Time (UTC)",
@@ -15,6 +16,7 @@ CSV_HEADERS = [
     "Launch Site (Full)",
 ]
 REQUEST_TIMEOUT = 30
+SPACEDEVS_PREVIOUS_URL = "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100"
 
 LAUNCH_SITE_ALIASES = {
     "jiuquan": "JSLC",
@@ -125,6 +127,99 @@ def _resolve_site(location, launch_sites, site_by_abbr):
     return best_site["latitude"], best_site["longitude"], best_site["abbr"]
 
 
+def _normalize_iso_launch_datetime(date_text):
+    text = (date_text or "").strip()
+    if not text:
+        return ""
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    try:
+        dt = datetime.fromisoformat(text)
+        return dt.strftime("%Y %b %d %H%M").upper()
+    except ValueError:
+        return _normalize_launch_datetime(date_text)
+
+
+def _spacedevs_next_url(url):
+    """Return a next-page URL with a safe limit cap, or ''."""
+    if not url:
+        return ""
+    parsed = urlparse(url)
+    qs = parse_qs(parsed.query)
+    qs["limit"] = ["100"]
+    return urlunparse(parsed._replace(query=urlencode(qs, doseq=True)))
+
+
+def _parse_spacedevs_results(payload, launch_sites, site_by_abbr):
+    launches = []
+    for item in (payload.get("results", []) if isinstance(payload, dict) else []):
+        if not isinstance(item, dict):
+            continue
+        date_raw = item.get("net") or item.get("window_start") or item.get("last_updated")
+        full_date = _normalize_iso_launch_datetime(date_raw)
+        if not full_date:
+            continue
+
+        rocket = item.get("rocket") if isinstance(item.get("rocket"), dict) else {}
+        config = rocket.get("configuration") if isinstance(rocket.get("configuration"), dict) else {}
+        vehicle = (config.get("full_name") or config.get("name") or item.get("rocket") or "").strip()
+        mission = (item.get("name") or "").strip()
+        if vehicle and mission.lower().startswith(vehicle.lower()):
+            mission = mission[len(vehicle):].strip(" |-") or mission
+
+        pad = item.get("pad") if isinstance(item.get("pad"), dict) else {}
+        loc = pad.get("location") if isinstance(pad.get("location"), dict) else {}
+        location_raw = " / ".join(x for x in [pad.get("name"), loc.get("name")] if x)
+        lat = pad.get("latitude")
+        lon = pad.get("longitude")
+        abbr = ""
+        try:
+            lat = float(lat)
+            lon = float(lon)
+        except (TypeError, ValueError):
+            lat, lon, abbr = _resolve_site(location_raw, launch_sites, site_by_abbr)
+        else:
+            _, _, abbr = _resolve_site(location_raw, launch_sites, site_by_abbr)
+
+        status = item.get("status") if isinstance(item.get("status"), dict) else {}
+        status_text = (status.get("abbrev") or status.get("name") or "").lower()
+        success = "S" if "success" in status_text else "F" if "fail" in status_text else ""
+
+        launches.append({
+            "Launch Date and Time (UTC)": full_date,
+            "Launch Site (Abbrv.)": abbr,
+            "Latitude": lat,
+            "Longitude": lon,
+            "Launch Vehicle": vehicle,
+            "Official Payload Name": mission,
+            "Success": success,
+            "Launch Site (Full)": location_raw,
+        })
+    return launches
+
+
+def fetch_spacedevs_past_launches(max_pages=1):
+    launch_sites = _load_launch_sites()
+    site_by_abbr = {site["abbr"].lower(): site for site in launch_sites if site["abbr"]}
+    headers = {"User-Agent": "notam-whisper/1.0 (+https://github.com/lzq1206/notam-whisper)"}
+    url = SPACEDEVS_PREVIOUS_URL
+    launches = []
+    for _ in range(max_pages):
+        if not url:
+            break
+        try:
+            response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+            if response.status_code != 200:
+                print(f"Warning: SpaceDevs previous launches unavailable, status={response.status_code}.")
+                break
+            payload = response.json()
+        except Exception as e:
+            print(f"Warning: SpaceDevs previous launches request failed ({e}).")
+            break
+        launches.extend(_parse_spacedevs_results(payload, launch_sites, site_by_abbr))
+        url = _spacedevs_next_url(payload.get("next")) if isinstance(payload, dict) else ""
+    return launches
+
 def _extract_rll_api_results(payload):
     if isinstance(payload, dict):
         for key in ("result", "results", "launches", "data"):
@@ -206,6 +301,13 @@ def _parse_rll_api_result(payload, launch_sites, site_by_abbr):
 
 
 def fetch_past_launches():
+    # Primary source: Launch Library / The Space Devs. RocketLaunch.Live
+    # changed its free past endpoint to require an API key, leaving the
+    # historical CSV stuck at a few March 2026 rows.
+    spacedevs_launches = fetch_spacedevs_past_launches(max_pages=1)
+    if spacedevs_launches:
+        return spacedevs_launches
+
     launch_sites = _load_launch_sites()
     site_by_abbr = {site["abbr"].lower(): site for site in launch_sites if site["abbr"]}
 

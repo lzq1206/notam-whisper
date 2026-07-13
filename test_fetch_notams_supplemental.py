@@ -186,6 +186,15 @@ def test_passes_filters_accepts_qrdca_without_keep_keyword():
     }) is False
 
 
+def test_passes_filters_does_not_treat_airspace_as_space_keyword():
+    assert _passes_filters({
+        'raw': 'TEMPORARY RESTRICTED AIRSPACE FOR ROUTINE TRAINING',
+        'notamCode': 'QRTCA',
+        'from': '',
+        'to': '',
+    }) is False
+
+
 def test_fetch_notammap_exits_when_country_list_empty():
     """fetch_notammap() must abort (sys.exit(1)) when notammap.org returns no countries."""
     import fetch_notams
@@ -285,7 +294,7 @@ def test_global_supplement_parses_key_notams():
                         'description': (
                             '05/03/2026 0502 A1417/26 NOTAMN\n'
                             'Q)ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\n'
-                            'A)ZBPE B)2605121149 C)2605121209\n'
+                            'A)ZBPE B)2608121149 C)2608121209\n'
                             'E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: ...'
                         )
                     },
@@ -297,7 +306,7 @@ def test_global_supplement_parses_key_notams():
                         'description': (
                             '04/28/2026 0358 B1768/26 NOTAMN\n'
                             'Q) RPHI/QWMLW/IV/BO /W /000/999/1921N11925E047\n'
-                            'A) RPHI B) 2605261600 C) 2605302200\n'
+                            'A) RPHI B) 2608011600 C) 2608052200\n'
                             'E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.'
                         )
                     },
@@ -334,6 +343,7 @@ if __name__ == '__main__':
     test_fetch_notammap_sequential_retry_for_failed_country()
     test_fetch_country_fallback_slug_handles_accents_and_apostrophe()
     test_passes_filters_accepts_qrdca_without_keep_keyword()
+    test_passes_filters_does_not_treat_airspace_as_space_keyword()
     test_fetch_notammap_exits_when_country_list_empty()
     test_fetch_faa_notams_logs_non_200()
     test_fetch_faa_notams_logs_non_json_response()
