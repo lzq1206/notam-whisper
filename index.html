@@ -251,6 +251,10 @@
         <input type="checkbox" id="launchToggle" checked />
         <label for="launchToggle" style="font-size:12px;" id="launchToggleLabel">在地图上显示</label>
       </div>
+      <div class="launch-layer-toggle" style="margin-top:4px;">
+        <input type="checkbox" id="pastLaunchToggle" />
+        <label for="pastLaunchToggle" style="font-size:12px;" id="pastLaunchToggleLabel">显示历史发射</label>
+      </div>
       <div class="legend-launches">
         <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> <span id="launchPastLegend">🚀 已发射</span></div>
         <div class="legend-row"><span class="dot" style="background:#ef2b2b; border:1px solid #fff;"></span> <span id="launchUpcomingNearLegend">🚀 即将发射 (近)</span></div>
@@ -298,6 +302,7 @@
         data_files_html: '数据文件：<code>notams.csv</code> + <code>msi.csv</code>',
         launch_section_title: '🚀 火箭发射与历史记录',
         launch_toggle_label: '在地图上显示',
+        past_launch_toggle_label: '显示历史发射（默认关闭）',
         launch_past_legend: '🚀 已发射',
         launch_upcoming_near_legend: '🚀 即将发射 (近)',
         launch_upcoming_far_legend: '🚀 即将发射 (远)',
@@ -370,6 +375,7 @@
         data_files_html: 'Data files: <code>notams.csv</code> + <code>msi.csv</code>',
         launch_section_title: '🚀 Rocket Launches & History',
         launch_toggle_label: 'Show on map',
+        past_launch_toggle_label: 'Show historical launches (off by default)',
         launch_past_legend: '🚀 Launched',
         launch_upcoming_near_legend: '🚀 Upcoming (near)',
         launch_upcoming_far_legend: '🚀 Upcoming (far)',
@@ -789,24 +795,26 @@
             });
           });
 
-          // 1c. Render Past Launches (Dynamic) - Render BEFORE upcoming so upcoming are on top
-          pastLaunches.forEach(launch => {
-            cesiumViewer.entities.add({
-              position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
-              billboard: {
-                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#22c55e" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>'))),
-                verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32,
-                eyeOffset: new Cesium.Cartesian3(0, 0, 500)
-              },
-              label: {
-                text: t('cesium_past_prefix') + (launch.payload || launch.vehicle), font: '10pt sans-serif',
-                fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
-                eyeOffset: new Cesium.Cartesian3(0, 0, 500)
-              },
-              description: `<b>🚀 ${launch.vehicle}</b><br/>${t('cesium_payload_label')}: ${launch.payload}<br/>${t('cesium_time_label')}: ${launch.dateStr}<br/>${t('cesium_result_label')}: ${launch.success}`
+          // 1c. Render Past Launches only when the dedicated toggle is enabled.
+          if (pastLaunchToggle.checked) {
+            pastLaunches.forEach(launch => {
+              cesiumViewer.entities.add({
+                position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
+                billboard: {
+                  image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#22c55e" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>'))),
+                  verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32,
+                  eyeOffset: new Cesium.Cartesian3(0, 0, 500)
+                },
+                label: {
+                  text: t('cesium_past_prefix') + (launch.payload || launch.vehicle), font: '10pt sans-serif',
+                  fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                  verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
+                  eyeOffset: new Cesium.Cartesian3(0, 0, 500)
+                },
+                description: `<b>🚀 ${launch.vehicle}</b><br/>${t('cesium_payload_label')}: ${launch.payload}<br/>${t('cesium_time_label')}: ${launch.dateStr}<br/>${t('cesium_result_label')}: ${launch.success}`
+              });
             });
-          });
+          }
 
           // 1b. Render Upcoming Launches (Dynamic)
           upcomingLaunches.forEach(launch => {
@@ -996,6 +1004,7 @@
     const dataFilesTextEl = document.getElementById('dataFilesText');
     const launchSectionTitleEl = document.getElementById('launchSectionTitle');
     const launchToggleLabelEl = document.getElementById('launchToggleLabel');
+    const pastLaunchToggleLabelEl = document.getElementById('pastLaunchToggleLabel');
     const launchPastLegendEl = document.getElementById('launchPastLegend');
     const launchUpcomingNearLegendEl = document.getElementById('launchUpcomingNearLegend');
     const launchUpcomingFarLegendEl = document.getElementById('launchUpcomingFarLegend');
@@ -1015,6 +1024,7 @@
       dataFilesTextEl.innerHTML = t('data_files_html');
       launchSectionTitleEl.textContent = t('launch_section_title');
       launchToggleLabelEl.textContent = t('launch_toggle_label');
+      pastLaunchToggleLabelEl.textContent = t('past_launch_toggle_label');
       launchPastLegendEl.textContent = t('launch_past_legend');
       launchUpcomingNearLegendEl.textContent = t('launch_upcoming_near_legend');
       launchUpcomingFarLegendEl.textContent = t('launch_upcoming_far_legend');
@@ -1849,8 +1859,10 @@
 
     const launchStatusEl = document.getElementById('launchStatus');
     const launchToggle = document.getElementById('launchToggle');
+    const pastLaunchToggle = document.getElementById('pastLaunchToggle');
 
     let launchLayerGroup = L.layerGroup().addTo(map);
+    let pastLaunchLayerGroup = L.layerGroup();
     let launchSites = {}; // abbrev -> {lat, lon, name}
     // Also build a by-name index for RLL lookups
     let launchSitesByName = {}; // partial name -> {lat, lon}
@@ -1961,6 +1973,7 @@
         console.log(`[launches] Loaded ${Object.keys(launchSites).length} launch sites`);
 
         launchLayerGroup.clearLayers();
+        pastLaunchLayerGroup.clearLayers();
 
         // 2. Draw launch site markers (📡)
         Object.entries(launchSites).forEach(([abbrev, site]) => {
@@ -2093,7 +2106,7 @@
               ${t('launch_time_label')}: ${dateStr}<br/>
               ${t('launch_result_label')}: ${successText}
             `);
-            marker.addTo(launchLayerGroup);
+            marker.addTo(pastLaunchLayerGroup);
             pastLaunches.push({ lat, lon, vehicle, payload, dateStr, success: successText });
           });
         } catch (csvErr) {
@@ -2126,14 +2139,26 @@
       }
     }
 
-    launchToggle.onchange = () => {
+    function syncLaunchLayers() {
       if (launchToggle.checked) {
         map.addLayer(launchLayerGroup);
       } else {
         map.removeLayer(launchLayerGroup);
       }
+      if (launchToggle.checked && pastLaunchToggle.checked) {
+        map.addLayer(pastLaunchLayerGroup);
+      } else {
+        map.removeLayer(pastLaunchLayerGroup);
+      }
       if (is3D) renderOnGlobe(filteredDataRows);
-    };
+    }
+
+    launchToggle.onchange = syncLaunchLayers;
+    pastLaunchToggle.onchange = syncLaunchLayers;
+
+    // Historical launch markers are intentionally hidden on initial load.
+    pastLaunchToggle.checked = false;
+    syncLaunchLayers();
 
     loadLaunchData();
 
