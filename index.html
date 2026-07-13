@@ -192,6 +192,19 @@
       line-height: 1.35;
     }
 
+    .past-launch-range {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .past-launch-range input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
     .legend-row {
       display: flex;
       align-items: center;
@@ -255,6 +268,10 @@
         <input type="checkbox" id="pastLaunchToggle" />
         <label for="pastLaunchToggle" style="font-size:12px;" id="pastLaunchToggleLabel">显示历史发射</label>
       </div>
+      <div class="past-launch-range">
+        <label><span id="pastLaunchStartLabel">历史开始：</span><input id="pastLaunchStartDate" type="date" /></label>
+        <label><span id="pastLaunchEndLabel">历史结束：</span><input id="pastLaunchEndDate" type="date" /></label>
+      </div>
       <div class="legend-launches">
         <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> <span id="launchPastLegend">🚀 已发射</span></div>
         <div class="legend-row"><span class="dot" style="background:#ef2b2b; border:1px solid #fff;"></span> <span id="launchUpcomingNearLegend">🚀 即将发射 (近)</span></div>
@@ -303,6 +320,8 @@
         launch_section_title: '🚀 火箭发射与历史记录',
         launch_toggle_label: '在地图上显示',
         past_launch_toggle_label: '显示历史发射（默认关闭）',
+        past_launch_start_label: '历史开始：',
+        past_launch_end_label: '历史结束：',
         launch_past_legend: '🚀 已发射',
         launch_upcoming_near_legend: '🚀 即将发射 (近)',
         launch_upcoming_far_legend: '🚀 即将发射 (远)',
@@ -376,6 +395,8 @@
         launch_section_title: '🚀 Rocket Launches & History',
         launch_toggle_label: 'Show on map',
         past_launch_toggle_label: 'Show historical launches (off by default)',
+        past_launch_start_label: 'History from:',
+        past_launch_end_label: 'History to:',
         launch_past_legend: '🚀 Launched',
         launch_upcoming_near_legend: '🚀 Upcoming (near)',
         launch_upcoming_far_legend: '🚀 Upcoming (far)',
@@ -797,7 +818,7 @@
 
           // 1c. Render Past Launches only when the dedicated toggle is enabled.
           if (pastLaunchToggle.checked) {
-            pastLaunches.forEach(launch => {
+            pastLaunches.filter(launch => isPastLaunchInSelectedRange(launch.ts)).forEach(launch => {
               cesiumViewer.entities.add({
                 position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
                 billboard: {
@@ -1005,6 +1026,8 @@
     const launchSectionTitleEl = document.getElementById('launchSectionTitle');
     const launchToggleLabelEl = document.getElementById('launchToggleLabel');
     const pastLaunchToggleLabelEl = document.getElementById('pastLaunchToggleLabel');
+    const pastLaunchStartLabelEl = document.getElementById('pastLaunchStartLabel');
+    const pastLaunchEndLabelEl = document.getElementById('pastLaunchEndLabel');
     const launchPastLegendEl = document.getElementById('launchPastLegend');
     const launchUpcomingNearLegendEl = document.getElementById('launchUpcomingNearLegend');
     const launchUpcomingFarLegendEl = document.getElementById('launchUpcomingFarLegend');
@@ -1025,6 +1048,8 @@
       launchSectionTitleEl.textContent = t('launch_section_title');
       launchToggleLabelEl.textContent = t('launch_toggle_label');
       pastLaunchToggleLabelEl.textContent = t('past_launch_toggle_label');
+      pastLaunchStartLabelEl.textContent = t('past_launch_start_label');
+      pastLaunchEndLabelEl.textContent = t('past_launch_end_label');
       launchPastLegendEl.textContent = t('launch_past_legend');
       launchUpcomingNearLegendEl.textContent = t('launch_upcoming_near_legend');
       launchUpcomingFarLegendEl.textContent = t('launch_upcoming_far_legend');
@@ -1860,12 +1885,29 @@
     const launchStatusEl = document.getElementById('launchStatus');
     const launchToggle = document.getElementById('launchToggle');
     const pastLaunchToggle = document.getElementById('pastLaunchToggle');
+    const pastLaunchStartDateEl = document.getElementById('pastLaunchStartDate');
+    const pastLaunchEndDateEl = document.getElementById('pastLaunchEndDate');
 
     let launchLayerGroup = L.layerGroup().addTo(map);
     let pastLaunchLayerGroup = L.layerGroup();
+    let pastLaunchMarkerRecords = [];
     let launchSites = {}; // abbrev -> {lat, lon, name}
     // Also build a by-name index for RLL lookups
     let launchSitesByName = {}; // partial name -> {lat, lon}
+
+    function isPastLaunchInSelectedRange(timestamp) {
+      if (!Number.isFinite(timestamp)) return false;
+      const start = pastLaunchStartDateEl.value ? Date.parse(pastLaunchStartDateEl.value + 'T00:00:00Z') : -Infinity;
+      const end = pastLaunchEndDateEl.value ? Date.parse(pastLaunchEndDateEl.value + 'T23:59:59Z') : Infinity;
+      return timestamp >= start && timestamp <= end;
+    }
+
+    function rebuildPastLaunchLayer() {
+      pastLaunchLayerGroup.clearLayers();
+      pastLaunchMarkerRecords.forEach(record => {
+        if (isPastLaunchInSelectedRange(record.ts)) record.marker.addTo(pastLaunchLayerGroup);
+      });
+    }
 
     function normalizeLocationKey(s) {
       return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -1974,6 +2016,7 @@
 
         launchLayerGroup.clearLayers();
         pastLaunchLayerGroup.clearLayers();
+        pastLaunchMarkerRecords = [];
 
         // 2. Draw launch site markers (📡)
         Object.entries(launchSites).forEach(([abbrev, site]) => {
@@ -2106,8 +2149,8 @@
               ${t('launch_time_label')}: ${dateStr}<br/>
               ${t('launch_result_label')}: ${successText}
             `);
-            marker.addTo(pastLaunchLayerGroup);
-            pastLaunches.push({ lat, lon, vehicle, payload, dateStr, success: successText });
+            pastLaunchMarkerRecords.push({ marker, ts: d.getTime() });
+            pastLaunches.push({ lat, lon, vehicle, payload, dateStr, success: successText, ts: d.getTime() });
           });
         } catch (csvErr) {
           console.warn('[launches] Past CSV failed:', csvErr);
@@ -2125,6 +2168,11 @@
         const historyRange = pastDates.length
           ? `${isoDate(new Date(Math.min(...pastDates)))} – ${isoDate(new Date(Math.max(...pastDates)))}`
           : t('launch_history_empty');
+        if (pastDates.length) {
+          if (!pastLaunchStartDateEl.value) pastLaunchStartDateEl.value = isoDate(new Date(Math.min(...pastDates)));
+          if (!pastLaunchEndDateEl.value) pastLaunchEndDateEl.value = isoDate(new Date(Math.max(...pastDates)));
+        }
+        rebuildPastLaunchLayer();
         launchStatusEl.textContent = t('launch_summary', {
           upcoming: upcomingCount,
           past: pastCount,
@@ -2155,6 +2203,14 @@
 
     launchToggle.onchange = syncLaunchLayers;
     pastLaunchToggle.onchange = syncLaunchLayers;
+    const onPastLaunchRangeChange = () => {
+      pastLaunchStartDateEl.max = pastLaunchEndDateEl.value || '';
+      pastLaunchEndDateEl.min = pastLaunchStartDateEl.value || '';
+      rebuildPastLaunchLayer();
+      if (is3D) renderOnGlobe(filteredDataRows);
+    };
+    pastLaunchStartDateEl.onchange = onPastLaunchRangeChange;
+    pastLaunchEndDateEl.onchange = onPastLaunchRangeChange;
 
     // Historical launch markers are intentionally hidden on initial load.
     pastLaunchToggle.checked = false;

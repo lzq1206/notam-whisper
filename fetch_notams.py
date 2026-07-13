@@ -3,7 +3,7 @@
 Aerospace NOTAM fetcher — notammap.org + FAA + global supplement.
 Outputs: notams.csv, notams.kml, history/notams/YYYY-WNN.*
 """
-import requests, re, os, sys, datetime, csv, math, time, unicodedata, html as html_lib
+import requests, re, os, sys, datetime, csv, math, time, json, unicodedata, html as html_lib
 from datetime import timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import xml.etree.ElementTree as ET
@@ -27,7 +27,7 @@ DROP = [
     "AIRSPAICE", "FIR RECIFE", "FIR SECT",
 ]
 
-CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw']
+CSV_HEADERS = ['country','id','notam_id','fir','from_utc','to_utc','lat','lon','radius_nm','qcode','raw','polygon']
 FAA_SEARCH_URL = "https://notams.aim.faa.gov/notamSearch/search"
 FAA_SUPPLEMENTAL_FIRS = [
     # China / Hong Kong / Philippines (existing coverage)
@@ -192,6 +192,96 @@ def _normalize_faa_tfr_coordinates(text):
     normalized = pattern.sub(replace, text)
     return normalized, points
 
+def _parse_compact_faa_coord(lat_digits, lat_hemi, lon_digits, lon_hemi):
+    return (
+        _parse_coord_val(lat_digits, lat_hemi),
+        _parse_coord_val(lon_digits, lon_hemi),
+    )
+
+def _faa_bearing_deg(origin, point):
+    lat1, lon1 = map(math.radians, origin)
+    lat2, lon2 = map(math.radians, point)
+    y = math.sin(lon2 - lon1) * math.cos(lat2)
+    x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(lon2 - lon1)
+    return (math.degrees(math.atan2(y, x)) + 360.0) % 360.0
+
+def _faa_distance_nm(origin, point):
+    lat1, lon1 = map(math.radians, origin)
+    lat2, lon2 = map(math.radians, point)
+    dlat, dlon = lat2 - lat1, lon2 - lon1
+    a = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+    return 3440.065 * 2 * math.atan2(math.sqrt(a), math.sqrt(max(0.0, 1.0 - a)))
+
+def _faa_destination_point(origin, bearing_deg, distance_nm):
+    lat1, lon1 = map(math.radians, origin)
+    bearing = math.radians(bearing_deg)
+    angular = distance_nm / 3440.065
+    lat2 = math.asin(
+        math.sin(lat1) * math.cos(angular)
+        + math.cos(lat1) * math.sin(angular) * math.cos(bearing)
+    )
+    lon2 = lon1 + math.atan2(
+        math.sin(bearing) * math.sin(angular) * math.cos(lat1),
+        math.cos(angular) - math.sin(lat1) * math.sin(lat2),
+    )
+    lon2 = (lon2 + math.pi) % (2 * math.pi) - math.pi
+    return [round(math.degrees(lat2), 6), round(math.degrees(lon2), 6)]
+
+def _interpolate_faa_tfr_arc(start, end, center, direction, stated_radius_nm):
+    """Expand an FAA clockwise/counterclockwise boundary arc into map points."""
+    start_bearing = _faa_bearing_deg(center, start)
+    end_bearing = _faa_bearing_deg(center, end)
+    clockwise = str(direction).strip().lower().startswith('clockwise')
+    sweep = (end_bearing - start_bearing) % 360.0 if clockwise else -((start_bearing - end_bearing) % 360.0)
+    steps = max(2, int(math.ceil(abs(sweep) / 5.0)))
+    start_radius = _faa_distance_nm(center, start) or float(stated_radius_nm)
+    end_radius = _faa_distance_nm(center, end) or float(stated_radius_nm)
+    points = []
+    for index in range(1, steps + 1):
+        fraction = index / steps
+        if index == steps:
+            points.append([round(end[0], 6), round(end[1], 6)])
+            continue
+        bearing = start_bearing + sweep * fraction
+        radius = start_radius + (end_radius - start_radius) * fraction
+        points.append(_faa_destination_point(center, bearing, radius))
+    return points
+
+def _extract_faa_tfr_polygon(normalized_text):
+    """Parse FAA Region-bounded text, preserving ARC semantics instead of treating centers as vertices."""
+    area_match = re.search(r'Region bounded by:(.*?)(?:Altitude:|Effective Date)', normalized_text, re.I | re.S)
+    if not area_match:
+        return []
+    area = area_match.group(1)
+    coord_pattern = r'(\d{6})([NS])\s+(\d{7})([EW])'
+    arc_pattern = re.compile(
+        rf'(Clockwise|Counterclockwise)\s+on\s+a\s+(\d+(?:\.\d+)?)\s*NM\s+ARC\s+Centered\s+on:\s*'
+        rf'{coord_pattern}.*?\bTo:\s*{coord_pattern}',
+        re.I | re.S,
+    )
+    arc = arc_pattern.search(area)
+
+    def coords_from(text):
+        return [
+            list(_parse_compact_faa_coord(*match.groups()))
+            for match in re.finditer(coord_pattern, text, re.I)
+        ]
+
+    if not arc:
+        points = coords_from(area)
+        return points if len(points) >= 3 else []
+
+    prefix = coords_from(area[:arc.start()])
+    if not prefix:
+        return []
+    groups = arc.groups()
+    direction, radius = groups[0], float(groups[1])
+    center = _parse_compact_faa_coord(groups[2], groups[3], groups[4], groups[5])
+    end = _parse_compact_faa_coord(groups[6], groups[7], groups[8], groups[9])
+    suffix = coords_from(area[arc.end():])
+    polygon = prefix + _interpolate_faa_tfr_arc(prefix[-1], end, center, direction, radius) + suffix
+    return polygon if len(polygon) >= 3 else []
+
 def _extract_labeled_tfr_value(text, label, next_label):
     match = re.search(
         rf'{re.escape(label)}\s*:\s*(.*?)\s+{re.escape(next_label)}\s*:',
@@ -213,6 +303,7 @@ def _parse_faa_tfr_detail(summary, detail_payload):
     from_utc = _parse_faa_tfr_time(begin_text)
     to_utc = _parse_faa_tfr_time(end_text)
     normalized_text, points = _normalize_faa_tfr_coordinates(text)
+    polygon = _extract_faa_tfr_polygon(normalized_text)
     if not _is_in_time_window(from_utc, to_utc):
         return None
 
@@ -223,8 +314,9 @@ def _parse_faa_tfr_detail(summary, detail_payload):
         f"FDC {notam_id} AIRSPACE SPACE OPERATIONS TFR. {description}. "
         f"{normalized_text}"
     ).strip()
-    lat = round(sum(p[0] for p in points) / len(points), 6) if points else ''
-    lon = round(sum(p[1] for p in points) / len(points), 6) if points else ''
+    centroid_points = polygon or points
+    lat = round(sum(p[0] for p in centroid_points) / len(centroid_points), 6) if centroid_points else ''
+    lon = round(sum(p[1] for p in centroid_points) / len(centroid_points), 6) if centroid_points else ''
     return {
         'id': f"faa-tfr-{notam_id}",
         '_country': 'USA',
@@ -241,6 +333,7 @@ def _parse_faa_tfr_detail(summary, detail_payload):
             'longitude': lon,
             'radius': '',
             'notamCode': 'TFR91.143',
+            'polygon': polygon,
         },
     }
 
@@ -633,6 +726,7 @@ def csv_to_kml(csv_path, kml_path):
         lat = row.get('lat', '').strip()
         lon = row.get('lon', '').strip()
         raw = row.get('raw', '')
+        polygon_raw = row.get('polygon', '').strip()
         notam_id = row.get('notam_id', '')
         fir = row.get('fir', '')
         radius = row.get('radius_nm', '').strip()
@@ -647,11 +741,28 @@ def csv_to_kml(csv_path, kml_path):
         ET.SubElement(pm, 'name').text = notam_id or fir or 'NOTAM'
         ET.SubElement(pm, 'description').text = raw[:500]
 
+        explicit_polygon = []
+        if polygon_raw:
+            try:
+                parsed = json.loads(polygon_raw)
+                if isinstance(parsed, list) and len(parsed) >= 3 and isinstance(parsed[0], list):
+                    explicit_polygon = parsed
+            except (ValueError, TypeError):
+                explicit_polygon = []
+
         coord_regex = r'(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))'
         cleaned = re.sub(r'Q\).*?(?=\s*A\))', '', raw, flags=re.DOTALL)
         matches = list(re.finditer(coord_regex, cleaned, re.I))
 
-        if len(matches) >= 3:
+        if explicit_polygon:
+            ET.SubElement(pm, 'styleUrl').text = '#polyStyle'
+            poly = ET.SubElement(pm, 'Polygon')
+            outer = ET.SubElement(poly, 'outerBoundaryIs')
+            ring = ET.SubElement(outer, 'LinearRing')
+            coords_text = [f"{float(point[1])},{float(point[0])},0" for point in explicit_polygon]
+            coords_text.append(coords_text[0])
+            ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
+        elif len(matches) >= 3:
             ET.SubElement(pm, 'styleUrl').text = '#polyStyle'
             poly = ET.SubElement(pm, 'Polygon')
             outer = ET.SubElement(poly, 'outerBoundaryIs')
@@ -776,6 +887,7 @@ def main():
             lat = n.get('latitude', '')
             lon = n.get('longitude', '')
             radius = n.get('radius', '')
+            polygon = n.get('polygon', '')
             if radius == 999:
                 radius = ''
             from_utc = n.get('from', '')
@@ -785,7 +897,8 @@ def main():
                 str(lat) if lat != '' else '',
                 str(lon) if lon != '' else '',
                 str(radius) if radius != '' else '',
-                qcode, raw
+                qcode, raw,
+                json.dumps(polygon, ensure_ascii=False, separators=(',', ':')) if polygon else ''
             ])
 
     print(f"\nPipeline complete: {len(items)} records written to notams.csv")

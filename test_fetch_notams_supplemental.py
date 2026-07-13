@@ -348,7 +348,12 @@ def test_parse_faa_space_tfr_detail():
             '<table><tr><td>Beginning Date and Time :</td><td>July 15, 2026 at 0643 UTC</td></tr>'
             '<tr><td>Ending Date and Time :</td><td>July 15, 2026 at 1135 UTC</td></tr>'
             '<tr><td>Reason for NOTAM :</td><td>Space Operations Area</td></tr></table>'
-            'From: 28º51\'16"N 80º42\'19"W To: 29º07\'30"N 80º30\'00"W '
+            'Region bounded by: From: 28º51\'16"N 80º42\'19"W '
+            'To: 29º07\'30"N 80º30\'00"W '
+            'Clockwise on a 30 NM ARC Centered on: 28º37\'03"N 80º36\'47"W '
+            'To: 28º13\'30"N 80º16\'00"W '
+            'To: 28º25\'01"N 80º30\'29"W '
+            'To: 28º51\'16"N 80º42\'19"W Altitude: Surface to 18000 feet. '
             'Authority: Title 14 CFR section 91.143'
         ),
     }]
@@ -366,6 +371,12 @@ def test_parse_faa_space_tfr_detail():
     assert '285116N 0804219W' in row['notam']['raw']
     assert row['notam']['notamCode'] == 'TFR91.143'
     assert row['_country'] == 'USA'
+    polygon = row['notam']['polygon']
+    assert len(polygon) > 10
+    assert polygon[0] == [28.854444, -80.705278]
+    assert polygon[1] == [29.125, -80.5]
+    assert [28.225, -80.266667] in polygon
+    assert [28.6175, -80.613056] not in polygon, 'FAA arc center must not be used as a boundary vertex'
 
 
 if __name__ == '__main__':
