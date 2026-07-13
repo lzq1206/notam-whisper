@@ -333,6 +333,41 @@ def test_global_supplement_parses_key_notams():
     assert all(r['notam']['notamCode'] in {'QRDCA', 'QWMLW'} for r in rows)
 
 
+def test_parse_faa_space_tfr_detail():
+    import fetch_notams
+
+    summary = {
+        'notam_id': '6/5192',
+        'facility': 'ZJX',
+        'type': 'SPACE OPERATIONS',
+        'description': 'Cape Canaveral, FL, Wednesday, July 15, 2026 Local',
+    }
+    detail = [{
+        'notam_id': '6/5192',
+        'text': (
+            '<table><tr><td>Beginning Date and Time :</td><td>July 15, 2026 at 0643 UTC</td></tr>'
+            '<tr><td>Ending Date and Time :</td><td>July 15, 2026 at 1135 UTC</td></tr>'
+            '<tr><td>Reason for NOTAM :</td><td>Space Operations Area</td></tr></table>'
+            'From: 28º51\'16"N 80º42\'19"W To: 29º07\'30"N 80º30\'00"W '
+            'Authority: Title 14 CFR section 91.143'
+        ),
+    }]
+    original_window = fetch_notams._is_in_time_window
+    fetch_notams._is_in_time_window = lambda *_: True
+    try:
+        row = fetch_notams._parse_faa_tfr_detail(summary, detail)
+    finally:
+        fetch_notams._is_in_time_window = original_window
+
+    assert row['notam']['notam_id'] == 'FDC 6/5192'
+    assert row['notam']['fir'] == 'ZJX'
+    assert row['notam']['from'] == '2026-07-15T06:43:00Z'
+    assert row['notam']['to'] == '2026-07-15T11:35:00Z'
+    assert '285116N 0804219W' in row['notam']['raw']
+    assert row['notam']['notamCode'] == 'TFR91.143'
+    assert row['_country'] == 'USA'
+
+
 if __name__ == '__main__':
     test_normalize_notam_number()
     test_parse_q_line()
@@ -348,4 +383,5 @@ if __name__ == '__main__':
     test_fetch_faa_notams_logs_non_200()
     test_fetch_faa_notams_logs_non_json_response()
     test_global_supplement_parses_key_notams()
+    test_parse_faa_space_tfr_detail()
     print('test_fetch_notams_supplemental.py passed')

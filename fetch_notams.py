@@ -3,7 +3,7 @@
 Aerospace NOTAM fetcher — notammap.org + FAA + global supplement.
 Outputs: notams.csv, notams.kml, history/notams/YYYY-WNN.*
 """
-import requests, re, os, sys, datetime, csv, math, time, unicodedata
+import requests, re, os, sys, datetime, csv, math, time, unicodedata, html as html_lib
 from datetime import timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import xml.etree.ElementTree as ET
@@ -57,6 +57,10 @@ COUNTRY_FETCH_RETRIES = 3
 RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 GLOBAL_SUPPLEMENT_URL = "https://raw.githubusercontent.com/Joey0609/notams/main/notams/notam_data.json"
 GLOBAL_SUPPLEMENT_TYPES = {"launch", "missile", "reentry"}
+FAA_TFR_LIST_URL = "https://tfr.faa.gov/tfrapi/getTfrList"
+FAA_TFR_DETAIL_URL = "https://tfr.faa.gov/tfrapi/getWebText"
+FAA_TFR_MAX_DETAILS = 20
+FAA_TFR_REQUEST_DELAY_SECONDS = 0.35
 
 def make_headers():
     return {
@@ -153,6 +157,137 @@ def _extract_notam_id(raw, fallback=''):
     if m:
         return m.group(1).upper()
     return str(fallback or '').strip().upper()
+
+def _parse_faa_tfr_time(text):
+    text = str(text or '').strip()
+    try:
+        dt = datetime.datetime.strptime(text, "%B %d, %Y at %H%M UTC")
+        return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    except ValueError:
+        return ''
+
+def _html_to_text(value):
+    text = html_lib.unescape(str(value or ''))
+    text = re.sub(r'<[^>]+>', ' ', text)
+    return re.sub(r'\s+', ' ', text).strip()
+
+def _normalize_faa_tfr_coordinates(text):
+    """Convert FAA display DMS pairs to compact ICAO coordinates."""
+    pattern = re.compile(
+        r'(\d{1,2})[º°](\d{2})[\'’](\d{2})["”]?([NS])\s+'
+        r'(\d{1,3})[º°](\d{2})[\'’](\d{2})["”]?([EW])',
+        re.I,
+    )
+    points = []
+
+    def replace(match):
+        lat_d, lat_m, lat_s, lat_h, lon_d, lon_m, lon_s, lon_h = match.groups()
+        lat_compact = f"{int(lat_d):02d}{lat_m}{lat_s}{lat_h.upper()}"
+        lon_compact = f"{int(lon_d):03d}{lon_m}{lon_s}{lon_h.upper()}"
+        lat = _parse_coord_val(f"{int(lat_d):02d}{lat_m}{lat_s}", lat_h)
+        lon = _parse_coord_val(f"{int(lon_d):03d}{lon_m}{lon_s}", lon_h)
+        points.append((lat, lon))
+        return f"{lat_compact} {lon_compact}"
+
+    normalized = pattern.sub(replace, text)
+    return normalized, points
+
+def _extract_labeled_tfr_value(text, label, next_label):
+    match = re.search(
+        rf'{re.escape(label)}\s*:\s*(.*?)\s+{re.escape(next_label)}\s*:',
+        text,
+        re.I,
+    )
+    return match.group(1).strip() if match else ''
+
+def _parse_faa_tfr_detail(summary, detail_payload):
+    records = detail_payload if isinstance(detail_payload, list) else []
+    if not records or not isinstance(records[0], dict):
+        return None
+    text = _html_to_text(records[0].get('text', ''))
+    if not text:
+        return None
+
+    begin_text = _extract_labeled_tfr_value(text, 'Beginning Date and Time', 'Ending Date and Time')
+    end_text = _extract_labeled_tfr_value(text, 'Ending Date and Time', 'Reason for NOTAM')
+    from_utc = _parse_faa_tfr_time(begin_text)
+    to_utc = _parse_faa_tfr_time(end_text)
+    normalized_text, points = _normalize_faa_tfr_coordinates(text)
+    if not _is_in_time_window(from_utc, to_utc):
+        return None
+
+    notam_id = str(summary.get('notam_id', '') or records[0].get('notam_id', '')).strip()
+    facility = str(summary.get('facility', '') or '').strip().upper()
+    description = str(summary.get('description', '') or '').strip()
+    raw = (
+        f"FDC {notam_id} AIRSPACE SPACE OPERATIONS TFR. {description}. "
+        f"{normalized_text}"
+    ).strip()
+    lat = round(sum(p[0] for p in points) / len(points), 6) if points else ''
+    lon = round(sum(p[1] for p in points) / len(points), 6) if points else ''
+    return {
+        'id': f"faa-tfr-{notam_id}",
+        '_country': 'USA',
+        'notam': {
+            'notam_id': f"FDC {notam_id}",
+            'raw': raw,
+            'series': '',
+            'number': '',
+            'year': '',
+            'fir': facility,
+            'from': from_utc,
+            'to': to_utc,
+            'latitude': lat,
+            'longitude': lon,
+            'radius': '',
+            'notamCode': 'TFR91.143',
+        },
+    }
+
+def fetch_faa_space_tfrs():
+    """Fetch active FAA space-operation TFRs with a tightly bounded request count."""
+    headers = make_headers()
+    try:
+        response = requests.get(FAA_TFR_LIST_URL, headers=headers, timeout=30)
+        if response.status_code != 200:
+            print(f"[faa-tfr] List unavailable: HTTP {response.status_code}")
+            return []
+        summaries = response.json()
+        if not isinstance(summaries, list):
+            print("[faa-tfr] Unexpected list response format")
+            return []
+    except Exception as exc:
+        print(f"[faa-tfr] Error fetching list: {exc}")
+        return []
+
+    candidates = [
+        row for row in summaries
+        if isinstance(row, dict) and str(row.get('type', '')).strip().upper() == 'SPACE OPERATIONS'
+    ][:FAA_TFR_MAX_DETAILS]
+    rows = []
+    for index, summary in enumerate(candidates):
+        notam_id = str(summary.get('notam_id', '')).strip()
+        if not notam_id:
+            continue
+        if index:
+            time.sleep(FAA_TFR_REQUEST_DELAY_SECONDS)
+        try:
+            response = requests.get(
+                FAA_TFR_DETAIL_URL,
+                params={'notamId': notam_id},
+                headers=headers,
+                timeout=30,
+            )
+            if response.status_code != 200:
+                print(f"[faa-tfr] Detail {notam_id} unavailable: HTTP {response.status_code}")
+                continue
+            item = _parse_faa_tfr_detail(summary, response.json())
+            if item:
+                rows.append(item)
+        except Exception as exc:
+            print(f"[faa-tfr] Error fetching {notam_id}: {exc}")
+    print(f"[faa-tfr] Active space-operation TFRs: {len(rows)}")
+    return rows
 
 def fetch_global_notam_supplement():
     rows = []
@@ -281,6 +416,9 @@ def fetch_faa_notams():
 
 def _item_key(item):
     n = item.get('notam', {})
+    display_id = str(n.get('notam_id', '')).strip().upper()
+    if display_id:
+        return f"NOTAM:{display_id}"
     series = str(n.get('series', '')).strip().upper()
     number = str(n.get('number', '')).strip()
     year = str(n.get('year', '')).strip()
@@ -616,8 +754,10 @@ def main():
 
     items = fetch_notammap()
     supplemental = fetch_faa_notams()
+    faa_tfrs = fetch_faa_space_tfrs()
     global_supplement = fetch_global_notam_supplement()
     items = merge_notams(items, supplemental)
+    items = merge_notams(items, faa_tfrs)
     items = merge_notams(items, global_supplement)
 
     # Write notams.csv
@@ -630,7 +770,7 @@ def main():
             nid = item.get('id', '')
             raw = n.get('raw', '').replace('\\n', '  ').replace('\n', '  ').replace('\r', '')
             parts = [n.get('series',''), str(n.get('number','')), str(n.get('year',''))]
-            notam_id = f"{parts[0]}{parts[1]}/{parts[2]}" if parts[0] else ''
+            notam_id = n.get('notam_id', '') or (f"{parts[0]}{parts[1]}/{parts[2]}" if parts[0] else '')
             fir = n.get('fir', '')
             qcode = n.get('notamCode', '')
             lat = n.get('latitude', '')
