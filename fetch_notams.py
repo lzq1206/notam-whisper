@@ -58,13 +58,14 @@ FAA_SUPPLEMENTAL_FIRS = [
     "ENOR", "ENOB", "ESAA", "ESOS", "EFIN",
     "LFFF", "LFBB", "LFMM", "LSAS", "EDWW",
     "LTAA", "OJAC", "LLLL", "OIIX", "OAKX",
-    "UAAA", "UATT", "UCFM", "UHHH", "UHPP", "UHMM", "UWWW", "URRV", "UUWV",
+    "UACN", "UAAA", "UATT", "UCFM", "UHHH", "UHPP", "UHMM", "UWWW", "URRV", "UUWV",
     "RJTG", "RJJJ", "RKRR", "VOMF", "VABF", "VIDF",
     "YMMM", "NZZC", "NFFF", "AYPM",
     "FACT", "FAJO", "FMMM", "FIMM", "FSSS",
 ]
 FAA_PAGE_SIZE = 30
 FAA_MAX_PAGES_PER_FIR = 2
+FAA_MAX_PAGES_FOR_ACTIVE_LAUNCH_FIR = 3
 FAA_REQUEST_DELAY_SECONDS = 0.35
 MAX_FUTURE_DAYS = 30
 NOTAMMAP_MAX_WORKERS = 10
@@ -76,12 +77,190 @@ FAA_TFR_LIST_URL = "https://tfr.faa.gov/tfrapi/getTfrList"
 FAA_TFR_DETAIL_URL = "https://tfr.faa.gov/tfrapi/getWebText"
 FAA_TFR_MAX_DETAILS = 20
 FAA_TFR_REQUEST_DELAY_SECONDS = 0.35
+UPCOMING_LAUNCH_URL = "https://fdo.rocketlaunch.live/json/launches/next/5"
+SILENT_LAUNCH_QCODES = {"QRPCA", "QRDCA"}
+SILENT_LAUNCH_MIN_CEILING_FL = 300
+SILENT_LAUNCH_TIME_TOLERANCE_MINUTES = 20
+SILENT_LAUNCH_MAX_DISTANCE_NM = 1000
+LAUNCH_SITE_FIRS = {
+    'baikonur cosmodrome': {'UACN', 'UAAA', 'UATT'},
+}
 
 def make_headers():
     return {
         "Accept": "application/json, text/plain, */*",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
     }
+
+def _parse_iso_datetime(value):
+    try:
+        return datetime.datetime.fromisoformat(str(value or '').replace('Z', '+00:00')).replace(tzinfo=None)
+    except (TypeError, ValueError):
+        return None
+
+def _load_launch_site_coordinates():
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'launch_sites.csv')
+    sites = {}
+    try:
+        with open(path, 'r', encoding='utf-8') as handle:
+            for row in csv.DictReader(handle):
+                name = str(row.get('name', '') or '').strip().casefold()
+                if not name:
+                    continue
+                try:
+                    sites[name] = (float(row['latitude']), float(row['longitude']))
+                except (KeyError, TypeError, ValueError):
+                    continue
+    except OSError as exc:
+        print(f"[launch-context] Unable to read launch_sites.csv: {exc}")
+    return sites
+
+def fetch_upcoming_launch_context():
+    """Return upcoming launches with a known site and exact UTC launch time."""
+    try:
+        response = requests.get(UPCOMING_LAUNCH_URL, headers=make_headers(), timeout=30)
+        if response.status_code != 200:
+            print(f"[launch-context] Upcoming launch feed unavailable: HTTP {response.status_code}")
+            return []
+        payload = response.json()
+    except Exception as exc:
+        print(f"[launch-context] Error fetching upcoming launches: {exc}")
+        return []
+
+    sites = _load_launch_site_coordinates()
+    records = payload.get('result', []) if isinstance(payload, dict) else []
+    contexts = []
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        launch_time = _parse_iso_datetime(record.get('t0'))
+        location = ((record.get('pad') or {}).get('location') or {})
+        location_name = str(location.get('name', '') or '').strip()
+        coordinates = sites.get(location_name.casefold())
+        if not launch_time or not coordinates:
+            continue
+        contexts.append({
+            'mission': str(record.get('name', '') or '').strip(),
+            'time': launch_time,
+            'site': location_name,
+            'lat': coordinates[0],
+            'lon': coordinates[1],
+        })
+    print(f"[launch-context] Upcoming launches with mapped sites: {len(contexts)}")
+    return contexts
+
+def _great_circle_distance_nm(origin, destination):
+    lat1, lon1 = map(math.radians, origin)
+    lat2, lon2 = map(math.radians, destination)
+    dlat, dlon = lat2 - lat1, lon2 - lon1
+    value = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+    return 3440.065 * 2 * math.atan2(math.sqrt(value), math.sqrt(max(0.0, 1.0 - value)))
+
+def _extract_raw_coordinate_points(raw):
+    pattern = re.compile(r'(\d{6})([NS])\s+(\d{7})([EW])', re.I)
+    return [
+        [_parse_coord_val(match.group(1), match.group(2)),
+         _parse_coord_val(match.group(3), match.group(4))]
+        for match in pattern.finditer(str(raw or ''))
+    ]
+
+def _build_straight_line_corridor_polygon(raw):
+    """Buffer ICAO `NM EITHER SIDE OF A STRAIGHT LINE` geometry."""
+    match = re.search(
+        r'(\d+(?:\.\d+)?)\s*NM\s+EITHER\s+SIDE\s+OF\s+A\s+STRAIGHT\s+LINE\s+'
+        r'DEFINED\s+BY\s*:(.*?)(?:\s+F\)|$)',
+        str(raw or ''),
+        re.I | re.S,
+    )
+    if not match:
+        return []
+    width_nm = float(match.group(1))
+    points = _extract_raw_coordinate_points(match.group(2))
+    if len(points) < 2:
+        return []
+
+    left, right = [], []
+    for index, point in enumerate(points):
+        before = points[max(0, index - 1)]
+        after = points[min(len(points) - 1, index + 1)]
+        bearing = _faa_bearing_deg(before, after)
+        left.append(_faa_destination_point(point, bearing - 90.0, width_nm))
+        right.append(_faa_destination_point(point, bearing + 90.0, width_nm))
+    return left + list(reversed(right))
+
+def _has_high_launch_ceiling(notam):
+    raw = str(notam.get('raw', '') or '')
+    if re.search(r'\bG\)\s*UNL\b', raw, re.I):
+        return True
+    qline = re.search(r'Q\)\s*[A-Z0-9]{4}/[A-Z0-9]{5}/[^/]+/[^/]+/[^/]+/(\d{3})/(\d{3})/', raw, re.I)
+    return bool(qline and int(qline.group(2)) >= SILENT_LAUNCH_MIN_CEILING_FL)
+
+def _schedule_allows_time(raw, event_time):
+    """Honor common ICAO D-line schedules instead of the broad B/C envelope."""
+    match = re.search(r'\bD\)\s*(.*?)\s+E\)', str(raw or ''), re.I | re.S)
+    if not match:
+        return True
+    schedule = re.sub(r'\s+', ' ', match.group(1)).strip().upper()
+    hhmm = event_time.hour * 100 + event_time.minute
+
+    daily = re.fullmatch(r'DAILY\s+(\d{4})-(\d{4})', schedule)
+    if daily:
+        return int(daily.group(1)) <= hhmm <= int(daily.group(2))
+
+    month_names = {name.upper(): number for number, name in enumerate(
+        ('', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+         'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC')
+    ) if name}
+    dated_windows = re.findall(r'([A-Z]{3})\s+(\d{1,2})\s+(\d{4})-(\d{4})', schedule)
+    if dated_windows:
+        for month, day, start, end in dated_windows:
+            if month_names.get(month) == event_time.month and int(day) == event_time.day:
+                return int(start) <= hhmm <= int(end)
+        return False
+
+    # Complex weekly/conditional schedules are not sufficiently precise for
+    # automatic launch correlation; explicit aerospace wording can still pass.
+    return False
+
+def _correlate_silent_launch_notam(notam, launch_contexts):
+    """Trust otherwise-generic danger/prohibited areas only with launch evidence."""
+    qcode = str(notam.get('notamCode', '') or '').strip().upper()
+    if qcode not in SILENT_LAUNCH_QCODES or not _has_high_launch_ceiling(notam):
+        return ''
+    begin = _parse_iso_datetime(notam.get('from'))
+    end = _parse_iso_datetime(notam.get('to'))
+    if not begin or not end:
+        return ''
+
+    raw = str(notam.get('raw', '') or '')
+    points = _extract_raw_coordinate_points(raw)
+    if not points and notam.get('latitude') != '' and notam.get('longitude') != '':
+        try:
+            points = [[float(notam['latitude']), float(notam['longitude'])]]
+        except (TypeError, ValueError):
+            points = []
+    tolerance = timedelta(minutes=SILENT_LAUNCH_TIME_TOLERANCE_MINUTES)
+    for launch in launch_contexts or []:
+        launch_time = launch.get('time')
+        if not isinstance(launch_time, datetime.datetime):
+            continue
+        if launch_time < begin - tolerance or launch_time > end + tolerance:
+            continue
+        if not _schedule_allows_time(raw, launch_time):
+            continue
+        site = (float(launch['lat']), float(launch['lon']))
+        if not points or min(_great_circle_distance_nm(site, point) for point in points) > SILENT_LAUNCH_MAX_DISTANCE_NM:
+            continue
+        notam['_trusted_launch_source'] = True
+        notam['_launch_match'] = str(launch.get('mission', '') or '')
+        corridor = _build_straight_line_corridor_polygon(raw)
+        if corridor:
+            notam['polygon'] = corridor
+            notam['latitude'] = round(sum(point[0] for point in corridor) / len(corridor), 6)
+            notam['longitude'] = round(sum(point[1] for point in corridor) / len(corridor), 6)
+            notam['radius'] = ''
+        return notam['_launch_match']
+    return ''
 
 def _is_in_time_window(from_str, to_str):
     """Return True if the record is not expired and not too far in the future."""
@@ -527,7 +706,7 @@ def fetch_global_notam_supplement():
     print(f"[global] Supplemental NOTAMs after filter: {len(rows)}")
     return rows
 
-def fetch_faa_notams():
+def fetch_faa_notams(launch_contexts=()):
     rows = []
     headers = {
         **make_headers(),
@@ -535,13 +714,21 @@ def fetch_faa_notams():
         "Origin": "https://notams.aim.faa.gov",
         "Referer": "https://notams.aim.faa.gov/notamSearch/nsapp.html",
     }
+    active_launch_firs = set()
+    for launch in launch_contexts or []:
+        active_launch_firs.update(LAUNCH_SITE_FIRS.get(str(launch.get('site', '')).casefold(), set()))
 
     for fir in FAA_SUPPLEMENTAL_FIRS:
         session = requests.Session()
         session.headers.update(headers)
         offset = 0
         pages_fetched = 0
-        while pages_fetched < FAA_MAX_PAGES_PER_FIR:
+        page_limit = (
+            FAA_MAX_PAGES_FOR_ACTIVE_LAUNCH_FIR
+            if fir in active_launch_firs
+            else FAA_MAX_PAGES_PER_FIR
+        )
+        while pages_fetched < page_limit:
             payload = {
                 "searchType": "0",
                 "designatorsForLocation": fir,
@@ -580,6 +767,9 @@ def fetch_faa_notams():
                         'radius': radius,
                         'notamCode': qcode
                     }
+                    launch_match = _correlate_silent_launch_notam(n, launch_contexts)
+                    if launch_match:
+                        print(f"[faa] Correlated {notam_num} with upcoming launch: {launch_match}")
                     if not _passes_filters(n):
                         continue
                     rows.append({
@@ -955,8 +1145,9 @@ def main():
     print("Aerospace NOTAM Fetcher (notammap.org)")
     print("=" * 60)
 
+    launch_contexts = fetch_upcoming_launch_context()
     items = fetch_notammap()
-    supplemental = fetch_faa_notams()
+    supplemental = fetch_faa_notams(launch_contexts)
     faa_tfrs = fetch_faa_space_tfrs()
     global_supplement = fetch_global_notam_supplement()
     items = merge_notams(items, supplemental)

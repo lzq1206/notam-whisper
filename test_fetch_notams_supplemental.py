@@ -9,7 +9,10 @@ from fetch_notams import (
     fetch_country,
     fetch_notammap,
     merge_notams,
+    _build_straight_line_corridor_polygon,
+    _correlate_silent_launch_notam,
 )
+import datetime
 
 
 def test_normalize_notam_number():
@@ -46,6 +49,7 @@ def test_faa_supplemental_firs_include_zxxx():
     assert 'ZXXX' in FAA_SUPPLEMENTAL_FIRS
     assert 'ZBPE' in FAA_SUPPLEMENTAL_FIRS
     assert 'RPHI' in FAA_SUPPLEMENTAL_FIRS
+    assert 'UACN' in FAA_SUPPLEMENTAL_FIRS
 
 
 def test_fetch_country_retries_retryable_status():
@@ -218,6 +222,95 @@ def test_passes_filters_does_not_treat_airspace_as_space_keyword():
         'from': '',
         'to': '',
     }) is False
+
+
+def test_silent_baikonur_launch_notams_require_time_and_space_correlation():
+    launch = [{
+        'mission': 'Soyuz MS-29',
+        'time': datetime.datetime(2026, 7, 14, 14, 47),
+        'site': 'Baikonur Cosmodrome',
+        'lat': 45.964,
+        'lon': 63.305,
+    }]
+    raw = (
+        'K1569/26 NOTAMN Q) UAXX/QRPCA/IV/NBO/W /000/999/4859N07306E435 '
+        'A) UACN UAAA UAII B) 2607141447 C) 2607141522 '
+        'E) PROHIBITED AREA ACTIVATED 40.5 NM EITHER SIDE OF A STRAIGHT LINE '
+        'DEFINED BY: 455946N 0633351E - 473200N 0680000E - '
+        '503000N 0801200E - 505600N 0834100E F) GND G) UNL'
+    )
+    notam = {
+        'raw': raw,
+        'notamCode': 'QRPCA',
+        'from': '2026-07-14T14:47:00Z',
+        'to': '2026-07-14T15:22:00Z',
+        'latitude': 48.983333,
+        'longitude': 73.1,
+        'radius': '',
+    }
+
+    assert _passes_filters(dict(notam)) is False
+    assert _correlate_silent_launch_notam(notam, launch) == 'Soyuz MS-29'
+    assert _passes_filters(notam) is True
+    assert len(notam['polygon']) == 8
+
+    unrelated_time = dict(notam)
+    unrelated_time.pop('_trusted_launch_source', None)
+    unrelated_time.pop('_launch_match', None)
+    unrelated_time['from'] = '2026-07-14T16:13:00Z'
+    unrelated_time['to'] = '2026-07-14T16:43:00Z'
+    assert _correlate_silent_launch_notam(unrelated_time, launch) == ''
+    assert _passes_filters(unrelated_time) is False
+
+    daily_area = dict(notam)
+    daily_area.pop('_trusted_launch_source', None)
+    daily_area.pop('_launch_match', None)
+    daily_area['raw'] = (
+        'C4542/26 NOTAMN Q) UATT/QRPCA/IV/NBO/W /000/999/4824N04814E061 '
+        'A) UATT B) 2607140600 C) 2607191400 D) DAILY 0600-1400 '
+        'E) PROHIBITED AREA ACTIVATED F) GND G) UNL'
+    )
+    daily_area['from'] = '2026-07-14T06:00:00Z'
+    daily_area['to'] = '2026-07-19T14:00:00Z'
+    daily_area['latitude'] = 48.4
+    daily_area['longitude'] = 48.233333
+    assert _correlate_silent_launch_notam(daily_area, launch) == ''
+
+
+def test_named_danger_area_can_match_launch_without_rocket_keyword():
+    launch = [{
+        'mission': 'Soyuz MS-29',
+        'time': datetime.datetime(2026, 7, 14, 14, 47),
+        'site': 'Baikonur Cosmodrome',
+        'lat': 45.964,
+        'lon': 63.305,
+    }]
+    notam = {
+        'raw': (
+            'K1599/26 NOTAMN Q) UACN/QRDCA/IV/BO /W /000/999/4723N06722E022 '
+            'A) UACN B) 2607141430 C) 2607181630 '
+            'E) DANGER AREA UAD26 ACTIVATED. F) GND G) UNL'
+        ),
+        'notamCode': 'QRDCA',
+        'from': '2026-07-14T14:30:00Z',
+        'to': '2026-07-18T16:30:00Z',
+        'latitude': 47.383333,
+        'longitude': 67.366667,
+        'radius': '022',
+    }
+    assert _correlate_silent_launch_notam(notam, launch) == 'Soyuz MS-29'
+    assert _passes_filters(notam) is True
+
+
+def test_straight_line_corridor_geometry_is_buffered_not_centerline():
+    raw = (
+        'E) PROHIBITED AREA ACTIVATED 40.5 NM EITHER SIDE OF A STRAIGHT LINE '
+        'DEFINED BY: 455946N 0633351E - 473200N 0680000E - '
+        '503000N 0801200E - 505600N 0834100E F) GND G) UNL'
+    )
+    polygon = _build_straight_line_corridor_polygon(raw)
+    assert len(polygon) == 8
+    assert polygon[0] != [45.996111, 63.564167]
 
 
 def test_fetch_notammap_exits_when_country_list_empty():
