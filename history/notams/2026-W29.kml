@@ -78,18 +78,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B3425/2026</name>
-      <description>B3425/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1901N12354E034  A) RPHI B) 2607171144 C) 2607171343  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.   EST FALL AREA OF UNBURNED DEBRIS WI:  192000N 1232600E -  191500N 1242600E -  184200N 1242300E -  184600N 1232300E -  192000N 1232600E  (99NM NE OF LALLO AP).  F) SFC G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>123.433333,19.333333,0 124.433333,19.25,0 124.383333,18.7,0 123.383333,18.766667,0 123.433333,19.333333,0 123.433333,19.333333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>J19/2026</name>
       <description>J0019/26 NOTAMN  Q) EISN/QRTCA/IV/BO /W /000/031/5408N00947W001  A) EISN B) 2605210919 C) 2608200000EST  E) FLIGHT RESTRICTION IN THE VICINITY OF BANGOR ERRIS, COUNTY MAYO  A TEMPORARY RESTRICTION ON THE FLYING OF AIRCRAFT, INCLUDING  UNMANNED AIRCRAFT SYSTEMS (UAS) AS DEFINED IN S.I. NO. 24 OF 2023  AND COMMISSION IMPLEMENTING REGULATION (EU) 2019/947, AND ROCKETS AS   DEFINED IN S.I. NO. 25 OF 2023, SHALL APPLY IN THE TEMPORARY   RESTRICTED AREA (TRA) CONTAINED WITHIN THE VOLUME OF AIRSPACE   </description>
       <styleUrl>#circleStyle</styleUrl>
@@ -210,8 +198,32 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>FDC 6/5292</name>
-      <description>FDC 6/5292 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Thursday, July 16, 2026 through Thursday, July 16, 2026 Local. NOTAM Number : FDC 6/5292 Download shapefiles Issue Date : July 13, 2026 at 1903 UTC Location : Starbase, Texas Beginning Date and Time : July 16, 2026 at 2215 UTC Ending Date and Time : July 17, 2026 at 0015 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To: Affected Areas </description>
+      <name>FDC 6/5388</name>
+      <description>FDC 6/5388 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Friday, July 17, 2026 through Friday, July 17, 2026 Local. NOTAM Number : FDC 6/5388 Download shapefiles Issue Date : July 13, 2026 at 2114 UTC Location : Starbase, Texas Beginning Date and Time : July 17, 2026 at 2230 UTC Ending Date and Time : July 18, 2026 at 0054 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : 6/5293: Due to schedule Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To:</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.033333,26.1,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/5373</name>
+      <description>FDC 6/5373 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Thursday, July 16, 2026 through Thursday, July 16, 2026 Local. NOTAM Number : FDC 6/5373 Download shapefiles Issue Date : July 13, 2026 at 2114 UTC Location : Starbase, Texas Beginning Date and Time : July 16, 2026 at 2230 UTC Ending Date and Time : July 17, 2026 at 0054 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : 6/5292: Due to schedule Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.033333,26.1,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/5369</name>
+      <description>FDC 6/5369 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Saturday, July 18, 2026 through Saturday, July 18, 2026 Local. NOTAM Number : FDC 6/5369 Download shapefiles Issue Date : July 13, 2026 at 2108 UTC Location : Starbase, Texas Beginning Date and Time : July 18, 2026 at 2230 UTC Ending Date and Time : July 19, 2026 at 0054 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : 6/5295: Due to schedule Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
@@ -361,6 +373,30 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>128.15,22.1,0 127.25,22.416667,0 127.15,22.166667,0 128.05,21.85,0 128.15,22.1,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B3425/2026</name>
+      <description>B3425/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1901N12354E034  A) RPHI B) 2607171144 C) 2607171343  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.   EST FALL AREA OF UNBURNED DEBRIS WI:  192000N 1232600E -  191500N 1242600E -  184200N 1242300E -  184600N 1232300E -  192000N 1232600E  (99NM NE OF LALLO AP).  F) SFC G) UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>123.433333,19.333333,0 124.433333,19.25,0 124.383333,18.7,0 123.383333,18.766667,0 123.433333,19.333333,0 123.433333,19.333333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/5292</name>
+      <description>FDC 6/5292 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Thursday, July 16, 2026 through Thursday, July 16, 2026 Local. NOTAM Number : FDC 6/5292 Download shapefiles Issue Date : July 13, 2026 at 1903 UTC Location : Starbase, Texas Beginning Date and Time : July 16, 2026 at 2215 UTC Ending Date and Time : July 17, 2026 at 0015 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To: Affected Areas </description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.033333,26.1,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0 -97.166667,25.933333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -1277,18 +1313,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-8.162240544930572,52.233333,0 -8.163067405078657,52.239121272588896,0 -8.165522861795722,52.24473367144419,0 -8.169532307271943,52.24999966666667,0 -8.1749739165354,52.25475925365622,0 -8.18168234904221,52.25886781477063,0 -8.189453772465285,52.26220051345948,0 -8.198052056036445,52.26465608735953,0 -8.207215945260321,52.26615992510041,0 -8.216667,52.26666633333333,0 -8.226118054739677,52.26615992510041,0 -8.235281943963553,52.26465608735953,0 -8.243880227534714,52.26220051345948,0 -8.251651650957788,52.25886781477063,0 -8.258360083464598,52.25475925365622,0 -8.263801692728055,52.24999966666667,0 -8.267811138204276,52.24473367144419,0 -8.270266594921342,52.239121272588896,0 -8.271093455069426,52.233333,0 -8.270266594921342,52.22754472741111,0 -8.267811138204276,52.221932328555816,0 -8.263801692728055,52.216666333333336,0 -8.258360083464598,52.211906746343786,0 -8.251651650957788,52.20779818522937,0 -8.243880227534714,52.20446548654052,0 -8.235281943963553,52.20200991264047,0 -8.226118054739677,52.20050607489959,0 -8.216667,52.19999966666667,0 -8.207215945260321,52.20050607489959,0 -8.198052056036445,52.20200991264047,0 -8.189453772465285,52.20446548654052,0 -8.18168234904221,52.20779818522937,0 -8.1749739165354,52.211906746343786,0 -8.169532307271943,52.216666333333336,0 -8.165522861795722,52.221932328555816,0 -8.163067405078657,52.22754472741111,0 -8.162240544930572,52.233333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>D114/2026</name>
-      <description>D0114/26 NOTAMN  Q) EISN/QRDCA/IV/BO /W /000/150/5259N00628W005  A) EISN B) 2607130900 C) 2607132200  E) DANGER AREA EID5 GLEN OF IMAAL, CO. WICKLOW ACTIVATED  F) GND G) 15000FT AMSL</description>
-      <styleUrl>#circleStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-6.328250415255419,52.983333,0 -6.330353274198066,52.99780368147225,0 -6.33659795672113,53.01183467861048,0 -6.346794721306111,53.024999666666666,0 -6.360633744420906,53.03689863414055,0 -6.377694534351057,53.04717003692658,0 -6.39745870762771,53.05550178364871,0 -6.419325739847009,53.06164071839883,0 -6.442631212300223,53.06540031275102,0 -6.466667,53.06666633333334,0 -6.490702787699777,53.06540031275102,0 -6.514008260152991,53.06164071839883,0 -6.535875292372291,53.05550178364871,0 -6.555639465648944,53.04717003692658,0 -6.572700255579094,53.03689863414055,0 -6.586539278693889,53.024999666666666,0 -6.59673604327887,53.01183467861048,0 -6.602980725801935,52.99780368147225,0 -6.605083584744581,52.983333,0 -6.602980725801935,52.968862318527755,0 -6.59673604327887,52.95483132138953,0 -6.586539278693889,52.94166633333334,0 -6.572700255579094,52.929767365859455,0 -6.555639465648944,52.91949596307342,0 -6.535875292372291,52.911164216351295,0 -6.514008260152991,52.905025281601176,0 -6.490702787699777,52.90126568724899,0 -6.466667,52.899999666666666,0 -6.442631212300223,52.90126568724899,0 -6.419325739847009,52.905025281601176,0 -6.39745870762771,52.911164216351295,0 -6.377694534351057,52.91949596307342,0 -6.360633744420906,52.929767365859455,0 -6.346794721306111,52.94166633333334,0 -6.33659795672113,52.95483132138953,0 -6.330353274198066,52.968862318527755,0 -6.328250415255419,52.983333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -2723,14 +2747,6 @@
       <styleUrl>#circleStyle</styleUrl>
       <Point>
         <coordinates>75.383333,30.916667,0</coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>A1510/2026</name>
-      <description> A1510/26 NOTAMN Q) VIXX/QRTCA/IV/BO/W/000/999/2834N07707E999 A) VIDF VABF  PART 1 OF 7  B) 2607130000  C) 2607132359  E) AIRSPACE USE PLAN (AUP)   TSA/TRA /AMC-MANAGEABLE AIRSPACE ACT AS FLW :   NR AIRSPACE ID TIME FM TIME TO LOWER FL UPPER FL   1 TRA503(A) ?PUNE? 0130 1200 FL325 FL460   2 TRA503(A) ?PUNE? 1330 1730 FL325 FL460   3 TRA503(B) ?PUNE? 0130 1200 FL325 FL460   4 TRA503(B) ?PUNE? 1330 1730 FL325 FL460   5 TRA506(A) ?JAMNAGAR? 0330 0830 FL325 FL360   6 TRA506(B) ?JAMNAGAR? 0330 0830 F</description>
-      <styleUrl>#circleStyle</styleUrl>
-      <Point>
-        <coordinates>77.116667,28.566667,0</coordinates>
       </Point>
     </Placemark>
     <Placemark>
