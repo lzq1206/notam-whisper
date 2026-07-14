@@ -356,6 +356,7 @@
         from_label: 'from',
         to_label: 'to',
         qcode_label: 'qcode',
+        overlapping_notams: '重叠 NOTAM（{count} 条）',
         status_csv_fallback: 'CSV不可用，已回退显示 notams.kml',
         status_all_failed: '所有数据源均加载失败',
         launch_loading: '加载火箭数据…',
@@ -431,6 +432,7 @@
         from_label: 'from',
         to_label: 'to',
         qcode_label: 'qcode',
+        overlapping_notams: 'Overlapping NOTAMs ({count})',
         status_csv_fallback: 'CSV unavailable, showing notams.kml fallback',
         status_all_failed: 'All data sources failed to load',
         launch_loading: 'Loading launch data…',
@@ -873,6 +875,12 @@
 
           const fromTs = Date.parse(r.from_utc);
           const isMaritime = isMsiOrMaritime(r);
+          const overlapping = isMaritime ? [r] : overlappingNotamRows(r, rows);
+          if (overlapping[0] !== r) return;
+          const popup = buildNotamPopup(r, rows);
+          const displayId = overlapping.length > 1
+            ? t('overlapping_notams', { count: overlapping.length })
+            : (r.notam_id || 'NOTAM');
           const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
           const color = Cesium.Color.fromCssColorString(colorHex) || Cesium.Color.RED;
           const radiusNm = parseFloat(r.radius_nm || '0');
@@ -888,7 +896,7 @@
           addCesiumEntity({
             position: Cesium.Cartesian3.fromDegrees(lon, lat),
             label: {
-              text: (isMaritime ? 'MSI: ' : '') + (r.notam_id || 'NOTAM'),
+              text: (isMaritime ? 'MSI: ' : '') + displayId,
               font: '8pt sans-serif',
               fillColor: color,
               outlineColor: isGlow ? Cesium.Color.WHITE : Cesium.Color.BLACK,
@@ -898,7 +906,7 @@
               pixelOffset: new Cesium.Cartesian2(0, -10),
               eyeOffset: new Cesium.Cartesian3(0, 0, -500)
             },
-            description: r['raw'] || ''
+            description: popup
           }, solarSelection);
 
           // Render Polygon/Circle
@@ -938,7 +946,7 @@
                      outlineWidth: isGlow ? 4 : 2,
                      height: 100
                    },
-                   description: r['raw'] || ''
+                   description: popup
                  };
                  if (isGlow) {
                    addCesiumEntity({
@@ -969,7 +977,7 @@
                 outlineWidth: isGlow ? 4 : 2,
                 height: 100
               },
-              description: r['raw'] || ''
+              description: popup
             }, solarSelection);
             if (isGlow) {
               // Circle glow in 3D
@@ -1274,6 +1282,71 @@
 
     let filteredDataRows = [];
 
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function notamGeometryKey(row) {
+      if (!row || isMsiOrMaritime(row)) return '';
+      const polygon = String(row.polygon || '').trim();
+      if (polygon) {
+        try {
+          return `polygon:${JSON.stringify(JSON.parse(polygon))}`;
+        } catch (e) {
+          return `polygon:${polygon.replace(/\s+/g, '')}`;
+        }
+      }
+      const lat = Number.parseFloat(row.lat);
+      const lon = Number.parseFloat(row.lon);
+      const radius = Number.parseFloat(row.radius_nm || '0');
+      if (![lat, lon, radius].every(Number.isFinite)) return '';
+      return `circle:${lat.toFixed(6)},${lon.toFixed(6)},${radius.toFixed(3)}`;
+    }
+
+    function overlappingNotamRows(row, rows) {
+      const key = notamGeometryKey(row);
+      if (!key) return [row];
+      return rows
+        .filter(candidate => notamGeometryKey(candidate) === key)
+        .slice()
+        .sort((a, b) => {
+          const timeOrder = (Date.parse(a.from_utc) || 0) - (Date.parse(b.from_utc) || 0);
+          return timeOrder || String(a.notam_id || '').localeCompare(String(b.notam_id || ''));
+        });
+    }
+
+    function buildNotamPopup(row, rows) {
+      const isMaritime = isMsiOrMaritime(row);
+      const overlapping = isMaritime ? [row] : overlappingNotamRows(row, rows);
+      const title = overlapping.length > 1
+        ? t('overlapping_notams', { count: overlapping.length })
+        : (row.notam_id || (isMaritime ? t('maritime_warning') : ''));
+      const cards = overlapping.map((r, index) => {
+        const open = overlapping.length === 1 || index === 0 ? ' open' : '';
+        const summary = escapeHtml(r.notam_id || t('unnamed'));
+        return `
+          <details${open} style="margin:5px 0;border-top:1px solid #ddd;padding-top:4px;">
+            <summary style="cursor:pointer;font-weight:600;">${summary}</summary>
+            ${t('fir_label')}: ${escapeHtml(r.fir || '')}<br/>
+            ${t('from_label')}: ${escapeHtml(formatUtcWithLocal(r.from_utc))}<br/>
+            ${t('to_label')}: ${escapeHtml(formatUtcWithLocal(r.to_utc))}<br/>
+            ${t('qcode_label')}: ${escapeHtml(r.qcode || '')}<br/>
+            <div style="margin-top:4px;white-space:pre-wrap;">${escapeHtml(r.raw || '')}</div>
+          </details>
+        `;
+      }).join('');
+      return `
+        <b>${escapeHtml(title)}</b><br/>
+        ${isMaritime ? `<b style="color:#ff9900;">${t('maritime_navwarning')}</b><br/>` : ''}
+        <div style="max-width:460px;max-height:320px;overflow:auto;">${cards}</div>
+      `;
+    }
+
     function renderRows(rows) {
       filteredDataRows = rows;
       if (is3D) {
@@ -1307,6 +1380,8 @@
         const radiusNm = Math.max(1, parseFloat(r.radius_nm || '1'));
         if (!isFinite(lat) || !isFinite(lon)) return;
         const isMaritime = isMsiOrMaritime(r);
+        const overlapping = isMaritime ? [r] : overlappingNotamRows(r, rows);
+        if (overlapping[0] !== r) return;
         const color = isMaritime ? '#ff9900' : colorByTime(Date.parse(r.from_utc), minTs, maxTs);
 
         let coordinatesList = [];
@@ -1333,16 +1408,7 @@
           coordinatesList = parseNotamPolygons(r.raw);
         }
 
-        const popup = `
-          <b>${r.notam_id || (isMaritime ? t('maritime_warning') : '')}</b><br/>
-          ${isMaritime ? `<b style="color:#ff9900;">${t('maritime_navwarning')}</b><br/>` : ''}
-          ${t('fir_label')}: ${r.fir || ''}<br/>
-          ${t('from_label')}: ${formatUtcWithLocal(r.from_utc)}<br/>
-          ${t('to_label')}: ${formatUtcWithLocal(r.to_utc)}<br/>
-          ${t('qcode_label')}: ${r.qcode || ''}<br/>
-          <hr/>
-          <div style="max-width:420px;max-height:260px;overflow:auto;white-space:pre-wrap;">${(r.raw || '').replace(/</g, '&lt;')}</div>
-        `;
+        const popup = buildNotamPopup(r, rows);
 
         const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
         const pathOptions = { 
