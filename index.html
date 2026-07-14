@@ -1212,16 +1212,36 @@
       for (const t in groups) {
         let currentSubGroup = [];
         let lastIndex = -1;
+        let previousPoint = null;
         for (const pt of groups[t]) {
-          if (lastIndex === -1 || (pt.index - lastIndex) < 150) {
-            currentSubGroup.push([pt.lat, pt.lon]);
-          } else {
-            if (currentSubGroup.length >= 2) allValidSubGroups.push(currentSubGroup);
-            currentSubGroup = [[pt.lat, pt.lon]];
+          const point = [pt.lat, pt.lon];
+          const samePoint = (a, b) => Math.abs(a[0] - b[0]) < 1e-8 && Math.abs(a[1] - b[1]) < 1e-8;
+
+          // Parenthesized closure coordinates are commonly duplicated. Drop
+          // only adjacent duplicates, while retaining first-point repeats so
+          // they can terminate the current polygon ring.
+          if (previousPoint && samePoint(previousPoint, point)) {
+            lastIndex = pt.index;
+            continue;
           }
+
+          if (lastIndex !== -1 && (pt.index - lastIndex) >= 150) {
+            if (currentSubGroup.length >= 3) allValidSubGroups.push(currentSubGroup);
+            currentSubGroup = [];
+          }
+
+          currentSubGroup.push(point);
+          previousPoint = point;
           lastIndex = pt.index;
+
+          if (currentSubGroup.length >= 4 && samePoint(currentSubGroup[0], currentSubGroup[currentSubGroup.length - 1])) {
+            const closedRing = currentSubGroup.slice(0, -1);
+            if (closedRing.length >= 3) allValidSubGroups.push(closedRing);
+            currentSubGroup = [];
+            lastIndex = -1;
+          }
         }
-        if (currentSubGroup.length >= 2) allValidSubGroups.push(currentSubGroup);
+        if (currentSubGroup.length >= 3) allValidSubGroups.push(currentSubGroup);
       }
       return allValidSubGroups;
     }

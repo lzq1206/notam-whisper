@@ -313,6 +313,37 @@ def test_straight_line_corridor_geometry_is_buffered_not_centerline():
     assert polygon[0] != [45.996111, 63.564167]
 
 
+def test_raw_coordinate_parser_keeps_f2572_as_one_three_vertex_ring():
+    from fetch_notams import _extract_raw_coordinate_rings
+
+    raw = (
+        'F2572/26 NOTAMN Q) YMMM/QWMLW/IV/BO/W/000/999/6230S16247E020 '
+        'A) YMMM E) CHARACTERISTICS OF IMPACT AREA: '
+        '621200S 1630000E 624100S 1630000E 623300S 1623336E '
+        '621200S 1630000E F) SFC G) UNL'
+    )
+    rings = _extract_raw_coordinate_rings(raw)
+    assert rings == [[[-62.2, 163.0], [-62.683333, 163.0], [-62.55, 162.56]]]
+
+
+def test_raw_coordinate_parser_splits_a5852_into_two_closed_rings():
+    from fetch_notams import _extract_raw_coordinate_rings
+
+    raw = (
+        'A5852/26 NOTAMN Q) ENOB/QRDCA/IV/BO/W/000/999/7540N02149E051 '
+        'A) ENOB E) ACTIVATED PSN 763000N 0220000E - 752000N 0244000E - '
+        '745000N 0214000E - 755000N 0184000E - 763000N 0220000E - '
+        '(763000N 0220000E) IMPACT AREA. SIMILAR ACTIVITIES AT PSN '
+        '705600N 0320500E - 701000N 0320500E - 700928N 0320152E - '
+        '701500N 0315000E - 703007N 0315000E - 703622N 0314318E - '
+        '705600N 0320500E - (705600N 0320500E) F) GND G) UNL'
+    )
+    rings = _extract_raw_coordinate_rings(raw)
+    assert [len(ring) for ring in rings] == [4, 6]
+    assert rings[0][0] == [76.5, 22.0]
+    assert rings[1][0] == [70.933333, 32.083333]
+
+
 def test_fetch_notammap_exits_when_country_list_empty():
     """fetch_notammap() must abort (sys.exit(1)) when notammap.org returns no countries."""
     import fetch_notams

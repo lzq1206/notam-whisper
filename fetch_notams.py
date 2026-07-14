@@ -987,6 +987,65 @@ def _parse_coord_val(digits, hemi):
     except:
         return 0.0
 
+def _same_coordinate(a, b, tolerance=1e-6):
+    return abs(a[0] - b[0]) <= tolerance and abs(a[1] - b[1]) <= tolerance
+
+def _split_coordinate_rings(indexed_points, max_gap=150):
+    """Split raw NOTAM points at explicit ring closures or large text gaps."""
+    rings = []
+    current = []
+    last_index = None
+    previous_point = None
+
+    for point, index in indexed_points:
+        # Parenthesized NOTAM closures often repeat the same closing point
+        # twice. Ignore only adjacent duplicates; a repeated first point is
+        # still needed to detect the end of a ring.
+        if previous_point is not None and _same_coordinate(previous_point, point):
+            last_index = index
+            continue
+
+        if current and last_index is not None and index - last_index >= max_gap:
+            if len(current) >= 3:
+                rings.append(current)
+            current = []
+
+        current.append(point)
+        previous_point = point
+        last_index = index
+
+        if len(current) >= 4 and _same_coordinate(current[0], current[-1]):
+            ring = current[:-1]
+            if len(ring) >= 3:
+                rings.append(ring)
+            current = []
+            last_index = None
+
+    if len(current) >= 3:
+        rings.append(current)
+    return rings
+
+def _extract_raw_coordinate_rings(raw):
+    """Extract one or more polygon rings from a raw ICAO NOTAM message."""
+    coord_regex = re.compile(
+        r'(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*'
+        r'(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|'
+        r'(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*'
+        r'(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))',
+        re.I,
+    )
+    cleaned = re.sub(r'Q\).*?(?=\s*A\))', '', str(raw or ''), flags=re.DOTALL)
+    indexed_points = []
+    for match in coord_regex.finditer(cleaned):
+        if match.group(1):
+            lat = _parse_coord_val(match.group(2), match.group(1))
+            lon = _parse_coord_val(match.group(4), match.group(3))
+        else:
+            lat = _parse_coord_val(match.group(5), match.group(6))
+            lon = _parse_coord_val(match.group(7), match.group(8))
+        indexed_points.append(([lat, lon], match.start()))
+    return _split_coordinate_rings(indexed_points)
+
 def csv_to_kml(csv_path, kml_path):
     rows = []
     with open(csv_path, 'r', encoding='utf-8') as f:
@@ -1023,43 +1082,32 @@ def csv_to_kml(csv_path, kml_path):
         ET.SubElement(pm, 'name').text = notam_id or fir or 'NOTAM'
         ET.SubElement(pm, 'description').text = raw[:500]
 
-        explicit_polygon = []
+        explicit_polygons = []
         if polygon_raw:
             try:
                 parsed = json.loads(polygon_raw)
                 if isinstance(parsed, list) and len(parsed) >= 3 and isinstance(parsed[0], list):
-                    explicit_polygon = parsed
+                    if parsed and parsed[0] and isinstance(parsed[0][0], (int, float)):
+                        explicit_polygons = [parsed]
+                    elif parsed and parsed[0] and isinstance(parsed[0][0], list):
+                        explicit_polygons = [ring for ring in parsed if len(ring) >= 3]
             except (ValueError, TypeError):
-                explicit_polygon = []
+                explicit_polygons = []
 
-        coord_regex = r'(?:([NS])\s*(\d{4,6}(?:[.,]\d+)?))\s*(?:([EW])\s*(\d{5,7}(?:[.,]\d+)?))|(?:(\d{4,6}(?:[.,]\d+)?)\s*([NS]))\s*(?:(\d{5,7}(?:[.,]\d+)?)\s*([EW]))'
-        cleaned = re.sub(r'Q\).*?(?=\s*A\))', '', raw, flags=re.DOTALL)
-        matches = list(re.finditer(coord_regex, cleaned, re.I))
+        raw_polygons = _extract_raw_coordinate_rings(raw)
+        polygons = explicit_polygons or raw_polygons
 
-        if explicit_polygon:
+        if polygons:
             ET.SubElement(pm, 'styleUrl').text = '#polyStyle'
-            poly = ET.SubElement(pm, 'Polygon')
-            outer = ET.SubElement(poly, 'outerBoundaryIs')
-            ring = ET.SubElement(outer, 'LinearRing')
-            coords_text = [f"{float(point[1])},{float(point[0])},0" for point in explicit_polygon]
-            coords_text.append(coords_text[0])
-            ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
-        elif len(matches) >= 3:
-            ET.SubElement(pm, 'styleUrl').text = '#polyStyle'
-            poly = ET.SubElement(pm, 'Polygon')
-            outer = ET.SubElement(poly, 'outerBoundaryIs')
-            ring = ET.SubElement(outer, 'LinearRing')
-            coords_text = []
-            for m in matches:
-                if m.group(1):
-                    mlat = _parse_coord_val(m.group(2), m.group(1))
-                    mlon = _parse_coord_val(m.group(4), m.group(3))
-                else:
-                    mlat = _parse_coord_val(m.group(5), m.group(6))
-                    mlon = _parse_coord_val(m.group(7), m.group(8))
-                coords_text.append(f"{mlon},{mlat},0")
-            coords_text.append(coords_text[0])
-            ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
+            geometry_parent = pm if len(polygons) == 1 else ET.SubElement(pm, 'MultiGeometry')
+            for points in polygons:
+                poly = ET.SubElement(geometry_parent, 'Polygon')
+                outer = ET.SubElement(poly, 'outerBoundaryIs')
+                ring = ET.SubElement(outer, 'LinearRing')
+                coords_text = [f"{float(point[1])},{float(point[0])},0" for point in points]
+                if coords_text and coords_text[-1] != coords_text[0]:
+                    coords_text.append(coords_text[0])
+                ET.SubElement(ring, 'coordinates').text = ' '.join(coords_text)
         elif radius and float(radius) > 0:
             ET.SubElement(pm, 'styleUrl').text = '#circleStyle'
             poly = ET.SubElement(pm, 'Polygon')
