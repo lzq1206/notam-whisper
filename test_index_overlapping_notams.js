@@ -24,6 +24,10 @@ const signatures = [
   'function escapeHtml(',
   'function notamGeometryKey(',
   'function overlappingNotamRows(',
+  'function launchDistanceKm(',
+  'function relatedLaunchesForRows(',
+  'function relatedWarningRowsForLaunch(',
+  'function notamDisplayTitle(',
   'function buildNotamPopup(',
 ];
 const blocks = signatures.map(signature => {
@@ -34,8 +38,10 @@ const blocks = signatures.map(signature => {
 
 global.isMsiOrMaritime = row => row && row.country === 'Maritime';
 global.formatUtcWithLocal = value => `${value} / Local`;
+global.upcomingLaunches = [];
 global.t = (key, vars = {}) => {
   if (key === 'overlapping_notams') return `Overlapping NOTAMs (${vars.count})`;
+  if (key === 'related_launch') return 'Related launch';
   return key;
 };
 for (const block of blocks) global.eval(block);
@@ -61,6 +67,45 @@ for (const id of ids) {
 }
 if (!popup.includes('Overlapping NOTAMs (6)')) throw new Error('Popup missing overlap count');
 if (popup.includes('<SPACE OPS>')) throw new Error('Raw HTML was not escaped');
+
+global.upcomingLaunches = [{
+  mission: 'Starship Flight 13',
+  ts: Date.parse('2026-07-16T22:45:00Z'),
+  lat: 25.997,
+  lon: -97.156,
+}];
+const starbasePolygon = JSON.stringify([[25.90, -97.20], [26.10, -97.20], [26.10, -97.00]]);
+const starbaseRows = [
+  {
+    country: 'USA', notam_id: 'FDC 6/5373', polygon: starbasePolygon,
+    fir: 'ZHU', from_utc: '2026-07-16T22:30:00Z', to_utc: '2026-07-17T00:54:00Z',
+    lat: '26.011905', lon: '-97.057143', raw: 'SPACE OPERATIONS',
+  },
+  {
+    country: 'USA', notam_id: 'FDC 6/5388', polygon: starbasePolygon,
+    fir: 'ZHU', from_utc: '2026-07-17T22:30:00Z', to_utc: '2026-07-18T00:54:00Z',
+    lat: '26.011905', lon: '-97.057143', raw: 'SPACE OPERATIONS',
+  },
+];
+const starbasePopup = buildNotamPopup(starbaseRows[0], starbaseRows);
+if (!starbasePopup.includes('Starship Flight 13')) throw new Error('Starship mission must be linked to its active TFR');
+if (!starbasePopup.includes('Related launch')) throw new Error('Related launch label is missing');
+
+const mismatchedVandenbergWarning = [{
+  country: 'Maritime', notam_id: 'NAVAREA XII 472/26',
+  from_utc: '2026-07-16T02:00:00Z', to_utc: '2026-07-16T06:43:00Z',
+  lat: '34.4', lon: '-120.35', raw: 'ROCKET LAUNCHING',
+}];
+const trancheLaunch = [{
+  mission: 'Tranche 1 Transport Layer E', ts: Date.parse('2026-07-16T20:32:00Z'),
+  lat: 34.4, lon: -120.35,
+}];
+if (relatedLaunchesForRows(mismatchedVandenbergWarning, trancheLaunch).length !== 0) {
+  throw new Error('Time-mismatched Vandenberg warning must not be attributed to Tranche');
+}
+if (relatedWarningRowsForLaunch(trancheLaunch[0], mismatchedVandenbergWarning).length !== 0) {
+  throw new Error('Tranche launch popup must not list the time-mismatched warning');
+}
 
 const renderRowsBlock = extractFunctionBlock(html, 'function renderRows(');
 const renderGlobeBlock = extractFunctionBlock(html, 'function renderOnGlobe(');

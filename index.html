@@ -357,6 +357,7 @@
         to_label: 'to',
         qcode_label: 'qcode',
         overlapping_notams: '重叠 NOTAM（{count} 条）',
+        related_launch: '关联发射',
         status_csv_fallback: 'CSV不可用，已回退显示 notams.kml',
         status_all_failed: '所有数据源均加载失败',
         launch_loading: '加载火箭数据…',
@@ -369,6 +370,8 @@
         launch_site_label: '发射场',
         launch_time_label: '时间',
         launch_details_link: '🔗 详情 / 直播',
+        launch_related_warnings: '已关联航天警告（{count} 条）',
+        launch_no_related_warning: '当前未发现时间和地点均匹配的 NOTAM / MSI',
         launch_past: '历史发射',
         launch_payload_label: '载荷',
         launch_result_label: '结果',
@@ -433,6 +436,7 @@
         to_label: 'to',
         qcode_label: 'qcode',
         overlapping_notams: 'Overlapping NOTAMs ({count})',
+        related_launch: 'Related launch',
         status_csv_fallback: 'CSV unavailable, showing notams.kml fallback',
         status_all_failed: 'All data sources failed to load',
         launch_loading: 'Loading launch data…',
@@ -445,6 +449,8 @@
         launch_site_label: 'Launch site',
         launch_time_label: 'Time',
         launch_details_link: '🔗 Details / Stream',
+        launch_related_warnings: 'Related aerospace warnings ({count})',
+        launch_no_related_warning: 'No NOTAM / MSI currently matches both the launch time and site',
         launch_past: 'Past launch',
         launch_payload_label: 'Payload',
         launch_result_label: 'Result',
@@ -878,9 +884,7 @@
           const overlapping = isMaritime ? [r] : overlappingNotamRows(r, rows);
           if (overlapping[0] !== r) return;
           const popup = buildNotamPopup(r, rows);
-          const displayId = overlapping.length > 1
-            ? t('overlapping_notams', { count: overlapping.length })
-            : (r.notam_id || 'NOTAM');
+          const displayId = notamDisplayTitle(r, rows);
           const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
           const color = Cesium.Color.fromCssColorString(colorHex) || Cesium.Color.RED;
           const radiusNm = parseFloat(r.radius_nm || '0');
@@ -1320,12 +1324,66 @@
         });
     }
 
+    function launchDistanceKm(lat1, lon1, lat2, lon2) {
+      const toRad = value => value * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+      return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function relatedLaunchesForRows(rows, launches = upcomingLaunches) {
+      const TIME_TOLERANCE_MS = 30 * 60 * 1000;
+      const MAX_SITE_DISTANCE_KM = 120;
+      const related = [];
+      const seen = new Set();
+      (launches || []).forEach(launch => {
+        const launchTs = Number(launch.ts);
+        const launchLat = Number.parseFloat(launch.lat);
+        const launchLon = Number.parseFloat(launch.lon);
+        if (![launchTs, launchLat, launchLon].every(Number.isFinite)) return;
+        const matched = (rows || []).some(row => {
+          const fromTs = Date.parse(row.from_utc);
+          const toTs = Date.parse(row.to_utc);
+          const rowLat = Number.parseFloat(row.lat);
+          const rowLon = Number.parseFloat(row.lon);
+          if (![fromTs, toTs, rowLat, rowLon].every(Number.isFinite)) return false;
+          const timeMatches = launchTs >= fromTs - TIME_TOLERANCE_MS &&
+            launchTs <= toTs + TIME_TOLERANCE_MS;
+          return timeMatches && launchDistanceKm(rowLat, rowLon, launchLat, launchLon) <= MAX_SITE_DISTANCE_KM;
+        });
+        if (!matched) return;
+        const key = `${launch.mission || ''}:${launchTs}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          related.push(launch);
+        }
+      });
+      return related.sort((a, b) => Number(a.ts) - Number(b.ts));
+    }
+
+    function relatedWarningRowsForLaunch(launch, rows) {
+      return (rows || []).filter(row => relatedLaunchesForRows([row], [launch]).length > 0);
+    }
+
+    function notamDisplayTitle(row, rows) {
+      const isMaritime = isMsiOrMaritime(row);
+      const overlapping = isMaritime ? [row] : overlappingNotamRows(row, rows);
+      const warningTitle = overlapping.length > 1
+        ? t('overlapping_notams', { count: overlapping.length })
+        : (row.notam_id || (isMaritime ? t('maritime_warning') : 'NOTAM'));
+      const related = relatedLaunchesForRows(overlapping);
+      return related.length
+        ? `${related.map(launch => launch.mission).filter(Boolean).join(' / ')} · ${warningTitle}`
+        : warningTitle;
+    }
+
     function buildNotamPopup(row, rows) {
       const isMaritime = isMsiOrMaritime(row);
       const overlapping = isMaritime ? [row] : overlappingNotamRows(row, rows);
-      const title = overlapping.length > 1
-        ? t('overlapping_notams', { count: overlapping.length })
-        : (row.notam_id || (isMaritime ? t('maritime_warning') : ''));
+      const related = relatedLaunchesForRows(overlapping);
+      const title = notamDisplayTitle(row, rows);
       const cards = overlapping.map((r, index) => {
         const open = overlapping.length === 1 || index === 0 ? ' open' : '';
         const summary = escapeHtml(r.notam_id || t('unnamed'));
@@ -1342,6 +1400,7 @@
       }).join('');
       return `
         <b>${escapeHtml(title)}</b><br/>
+        ${related.length ? `<div style="margin-top:3px;color:#b91c1c;"><b>🚀 ${t('related_launch')}:</b> ${related.map(launch => escapeHtml(launch.mission || '')).join(' / ')}</div>` : ''}
         ${isMaritime ? `<b style="color:#ff9900;">${t('maritime_navwarning')}</b><br/>` : ''}
         <div style="max-width:460px;max-height:320px;overflow:auto;">${cards}</div>
       `;
@@ -2137,6 +2196,13 @@
             const isLaunchGlow = t0 ? isRocketCloudVisible(t0.toISOString(), t0.toISOString(), lat, lon) : false;
             const launchGlowStyle = isLaunchGlow ? 'box-shadow: 0 0 15px 4px #fff;' : 'border: 2px solid #fff;';
 
+            const launchRecord = {
+              lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color, ts: t0 ? t0.getTime() : null,
+              location: `${locName}${padName ? ' / ' + padName : ''}`,
+              weather: cleanWeatherString(weather),
+              description: desc,
+              url: rllUrl
+            };
             const lIcon = L.divIcon({
               html: `<div style="background:${color}; width:24px; height:24px; border-radius:50%; ${launchGlowStyle} display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
               className: 'launch-upcoming-icon',
@@ -2144,23 +2210,25 @@
               iconAnchor: [14, 14]
             });
             const lMarker = L.marker([lat, lon], { icon: lIcon, zIndexOffset: 2000 });
-            lMarker.bindPopup(`
-              <div style="font-size:12px;color:#666;">${t('launch_upcoming')}</div>
-              <b style="color:${color}">${missionName}</b><br/>
-              ${t('launch_site_label')}: ${locName}${padName ? ' / ' + padName : ''}<br/>
-              ${t('launch_time_label')}: ${dateStr}${weather}<br/>
-              ${desc ? '<hr/><div style="max-width:320px;max-height:120px;overflow:auto;font-size:11px;">' + desc + '</div>' : ''}
-              <a href="${rllUrl}" target="_blank" style="font-size:11px;">${t('launch_details_link')}</a><br/>
-              <small style="color:#888;">Data by RocketLaunch.Live</small>
-            `, { maxWidth: 340 });
+            lMarker.bindPopup(() => {
+              const relatedWarnings = relatedWarningRowsForLaunch(launchRecord, filteredDataRows);
+              const warningIds = [...new Set(relatedWarnings.map(row => row.notam_id || row.id).filter(Boolean))];
+              const warningStatus = warningIds.length
+                ? `<div style="margin-top:5px;color:#b91c1c;"><b>${t('launch_related_warnings', { count: warningIds.length })}:</b><br/>${warningIds.map(escapeHtml).join(' · ')}</div>`
+                : `<div style="margin-top:5px;color:#666;">${t('launch_no_related_warning')}</div>`;
+              return `
+                <div style="font-size:12px;color:#666;">${t('launch_upcoming')}</div>
+                <b style="color:${color}">${missionName}</b><br/>
+                ${t('launch_site_label')}: ${locName}${padName ? ' / ' + padName : ''}<br/>
+                ${t('launch_time_label')}: ${dateStr}${weather}<br/>
+                ${warningStatus}
+                ${desc ? '<hr/><div style="max-width:320px;max-height:120px;overflow:auto;font-size:11px;">' + desc + '</div>' : ''}
+                <a href="${rllUrl}" target="_blank" style="font-size:11px;">${t('launch_details_link')}</a><br/>
+                <small style="color:#888;">Data by RocketLaunch.Live</small>
+              `;
+            }, { maxWidth: 340 });
             lMarker.addTo(launchLayerGroup);
-            upcomingLaunches.push({
-              lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color, ts: t0 ? t0.getTime() : null,
-              location: `${locName}${padName ? ' / ' + padName : ''}`,
-              weather: cleanWeatherString(weather),
-              description: desc,
-              url: rllUrl
-            });
+            upcomingLaunches.push(launchRecord);
             upcomingCount++;
           });
         } catch (rllErr) {
