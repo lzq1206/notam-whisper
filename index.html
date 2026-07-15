@@ -61,7 +61,9 @@
       border-radius: 12px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, .6);
       font: 13px/1.5 sans-serif;
-      min-width: 320px;
+      width: min(354px, calc(100vw - 20px));
+      min-width: 0;
+      box-sizing: border-box;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -171,15 +173,21 @@
     .launch-history-details {
       margin-top: 7px;
       font-size: 11px;
+      width: 100%;
+      min-width: 0;
     }
 
     .launch-history-details summary {
       cursor: pointer;
       color: #fff;
+      overflow-wrap: anywhere;
     }
 
     .launch-history-list {
       max-height: 240px;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: hidden;
       overflow-y: auto;
       margin-top: 6px;
       border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -190,6 +198,8 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       color: #ddd;
       line-height: 1.35;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .past-launch-range {
@@ -505,6 +515,10 @@
     const SOLAR_NIGHT_OPACITY = 0.35;
     const solarOverlayPane = map.createPane('solarOverlayPane');
     solarOverlayPane.style.zIndex = 420;
+    const msiPane = map.createPane('msiPane');
+    msiPane.style.zIndex = 430;
+    const notamPane = map.createPane('notamPane');
+    notamPane.style.zIndex = 440;
     const solarOverlayLayer2D = L.layerGroup().addTo(map);
 
     let is3D = false;
@@ -742,6 +756,26 @@
       applySelectedNotamSolarOverlay();
     }
 
+    function launchSolarSelection(launch) {
+      const timestamp = Number(launch && launch.ts);
+      const lat = Number.parseFloat(launch && launch.lat);
+      const lon = Number.parseFloat(launch && launch.lon);
+      if (![timestamp, lat, lon].every(Number.isFinite)) return null;
+      return {
+        id: launch.mission || 'upcoming-launch',
+        midpoint: new Date(timestamp),
+        lat,
+        lon
+      };
+    }
+
+    function selectLaunchForSolarOverlay(launch) {
+      const selection = launchSolarSelection(launch);
+      if (!selection) return;
+      selectedNotamSolarState = selection;
+      applySelectedNotamSolarOverlay();
+    }
+
     map.on('moveend zoomend resize', () => {
       if (!is3D && selectedNotamSolarState && selectedNotamSolarState.midpoint) {
         renderSolarOverlay2D(selectedNotamSolarState.midpoint);
@@ -864,7 +898,7 @@
                 eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
               description: `<b>${launch.mission}</b><br/>${launch.dateStr}`
-            });
+            }, launchSolarSelection(launch));
           });
         }
 
@@ -887,6 +921,7 @@
           const displayId = notamDisplayTitle(r, rows);
           const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
           const color = Cesium.Color.fromCssColorString(colorHex) || Cesium.Color.RED;
+          const warningHeight = isMaritime ? 100 : 140;
           const radiusNm = parseFloat(r.radius_nm || '0');
           const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
           const solarSelection = isMaritime ? null : {
@@ -908,7 +943,7 @@
               style: Cesium.LabelStyle.FILL_AND_OUTLINE,
               verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
               pixelOffset: new Cesium.Cartesian2(0, -10),
-              eyeOffset: new Cesium.Cartesian3(0, 0, -500)
+              eyeOffset: new Cesium.Cartesian3(0, 0, isMaritime ? -500 : -700)
             },
             description: popup
           }, solarSelection);
@@ -948,7 +983,7 @@
                      outline: true,
                      outlineColor: isGlow ? Cesium.Color.WHITE : color,
                      outlineWidth: isGlow ? 4 : 2,
-                     height: 100
+                     height: warningHeight
                    },
                    description: popup
                  };
@@ -961,7 +996,7 @@
                           glowPower: 0.3,
                           color: Cesium.Color.WHITE
                        }),
-                       height: 110
+                       height: warningHeight + 10
                      }
                    }, solarSelection);
                  }
@@ -979,7 +1014,7 @@
                 outline: true,
                 outlineColor: isGlow ? Cesium.Color.WHITE : color,
                 outlineWidth: isGlow ? 4 : 2,
-                height: 100
+                height: warningHeight
               },
               description: popup
             }, solarSelection);
@@ -994,7 +1029,7 @@
                   outline: true,
                   outlineColor: Cesium.Color.WHITE.withAlpha(0.5),
                   outlineWidth: 10,
-                  height: 105
+                  height: warningHeight + 5
                 }
               }, solarSelection);
             }
@@ -1490,9 +1525,11 @@
         const popup = buildNotamPopup(r, rows);
 
         const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
-        const pathOptions = { 
-          color, fillColor: color, fillOpacity: 0.2, 
-          weight: isGlow ? 4 : 2, 
+        const warningPane = isMaritime ? 'msiPane' : 'notamPane';
+        const pathOptions = {
+          color, fillColor: color, fillOpacity: 0.2,
+          weight: isGlow ? 4 : 2,
+          pane: warningPane,
           className: isGlow ? 'glow-path' : '',
           shadowBlur: isGlow ? 12 : 0, 
           shadowColor: isGlow ? '#fff' : 'transparent'
@@ -1511,14 +1548,14 @@
               if (segPts.length >= 3 && !isRoute) {
                 if (isGlow) {
                    // 2D Glow Layers (Double-Stroke for iOS compatibility)
-                   L.polygon(segPts, { color: '#fff', weight: 15, opacity: 0.1, fill: false, interactive: false }).addTo(group);
-                   L.polygon(segPts, { color: '#fff', weight: 8, opacity: 0.25, fill: false, interactive: false }).addTo(group);
+                   L.polygon(segPts, { pane: warningPane, color: '#fff', weight: 15, opacity: 0.1, fill: false, interactive: false }).addTo(group);
+                   L.polygon(segPts, { pane: warningPane, color: '#fff', weight: 8, opacity: 0.25, fill: false, interactive: false }).addTo(group);
                 }
                 shape = L.polygon(segPts, pathOptions);
               } else if (segPts.length >= 2) {
                 if (isGlow) {
-                   L.polyline(segPts, { color: '#fff', weight: 18, opacity: 0.12, interactive: false }).addTo(group);
-                   L.polyline(segPts, { color: '#fff', weight: 10, opacity: 0.3, interactive: false }).addTo(group);
+                   L.polyline(segPts, { pane: warningPane, color: '#fff', weight: 18, opacity: 0.12, interactive: false }).addTo(group);
+                   L.polyline(segPts, { pane: warningPane, color: '#fff', weight: 10, opacity: 0.3, interactive: false }).addTo(group);
                 }
                 shape = L.polyline(segPts, { ...pathOptions, weight: isGlow ? 5 : 3 });
               }
@@ -1534,16 +1571,16 @@
           let shape;
           if (isMaritime && !r.radius_nm) {
             if (isGlow) {
-              L.circleMarker([lat, lon], { radius: 10, color: '#fff', opacity: 0.2, fill: false, interactive: false }).addTo(group);
-              L.circleMarker([lat, lon], { radius: 8, color: '#fff', opacity: 0.4, fill: false, interactive: false }).addTo(group);
+              L.circleMarker([lat, lon], { pane: warningPane, radius: 10, color: '#fff', opacity: 0.2, fill: false, interactive: false }).addTo(group);
+              L.circleMarker([lat, lon], { pane: warningPane, radius: 8, color: '#fff', opacity: 0.4, fill: false, interactive: false }).addTo(group);
             }
             shape = L.circleMarker([lat, lon], {
-              radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: isGlow ? 3 : 2
+              pane: warningPane, radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: isGlow ? 3 : 2
             });
           } else {
             if (isGlow) {
-              L.circle([lat, lon], { radius: radiusNm * 1852 + 500, color: '#fff', fill: false, weight: 12, opacity: 0.1, interactive: false }).addTo(group);
-              L.circle([lat, lon], { radius: radiusNm * 1852 + 200, color: '#fff', fill: false, weight: 6, opacity: 0.3, interactive: false }).addTo(group);
+              L.circle([lat, lon], { pane: warningPane, radius: radiusNm * 1852 + 500, color: '#fff', fill: false, weight: 12, opacity: 0.1, interactive: false }).addTo(group);
+              L.circle([lat, lon], { pane: warningPane, radius: radiusNm * 1852 + 200, color: '#fff', fill: false, weight: 6, opacity: 0.3, interactive: false }).addTo(group);
             }
             shape = L.circle([lat, lon], {
               ...pathOptions, radius: radiusNm * 1852
@@ -1571,6 +1608,20 @@
     }
 
     function isoDate(d) { return d.toISOString().slice(0, 10); }
+    function localIsoDate(d) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+    function defaultPastLaunchDateRange(referenceDate = new Date()) {
+      const end = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), referenceDate.getDate());
+      const originalDay = end.getDate();
+      const start = new Date(end.getFullYear(), end.getMonth() - 1, 1);
+      const lastDayOfTargetMonth = new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate();
+      start.setDate(Math.min(originalDay, lastDayOfTargetMonth));
+      return { start: localIsoDate(start), end: localIsoDate(end) };
+    }
     function plusDays(dateStr, n) {
       const d = new Date(dateStr + 'T00:00:00Z');
       d.setUTCDate(d.getUTCDate() + n);
@@ -2032,6 +2083,11 @@
     const pastLaunchToggle = document.getElementById('pastLaunchToggle');
     const pastLaunchStartDateEl = document.getElementById('pastLaunchStartDate');
     const pastLaunchEndDateEl = document.getElementById('pastLaunchEndDate');
+    const defaultPastLaunchRange = defaultPastLaunchDateRange();
+    pastLaunchStartDateEl.value = defaultPastLaunchRange.start;
+    pastLaunchEndDateEl.value = defaultPastLaunchRange.end;
+    pastLaunchStartDateEl.max = defaultPastLaunchRange.end;
+    pastLaunchEndDateEl.min = defaultPastLaunchRange.start;
 
     let launchLayerGroup = L.layerGroup().addTo(map);
     let pastLaunchLayerGroup = L.layerGroup();
@@ -2247,6 +2303,7 @@
                 <small style="color:#888;">Data by RocketLaunch.Live</small>
               `;
             }, { maxWidth: 340 });
+            lMarker.on('click', () => selectLaunchForSolarOverlay(launchRecord));
             lMarker.addTo(launchLayerGroup);
             upcomingLaunches.push(launchRecord);
             upcomingCount++;
@@ -2322,10 +2379,6 @@
         const historyRange = pastDates.length
           ? `${isoDate(new Date(Math.min(...pastDates)))} – ${isoDate(new Date(Math.max(...pastDates)))}`
           : t('launch_history_empty');
-        if (pastDates.length) {
-          if (!pastLaunchStartDateEl.value) pastLaunchStartDateEl.value = isoDate(new Date(Math.min(...pastDates)));
-          if (!pastLaunchEndDateEl.value) pastLaunchEndDateEl.value = isoDate(new Date(Math.max(...pastDates)));
-        }
         rebuildPastLaunchLayer();
         launchStatusEl.textContent = t('launch_summary', {
           upcoming: upcomingCount,
