@@ -119,6 +119,40 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 2024/26</name>
+      <description>151021Z JUL 26  HYDROPAC 2024/26.  EASTERN INDIAN OCEAN.  BAY OF BENGAL.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     180500Z TO 180900Z JUL IN AREAS:     A. WITHIN TEN MILES OF 13-44.00N 080-14.10E.     B. BOUND BY        11-15.00N 082-05.00E, 11-35.00N 082-25.00E,        10-10.00N 083-30.00E, 09-50.00N 083-10.00E.     C. BOUND BY        07-05.00N 084-45.00E, 07-50.00N 085-35.00E,        01-20.00N 088-55.00E, 00-35.00N 088-05.00E.     D. BOUND BY        38-30.00S 111-45.00E, 33-40.00S</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>80.235,13.733333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>82.083333,11.25,0 82.416667,11.583333,0 83.5,10.166667,0 83.166667,9.833333,0 82.083333,11.25,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>84.75,7.083333,0 85.583333,7.833333,0 88.916667,1.333333,0 88.083333,0.583333,0 84.75,7.083333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>111.75,-38.5,0 108.0,-33.666667,0 108.0,-31.666667,0 111.75,-36.5,0 137.0,-53.0,0 137.0,-55.0,0 111.75,-38.5,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 2007/26</name>
       <description>140021Z JUL 26  HYDROPAC 2007/26.  PHILIPPINES SEA.  SOUTH CHINA SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     171000Z TO 171600Z JUL IN AREAS BOUND BY:     A. 19-42.00N 118-41.00E, 19-37.00N 120-07.00E,        18-59.00N 120-04.00E, 19-04.00N 118-38.00E.     B. 19-19.00N 123-26.00E, 19-14.00N 124-26.00E,        18-42.00N 124-23.00E, 18-47.00N 123-23.00E.     C. 17-28.00N 138-28.00E, 17-00.00N 141-10.00E,        16-13.00N 141-00.00E, 16-40.00N 138-20.00E.  2. CANCEL THIS MSG 17170</description>
       <MultiGeometry>
@@ -213,12 +247,12 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1919/26</name>
-      <description>011037Z JUL 26  HYDROPAC 1919/26.  EASTERN INDIAN OCEAN.  TASMAN SEA.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     091125Z TO 091621Z, 101102Z TO 101558Z,     111040Z TO 111536Z, 121018Z TO 121514Z,     130956Z TO 131452Z, 140933Z TO 141429Z,     AND 150911Z TO 151407Z JUL IN AREA BOUND BY     39-52.00S 082-05.00E, 46-48.00S 097-01.00E,     51-17.00S 115-27.00E, 51-19.00S 138-10.00E,     47-11.00S 158-59.00E, 48-02.00S 159-55.00E,     49-27.00S 159-48.00E, 53-45.00S 138-13.00E,    </description>
+      <name>HYDROARC 135/26</name>
+      <description>150028Z JUL 26  HYDROARC 135/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      IN PROGRESS UNTIL 182100Z AND     192100Z TO 232100Z JUL IN AREA BOUND BY     70-56.00N 032-04.97E, 70-10.00N 033-40.00E,     69-54.00N 032-40.00E, 70-08.00N 032-04.97E,     70-15.00N 031-50.00E, 70-30.11N 031-50.00E,     70-36.37N 031-43.30E.  2. CANCEL THIS MSG 232300Z JUL 26.</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>82.083333,-39.866667,0 97.016667,-46.8,0 115.45,-51.283333,0 138.166667,-51.316667,0 158.983333,-47.183333,0 159.916667,-48.033333,0 159.8,-49.45,0 138.216667,-53.75,0 114.466667,-53.616667,0 95.283333,-48.883333,0 80.15,-41.6,0 82.083333,-39.866667,0</coordinates>
+            <coordinates>32.082833,70.933333,0 33.666667,70.166667,0 32.666667,69.9,0 32.082833,70.133333,0 31.833333,70.25,0 31.833333,70.501833,0 31.721667,70.606167,0 32.082833,70.933333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
