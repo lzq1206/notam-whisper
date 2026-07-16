@@ -3,6 +3,26 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
+      <name>NAVAREA IV 691/26</name>
+      <description>161241Z JUL 26  NAVAREA IV 691/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      212115Z TO 220147Z JUL, ALTERNATE     2115Z TO 0147Z DAILY 22 THRU 27 JUL     IN AREAS BOUND BY:     A. 28-35.00N 073-47.00W, 29-13.00N 073-45.00W,        29-22.00N 072-19.00W, 29-14.00N 069-17.00W,        28-34.00N 069-17.00W, 28-25.00N 072-20.00W.     B. 28-37.10N 080-36.17W, 28-42.00N 079-53.00W,        28-33.00N 079-52.00W, 28-30.00N 080-26.00W,        28-30.72N 080-33.15W.  2. CANCE</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-73.783333,28.583333,0 -73.75,29.216667,0 -72.316667,29.366667,0 -69.283333,29.233333,0 -69.283333,28.566667,0 -72.333333,28.416667,0 -73.783333,28.583333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.602833,28.618333,0 -79.883333,28.7,0 -79.866667,28.55,0 -80.433333,28.5,0 -80.5525,28.512,0 -80.602833,28.618333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA IV 679/26</name>
       <description>120027Z JUL 26  NAVAREA IV 679/26  CARIBBEAN SEA.  GULF OF AMERICA.  YUCATAN CHANNEL.  MEXICO.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      162245Z TO 170056Z JUL, ALTERNATE     2245Z TO 0056Z DAILY 17 THRU 22 JUL     IN AREAS BOUND BY:     A. 23-26.00N 091-10.00W, 23-18.00N 091-45.00W,        24-06.00N 094-21.00W, 25-38.00N 096-49.00W,        25-48.00N 097-05.00W, 25-58.00N 097-13.00W,        26-02.00N 097-13.00W, 26-04.00N 097-10.00W,        26-04.00N 097-04.00W, 26-05.00N 096-52.00W,      </description>
       <MultiGeometry>
@@ -153,33 +173,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2007/26</name>
-      <description>140021Z JUL 26  HYDROPAC 2007/26.  PHILIPPINES SEA.  SOUTH CHINA SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     171000Z TO 171600Z JUL IN AREAS BOUND BY:     A. 19-42.00N 118-41.00E, 19-37.00N 120-07.00E,        18-59.00N 120-04.00E, 19-04.00N 118-38.00E.     B. 19-19.00N 123-26.00E, 19-14.00N 124-26.00E,        18-42.00N 124-23.00E, 18-47.00N 123-23.00E.     C. 17-28.00N 138-28.00E, 17-00.00N 141-10.00E,        16-13.00N 141-00.00E, 16-40.00N 138-20.00E.  2. CANCEL THIS MSG 17170</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.683333,19.7,0 120.116667,19.616667,0 120.066667,18.983333,0 118.633333,19.066667,0 118.683333,19.7,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>123.433333,19.316667,0 124.433333,19.233333,0 124.383333,18.7,0 123.383333,18.783333,0 123.433333,19.316667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>138.466667,17.466667,0 141.166667,17.0,0 141.0,16.216667,0 138.333333,16.666667,0 138.466667,17.466667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2006/26</name>
       <description>131456Z JUL 26  HYDROPAC 2006/26.  PERSIAN GULF.  QATAR.  1. SURVEY AND DEBRIS REMOVAL OPERATIONS     14 THRU 23 JUL BY VESSEL HALUL 49 IN:      A. 25-56.54N 052-41.48E.     B. 25-53.28N 052-43.65E.     C. 25-55.14N 052-42.71E.     D. 25-52.17N 052-46.77E.     WIDE BERTH REQUESTED.  2. CANCEL THIS MSG 240001Z JUL 26.</description>
       <MultiGeometry>
@@ -317,6 +310,33 @@
           <outerBoundaryIs>
             <LinearRing>
               <coordinates>51.233333,69.283333,0 52.033333,69.016667,0 50.45,68.316667,0 49.8,68.55,0 51.233333,69.283333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2007/26</name>
+      <description>140021Z JUL 26  HYDROPAC 2007/26.  PHILIPPINES SEA.  SOUTH CHINA SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     171000Z TO 171600Z JUL IN AREAS BOUND BY:     A. 19-42.00N 118-41.00E, 19-37.00N 120-07.00E,        18-59.00N 120-04.00E, 19-04.00N 118-38.00E.     B. 19-19.00N 123-26.00E, 19-14.00N 124-26.00E,        18-42.00N 124-23.00E, 18-47.00N 123-23.00E.     C. 17-28.00N 138-28.00E, 17-00.00N 141-10.00E,        16-13.00N 141-00.00E, 16-40.00N 138-20.00E.  2. CANCEL THIS MSG 17170</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>118.683333,19.7,0 120.116667,19.616667,0 120.066667,18.983333,0 118.633333,19.066667,0 118.683333,19.7,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>123.433333,19.316667,0 124.433333,19.233333,0 124.383333,18.7,0 123.383333,18.783333,0 123.433333,19.316667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>138.466667,17.466667,0 141.166667,17.0,0 141.0,16.216667,0 138.333333,16.666667,0 138.466667,17.466667,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
