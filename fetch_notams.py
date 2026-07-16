@@ -64,8 +64,12 @@ FAA_SUPPLEMENTAL_FIRS = [
     "FACT", "FAJO", "FMMM", "FIMM", "FSSS",
 ]
 FAA_PAGE_SIZE = 30
-FAA_MAX_PAGES_PER_FIR = 2
-FAA_MAX_PAGES_FOR_ACTIVE_LAUNCH_FIR = 3
+# FAA results are paginated in blocks of 30 and high-volume FIRs can place a
+# relevant launch NOTAM on page 3 or later (for example VOMF A2136/26).  Keep a
+# bounded ceiling for rate safety, but fetch enough pages to avoid silently
+# dropping otherwise valid aerospace records.
+FAA_MAX_PAGES_PER_FIR = 5
+FAA_MAX_PAGES_FOR_ACTIVE_LAUNCH_FIR = 5
 FAA_REQUEST_DELAY_SECONDS = 0.35
 MAX_FUTURE_DAYS = 30
 NOTAMMAP_MAX_WORKERS = 10
@@ -767,6 +771,17 @@ def fetch_faa_notams(launch_contexts=()):
                         'radius': radius,
                         'notamCode': qcode
                     }
+                    # Some FIR NOTAMs omit the Q-line centre/radius even though
+                    # their E-field contains a complete danger-zone polygon.
+                    # Preserve that geometry and derive a display anchor so the
+                    # frontend does not discard the row for missing lat/lon.
+                    raw_polygons = _extract_raw_coordinate_rings(raw)
+                    if raw_polygons:
+                        n['polygon'] = raw_polygons[0] if len(raw_polygons) == 1 else raw_polygons
+                        if lat in ('', None) or lon in ('', None):
+                            points = [point for ring in raw_polygons for point in ring]
+                            n['latitude'] = round(sum(point[0] for point in points) / len(points), 6)
+                            n['longitude'] = round(sum(point[1] for point in points) / len(points), 6)
                     launch_match = _correlate_silent_launch_notam(n, launch_contexts)
                     if launch_match:
                         print(f"[faa] Correlated {notam_num} with upcoming launch: {launch_match}")
@@ -1014,12 +1029,24 @@ def _split_coordinate_rings(indexed_points, max_gap=150):
         previous_point = point
         last_index = index
 
-        if len(current) >= 4 and _same_coordinate(current[0], current[-1]):
-            ring = current[:-1]
-            if len(ring) >= 3:
-                rings.append(ring)
-            current = []
-            last_index = None
+        if len(current) >= 4:
+            # A NOTAM may list a launch-pad point before a closed danger-zone
+            # polygon.  Close on any repeated earlier vertex so that the
+            # unrelated anchor is not incorrectly folded into the polygon.
+            closure_index = next(
+                (
+                    index for index, point in enumerate(current[:-1])
+                    if _same_coordinate(point, current[-1])
+                    and len(current) - index >= 4
+                ),
+                None,
+            )
+            if closure_index is not None:
+                ring = current[closure_index:-1]
+                if len(ring) >= 3:
+                    rings.append(ring)
+                current = []
+                last_index = None
 
     if len(current) >= 3:
         rings.append(current)

@@ -427,6 +427,89 @@ def test_fetch_faa_notams_logs_non_json_response():
     )
 
 
+def test_fetch_faa_notams_reaches_third_page_for_launch_record():
+    """A launch NOTAM on FAA page 3 must not be silently omitted."""
+    import fetch_notams
+
+    class FakeResponse:
+        status_code = 200
+
+        def __init__(self, items):
+            self._items = items
+
+        def json(self):
+            return {'notamList': self._items}
+
+    def filler_items(offset):
+        return [
+            {
+                'transactionID': f'filler-{offset + index}',
+                'notamNumber': f'G{offset + index:04d}/26',
+                'startDate': '07/01/2026 0000',
+                'endDate': '07/31/2026 2359',
+                'icaoMessage': 'ROUTINE AIRSPACE INFORMATION',
+            }
+            for index in range(fetch_notams.FAA_PAGE_SIZE)
+        ]
+
+    launch_item = {
+        'transactionID': 'faa-vomf-a2136',
+        'notamNumber': 'A2136/26',
+        'startDate': '07/18/2026 0500',
+        'endDate': '08/04/2026 0900',
+        'icaoMessage': (
+            'A2136/26 NOTAMN Q) VOMF/QWMLW/IV/BO/W/000/999/ '
+            'A) VOMF B) 2607180500 C) 2608040900 D) 0500-0900 '
+            'E) ROCKET LAUNCH FM SHAR RANGE, SRIHARIKOTA. '
+            'LAUNCH PAD COORD: 134400N 0801406E. '
+            'DANGER ZONE -2 BOUNDED BY 1115N 08205E - 1135N 08225E - '
+            '1010N 08330E - 0950N 08310E - 1115N 08205E. F) GND G) UNL'
+        ),
+    }
+
+    class _Session:
+        headers = type('H', (), {'update': lambda self, h: None})()
+
+        def post(self, url, data=None, timeout=None):
+            offset = int(data['offset'])
+            if offset in (0, 30):
+                return FakeResponse(filler_items(offset))
+            if offset == 60:
+                return FakeResponse([launch_item])
+            return FakeResponse([])
+
+    originals = {
+        'session': fetch_notams.requests.Session,
+        'firs': fetch_notams.FAA_SUPPLEMENTAL_FIRS,
+        'delay': fetch_notams.FAA_REQUEST_DELAY_SECONDS,
+    }
+    fetch_notams.requests.Session = lambda: _Session()
+    fetch_notams.FAA_SUPPLEMENTAL_FIRS = ['VOMF']
+    fetch_notams.FAA_REQUEST_DELAY_SECONDS = 0
+    try:
+        rows = fetch_notams.fetch_faa_notams()
+    finally:
+        fetch_notams.requests.Session = originals['session']
+        fetch_notams.FAA_SUPPLEMENTAL_FIRS = originals['firs']
+        fetch_notams.FAA_REQUEST_DELAY_SECONDS = originals['delay']
+
+    matches = [
+        row for row in rows
+        if row['notam'].get('series') == 'A'
+        and str(row['notam'].get('number')) == '2136'
+        and str(row['notam'].get('year')) == '2026'
+    ]
+    assert matches, 'Expected third-page VOMF launch NOTAM A2136/26 to be fetched'
+    assert matches[0]['notam'].get('polygon') == [
+        [11.25, 82.083333],
+        [11.583333, 82.416667],
+        [10.166667, 83.5],
+        [9.833333, 83.166667],
+    ]
+    assert matches[0]['notam'].get('latitude') == 10.708333
+    assert matches[0]['notam'].get('longitude') == 82.791667
+
+
 def test_global_supplement_parses_key_notams():
     import fetch_notams
 
@@ -603,6 +686,7 @@ if __name__ == '__main__':
     test_fetch_notammap_exits_when_country_list_empty()
     test_fetch_faa_notams_logs_non_200()
     test_fetch_faa_notams_logs_non_json_response()
+    test_fetch_faa_notams_reaches_third_page_for_launch_record()
     test_global_supplement_parses_key_notams()
     test_global_supplement_parses_current_joey_data_dict_schema()
     test_parse_faa_space_tfr_detail()
