@@ -289,33 +289,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 124/26</name>
-      <description>091736Z JUL 26  HYDROARC 124/26.  BARRENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      112100Z TO 162100Z JUL IN AREAS BOUND BY:     A. 70-13.00N 045-43.00E, 70-02.00N 047-12.00E,        68-49.00N 045-50.00E, 69-00.00N 044-27.00E.     B. 77-52.00N 061-55.00E, 77-37.00N 063-39.00E,        76-39.00N 060-30.00E, 76-56.00N 058-52.00E.     C. 69-17.00N 051-14.00E, 69-01.00N 052-02.00E,        68-19.00N 050-27.00E, 68-33.00N 049-48.00E.  2. CANCEL THIS MSG 162200Z JUL 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>45.716667,70.216667,0 47.2,70.033333,0 45.833333,68.816667,0 44.45,69.0,0 45.716667,70.216667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>61.916667,77.866667,0 63.65,77.616667,0 60.5,76.65,0 58.866667,76.933333,0 61.916667,77.866667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>51.233333,69.283333,0 52.033333,69.016667,0 50.45,68.316667,0 49.8,68.55,0 51.233333,69.283333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2007/26</name>
       <description>140021Z JUL 26  HYDROPAC 2007/26.  PHILIPPINES SEA.  SOUTH CHINA SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     171000Z TO 171600Z JUL IN AREAS BOUND BY:     A. 19-42.00N 118-41.00E, 19-37.00N 120-07.00E,        18-59.00N 120-04.00E, 19-04.00N 118-38.00E.     B. 19-19.00N 123-26.00E, 19-14.00N 124-26.00E,        18-42.00N 124-23.00E, 18-47.00N 123-23.00E.     C. 17-28.00N 138-28.00E, 17-00.00N 141-10.00E,        16-13.00N 141-00.00E, 16-40.00N 138-20.00E.  2. CANCEL THIS MSG 17170</description>
       <MultiGeometry>
