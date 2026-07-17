@@ -43,17 +43,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 568/26</name>
-      <description>051422Z JUN 26  NAVAREA IV 568/26.  NORTH ATLANTIC.  FRENCH GUIANA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0810Z TO 1252Z DAILY 17 JUN THRU 17 JUL     IN AREA BOUND BY     05-51.00N 052-48.00W, 05-50.00N 052-20.00W,     05-13.00N 052-41.00W, 05-23.00N 052-54.00W.  2. CANCEL THIS MSG 171352Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-52.8,5.85,0 -52.333333,5.833333,0 -52.683333,5.216667,0 -52.9,5.383333,0 -52.8,5.85,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 482/26</name>
       <description>102237Z JUL 26  NAVAREA XII 482/26  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 181400Z TO 181825Z JUL, ALTERNATE        1400Z TO 1825Z DAILY 19 THRU 24 JUL        IN AREA BOUND BY:        34-29.00N 120-29.00W, 34-40.00N 120-37.00W,        34-38.00N 120-42.00W, 33-49.00N 120-55.00W,        29-13.00N 121-56.00W, 29-13.00N 121-36.00W.     B. 181400Z TO 181843Z JUL, ALTERNATE        1400Z TO 1843Z DAILY 19 THRU 24 JUL        29-13.00N 121-31.00W, 29-13.00N 122-03.</description>
       <MultiGeometry>
