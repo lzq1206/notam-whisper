@@ -179,40 +179,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2024/26</name>
-      <description>151021Z JUL 26  HYDROPAC 2024/26.  EASTERN INDIAN OCEAN.  BAY OF BENGAL.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     180500Z TO 180900Z JUL IN AREAS:     A. WITHIN TEN MILES OF 13-44.00N 080-14.10E.     B. BOUND BY        11-15.00N 082-05.00E, 11-35.00N 082-25.00E,        10-10.00N 083-30.00E, 09-50.00N 083-10.00E.     C. BOUND BY        07-05.00N 084-45.00E, 07-50.00N 085-35.00E,        01-20.00N 088-55.00E, 00-35.00N 088-05.00E.     D. BOUND BY        38-30.00S 111-45.00E, 33-40.00S</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>80.235,13.733333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>82.083333,11.25,0 82.416667,11.583333,0 83.5,10.166667,0 83.166667,9.833333,0 82.083333,11.25,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>84.75,7.083333,0 85.583333,7.833333,0 88.916667,1.333333,0 88.083333,0.583333,0 84.75,7.083333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>111.75,-38.5,0 108.0,-33.666667,0 108.0,-31.666667,0 111.75,-36.5,0 137.0,-53.0,0 137.0,-55.0,0 111.75,-38.5,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2006/26</name>
       <description>131456Z JUL 26  HYDROPAC 2006/26.  PERSIAN GULF.  QATAR.  1. SURVEY AND DEBRIS REMOVAL OPERATIONS     14 THRU 23 JUL BY VESSEL HALUL 49 IN:      A. 25-56.54N 052-41.48E.     B. 25-53.28N 052-43.65E.     C. 25-55.14N 052-42.71E.     D. 25-52.17N 052-46.77E.     WIDE BERTH REQUESTED.  2. CANCEL THIS MSG 240001Z JUL 26.</description>
       <MultiGeometry>
