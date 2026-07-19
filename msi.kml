@@ -170,6 +170,37 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 2046/26</name>
+      <description>170811Z JUL 26  HYDROPAC 2046/26  INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     202334Z TO 210259Z JUL, ALTERNATE     2334Z TO 0259Z DAILY 21 THRU 25 JUL,     IN AREA BOUND BY     17-39.00S 095-00.00E, 16-13.00S 100-20.00E,     15-17.00S 104-38.00E, 16-31.00S 109-42.00E,     17-14.00S 110-00.00E, 18-19.00S 107-08.00E,     18-20.00S 102-57.00E, 19-46.00S 099-12.00E,     21-01.00S 094-56.00E, 22-36.00S 089-30.00E,     24-01.00S 083-24.00E, 24-47.00S 079-30.00E,     25-45.00S 073-04.00E,</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>95.0,-17.65,0 100.333333,-16.216667,0 104.633333,-15.283333,0 109.7,-16.516667,0 110.0,-17.233333,0 107.133333,-18.316667,0 102.95,-18.333333,0 99.2,-19.766667,0 94.933333,-21.016667,0 89.5,-22.6,0 83.4,-24.016667,0 79.5,-24.783333,0 73.066667,-25.75,0 60.9,-26.85,0 58.733333,-26.85,0 56.366667,-26.75,0 50.916667,-26.883333,0 50.216667,-26.75,0 50.2,-26.616667,0 50.5,-26.55,0 54.0,-26.383333,0 56.266667,-26.316667,0 62.333333,-25.816667,0 66.1,-25.316667,0 72.7,-24.116667,0 78.433333,-22.85,0 82.966667,-21.65,0 87.666667,-20.3,0 91.066667,-19.183333,0 95.0,-17.65,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2045/26</name>
+      <description>140821Z JUL 26  HYDROPAC 2045/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0900Z TO 1334Z DAILY 22 THRU 28 JUL     IN AREAS BOUND BY:     A. 14-00.00N 176-49.00E, 12-40.00N 180-00.00E,        07-15.00N 180-00.00E, 09-34.00N 174-40.00E.     B. 12-40.00N 180-00.00W, 09-57.00N 174-28.00W,        05-42.00N 165-57.00W, 01-16.00N 168-04.00W,        05-29.00N 176-38.00W, 07-15.00N 180-00.00W.  2. CANCEL THIS MSG 281434Z JUL 26.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>176.816667,14.0,0 180.0,12.666667,0 180.0,7.25,0 174.666667,9.566667,0 176.816667,14.0,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-180.0,12.666667,0 -174.466667,9.95,0 -165.95,5.7,0 -168.066667,1.266667,0 -176.633333,5.483333,0 -180.0,7.25,0 -180.0,12.666667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 2024/26</name>
       <description>151021Z JUL 26  HYDROPAC 2024/26.  EASTERN INDIAN OCEAN.  BAY OF BENGAL.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     180500Z TO 180900Z JUL IN AREAS:     A. WITHIN TEN MILES OF 13-44.00N 080-14.10E.     B. BOUND BY        11-15.00N 082-05.00E, 11-35.00N 082-25.00E,        10-10.00N 083-30.00E, 09-50.00N 083-10.00E.     C. BOUND BY        07-05.00N 084-45.00E, 07-50.00N 085-35.00E,        01-20.00N 088-55.00E, 00-35.00N 088-05.00E.     D. BOUND BY        38-30.00S 111-45.00E, 33-40.00S</description>
       <MultiGeometry>
@@ -255,17 +286,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 -156.933333,-25.383333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1990/26</name>
-      <description>112324Z JUL 26  HYDROPAC 1990/26  INDIAN OCEAN.   1. HAZARDOUS OPERATIONS, SPACE DEBRIS     162334Z TO 170259Z JUL, ALTERNATE     2334Z TO 0259Z DAILY 17 THRU 22 JUL,     IN AREA BOUND BY     17-39.00S 095-00.00E, 16-13.00S 100-20.00E,     15-17.00S 104-38.00E, 16-31.00S 109-42.00E,     17-14.00S 110-00.00E, 18-19.00S 107-08.00E,     18-20.00S 102-57.00E, 19-46.00S 099-12.00E,     21-01.00S 094-56.00E, 22-36.00S 089-30.00E,     24-01.00S 083-24.00E, 24-47.00S 079-30.00E,     25-45.00S 073-04.00E</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>95.0,-17.65,0 100.333333,-16.216667,0 104.633333,-15.283333,0 109.7,-16.516667,0 110.0,-17.233333,0 107.133333,-18.316667,0 102.95,-18.333333,0 99.2,-19.766667,0 94.933333,-21.016667,0 89.5,-22.6,0 83.4,-24.016667,0 79.5,-24.783333,0 73.066667,-25.75,0 60.9,-26.85,0 58.733333,-26.85,0 56.366667,-26.75,0 50.916667,-26.883333,0 50.216667,-26.75,0 50.2,-26.616667,0 50.5,-26.55,0 54.0,-26.383333,0 56.266667,-26.316667,0 62.333333,-25.816667,0 66.1,-25.316667,0 72.7,-24.116667,0 78.433333,-22.85,0 82.966667,-21.65,0 87.666667,-20.3,0 91.066667,-19.183333,0 95.0,-17.65,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>

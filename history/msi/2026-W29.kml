@@ -148,6 +148,37 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 2046/26</name>
+      <description>170811Z JUL 26  HYDROPAC 2046/26  INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     202334Z TO 210259Z JUL, ALTERNATE     2334Z TO 0259Z DAILY 21 THRU 25 JUL,     IN AREA BOUND BY     17-39.00S 095-00.00E, 16-13.00S 100-20.00E,     15-17.00S 104-38.00E, 16-31.00S 109-42.00E,     17-14.00S 110-00.00E, 18-19.00S 107-08.00E,     18-20.00S 102-57.00E, 19-46.00S 099-12.00E,     21-01.00S 094-56.00E, 22-36.00S 089-30.00E,     24-01.00S 083-24.00E, 24-47.00S 079-30.00E,     25-45.00S 073-04.00E,</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>95.0,-17.65,0 100.333333,-16.216667,0 104.633333,-15.283333,0 109.7,-16.516667,0 110.0,-17.233333,0 107.133333,-18.316667,0 102.95,-18.333333,0 99.2,-19.766667,0 94.933333,-21.016667,0 89.5,-22.6,0 83.4,-24.016667,0 79.5,-24.783333,0 73.066667,-25.75,0 60.9,-26.85,0 58.733333,-26.85,0 56.366667,-26.75,0 50.916667,-26.883333,0 50.216667,-26.75,0 50.2,-26.616667,0 50.5,-26.55,0 54.0,-26.383333,0 56.266667,-26.316667,0 62.333333,-25.816667,0 66.1,-25.316667,0 72.7,-24.116667,0 78.433333,-22.85,0 82.966667,-21.65,0 87.666667,-20.3,0 91.066667,-19.183333,0 95.0,-17.65,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2045/26</name>
+      <description>140821Z JUL 26  HYDROPAC 2045/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0900Z TO 1334Z DAILY 22 THRU 28 JUL     IN AREAS BOUND BY:     A. 14-00.00N 176-49.00E, 12-40.00N 180-00.00E,        07-15.00N 180-00.00E, 09-34.00N 174-40.00E.     B. 12-40.00N 180-00.00W, 09-57.00N 174-28.00W,        05-42.00N 165-57.00W, 01-16.00N 168-04.00W,        05-29.00N 176-38.00W, 07-15.00N 180-00.00W.  2. CANCEL THIS MSG 281434Z JUL 26.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>176.816667,14.0,0 180.0,12.666667,0 180.0,7.25,0 174.666667,9.566667,0 176.816667,14.0,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-180.0,12.666667,0 -174.466667,9.95,0 -165.95,5.7,0 -168.066667,1.266667,0 -176.633333,5.483333,0 -180.0,7.25,0 -180.0,12.666667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 2006/26</name>
       <description>131456Z JUL 26  HYDROPAC 2006/26.  PERSIAN GULF.  QATAR.  1. SURVEY AND DEBRIS REMOVAL OPERATIONS     14 THRU 23 JUL BY VESSEL HALUL 49 IN:      A. 25-56.54N 052-41.48E.     B. 25-53.28N 052-43.65E.     C. 25-55.14N 052-42.71E.     D. 25-52.17N 052-46.77E.     WIDE BERTH REQUESTED.  2. CANCEL THIS MSG 240001Z JUL 26.</description>
       <MultiGeometry>
@@ -204,17 +235,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 1990/26</name>
-      <description>112324Z JUL 26  HYDROPAC 1990/26  INDIAN OCEAN.   1. HAZARDOUS OPERATIONS, SPACE DEBRIS     162334Z TO 170259Z JUL, ALTERNATE     2334Z TO 0259Z DAILY 17 THRU 22 JUL,     IN AREA BOUND BY     17-39.00S 095-00.00E, 16-13.00S 100-20.00E,     15-17.00S 104-38.00E, 16-31.00S 109-42.00E,     17-14.00S 110-00.00E, 18-19.00S 107-08.00E,     18-20.00S 102-57.00E, 19-46.00S 099-12.00E,     21-01.00S 094-56.00E, 22-36.00S 089-30.00E,     24-01.00S 083-24.00E, 24-47.00S 079-30.00E,     25-45.00S 073-04.00E</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>95.0,-17.65,0 100.333333,-16.216667,0 104.633333,-15.283333,0 109.7,-16.516667,0 110.0,-17.233333,0 107.133333,-18.316667,0 102.95,-18.333333,0 99.2,-19.766667,0 94.933333,-21.016667,0 89.5,-22.6,0 83.4,-24.016667,0 79.5,-24.783333,0 73.066667,-25.75,0 60.9,-26.85,0 58.733333,-26.85,0 56.366667,-26.75,0 50.916667,-26.883333,0 50.216667,-26.75,0 50.2,-26.616667,0 50.5,-26.55,0 54.0,-26.383333,0 56.266667,-26.316667,0 62.333333,-25.816667,0 66.1,-25.316667,0 72.7,-24.116667,0 78.433333,-22.85,0 82.966667,-21.65,0 87.666667,-20.3,0 91.066667,-19.183333,0 95.0,-17.65,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 135/26</name>
       <description>150028Z JUL 26  HYDROARC 135/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      IN PROGRESS UNTIL 182100Z AND     192100Z TO 232100Z JUL IN AREA BOUND BY     70-56.00N 032-04.97E, 70-10.00N 033-40.00E,     69-54.00N 032-40.00E, 70-08.00N 032-04.97E,     70-15.00N 031-50.00E, 70-30.11N 031-50.00E,     70-36.37N 031-43.30E.  2. CANCEL THIS MSG 232300Z JUL 26.</description>
       <Polygon>
@@ -264,8 +284,8 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2046/26</name>
-      <description>170811Z JUL 26  HYDROPAC 2046/26  INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     202334Z TO 210259Z JUL, ALTERNATE     2334Z TO 0259Z DAILY 21 THRU 25 JUL,     IN AREA BOUND BY     17-39.00S 095-00.00E, 16-13.00S 100-20.00E,     15-17.00S 104-38.00E, 16-31.00S 109-42.00E,     17-14.00S 110-00.00E, 18-19.00S 107-08.00E,     18-20.00S 102-57.00E, 19-46.00S 099-12.00E,     21-01.00S 094-56.00E, 22-36.00S 089-30.00E,     24-01.00S 083-24.00E, 24-47.00S 079-30.00E,     25-45.00S 073-04.00E,</description>
+      <name>HYDROPAC 1990/26</name>
+      <description>112324Z JUL 26  HYDROPAC 1990/26  INDIAN OCEAN.   1. HAZARDOUS OPERATIONS, SPACE DEBRIS     162334Z TO 170259Z JUL, ALTERNATE     2334Z TO 0259Z DAILY 17 THRU 22 JUL,     IN AREA BOUND BY     17-39.00S 095-00.00E, 16-13.00S 100-20.00E,     15-17.00S 104-38.00E, 16-31.00S 109-42.00E,     17-14.00S 110-00.00E, 18-19.00S 107-08.00E,     18-20.00S 102-57.00E, 19-46.00S 099-12.00E,     21-01.00S 094-56.00E, 22-36.00S 089-30.00E,     24-01.00S 083-24.00E, 24-47.00S 079-30.00E,     25-45.00S 073-04.00E</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
@@ -273,26 +293,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2045/26</name>
-      <description>140821Z JUL 26  HYDROPAC 2045/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0900Z TO 1334Z DAILY 22 THRU 28 JUL     IN AREAS BOUND BY:     A. 14-00.00N 176-49.00E, 12-40.00N 180-00.00E,        07-15.00N 180-00.00E, 09-34.00N 174-40.00E.     B. 12-40.00N 180-00.00W, 09-57.00N 174-28.00W,        05-42.00N 165-57.00W, 01-16.00N 168-04.00W,        05-29.00N 176-38.00W, 07-15.00N 180-00.00W.  2. CANCEL THIS MSG 281434Z JUL 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>176.816667,14.0,0 180.0,12.666667,0 180.0,7.25,0 174.666667,9.566667,0 176.816667,14.0,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-180.0,12.666667,0 -174.466667,9.95,0 -165.95,5.7,0 -168.066667,1.266667,0 -176.633333,5.483333,0 -180.0,7.25,0 -180.0,12.666667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>NAVAREA IV 679/26</name>
