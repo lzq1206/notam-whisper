@@ -362,6 +362,42 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>FDC 6/6749</name>
+      <description>FDC 6/6749 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Tuesday, July 21, 2026 through Tuesday, July 21, 2026 Local. NOTAM Number : FDC 6/6749 Download shapefiles Issue Date : July 19, 2026 at 1324 UTC Location : Starbase, Texas Beginning Date and Time : July 21, 2026 at 2230 UTC Ending Date and Time : July 22, 2026 at 0054 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To: Affected Areas Op</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.033333,26.1,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/6750</name>
+      <description>FDC 6/6750 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Wednesday, July 22, 2026 through Wednesday, July 22, 2026 Local. NOTAM Number : FDC 6/6750 Download shapefiles Issue Date : July 19, 2026 at 1324 UTC Location : Starbase, Texas Beginning Date and Time : July 22, 2026 at 2230 UTC Ending Date and Time : July 23, 2026 at 0054 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To: Affected Area</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.033333,26.1,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/6748</name>
+      <description>FDC 6/6748 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Monday, July 20, 2026 through Monday, July 20, 2026 Local. NOTAM Number : FDC 6/6748 Download shapefiles Issue Date : July 19, 2026 at 1323 UTC Location : Starbase, Texas Beginning Date and Time : July 20, 2026 at 2230 UTC Ending Date and Time : July 21, 2026 at 0054 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To: Affected Areas Oper</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.033333,26.1,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>FDC 6/6692</name>
       <description>FDC 6/6692 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Thursday, July 23, 2026 through Thursday, July 23, 2026 Local. NOTAM Number : FDC 6/6692 Download shapefiles Issue Date : July 18, 2026 at 1743 UTC Location : Cape Canaveral, Florida Beginning Date and Time : July 23, 2026 at 2105 UTC Ending Date and Time : July 24, 2026 at 0147 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami Center (ZMA) ARTCC, 305-716-1589 Jump </description>
       <styleUrl>#polyStyle</styleUrl>
