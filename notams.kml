@@ -78,18 +78,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B3426/2026</name>
-      <description>B3426/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1245N11610E038  A) RPHI B) 2607241100 C) 2607301400  D) 1100-1400  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.   EST FALL AREA OF UNBURNED DEBRIS WI:  130200N 1153700E -  132100N 1160400E -  122800N 1164300E -  121000N 1161600E -  130200N 1153700E  (200NM WEST OF BUSUANGA AP).  F) SFC G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>115.616667,13.033333,0 116.066667,13.35,0 116.716667,12.466667,0 116.266667,12.166667,0 115.616667,13.033333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>B3427/2026</name>
       <description>B3427/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/0811N11926E046  A) RPHI B) 2607241100 C) 2607301400  D) 1100-1400  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.   EST FALL AREA OF UNBURNED DEBRIS WI:  083500N 1184800E -  085400N 1191500E -  084300N 1192900E -  075000N 1200600E -  072600N 1193000E -  081900N 1185300E -  083500N 1184800E  (65NM SOUTH OF PUERTO PRINCESA AP).  F) SFC G) UNL</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -222,27 +210,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A5852/2026</name>
-      <description>A5852/26 NOTAMN  Q) ENOB/QRDCA/IV/BO /W /000/999/7540N02149E051  A) ENOB B) 2607140900 C) 2607232100  D) DAILY 0900-2100  E) TEMPO DANGER AREA &amp;apos;RUS SPACE LAUNCH AREA JULY 26&amp;apos; ACTIVATED  PSN 763000N 0220000E - 752000N 0244000E - 745000N 0214000E - 755000N  0184000E - 763000N 0220000E - (763000N 0220000E) IMPACT AREA FOR  RUSSIAN MISSILES.   SIMILAR ACTIVITIES ARE ALSO PLANNED WITHIN THE UNALLOCATED   INTERNATIONAL AIRSPACE AT PSN 705600N 0320500E - 701000N 0320500E -   700928N 0320152E </description>
-      <styleUrl>#polyStyle</styleUrl>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>22.0,76.5,0 24.666667,75.333333,0 21.666667,74.833333,0 18.666667,75.833333,0 22.0,76.5,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>32.083333,70.933333,0 32.083333,70.166667,0 32.031111,70.157778,0 31.833333,70.25,0 31.833333,70.501944,0 31.721667,70.606111,0 32.083333,70.933333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>R1871/2026</name>
       <description> R1871/26 NOTAMR R3154/25 Q) LFXX/QRTTT/IV/BO /W /000/999/4551N00432W190 A) LFRR LFBB  PART 1 OF 2  B) 2606181425  C) 2701212359  E) TRIGGER NOTAM - AIRAC AIP SUP 207/25 MODIFIED :  MISSILE FIRING IN THE ATLANTIC OCEAN REQUIRING THE CREATION OF 6   TEMPORARY RESTRICTED AREAS (&amp;apos;ZRT&amp;apos;), OF 16 TEMPORARY DANGEROUS AREAS   (&amp;apos;ZDT&amp;apos;) AND FLIGHT PLAN BUFFER ZONE (FBZ) ASSOCIATED.  THESE &amp;apos;ZRT/ZDT&amp;apos; ARE ACTIVATED BY NOTAM AT D-7.  ------------------------------------------------</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -302,18 +269,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>F2572/2026</name>
-      <description>F2572/26 NOTAMN  Q) YMMM/QWMLW/IV/BO/W/000/999/6230S16247E020  A) YMMM  B) 2607140900 C) 2607232100  D) DAILY 0900-2100  E) ROCKET LAUNCH FROM RUSSIA WILL TAKE PLACE  FLW RECEIVED FROM GOVERNMENT OF RUSSIA: THE RUSSIAN FEDERATION PLANS  PLANS TO LAUNCH MISSILE MISSION IN THE SPACE AND TO SINK ITS  FRAGMENTS IN THE WATERS OF THE OCEAN.  CHARACTERISTICS OF IMPACT AREA:  621200S 1630000E  624100S 1630000E  623300S 1623336E  621200S 1630000E  F) SFC G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>163.0,-62.2,0 163.0,-62.683333,0 162.56,-62.55,0 163.0,-62.2,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>E2688/2026</name>
       <description>E2688/26 NOTAMN  Q) YMMM/QRDCA/IV/BO/W/000/999/2114S09310E999  A) YMMM  B) 2607202334 C) 2607230300  D) DAILY 2334-0300  E) TEMPO DANGER AREA ACT DUE SPACE DEBRIS SPACEX STARSHIP  ROCKET LAUNCH WILL TAKE PLACE FLW RECEIVED FM GOVERNMENT OF UNITED  STATES OF AMERICA: HAZARDOUS OPS WILL BE CONDUCTED FOR ATMOSPHERIC  RE-ENTRY AND SPLASHDOWN OF SPACEX STARSHIP FLT-13 STAGE 2 WI THE  FOLLOWING AREAS: 2338S 07500E, 2251S 07826E, 2139S 08258E, 2018S  08740E, 1911S 09104E, 1739S 09500E, 1613S 10020E, 15</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -333,6 +288,18 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>111.766667,-30.75,0 112.816667,-30.916667,0 112.016667,-34.45,0 110.933333,-34.283333,0 111.766667,-30.75,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>E2700/2026</name>
+      <description>E2700/26 NOTAMN  Q) YMMM/QRDCA/IV/BO/W/000/999/2139S09259E999  A) YMMM  B) 2607232334 C) 2607300259  D) DAILY 2334-0259  E) TEMPO DANGER AREA ACT  ROCKET LAUNCH WILL TAKE PLACE FLW RECEIVED FM GOVERNMENT OF UNITED  STATES OF AMERICA: HAZARDOUS OPS WILL BE CONDUCTED FOR ATMOSPHERIC  RE-ENTRY AND SPLASHDOWN OF SPACEX STARSHIP FLT-13 STAGE 2 WI THE  FOLLOWING AREAS: 2338S 07500E, 2251S 07826E, 2139S 08258E, 2018S  08740E, 1911S 09104E, 1739S 09500E, 1613S 10020E, 1517S 10438E, 1631S  10942E, 1714S </description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>75.0,-23.633333,0 78.433333,-22.85,0 82.966667,-21.65,0 87.666667,-20.3,0 91.066667,-19.183333,0 95.0,-17.65,0 100.333333,-16.216667,0 104.633333,-15.283333,0 109.7,-16.516667,0 110.0,-17.233333,0 107.133333,-18.316667,0 102.95,-18.333333,0 99.2,-19.766667,0 94.933333,-21.016667,0 89.5,-22.6,0 83.4,-24.016667,0 79.5,-24.783333,0 75.0,-25.5,0 75.0,-23.633333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -465,18 +432,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>98.45,28.733333,0 97.916667,28.8,0 98.033333,29.616667,0 98.566667,29.566667,0 98.45,28.733333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>B3426/26</name>
-      <description>B3426/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1245N11610E038  A) RPHI B) 2607241100 C) 2607301400  D) 1100-1400  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.   EST FALL AREA OF UNBURNED DEBRIS WI:  130200N 1153700E -  132100N 1160400E -  122800N 1164300E -  121000N 1161600E -  130200N 1153700E  (200NM WEST OF BUSUANGA AP).  F) SFC G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>115.616667,13.033333,0 116.066667,13.35,0 116.716667,12.466667,0 116.266667,12.166667,0 115.616667,13.033333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
