@@ -306,6 +306,18 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>W628/2026</name>
+      <description>W0628/26 NOTAMN  Q) LFBB/QWGLW/IV/M  /W /000/034/4602N00147E005  A) LFBB B) 2604230453 C) 2610231653  D) SR-SS  E) PARAGLIDING WINCH LAUNCH ACTIVITY AT &amp;apos;JANAILLAT&amp;apos; :  - PSN : 460226N 0014647E  - RDL 222/10.6NM LFCE ARP  - SEQUENCE FLASHING LIGHTS ON WINCH  F) SFC G) 900FT AGL</description>
+      <styleUrl>#circleStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>1.9033683795232013,46.033333,0 1.9015447723902115,46.047803681472246,0 1.8961293603711882,46.061834678610474,0 1.8872866880199988,46.07499966666666,0 1.875285435461426,46.086898634140546,0 1.8604902546815352,46.09717003692658,0 1.8433506897616008,46.105501783648705,0 1.8243875177086764,46.111640718398824,0 1.8041769249097623,46.115400312751014,0 1.783333,46.116666333333335,0 1.7624890750902378,46.115400312751014,0 1.7422784822913238,46.111640718398824,0 1.7233153102383996,46.105501783648705,0 1.706175745318465,46.09717003692658,0 1.6913805645385742,46.086898634140546,0 1.6793793119800013,46.07499966666666,0 1.670536639628812,46.061834678610474,0 1.6651212276097886,46.047803681472246,0 1.6632976204767989,46.033333,0 1.6651212276097886,46.01886231852775,0 1.670536639628812,46.004831321389524,0 1.6793793119800013,45.991666333333335,0 1.6913805645385742,45.97976736585945,0 1.706175745318465,45.96949596307342,0 1.7233153102383993,45.96116421635129,0 1.7422784822913238,45.95502528160117,0 1.7624890750902378,45.951265687248984,0 1.783333,45.94999966666666,0 1.8041769249097623,45.951265687248984,0 1.8243875177086764,45.95502528160117,0 1.8433506897616008,45.96116421635129,0 1.8604902546815352,45.96949596307342,0 1.875285435461426,45.97976736585945,0 1.8872866880199988,45.991666333333335,0 1.8961293603711882,46.004831321389524,0 1.9015447723902115,46.01886231852775,0 1.9033683795232013,46.033333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>R1871/2026</name>
       <description> R1871/26 NOTAMR R3154/25 Q) LFXX/QRTTT/IV/BO /W /000/999/4551N00432W190 A) LFRR LFBB  PART 1 OF 2  B) 2606181425  C) 2701212359  E) TRIGGER NOTAM - AIRAC AIP SUP 207/25 MODIFIED :  MISSILE FIRING IN THE ATLANTIC OCEAN REQUIRING THE CREATION OF 6   TEMPORARY RESTRICTED AREAS (&amp;apos;ZRT&amp;apos;), OF 16 TEMPORARY DANGEROUS AREAS   (&amp;apos;ZDT&amp;apos;) AND FLIGHT PLAN BUFFER ZONE (FBZ) ASSOCIATED.  THESE &amp;apos;ZRT/ZDT&amp;apos; ARE ACTIVATED BY NOTAM AT D-7.  ------------------------------------------------</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -377,6 +389,18 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>E2719/2026</name>
+      <description>E2719/26 NOTAMN  Q) YMMM/QRDCA/IV/BO/W/000/999/1415S09157E175  A) YMMM  B) 2607232327 C) 2607240008  E) TEMPO DANGER AREA ACT  DUE CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE  FLW RECEIVED FM CIVIL AVIATION ADMINISTRATION OF CHINA:  THE FLIGHT SAFETY OF ACFT MAY BE AFFECTED IN THE FOLLOWING &amp;apos;AREA PV&amp;apos;  BOUNDED BY: 1659S09151E, 1654S09117E, 1132S09203E, 1137S09236E TO  BEGINNING  F) SFC G) UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>91.85,-16.983333,0 91.283333,-16.9,0 92.05,-11.533333,0 92.6,-11.616667,0 91.85,-16.983333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>E2700/2026</name>
       <description>E2700/26 NOTAMN  Q) YMMM/QRDCA/IV/BO/W/000/999/2139S09259E999  A) YMMM  B) 2607232334 C) 2607300259  D) DAILY 2334-0259  E) TEMPO DANGER AREA ACT  ROCKET LAUNCH WILL TAKE PLACE FLW RECEIVED FM GOVERNMENT OF UNITED  STATES OF AMERICA: HAZARDOUS OPS WILL BE CONDUCTED FOR ATMOSPHERIC  RE-ENTRY AND SPLASHDOWN OF SPACEX STARSHIP FLT-13 STAGE 2 WI THE  FOLLOWING AREAS: 2338S 07500E, 2251S 07826E, 2139S 08258E, 2018S  08740E, 1911S 09104E, 1739S 09500E, 1613S 10020E, 1517S 10438E, 1631S  10942E, 1714S </description>
       <styleUrl>#polyStyle</styleUrl>
@@ -432,42 +456,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.033333,26.1,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>FDC 6/6692</name>
-      <description>FDC 6/6692 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Thursday, July 23, 2026 through Thursday, July 23, 2026 Local. NOTAM Number : FDC 6/6692 Download shapefiles Issue Date : July 18, 2026 at 1743 UTC Location : Cape Canaveral, Florida Beginning Date and Time : July 23, 2026 at 2105 UTC Ending Date and Time : July 24, 2026 at 0147 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami Center (ZMA) ARTCC, 305-716-1589 Jump </description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-80.787778,28.634722,0 -80.083333,28.844167,0 -80.064648,28.803259,0 -80.050063,28.761203,0 -80.039659,28.718314,0 -80.033486,28.674909,0 -80.031565,28.631306,0 -80.033882,28.587825,0 -80.040396,28.544781,0 -80.051033,28.502486,0 -80.065691,28.461243,0 -80.084239,28.421346,0 -80.10652,28.383077,0 -80.132349,28.346705,0 -80.161519,28.312485,0 -80.193799,28.280652,0 -80.228938,28.251424,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.787778,28.634722,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>FDC 6/6688</name>
-      <description>FDC 6/6688 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Tuesday, July 21, 2026 through Tuesday, July 21, 2026 Local. NOTAM Number : FDC 6/6688 Download shapefiles Issue Date : July 18, 2026 at 1739 UTC Location : Cape Canaveral, Florida Beginning Date and Time : July 21, 2026 at 2105 UTC Ending Date and Time : July 22, 2026 at 0147 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami Center (ZMA) ARTCC, 305-716-1589 Jump To</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-80.787778,28.634722,0 -80.083333,28.844167,0 -80.064648,28.803259,0 -80.050063,28.761203,0 -80.039659,28.718314,0 -80.033486,28.674909,0 -80.031565,28.631306,0 -80.033882,28.587825,0 -80.040396,28.544781,0 -80.051033,28.502486,0 -80.065691,28.461243,0 -80.084239,28.421346,0 -80.10652,28.383077,0 -80.132349,28.346705,0 -80.161519,28.312485,0 -80.193799,28.280652,0 -80.228938,28.251424,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.787778,28.634722,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>FDC 6/6690</name>
-      <description>FDC 6/6690 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Wednesday, July 22, 2026 through Wednesday, July 22, 2026 Local. NOTAM Number : FDC 6/6690 Download shapefiles Issue Date : July 18, 2026 at 1739 UTC Location : Cape Canaveral, Florida Beginning Date and Time : July 22, 2026 at 2105 UTC Ending Date and Time : July 23, 2026 at 0147 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami Center (ZMA) ARTCC, 305-716-1589 Jum</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-80.787778,28.634722,0 -80.083333,28.844167,0 -80.064648,28.803259,0 -80.050063,28.761203,0 -80.039659,28.718314,0 -80.033486,28.674909,0 -80.031565,28.631306,0 -80.033882,28.587825,0 -80.040396,28.544781,0 -80.051033,28.502486,0 -80.065691,28.461243,0 -80.084239,28.421346,0 -80.10652,28.383077,0 -80.132349,28.346705,0 -80.161519,28.312485,0 -80.193799,28.280652,0 -80.228938,28.251424,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.787778,28.634722,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -677,6 +665,42 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>FDC 6/6692</name>
+      <description>FDC 6/6692 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Thursday, July 23, 2026 through Thursday, July 23, 2026 Local. NOTAM Number : FDC 6/6692 Download shapefiles Issue Date : July 18, 2026 at 1743 UTC Location : Cape Canaveral, Florida Beginning Date and Time : July 23, 2026 at 2105 UTC Ending Date and Time : July 24, 2026 at 0147 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami Center (ZMA) ARTCC, 305-716-1589 Jump </description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-80.787778,28.634722,0 -80.083333,28.844167,0 -80.064648,28.803259,0 -80.050063,28.761203,0 -80.039659,28.718314,0 -80.033486,28.674909,0 -80.031565,28.631306,0 -80.033882,28.587825,0 -80.040396,28.544781,0 -80.051033,28.502486,0 -80.065691,28.461243,0 -80.084239,28.421346,0 -80.10652,28.383077,0 -80.132349,28.346705,0 -80.161519,28.312485,0 -80.193799,28.280652,0 -80.228938,28.251424,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.787778,28.634722,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/6688</name>
+      <description>FDC 6/6688 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Tuesday, July 21, 2026 through Tuesday, July 21, 2026 Local. NOTAM Number : FDC 6/6688 Download shapefiles Issue Date : July 18, 2026 at 1739 UTC Location : Cape Canaveral, Florida Beginning Date and Time : July 21, 2026 at 2105 UTC Ending Date and Time : July 22, 2026 at 0147 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami Center (ZMA) ARTCC, 305-716-1589 Jump To</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-80.787778,28.634722,0 -80.083333,28.844167,0 -80.064648,28.803259,0 -80.050063,28.761203,0 -80.039659,28.718314,0 -80.033486,28.674909,0 -80.031565,28.631306,0 -80.033882,28.587825,0 -80.040396,28.544781,0 -80.051033,28.502486,0 -80.065691,28.461243,0 -80.084239,28.421346,0 -80.10652,28.383077,0 -80.132349,28.346705,0 -80.161519,28.312485,0 -80.193799,28.280652,0 -80.228938,28.251424,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.787778,28.634722,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/6690</name>
+      <description>FDC 6/6690 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Wednesday, July 22, 2026 through Wednesday, July 22, 2026 Local. NOTAM Number : FDC 6/6690 Download shapefiles Issue Date : July 18, 2026 at 1739 UTC Location : Cape Canaveral, Florida Beginning Date and Time : July 22, 2026 at 2105 UTC Ending Date and Time : July 23, 2026 at 0147 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami Center (ZMA) ARTCC, 305-716-1589 Jum</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-80.787778,28.634722,0 -80.083333,28.844167,0 -80.064648,28.803259,0 -80.050063,28.761203,0 -80.039659,28.718314,0 -80.033486,28.674909,0 -80.031565,28.631306,0 -80.033882,28.587825,0 -80.040396,28.544781,0 -80.051033,28.502486,0 -80.065691,28.461243,0 -80.084239,28.421346,0 -80.10652,28.383077,0 -80.132349,28.346705,0 -80.161519,28.312485,0 -80.193799,28.280652,0 -80.228938,28.251424,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.787778,28.634722,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B3618/2026</name>
       <description>B3618/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1245N11610E038  A) RPHI B) 2608041100 C) 2608101400  D) 1100-1400  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  130200N 1153700E -  132100N 1160400E -  122800N 1164300E -  121000N 1161600E -  130200N 1153700E   (200NM WEST OF BUSUANGA AP).  F) SFC G) UNL</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -780,30 +804,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>118.8,8.583333,0 119.25,8.9,0 119.483333,8.716667,0 120.1,7.833333,0 119.5,7.433333,0 118.883333,8.316667,0 118.8,8.583333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>B1430/2026</name>
-      <description>B1430/26 NOTAMR B1419/26  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2607202245  C) 2607220056  D) DLY 2245-0056  E) DANGEROUS AREA FOR LAUNCH OF ROCKET SPACEX STARSHIP FLT-13,     LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:     AREA B2:      2430N 09103W     2430N 09052W     2420N 09031W     2312N 08804W     2232N 08638W     2212N 08600W     2200N 08600W     2117N 08538W     2144N 08645W     2216N 08832W     2236N 08938W     2303N 09114W     2310N 09137W     2430N 09103W     FIR </description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-91.05,24.5,0 -90.866667,24.5,0 -90.516667,24.333333,0 -88.066667,23.2,0 -86.633333,22.533333,0 -86.0,22.2,0 -86.0,22.0,0 -85.633333,21.283333,0 -86.75,21.733333,0 -88.533333,22.266667,0 -89.633333,22.6,0 -91.233333,23.05,0 -91.616667,23.166667,0 -91.05,24.5,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>B1431/2026</name>
-      <description>B1431/26 NOTAMR B1420/26  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2607202245  C) 2607220051  D) DLY 2245-0051  E) DANGEROUS AREA FOR LAUNCH OF ROCKET SPACEX STARSHIP FLT-13,     LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:     AREA 3:     2558N 09711W     2600N 09700W     2600N 09610W     2557N 09548W     2430N 09300W     2430N 09102W     2310N 09137W     2335N 09310W     2354N 09342W     2445N 09502W     2522N 09618W     2550N 09707W     2558N 09711W     MMFR  F) SFC  G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-97.183333,25.966667,0 -97.0,26.0,0 -96.166667,26.0,0 -95.8,25.95,0 -93.0,24.5,0 -91.033333,24.5,0 -91.616667,23.166667,0 -93.166667,23.583333,0 -93.7,23.9,0 -95.033333,24.75,0 -96.3,25.366667,0 -97.116667,25.833333,0 -97.183333,25.966667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
