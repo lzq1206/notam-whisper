@@ -509,6 +509,30 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>A3000/26</name>
+      <description>A3000/26 NOTAMN  Q)ZHWH/QRDCA/IV/BO/W/000/999/3545N11332E011  A)ZHWH B)2607300052 C)2607300112   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N355200E1132100-N355600E1133300-N353900E1134400-N353500E1133200,  BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>113.35,35.866667,0 113.55,35.933333,0 113.733333,35.65,0 113.533333,35.583333,0 113.35,35.866667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A3001/26</name>
+      <description>A3001/26 NOTAMN  Q)ZSHA/QRDCA/IV/BO/W/000/999/2751N11729E022  A)ZSHA B)2607300053 C)2607300119   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N280500E1171000-N281300E1173300-N273800E1174900-N273000E1172700,  BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>117.166667,28.083333,0 117.55,28.216667,0 117.816667,27.633333,0 117.45,27.5,0 117.166667,28.083333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B3615/26</name>
       <description>B3615/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1921N11940E062  A) RPHI B) 2607291142 C) 2607291339  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  194300N 1184000E -  193800N 1200700E -  185900N 1200400E -  190400N 1183800E -  194300N 1184000E  (54NM NORTHWEST OF LAOAG AP).  F) SFC G) UNL</description>
       <styleUrl>#polyStyle</styleUrl>
