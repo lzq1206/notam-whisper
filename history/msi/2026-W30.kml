@@ -143,17 +143,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2081/26</name>
-      <description>201029Z JUL 26  HYDROPAC 2081/26.  INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     232200Z TO 240400Z JUL IN AREA BOUND BY     16-58.00S 091-51.00E, 16-54.00S 091-18.00E,     11-33.00S 092-02.00E, 11-37.00S 092-35.00E.  2. CANCEL THIS MSG 240500Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>91.85,-16.966667,0 91.3,-16.9,0 92.033333,-11.55,0 92.583333,-11.616667,0 91.85,-16.966667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2078/26</name>
       <description>200143Z JUL 26  HYDROPAC 2078/26.  INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     232334Z TO 240259Z JUL, ALTERNATE     2334Z TO 0259Z DAILY 24 THRU 29 JUL,     IN AREA BOUND BY     17-39.00S 095-00.00E, 16-13.00S 100-20.00E,     15-17.00S 104-38.00E, 16-31.00S 109-42.00E,     17-14.00S 110-00.00E, 18-19.00S 107-08.00E,     18-20.00S 102-57.00E, 19-46.00S 099-12.00E,     21-01.00S 094-56.00E, 22-36.00S 089-30.00E,     24-01.00S 083-24.00E, 24-47.00S 079-30.00E,     25-45.00S 073-04.00E</description>
       <Polygon>
