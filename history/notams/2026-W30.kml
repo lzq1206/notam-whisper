@@ -186,20 +186,8 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B1443/2026</name>
-      <description>B1443/26 NOTAMR B1430/26  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2607232245  C) 2607240056  E) DANGEROUS AREA FOR LAUNCH OF ROCKET SPACEX STARSHIP FLT-13,     LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:     AREA B2:      2430N 09103W     2430N 09052W     2420N 09031W     2312N 08804W     2232N 08638W     2212N 08600W     2200N 08600W     2117N 08538W     2144N 08645W     2216N 08832W     2236N 08938W     2303N 09114W     2310N 09137W     2430N 09103W     FIR MEXICO (MMFR)  F) </description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-91.05,24.5,0 -90.866667,24.5,0 -90.516667,24.333333,0 -88.066667,23.2,0 -86.633333,22.533333,0 -86.0,22.2,0 -86.0,22.0,0 -85.633333,21.283333,0 -86.75,21.733333,0 -88.533333,22.266667,0 -89.633333,22.6,0 -91.233333,23.05,0 -91.616667,23.166667,0 -91.05,24.5,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>B1444/2026</name>
-      <description>B1444/26 NOTAMR B1431/26  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2607232245  C) 2607240051  E) DANGEROUS AREA FOR LAUNCH OF ROCKET SPACEX STARSHIP FLT-13,     LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:     AREA 3:     2558N 09711W     2600N 09700W     2600N 09610W     2557N 09548W     2430N 09300W     2430N 09102W     2310N 09137W     2335N 09310W     2354N 09342W     2445N 09502W     2522N 09618W     2550N 09707W     2558N 09711W     MMFR  F) SFC  G) UNL</description>
+      <name>B1466/2026</name>
+      <description>B1466/26 NOTAMR B1444/26  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2607242245  C) 2607300051  D) DLY 2245-0051  E) DANGEROUS AREA FOR LAUNCH OF ROCKET SPACEX STARSHIP FLT-13,     LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:     AREA 3:     2558N 09711W     2600N 09700W     2600N 09610W     2557N 09548W     2430N 09300W     2430N 09102W     2310N 09137W     2335N 09310W     2354N 09342W     2445N 09502W     2522N 09618W     2550N 09707W     2558N 09711W     MMFR  F) SFC  G) UNL</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
@@ -210,8 +198,20 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B1446/2026</name>
-      <description>B1446/26 NOTAMR B1433/26  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2607232245  C) 2607240135  E) AIRSPACE LAUNCH OPERATIONS ADVISORY: IN THE EVENT OF A     DEBRIS-GENERATING SPACE LAUNCH VEHICLE MISHAP THERE IS THE POTENTIAL     FOR DEBRIS FALLING WITHIN THE AREA DEFINED AS     2558N 09713W - 2600N 09700W - 2600N 09555W - 2541N 09515W - 2442N     09322W - 2430N 09300W - 2430N 08959W - 2400N 08929W - 2336N 08830W      2218N 08600W - 2200N 08600W - 2108N 08533W - 2147N 08730W - 2252N     09043W</description>
+      <name>B1467/2026</name>
+      <description>B1467/26 NOTAMR B1443/26  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2607242245  C) 2607300056  D) DLY 2245-0056  E) DANGEROUS AREA FOR LAUNCH OF ROCKET SPACEX STARSHIP FLT-13,     LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:     AREA B2:      2430N 09103W     2430N 09052W     2420N 09031W     2312N 08804W     2232N 08638W     2212N 08600W     2200N 08600W     2117N 08538W     2144N 08645W     2216N 08832W     2236N 08938W     2303N 09114W     2310N 09137W     2430N 09103W     FIR </description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-91.05,24.5,0 -90.866667,24.5,0 -90.516667,24.333333,0 -88.066667,23.2,0 -86.633333,22.533333,0 -86.0,22.2,0 -86.0,22.0,0 -85.633333,21.283333,0 -86.75,21.733333,0 -88.533333,22.266667,0 -89.633333,22.6,0 -91.233333,23.05,0 -91.616667,23.166667,0 -91.05,24.5,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B1469/2026</name>
+      <description>B1469/26 NOTAMR B1446/26  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2607242245  C) 2607300056  D) DLY 2245-0056  E) AIRSPACE LAUNCH OPERATIONS ADVISORY: IN THE EVENT OF A     DEBRIS-GENERATING SPACE LAUNCH VEHICLE MISHAP THERE IS THE POTENTIAL     FOR DEBRIS FALLING WITHIN THE AREA DEFINED AS     2558N 09713W - 2600N 09700W - 2600N 09555W - 2541N 09515W - 2442N     09322W - 2430N 09300W - 2430N 08959W - 2400N 08929W - 2336N 08830W      2218N 08600W - 2200N 08600W - 2108N 08533W - 2147N 08730W </description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
@@ -377,18 +377,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>E2719/2026</name>
-      <description>E2719/26 NOTAMN  Q) YMMM/QRDCA/IV/BO/W/000/999/1415S09157E175  A) YMMM  B) 2607232327 C) 2607240008  E) TEMPO DANGER AREA ACT  DUE CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE  FLW RECEIVED FM CIVIL AVIATION ADMINISTRATION OF CHINA:  THE FLIGHT SAFETY OF ACFT MAY BE AFFECTED IN THE FOLLOWING &amp;apos;AREA PV&amp;apos;  BOUNDED BY: 1659S09151E, 1654S09117E, 1132S09203E, 1137S09236E TO  BEGINNING  F) SFC G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>91.85,-16.983333,0 91.283333,-16.9,0 92.05,-11.533333,0 92.6,-11.616667,0 91.85,-16.983333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>E2700/2026</name>
       <description>E2700/26 NOTAMN  Q) YMMM/QRDCA/IV/BO/W/000/999/2139S09259E999  A) YMMM  B) 2607232334 C) 2607300259  D) DAILY 2334-0259  E) TEMPO DANGER AREA ACT  ROCKET LAUNCH WILL TAKE PLACE FLW RECEIVED FM GOVERNMENT OF UNITED  STATES OF AMERICA: HAZARDOUS OPS WILL BE CONDUCTED FOR ATMOSPHERIC  RE-ENTRY AND SPLASHDOWN OF SPACEX STARSHIP FLT-13 STAGE 2 WI THE  FOLLOWING AREAS: 2338S 07500E, 2251S 07826E, 2139S 08258E, 2018S  08740E, 1911S 09104E, 1739S 09500E, 1613S 10020E, 1517S 10438E, 1631S  10942E, 1714S </description>
       <styleUrl>#polyStyle</styleUrl>
@@ -437,18 +425,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>FDC 6/7489</name>
-      <description>FDC 6/7489 AIRSPACE SPACE OPERATIONS TFR. Boca Chica, TX, Thursday, July 23, 2026 through Thursday, July 23, 2026 Local. NOTAM Number : FDC 6/7489 Download shapefiles Issue Date : July 21, 2026 at 1657 UTC Location : Boca Chica, Texas Beginning Date and Time : July 23, 2026 at 2230 UTC Ending Date and Time : July 24, 2026 at 0054 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Houston (ZHU) ARTCC, 281-230-5560 Jump To: Affected Ar</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.033333,26.1,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>A2363/26</name>
       <description>A2363/26 NOTAMN  Q)ZXXX/QRPCA/IV/NBO/W/000/999/3949N11930E009  A)ZBPE ZYSH B)2606301600 C)2608311559   E) A TEMPORARY PROHIBITED AREA ESTABLISHED BOUNDED BY:  N395600E1192100-N395600E1193300-N395100E1193900-N394300E1193900-N39  4300E1192100   BACK TO START.  VERTICAL LIMITS:GND-UNL.  ALL ACFT SHALL BE FORBIDDEN TO FLY INTO THE PROHIBITED AREA.  F)GND G)UNL</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -456,30 +432,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>119.35,39.933333,0 119.55,39.933333,0 119.65,39.85,0 119.65,39.716667,0 119.35,39.933333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A2878/26</name>
-      <description>A2878/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/3948N10002E012  A)ZLHW B)2607232324 C)2607232350   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:   N393900E1001200-N394100E0995000-N395800E0995300-N395600E1001500,BAC  K TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>100.2,39.65,0 99.833333,39.683333,0 99.883333,39.966667,0 100.25,39.933333,0 100.2,39.65,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A2879/26</name>
-      <description>A2879/26 NOTAMN  Q)ZPKM/QRDCA/IV/BO/W/000/999/2910N09814E029  A)ZPKM B)2607232326 C)2607240010   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N284400E0982700-N284800E0975500-N293700E0980200-N293400E0983400   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>98.45,28.733333,0 97.916667,28.8,0 98.033333,29.616667,0 98.566667,29.566667,0 98.45,28.733333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -617,13 +569,13 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>E2719/26</name>
-      <description>E2719/26 NOTAMN  Q) YMMM/QRDCA/IV/BO/W/000/999/1415S09157E175  A) YMMM  B) 2607232327 C) 2607240008  E) TEMPO DANGER AREA ACT  DUE CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE  FLW RECEIVED FM CIVIL AVIATION ADMINISTRATION OF CHINA:  THE FLIGHT SAFETY OF ACFT MAY BE AFFECTED IN THE FOLLOWING &amp;apos;AREA PV&amp;apos;  BOUNDED BY: 1659S09151E, 1654S09117E, 1132S09203E, 1137S09236E TO  BEGINNING  F) SFC G) UNL</description>
+      <name>B1446/2026</name>
+      <description>B1446/26 NOTAMR B1433/26  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2607232245  C) 2607240135  E) AIRSPACE LAUNCH OPERATIONS ADVISORY: IN THE EVENT OF A     DEBRIS-GENERATING SPACE LAUNCH VEHICLE MISHAP THERE IS THE POTENTIAL     FOR DEBRIS FALLING WITHIN THE AREA DEFINED AS     2558N 09713W - 2600N 09700W - 2600N 09555W - 2541N 09515W - 2442N     09322W - 2430N 09300W - 2430N 08959W - 2400N 08929W - 2336N 08830W      2218N 08600W - 2200N 08600W - 2108N 08533W - 2147N 08730W - 2252N     09043W</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>91.85,-16.983333,0 91.283333,-16.9,0 92.05,-11.533333,0 92.6,-11.616667,0 91.85,-16.983333,0</coordinates>
+            <coordinates>-97.216667,25.966667,0 -97.0,26.0,0 -95.916667,26.0,0 -95.25,25.683333,0 -93.366667,24.7,0 -93.0,24.5,0 -89.983333,24.5,0 -89.483333,24.0,0 -88.5,23.6,0 -86.0,22.3,0 -86.0,22.0,0 -85.55,21.133333,0 -87.5,21.783333,0 -90.716667,22.866667,0 -92.166667,22.583333,0 -94.166667,23.5,0 -97.216667,25.85,0 -97.216667,25.966667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -780,39 +732,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>115.616667,13.033333,0 116.066667,13.35,0 116.716667,12.466667,0 116.266667,12.166667,0 115.616667,13.033333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A5852/2026</name>
-      <description>A5852/26 NOTAMN  Q) ENOB/QRDCA/IV/BO /W /000/999/7540N02149E051  A) ENOB B) 2607140900 C) 2607232100  D) DAILY 0900-2100  E) TEMPO DANGER AREA &amp;apos;RUS SPACE LAUNCH AREA JULY 26&amp;apos; ACTIVATED  PSN 763000N 0220000E - 752000N 0244000E - 745000N 0214000E - 755000N  0184000E - 763000N 0220000E - (763000N 0220000E) IMPACT AREA FOR  RUSSIAN MISSILES.   SIMILAR ACTIVITIES ARE ALSO PLANNED WITHIN THE UNALLOCATED   INTERNATIONAL AIRSPACE AT PSN 705600N 0320500E - 701000N 0320500E -   700928N 0320152E </description>
-      <styleUrl>#polyStyle</styleUrl>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>22.0,76.5,0 24.666667,75.333333,0 21.666667,74.833333,0 18.666667,75.833333,0 22.0,76.5,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>32.083333,70.933333,0 32.083333,70.166667,0 32.031111,70.157778,0 31.833333,70.25,0 31.833333,70.501944,0 31.721667,70.606111,0 32.083333,70.933333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>F2572/2026</name>
-      <description>F2572/26 NOTAMN  Q) YMMM/QWMLW/IV/BO/W/000/999/6230S16247E020  A) YMMM  B) 2607140900 C) 2607232100  D) DAILY 0900-2100  E) ROCKET LAUNCH FROM RUSSIA WILL TAKE PLACE  FLW RECEIVED FROM GOVERNMENT OF RUSSIA: THE RUSSIAN FEDERATION PLANS  PLANS TO LAUNCH MISSILE MISSION IN THE SPACE AND TO SINK ITS  FRAGMENTS IN THE WATERS OF THE OCEAN.  CHARACTERISTICS OF IMPACT AREA:  621200S 1630000E  624100S 1630000E  623300S 1623336E  621200S 1630000E  F) SFC G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>163.0,-62.2,0 163.0,-62.683333,0 162.56,-62.55,0 163.0,-62.2,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
