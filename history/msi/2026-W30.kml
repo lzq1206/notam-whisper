@@ -298,68 +298,12 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2006/26</name>
-      <description>131456Z JUL 26  HYDROPAC 2006/26.  PERSIAN GULF.  QATAR.  1. SURVEY AND DEBRIS REMOVAL OPERATIONS     14 THRU 23 JUL BY VESSEL HALUL 49 IN:      A. 25-56.54N 052-41.48E.     B. 25-53.28N 052-43.65E.     C. 25-55.14N 052-42.71E.     D. 25-52.17N 052-46.77E.     WIDE BERTH REQUESTED.  2. CANCEL THIS MSG 240001Z JUL 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>52.691333,25.942333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>52.7275,25.888,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>52.711833,25.919,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>52.7795,25.8695,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1994/26</name>
       <description>102259Z JUL 26  HYDROPAC 1994/26  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 18 THRU 24 JUL     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 242129Z JUL 26.</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 -156.933333,-25.383333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 135/26</name>
-      <description>150028Z JUL 26  HYDROARC 135/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      IN PROGRESS UNTIL 182100Z AND     192100Z TO 232100Z JUL IN AREA BOUND BY     70-56.00N 032-04.97E, 70-10.00N 033-40.00E,     69-54.00N 032-40.00E, 70-08.00N 032-04.97E,     70-15.00N 031-50.00E, 70-30.11N 031-50.00E,     70-36.37N 031-43.30E.  2. CANCEL THIS MSG 232300Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>32.082833,70.933333,0 33.666667,70.166667,0 32.666667,69.9,0 32.082833,70.133333,0 31.833333,70.25,0 31.833333,70.501833,0 31.721667,70.606167,0 32.082833,70.933333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 134/26</name>
-      <description>132030Z JUL 26  HYDROARC 134/26.  BARRENTS SEA.  SVALBARD.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     142100Z TO 182100Z AND 192100Z TO 232100Z JUL     IN AREA BOUND BY     76-30.00N 022-00.00E, 75-20.00N 024-40.00E,     74-50.00N 021-40.00E, 75-50.00N 018-40.00E.  2. CANCEL THIS MSG 232200Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>22.0,76.5,0 24.666667,75.333333,0 21.666667,74.833333,0 18.666667,75.833333,0 22.0,76.5,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
