@@ -174,30 +174,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B3615/26</name>
-      <description>B3615/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1921N11940E062  A) RPHI B) 2607291142 C) 2607291339  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  194300N 1184000E -  193800N 1200700E -  185900N 1200400E -  190400N 1183800E -  194300N 1184000E  (54NM NORTHWEST OF LAOAG AP).  F) SFC G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>118.666667,19.716667,0 120.116667,19.633333,0 120.066667,18.983333,0 118.633333,19.066667,0 118.666667,19.716667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>B3616/26</name>
-      <description>B3616/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1901N12354E034  A) RPHI B) 2607291144 C) 2607291343  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  192000N 1232600E -  191500N 1242600E -  184200N 1242300E -  184600N 1232300E -  192000N 1232600E   (99NM NORTHEAST OF LALLO AP).  F) SFC G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>123.433333,19.333333,0 124.433333,19.25,0 124.383333,18.7,0 123.383333,18.766667,0 123.433333,19.333333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>B3620/26</name>
       <description>B3620/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1921N11924E046  A) RPHI B) 2608091100 C) 2608131400  D) 1100-1400  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  194200N 1184600E -  193700N 1200800E -  185900N 1200500E -  190400N 1184000E -  194200N 1184600E  (55NM NORTHWEST OF LAOAG AP).  F) SFC G) UNL</description>
       <styleUrl>#polyStyle</styleUrl>
