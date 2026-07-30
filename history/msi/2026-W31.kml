@@ -110,17 +110,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2137/26</name>
-      <description>260112Z JUL 26  HYDROPAC 2137/26.  LUZON STRAIT.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      300001Z TO 300600Z JUL IN AREA BOUND BY     21-04.53N 119-54.21E, 21-16.10N 120-26.61E,     20-25.41N 120-46.98E, 20-13.90N 120-14.74E.  2. CANCEL THIS MSG 300700Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>119.9035,21.0755,0 120.4435,21.268333,0 120.783,20.4235,0 120.245667,20.231667,0 119.9035,21.0755,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2127/26</name>
       <description>241632Z JUL 26  HYDROPAC 2127/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 01 THRU 07 AUG     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 072129Z AUG 26.</description>
       <Polygon>
