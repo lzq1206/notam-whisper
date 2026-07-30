@@ -143,15 +143,24 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2137/26</name>
-      <description>260112Z JUL 26  HYDROPAC 2137/26.  LUZON STRAIT.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      300001Z TO 300600Z JUL IN AREA BOUND BY     21-04.53N 119-54.21E, 21-16.10N 120-26.61E,     20-25.41N 120-46.98E, 20-13.90N 120-14.74E.  2. CANCEL THIS MSG 300700Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>119.9035,21.0755,0 120.4435,21.268333,0 120.783,20.4235,0 120.245667,20.231667,0 119.9035,21.0755,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
+      <name>HYDROPAC 2179/26</name>
+      <description>301308Z JUL 26  HYDROPAC 2179/26.  SOUTH CHINA SEA.  SULU SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     040844Z TO 040920Z AUG     IN AREAS BOUND BY:     A. 13-14.00N 115-29.00E, 13-33.00N 115-56.00E,        12-40.00N 116-35.00E, 12-20.00N 116-08.00E.     B. 08-37.00N 118-47.00E, 08-56.00N 119-15.00E,        08-52.00N 119-25.00E, 07-59.00N 120-02.00E,        07-34.00N 119-26.00E, 08-27.00N 118-49.00E.  2. CANCEL THIS MSG 041020Z AUG 26.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>115.483333,13.233333,0 115.933333,13.55,0 116.583333,12.666667,0 116.133333,12.333333,0 115.483333,13.233333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>118.783333,8.616667,0 119.25,8.933333,0 119.416667,8.866667,0 120.033333,7.983333,0 119.433333,7.566667,0 118.816667,8.45,0 118.783333,8.616667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2127/26</name>
@@ -163,33 +172,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2123/26</name>
-      <description>241246Z JUL 26  HYDROPAC 2123/26.  PHILIPPINE SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      1000Z TO 1600Z 29 JUL IN AREAS BOUND BY:     A. 19-42.00N 118-41.00E, 19-37.00N 120-07.00E,        18-59.00N 120-04.00E, 19-04.00N 118-38.00E.     B. 19-19.00N 123-26.00E, 19-14.00N 124-26.00E,        18-42.00N 124-23.00E, 18-47.00N 123-23.00E.     C. 17-28.00N 138-28.00E, 17-00.00N 141-10.00E,        16-13.00N 141-00.00E, 16-40.00N 138-20.00E.  2. CANCEL THIS MSG 291700Z JUL 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.683333,19.7,0 120.116667,19.616667,0 120.066667,18.983333,0 118.633333,19.066667,0 118.683333,19.7,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>123.433333,19.316667,0 124.433333,19.233333,0 124.383333,18.7,0 123.383333,18.783333,0 123.433333,19.316667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>138.466667,17.466667,0 141.166667,17.0,0 141.0,16.216667,0 138.333333,16.666667,0 138.466667,17.466667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2111/26</name>
