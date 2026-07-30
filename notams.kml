@@ -138,42 +138,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A2495/26</name>
-      <description>A2495/26 NOTAMN  Q) RCAA/QRALW/IV/NBO/W/000/999/2103N12015E019  A) RCAA  B) 2607300054 C) 2607300119  E) AIRSPACE BLOCKED DUE TO AEROSPACE FLIGHT ACTIVITY:  1.AFFECTED RTE:    A577 BTN ANDRE AND KABAM    Q12 BTN ZUBAT AND KABAM    N892 BTN HCN AND KABAM    Q13 BTN GLOOM AND KABAM   2.FOR DETAILS, CONTACT TAIPEI ACC AT +886 3 3841040  3.AREA AS FLW:    2105N11955E    2117N12027E    2100N12034E    2100N11957E    2105N11955E  F) SFC G) UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>119.916667,21.083333,0 120.45,21.283333,0 120.566667,21.0,0 119.95,21.0,0 119.916667,21.083333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A3000/26</name>
-      <description>A3000/26 NOTAMN  Q)ZHWH/QRDCA/IV/BO/W/000/999/3545N11332E011  A)ZHWH B)2607300052 C)2607300112   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N355200E1132100-N355600E1133300-N353900E1134400-N353500E1133200,  BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>113.35,35.866667,0 113.55,35.933333,0 113.733333,35.65,0 113.533333,35.583333,0 113.35,35.866667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A3001/26</name>
-      <description>A3001/26 NOTAMN  Q)ZSHA/QRDCA/IV/BO/W/000/999/2751N11729E022  A)ZSHA B)2607300053 C)2607300119   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N280500E1171000-N281300E1173300-N273800E1174900-N273000E1172700,  BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>117.166667,28.083333,0 117.55,28.216667,0 117.816667,27.633333,0 117.45,27.5,0 117.166667,28.083333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>B3620/26</name>
       <description>B3620/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1921N11924E046  A) RPHI B) 2608091100 C) 2608131400  D) 1100-1400  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  194200N 1184600E -  193700N 1200800E -  185900N 1200500E -  190400N 1184000E -  194200N 1184600E  (55NM NORTHWEST OF LAOAG AP).  F) SFC G) UNL</description>
       <styleUrl>#polyStyle</styleUrl>
