@@ -185,17 +185,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2074/26</name>
-      <description>161550Z JUL 26  HYDROPAC 2074/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 24 THRU 30 JUL     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 302129Z JUL 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 -156.933333,-25.383333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 146/26</name>
       <description>241348Z JUL 26  HYDROARC 146/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 2100Z TO 1700Z DAILY      30 JUL THRU 01 AUG IN AREA BOUND BY     70-26.00N 044-50.00E, 68-04.00N 049-57.00E,     67-42.00N 048-42.00E, 69-51.00N 044-04.00E,     69-27.00N 037-38.00E, 69-28.00N 035-45.00E,     69-33.00N 035-30.00E, 69-55.00N 035-48.00E.  2. CANCEL HYDROARC 145/26.  3. CANCEL THIS MSG 021800Z AUG 26.</description>
       <Polygon>
@@ -205,26 +194,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 495/26</name>
-      <description>141948Z JUL 26  NAVAREA XII 495/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 241400Z TO 241825Z JUL, ALTERNATE        1400Z TO 1825Z DAILY 25 THRU 30 JUL        IN AREA BOUND BY        34-29.00N 120-29.00W, 34-40.00N 120-37.00W,        34-38.00N 120-42.00W, 33-49.00N 120-55.00W,        29-13.00N 121-56.00W, 29-13.00N 121-36.00W.     B. 241400Z TO 241843Z JUL, ALTERNATE        1400Z TO 1843Z DAILY 25 THRU 30 JUL        IN AREA BOUND BY        29-13.00N 121-3</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-120.483333,34.483333,0 -120.616667,34.666667,0 -120.7,34.633333,0 -120.916667,33.816667,0 -121.933333,29.216667,0 -121.6,29.216667,0 -120.483333,34.483333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.516667,29.216667,0 -122.05,29.216667,0 -122.233333,28.816667,0 -122.1,27.683333,0 -121.416667,28.7,0 -121.516667,29.216667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
   </Document>
 </kml>
