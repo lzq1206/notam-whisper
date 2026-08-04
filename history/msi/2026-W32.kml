@@ -81,26 +81,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2179/26</name>
-      <description>301308Z JUL 26  HYDROPAC 2179/26.  SOUTH CHINA SEA.  SULU SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     040844Z TO 040920Z AUG     IN AREAS BOUND BY:     A. 13-14.00N 115-29.00E, 13-33.00N 115-56.00E,        12-40.00N 116-35.00E, 12-20.00N 116-08.00E.     B. 08-37.00N 118-47.00E, 08-56.00N 119-15.00E,        08-52.00N 119-25.00E, 07-59.00N 120-02.00E,        07-34.00N 119-26.00E, 08-27.00N 118-49.00E.  2. CANCEL THIS MSG 041020Z AUG 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>115.483333,13.233333,0 115.933333,13.55,0 116.583333,12.666667,0 116.133333,12.333333,0 115.483333,13.233333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.783333,8.616667,0 119.25,8.933333,0 119.416667,8.866667,0 120.033333,7.983333,0 119.433333,7.566667,0 118.816667,8.45,0 118.783333,8.616667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2127/26</name>
       <description>241632Z JUL 26  HYDROPAC 2127/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1543Z TO 2029Z DAILY 01 THRU 07 AUG     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 072129Z AUG 26.</description>
       <Polygon>
