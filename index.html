@@ -592,46 +592,67 @@
 
     function solveSolarAltitudeLatitude(date, lon, targetAltitudeDeg = 0) {
       const targetAltitudeRad = targetAltitudeDeg * Math.PI / 180;
+      const roots = [];
       let low = -89.9;
-      let high = 89.9;
-      let altLow = sunAltitudeRadians(date, low, lon) - targetAltitudeRad;
-      let altHigh = sunAltitudeRadians(date, high, lon) - targetAltitudeRad;
-      if (!Number.isFinite(altLow) || !Number.isFinite(altHigh)) return 0;
-      if (altLow * altHigh > 0) {
-        let bestLat = 0;
-        let bestAbs = Number.POSITIVE_INFINITY;
-        for (let lat = -89.5; lat <= 89.5; lat += 1) {
-          const alt = sunAltitudeRadians(date, lat, lon) - targetAltitudeRad;
-          if (!Number.isFinite(alt)) continue;
-          const absAlt = Math.abs(alt);
-          if (absAlt < bestAbs) {
-            bestAbs = absAlt;
-            bestLat = lat;
+      let lowAlt = sunAltitudeRadians(date, low, lon) - targetAltitudeRad;
+      if (!Number.isFinite(lowAlt)) return roots;
+      for (let high = -88.9; high <= 89.9; high += 1) {
+        const highAlt = sunAltitudeRadians(date, high, lon) - targetAltitudeRad;
+        if (!Number.isFinite(highAlt)) { low = high; lowAlt = highAlt; continue; }
+        if (lowAlt === 0 || lowAlt * highAlt < 0) {
+          let left = low, right = high, leftAlt = lowAlt;
+          for (let i = 0; i < 30; i++) {
+            const mid = (left + right) / 2;
+            const midAlt = sunAltitudeRadians(date, mid, lon) - targetAltitudeRad;
+            if (!Number.isFinite(midAlt) || Math.abs(midAlt) < 1e-7) { left = right = mid; break; }
+            if (leftAlt * midAlt <= 0) right = mid;
+            else { left = mid; leftAlt = midAlt; }
           }
+          const root = (left + right) / 2;
+          if (Number.isFinite(root) && !roots.some(existing => Math.abs(existing - root) < 0.01)) roots.push(root);
         }
-        return bestLat;
+        low = high;
+        lowAlt = highAlt;
       }
-      for (let i = 0; i < 30; i++) {
-        const mid = (low + high) / 2;
-        const altMid = sunAltitudeRadians(date, mid, lon) - targetAltitudeRad;
-        if (!Number.isFinite(altMid)) break;
-        if (Math.abs(altMid) < 1e-7) return mid;
-        if (altLow * altMid <= 0) high = mid;
-        else {
-          low = mid;
-          altLow = altMid;
-        }
-      }
-      return (low + high) / 2;
+      return roots;
     }
 
-    function buildSolarCurvePoints(date, targetAltitudeDeg = 0, lonStep = 2) {
-      const points = [];
+    function buildSolarCurveSegments(date, targetAltitudeDeg = 0, lonStep = 2) {
+      const segments = [];
+      let active = [];
       for (let lon = -180; lon <= 180; lon += lonStep) {
-        points.push([solveSolarAltitudeLatitude(date, lon, targetAltitudeDeg), lon]);
+        const roots = solveSolarAltitudeLatitude(date, lon, targetAltitudeDeg);
+        const assigned = new Set();
+        const nextActive = [];
+        active.forEach(segment => {
+          let bestIndex = -1, bestDistance = Infinity;
+          roots.forEach((lat, index) => {
+            const distance = Math.abs(lat - segment[segment.length - 1][0]);
+            if (!assigned.has(index) && distance < bestDistance) { bestDistance = distance; bestIndex = index; }
+          });
+          if (bestIndex >= 0 && bestDistance <= 12) {
+            segment.push([roots[bestIndex], lon]);
+            assigned.add(bestIndex);
+            nextActive.push(segment);
+          }
+        });
+        roots.forEach((lat, index) => {
+          if (assigned.has(index)) return;
+          const segment = [[lat, lon]];
+          segments.push(segment);
+          nextActive.push(segment);
+        });
+        active = nextActive;
       }
-      if (points[points.length - 1][1] !== 180) points.push([solveSolarAltitudeLatitude(date, 180, targetAltitudeDeg), 180]);
-      return points;
+      return segments.filter(segment => segment.length >= 2);
+    }
+
+    function toCesiumDegreesArray(points) {
+      const degreeArray = [];
+      points.forEach(([lat, lon]) => {
+        if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) degreeArray.push(lon, lat);
+      });
+      return degreeArray;
     }
 
     function isSouthSideNight(date) {
@@ -680,11 +701,13 @@
     function renderSolarOverlay2D(date) {
       clearSolarOverlay2D();
       if (!date) return;
-      const sunsetTerminator = buildSolarCurvePoints(date, 0);
+      const sunsetSegments = buildSolarCurveSegments(date, 0);
+      const sunsetTerminator = sunsetSegments.reduce((longest, segment) => segment.length > longest.length ? segment : longest, []);
+      if (sunsetTerminator.length < 2) return;
       const nightPolygon = buildNightPolygonFromTerminator(date, sunsetTerminator);
       const solarCurves = SOLAR_CURVE_DEFINITIONS.map(def => ({
         ...def,
-        points: buildSolarCurvePoints(date, def.altitudeDeg)
+        segments: buildSolarCurveSegments(date, def.altitudeDeg)
       }));
       const [minWrap, maxWrap] = getVisibleWorldWrapRange();
       for (let wrap = minWrap; wrap <= maxWrap; wrap++) {
@@ -697,16 +720,12 @@
           interactive: false,
           noClip: true
         }).addTo(solarOverlayLayer2D);
-        solarCurves.forEach(curve => {
-          L.polyline(shiftLonPath(curve.points, lonOffset), {
-            pane: 'solarOverlayPane',
-            color: curve.color,
-            weight: curve.weight,
-            opacity: 0.95,
-            interactive: false,
-            noClip: true
+        solarCurves.forEach(curve => curve.segments.forEach(segment => {
+          L.polyline(shiftLonPath(segment, lonOffset), {
+            pane: 'solarOverlayPane', color: curve.color, weight: curve.weight,
+            opacity: 0.95, interactive: false, noClip: true
           }).addTo(solarOverlayLayer2D);
-        });
+        }));
       }
     }
 
@@ -714,9 +733,9 @@
       clearSolarOverlay3D();
       if (!date || !cesiumViewer) return;
       SOLAR_CURVE_DEFINITIONS.forEach(curve => {
-        const points = buildSolarCurvePoints(date, curve.altitudeDeg);
-        const degreeArray = [];
-        points.forEach(([lat, lon]) => degreeArray.push(lon, lat));
+        buildSolarCurveSegments(date, curve.altitudeDeg).forEach(segment => {
+        const degreeArray = toCesiumDegreesArray(segment);
+        if (degreeArray.length < 4) return;
         const curveEntity = cesiumViewer.entities.add({
           polyline: {
             positions: Cesium.Cartesian3.fromDegreesArray(degreeArray),
@@ -726,6 +745,7 @@
           }
         });
         cesiumSolarCurveEntities.push(curveEntity);
+        });
       });
       if (cesiumViewer.scene && cesiumViewer.scene.globe) {
         cesiumViewer.scene.globe.enableLighting = true;
@@ -974,8 +994,8 @@
                  : [normalizeDatelineCoordinates(points)];
                segments.forEach(segPts => {
                  if (segPts.length < 2) return;
-                 const flatPoints = [];
-                 segPts.forEach(p => flatPoints.push(p[1], p[0]));
+                 const flatPoints = toCesiumDegreesArray(segPts);
+                 if (flatPoints.length < 4) return;
                  const entityOptions = {
                    polygon: {
                      hierarchy: Cesium.Cartesian3.fromDegreesArray(flatPoints),
