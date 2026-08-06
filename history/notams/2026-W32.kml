@@ -150,32 +150,8 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>FDC 6/1439</name>
-      <description>FDC 6/1439 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Thursday, August 6, 2026 Local. NOTAM Number : FDC 6/1439 Download shapefiles Issue Date : August 03, 2026 at 2144 UTC Location : Cape Canaveral, Florida Beginning Date and Time : August 06, 2026 at 0702 UTC Ending Date and Time : August 06, 2026 at 0951 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami (ZMA) ARTCC, 305-716-1588 Jump To: Affected Areas Operating Res</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-80.705278,28.854444,0 -80.5,29.125,0 -80.451483,29.114051,0 -80.404282,29.099557,0 -80.358736,29.081634,0 -80.315171,29.060422,0 -80.273897,29.036086,0 -80.235204,29.008811,0 -80.199363,28.978803,0 -80.166625,28.946288,0 -80.137213,28.911509,0 -80.111328,28.874724,0 -80.089142,28.836206,0 -80.070801,28.796237,0 -80.05642,28.755109,0 -80.046089,28.713124,0 -80.039863,28.670584,0 -80.03777,28.627799,0 -80.039809,28.585074,0 -80.045947,28.542718,0 -80.056123,28.501031,0 -80.070248,28.46031,0 -80.088205,28.420844,0 -80.109851,28.382909,0 -80.135014,28.346772,0 -80.163504,28.312685,0 -80.195104,28.280885,0 -80.229576,28.251589,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.783611,28.633611,0 -80.845556,28.819444,0 -80.787222,28.854444,0 -80.705278,28.854444,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>FDC 6/1438</name>
       <description>FDC 6/1438 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Friday, August 7, 2026 Local. NOTAM Number : FDC 6/1438 Download shapefiles Issue Date : August 03, 2026 at 2141 UTC Location : Cape Canaveral, Florida Beginning Date and Time : August 07, 2026 at 0641 UTC Ending Date and Time : August 07, 2026 at 0931 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami (ZMA) ARTCC, 305-716-1588 Jump To: Affected Areas Operating Restr</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-80.705278,28.854444,0 -80.5,29.125,0 -80.451483,29.114051,0 -80.404282,29.099557,0 -80.358736,29.081634,0 -80.315171,29.060422,0 -80.273897,29.036086,0 -80.235204,29.008811,0 -80.199363,28.978803,0 -80.166625,28.946288,0 -80.137213,28.911509,0 -80.111328,28.874724,0 -80.089142,28.836206,0 -80.070801,28.796237,0 -80.05642,28.755109,0 -80.046089,28.713124,0 -80.039863,28.670584,0 -80.03777,28.627799,0 -80.039809,28.585074,0 -80.045947,28.542718,0 -80.056123,28.501031,0 -80.070248,28.46031,0 -80.088205,28.420844,0 -80.109851,28.382909,0 -80.135014,28.346772,0 -80.163504,28.312685,0 -80.195104,28.280885,0 -80.229576,28.251589,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.783611,28.633611,0 -80.845556,28.819444,0 -80.787222,28.854444,0 -80.705278,28.854444,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>FDC 6/1435</name>
-      <description>FDC 6/1435 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Thursday, August 6, 2026 Local. NOTAM Number : FDC 6/1435 Download shapefiles Issue Date : August 03, 2026 at 2137 UTC Location : Cape Canaveral, Florida Beginning Date and Time : August 06, 2026 at 0702 UTC Ending Date and Time : August 06, 2026 at 0951 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami (ZMA) ARTCC, 305-716-1588 Jump To: Affected Areas Operating Res</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
