@@ -23,26 +23,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 741/26</name>
-      <description>300835Z JUL 26  NAVAREA IV 741/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      050732Z TO 051012Z AUG, ALTERNATE      060712Z TO 060951Z, 070651Z TO 070931Z,      080631Z TO 080910Z, 090610Z TO 090850Z,      100550Z TO 100829Z AND      110530Z TO 110809Z AUG IN AREAS BOUND BY:     A. 32-09.00N 077-03.00W, 33-45.00N 075-40.00W,        34-04.00N 074-47.00W, 33-34.00N 074-20.00W,        33-04.00N 074-41.00W, 31-59.00N 076-55.00W.     B. 28-36.55N 080-36.00W, 28-57.00N</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-77.05,32.15,0 -75.666667,33.75,0 -74.783333,34.066667,0 -74.333333,33.566667,0 -74.683333,33.066667,0 -76.916667,31.983333,0 -77.05,32.15,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.6,28.609167,0 -80.333333,28.95,0 -80.216667,28.833333,0 -80.433333,28.583333,0 -80.557,28.5195,0 -80.6,28.609167,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 529/26</name>
       <description>050015Z AUG 26  NAVAREA XII 529/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 061400Z TO 061852Z AUG, ALTERNATE         1400Z TO 1852Z DAILY 07 THRU 12 AUG        IN AREA BOUND BY        34-29.00N 120-29.00W, 34-40.00N 120-37.00W,        34-38.00N 120-42.00W, 33-49.00N 120-55.00W,        29-13.00N 121-56.00W, 29-13.00N 121-36.00W.     B. 061400Z TO 161843Z AUG, ALTERNATE        1400Z TO 1843Z DAILY 07 THRU 12 AUG        IN AREA BOUND BY        29-13.00N 121-</description>
       <MultiGeometry>
@@ -172,37 +152,6 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2184/26</name>
-      <description>310421Z JUL 26  HYDROPAC 2184/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 0200Z TO 1115Z DAILY     05 THRU 18 AUG:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 177-49.00E, 39-12.00S 177-57.00E,        39-06.00S 178-13.20E, 39-12.00S 178-42.00E,        39-42.00S 178-42.00E, 39-30.00S 177-45.00E,        39-18.00S 177-36.00E.     B. SPACE DEBRIS IN AREA BOUND BY        39-42.00S 176-36.00W, 40-30.00S 170-54.00W,        41-54.00S 171-06.00W, 41-00.00S 177-12.00W.  2. CANC</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>177.816667,-39.2,0 177.95,-39.2,0 178.22,-39.1,0 178.7,-39.2,0 178.7,-39.7,0 177.75,-39.5,0 177.6,-39.3,0 177.816667,-39.2,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-176.6,-39.7,0 -170.9,-40.5,0 -171.1,-41.9,0 -177.2,-41.0,0 -176.6,-39.7,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2183/26</name>
-      <description>280938Z JUL 26  HYDROPAC 2183/26.  EASTERN INDIAN OCEAN.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     050952Z TO 051245Z, 060932Z TO 061224Z,      070911Z TO 071204Z, 080851Z TO 081143Z,      090830Z TO 091123Z, 100810Z TO 101102Z AND     110750Z TO 111042Z AUG IN AREA BOUND BY     40-53.00S 081-04.00E, 47-30.00S 097-30.00E,     51-11.00S 117-25.00E, 51-06.00S 138-56.00E,     47-16.00S 158-45.00E, 50-07.00S 157-59.00E,     54-19.00S 130-56.00E, 51-50.00S 102-47.00E,     43-45.00S 0</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>81.066667,-40.883333,0 97.5,-47.5,0 117.416667,-51.183333,0 138.933333,-51.1,0 158.75,-47.266667,0 157.983333,-50.116667,0 130.933333,-54.316667,0 102.783333,-51.833333,0 80.383333,-43.75,0 81.066667,-40.883333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2127/26</name>
