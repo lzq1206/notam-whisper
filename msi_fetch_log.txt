@@ -17708,3 +17708,23 @@ AttributeError: module 'datetime' has no attribute 'UTC'
 2026-08-07T00:56:04.551707 -   Got 1 blocks from HTML
 2026-08-07T00:56:09.557994 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
 2026-08-07T00:56:09.672592 -   Got 1 blocks from HTML
+2026-08-07T05:52:15.629986 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-08-07T05:52:15.919008 -   Got 120 blocks from TXT
+2026-08-07T05:52:20.925087 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-08-07T05:52:21.116209 -   Got 31 blocks from TXT
+2026-08-07T05:52:26.122293 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-08-07T05:52:26.258955 -   Got 75 blocks from TXT
+2026-08-07T05:52:31.264941 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-08-07T05:52:31.509335 -   Got 121 blocks from TXT
+2026-08-07T05:52:36.515279 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-08-07T05:52:37.064801 -   Got 15 blocks from TXT
+2026-08-07T05:52:42.070946 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-08-07T05:52:42.276845 -   Got 1 blocks from HTML
+2026-08-07T05:52:47.283220 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-08-07T05:52:47.424099 -   Got 1 blocks from HTML
+2026-08-07T05:52:52.430370 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-08-07T05:52:52.626121 -   Got 1 blocks from HTML
+2026-08-07T05:52:57.632636 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-08-07T05:52:58.054406 -   Got 1 blocks from HTML
+2026-08-07T05:53:03.060723 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-08-07T05:53:03.285734 -   Got 1 blocks from HTML
