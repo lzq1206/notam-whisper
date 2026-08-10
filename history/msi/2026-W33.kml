@@ -168,33 +168,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2271/26</name>
-      <description>071436Z AUG 26  HYDROPAC 2271/26.  NORTH PACIFIC.  PHILIPPINE SEA.  SOUTH CHINA SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     101100Z TO 101700Z AUG IN AREAS BOUND BY:     A. 19-42.36N 118-42.36E, 19-37.68N 120-08.16E,        19-00.00N 120-05.70E, 19-04.68N 118-40.20E.     B. 19-19.50N 123-30.48E, 19-14.58N 124-30.30E,        18-42.30N 124-27.24E, 18-47.22N 123-27.60E.     C. 17-27.66N 138-37.62E, 16-59.70N 141-18.84E,        16-12.00N 141-09.48E, 16-39.84N 138-28.92E.  2. CANCEL</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.706,19.706,0 120.136,19.628,0 120.095,19.0,0 118.67,19.078,0 118.706,19.706,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>123.508,19.325,0 124.505,19.243,0 124.454,18.705,0 123.46,18.787,0 123.508,19.325,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>138.627,17.461,0 141.314,16.995,0 141.158,16.2,0 138.482,16.664,0 138.627,17.461,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2261/26</name>
       <description>040319Z AUG 26  HYDROPAC 2261/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0343Z TO 0829Z DAILY 12 THRU 18 AUG        IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 180929Z AUG 26.</description>
       <Polygon>
