@@ -3,6 +3,26 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
+      <name>NAVAREA IV 776/26</name>
+      <description>100417Z AUG 26  NAVAREA IV 776/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      160102Z TO 160220Z AUG, ALTERNATE      170045Z TO 170203Z, 180031Z TO 180149Z,      190014Z TO 190132Z, 192358Z TO 200116Z,      202342Z TO 210100Z AND      212327Z TO 220045Z AUG IN AREAS BOUND BY:     A. 30-58.00N 078-25.00W, 31-47.00N 077-47.00W,        32-18.00N 077-09.00W, 32-45.00N 076-27.00W,        32-28.00N 076-07.00W, 31-47.00N 076-23.00W,        31-13.00N 077-21.00W, 30-40.00N</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-78.416667,30.966667,0 -77.783333,31.783333,0 -77.15,32.3,0 -76.45,32.75,0 -76.116667,32.466667,0 -76.383333,31.783333,0 -77.35,31.216667,0 -78.183333,30.666667,0 -78.416667,30.966667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.634667,28.6595,0 -80.133333,29.1,0 -80.033333,29.033333,0 -80.466667,28.533333,0 -80.546333,28.499167,0 -80.634667,28.6595,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA IV 755/26</name>
       <description>050309Z AUG 26  NAVAREA IV 755/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      101449Z TO 101931Z AUG, ALTERNATE     111426Z TO 111908Z, 121404Z TO 121846Z,      131342Z TO 131824Z, 141319Z TO 141801Z,      151257Z TO 151739Z AND 161235Z TO 161717Z AUG     IN AREAS BOUND BY:     A. 31-37.00N 077-09.00W, 32-23.00N 076-52.00W,        33-08.00N 075-40.00W, 33-12.00N 075-13.00W,        32-54.00N 074-58.00W, 32-36.00N 075-02.00W,        31-51.00N 076-13.00W, 31-32.00N 0</description>
       <MultiGeometry>
