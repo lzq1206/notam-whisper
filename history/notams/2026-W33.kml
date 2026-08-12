@@ -78,18 +78,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B3622/26</name>
-      <description>B3622/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/0907N11916E022  A) RPHI B) 2608170200 C) 2608200600  D) 0200-0600  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  091600N 1185700E -  092800N 1191300E -  085700N 1193500E -  084600N 1192000E -  091600N 1185700E   (28NM SOUTHEAST OF PUERTO PRINCESA AP).  F) SFC G) UNL    CREATED: 20 JUL 2026 09:34  SOURCE: EUECYIYN</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>118.95,9.266667,0 119.216667,9.466667,0 119.583333,8.95,0 119.333333,8.766667,0 118.95,9.266667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>B3623/26</name>
       <description>B3623/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1908N11910E037  A) RPHI B) 2608240000 C) 2608310400  D) 0000-0400  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  192900N 1184000E -  192400N 1194400E -  184700N 1193900E -  185200N 1183700E -  192900N 1184000E  (61NM NORTHWEST OF LAOAG AP).  F) SFC G) UNL    CREATED: 20 JUL 2026 09:39  SOURCE: EUECYIYN</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -109,6 +97,18 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>125.366667,18.85,0 126.4,18.716667,0 126.316667,18.0,0 125.283333,18.133333,0 125.366667,18.85,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B4090/26</name>
+      <description>B4090/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/0907N11916E023  A) RPHI B) 2608160403 C) 2608160432  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  091600N 1185700E -  092800N 1191200E -  085700N 1193600E -  084500N 1192000E -  091600N 1185700E  (28NM SOUTHEAST OF PUERTO PRINCESA AP).  F) SFC G) UNL    CREATED: 12 AUG 2026 07:41  SOURCE: EUECYIYN</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>118.95,9.266667,0 119.2,9.466667,0 119.6,8.95,0 119.333333,8.75,0 118.95,9.266667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -145,6 +145,18 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>163.0,-62.2,0 163.0,-62.6,0 162.56,-62.55,0 163.0,-62.2,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B3622/26</name>
+      <description>B3622/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/0907N11916E022  A) RPHI B) 2608170200 C) 2608200600  D) 0200-0600  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  091600N 1185700E -  092800N 1191300E -  085700N 1193500E -  084600N 1192000E -  091600N 1185700E   (28NM SOUTHEAST OF PUERTO PRINCESA AP).  F) SFC G) UNL    CREATED: 20 JUL 2026 09:34  SOURCE: EUECYIYN</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>118.95,9.266667,0 119.216667,9.466667,0 119.583333,8.95,0 119.333333,8.766667,0 118.95,9.266667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
