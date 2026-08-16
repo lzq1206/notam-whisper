@@ -23,26 +23,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 755/26</name>
-      <description>050309Z AUG 26  NAVAREA IV 755/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      101449Z TO 101931Z AUG, ALTERNATE     111426Z TO 111908Z, 121404Z TO 121846Z,      131342Z TO 131824Z, 141319Z TO 141801Z,      151257Z TO 151739Z AND 161235Z TO 161717Z AUG     IN AREAS BOUND BY:     A. 31-37.00N 077-09.00W, 32-23.00N 076-52.00W,        33-08.00N 075-40.00W, 33-12.00N 075-13.00W,        32-54.00N 074-58.00W, 32-36.00N 075-02.00W,        31-51.00N 076-13.00W, 31-32.00N 0</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-77.15,31.616667,0 -76.866667,32.383333,0 -75.666667,33.133333,0 -75.216667,33.2,0 -74.966667,32.9,0 -75.033333,32.6,0 -76.216667,31.85,0 -77.05,31.533333,0 -77.15,31.616667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.630333,28.653,0 -80.233333,29.0,0 -80.083333,28.883333,0 -80.542,28.490333,0 -80.630333,28.653,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 551/26</name>
       <description>080730Z AUG 26  NAVAREA XII 551/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 190200Z TO 190625Z AUG, ALTERNATE        0200Z TO 0625Z DAILY 20 THRU 25 AUG        IN AREAS BOUND BY:        34-29.00N 120-29.00W, 34-40.00N 120-37.00W,        34-38.00N 120-42.00W, 33-49.00N 120-55.00W,        29-13.00N 121-56.00W, 29-13.00N 121-36.00W.     B. 190200Z TO 190643Z AUG, ALTERNATE        0200Z TO 0643Z DAILY 20 THRU 25 AUG        IN AREAS BOUND BY:        29-13.00N 1</description>
       <MultiGeometry>
@@ -364,26 +344,6 @@
           <outerBoundaryIs>
             <LinearRing>
               <coordinates>161.621667,26.366833,0 163.118667,26.255667,0 168.192167,24.417833,0 168.390333,24.225,0 167.840333,22.753333,0 166.489167,22.800667,0 161.3,24.669,0 161.071667,24.874333,0 161.621667,26.366833,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 529/26</name>
-      <description>050015Z AUG 26  NAVAREA XII 529/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 061400Z TO 061852Z AUG, ALTERNATE         1400Z TO 1852Z DAILY 07 THRU 12 AUG        IN AREA BOUND BY        34-29.00N 120-29.00W, 34-40.00N 120-37.00W,        34-38.00N 120-42.00W, 33-49.00N 120-55.00W,        29-13.00N 121-56.00W, 29-13.00N 121-36.00W.     B. 061400Z TO 161843Z AUG, ALTERNATE        1400Z TO 1843Z DAILY 07 THRU 12 AUG        IN AREA BOUND BY        29-13.00N 121-</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-120.483333,34.483333,0 -120.616667,34.666667,0 -120.7,34.633333,0 -120.916667,33.816667,0 -121.933333,29.216667,0 -121.6,29.216667,0 -120.483333,34.483333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-121.516667,29.216667,0 -122.05,29.216667,0 -122.233333,28.816667,0 -122.1,27.683333,0 -121.416667,28.7,0 -121.516667,29.216667,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
