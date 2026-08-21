@@ -197,6 +197,33 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 2402/26</name>
+      <description>210022Z AUG 26  HYDROPAC 2402/26.  NORTH PACIFIC.  PHILIPPINE SEA.  SOUTH CHINA SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     232300Z TO 240500Z AUG IN AREAS BOUND BY:     A. 19-30.37N 118-28.02E, 19-25.37N 119-30.73E,        18-47.73N 119-27.25E, 18-52.72N 118-24.77E.     B. 18-54.22N 124-53.80E, 18-46.88N 125-56.03E,        18-04.07N 125-50.30E, 18-11.35N 124-48.32E.     C. 15-21.78N 147-38.83E, 14-50.07N 149-48.88E,        12-44.63N 149-15.78E, 13-16.05N 147-06.85E.  2. CANCEL</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>118.467,19.506167,0 119.512167,19.422833,0 119.454167,18.7955,0 118.412833,18.878667,0 118.467,19.506167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>124.896667,18.903667,0 125.933833,18.781333,0 125.838333,18.067833,0 124.805333,18.189167,0 124.896667,18.903667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>147.647167,15.363,0 149.814667,14.8345,0 149.263,12.743833,0 147.114167,13.2675,0 147.647167,15.363,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 2398/26</name>
       <description>201415Z AUG 26  HYDROPAC 2398/26  GULF OF OMAN.  U.A.E.  1. WOODEN DEBRIS ADRIFT IN 25-13.12N 056-29.18E.  2. CANCEL THIS MSG 231415Z AUG 26.</description>
       <Polygon>
@@ -247,17 +274,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>144.441333,31.235667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2372/26</name>
-      <description>181402Z AUG 26  HYDROPAC 2372/26.  EASTERN INDIAN OCEAN.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      210530Z TO 210700Z AUG IN AREA BOUND BY     08-31.98N 076-52.05E, 08-34.48N 076-47.68E,     08-18.85N 075-37.45E, 08-06.23N 075-40.90E,     07-54.42N 075-46.52E, 07-43.73N 075-54.10E,     07-34.50N 076-03.45E, 08-27.07N 076-51.17E.  2. CANCEL HYDROPAC 2368/26 AND 2369/26.  3. CANCEL THIS MSG 210800Z AUG 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>76.8675,8.533,0 76.794667,8.574667,0 75.624167,8.314167,0 75.681667,8.103833,0 75.775333,7.907,0 75.901667,7.728833,0 76.0575,7.575,0 76.852833,8.451167,0 76.8675,8.533,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -378,26 +394,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 174/26</name>
-      <description>171744Z AUG 26  HYDROARC 174/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      192100Z TO 200001Z, 0000Z TO 1800Z AND     2100Z TO 0000Z DAILY 20 THRU 29 AND      300000Z TO 301800Z AUG IN AREAS BOUND BY:     A. 70-47.00N 046-22.00E, 70-37.00N 047-36.00E,        69-46.00N 046-36.00E, 69-56.00N 045-20.00E.     B. 74-04.00N 051-13.50E, 73-51.67N 052-40.00E,        72-44.00N 050-36.00E, 72-57.00N 049-13.00E.  2. CANCEL THIS MSG 301900Z AUG 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>46.366667,70.783333,0 47.6,70.616667,0 46.6,69.766667,0 45.333333,69.933333,0 46.366667,70.783333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>51.225,74.066667,0 52.666667,73.861167,0 50.6,72.733333,0 49.216667,72.95,0 51.225,74.066667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROARC 168/26</name>
