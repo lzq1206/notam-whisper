@@ -270,17 +270,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2302/26</name>
-      <description>080407Z AUG 26  HYDROPAC 2302/26.  INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     160323Z TO 160429Z, 170306Z TO 170412Z,     180252Z TO 180358Z, 190235Z TO 190341Z,     200219Z TO 200325Z, 210203Z TO 210309Z,     AND 220148Z TO 220254Z AUG      IN AREA BOUND BY     25-05.00S 057-53.00E, 23-17.00S 060-00.00E,     35-50.00S 074-04.00E, 37-39.00S 071-40.00E.  2. CANCEL THIS MSG 220354Z AUG 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>57.883333,-25.083333,0 60.0,-23.283333,0 74.066667,-35.833333,0 71.666667,-37.65,0 57.883333,-25.083333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2289/26</name>
       <description>100808Z AUG 26  HYDROPAC 2289/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2100Z TO 1800Z DAILY 13 THRU 26 AUG     IN AREAS BOUND BY:     A. 59-42.60S 165-49.20E, 59-42.60S 180-00.00E,        62-33.00S 180-00.00E, 62-33.00S 162-33.60E.     B. 59-42.60S 180-00.00W, 58-39.87S 161-41.05W,        57-28.80S 126-01.20W, 60-23.40S 122-04.80W,        61-31.90S 161-16.02W, 62-33.00S 180-00.00W.  2. CANCEL THIS MSG 271900Z AUG 26.</description>
       <MultiGeometry>
@@ -474,50 +463,12 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 539/26</name>
-      <description>042326Z AUG 26  NAVAREA XII 539/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 152152Z TO 160215Z AUG, ALTERNATE        162138Z TO 170201Z, 172124Z TO 180147Z,        182110Z TO 190133Z, 192056Z TO 200119Z,        202042Z TO 210105Z AND        212029Z TO 220052Z AUG IN AREA BOUND BY        34-28.00N 120-21.00W, 34-40.00N 120-37.00W,        34-39.00N 120-39.00W, 34-34.00N 120-39.00W,        34-19.00N 120-34.00W, 33-04.00N 119-51.00W,        32-20.00N 119-20.00</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-120.35,34.466667,0 -120.616667,34.666667,0 -120.65,34.65,0 -120.65,34.566667,0 -120.566667,34.316667,0 -119.85,33.066667,0 -119.333333,32.333333,0 -119.3,32.35,0 -119.616667,33.05,0 -120.35,34.466667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -118.816667,31.333333,0 -118.833333,31.316667,0 -118.65,30.6,0 -118.366667,29.9,0 -118.133333,29.4,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -118.133333,29.4,0 -118.033333,29.25,0 -117.983333,29.033333,0 -117.35,28.216667,0 -117.266667,29.6,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2332/26</name>
       <description>110648Z AUG 26  HYDROPAC 2332/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0343Z TO 0829Z DAILY 19 THRU 25 AUG     IN AREA BOUND BY     25-23.00S 156-56.00W, 26-03.00S 153-24.00W,     43-04.00S 157-03.00W, 59-49.00S 163-34.00W,     59-13.00S 168-58.00W, 42-28.00S 161-17.00W.  2. CANCEL THIS MSG 250929Z AUG 26.</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-156.933333,-25.383333,0 -153.4,-26.05,0 -157.05,-43.066667,0 -163.566667,-59.816667,0 -168.966667,-59.216667,0 -161.283333,-42.466667,0 -156.933333,-25.383333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2286/26</name>
-      <description>072313Z AUG 26  HYDROPAC 2286/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     152339Z TO 160417Z, 162325Z TO 170403Z,     172311Z TO 180349Z, 182257Z TO 190335Z,     192243Z TO 200321Z, 202229Z TO 210307Z,     212216Z TO 220254Z AUG IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL THIS MSG 220354Z AUG 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
