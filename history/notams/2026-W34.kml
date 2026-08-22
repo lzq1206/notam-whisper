@@ -162,25 +162,25 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B4250/26</name>
-      <description>B4250/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1909N11858E037  A) RPHI B) 2608240000 C) 2608240106  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  193100N 1182800E -  192600N 1193100E -  184700N 1192800E -  185200N 1182400E -  193100N 1182800E  (72NM NORTHWEST LAOAG AP).  F) SFC G) UNL    CREATED: 20 AUG 2026 11:00  SOURCE: EUECYIYN</description>
+      <name>B4282/26</name>
+      <description>B4282/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1830N11852E037  A) RPHI B) 2608250024 C) 2608250132  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  185400N 1182400E -  184400N 1192700E -  180600N 1192000E -  181600N 1181800E -  185400N 1182400E  (66NM WEST OF LAOAG AP).  F) SFC G) UNL    CREATED: 22 AUG 2026 14:15  SOURCE: EUECYIYN</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>118.466667,19.516667,0 119.516667,19.433333,0 119.466667,18.783333,0 118.4,18.866667,0 118.466667,19.516667,0</coordinates>
+            <coordinates>118.4,18.9,0 119.45,18.733333,0 119.333333,18.1,0 118.3,18.266667,0 118.4,18.9,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B4252/26</name>
-      <description>B4252/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1830N12522E039  A) RPHI B) 2608240001 C) 2608240111  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  185500N 1245300E -  184700N 1255700E -  180400N 1255100E -  181100N 1244800E -  185500N 1245300E  (150NM NORTHEAST OF PALANAN AP).  F) SFC G) UNL    CREATED: 20 AUG 2026 11:40  SOURCE: EUECYIYN</description>
+      <name>B4284/26</name>
+      <description>B4284/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1721N12510E039  A) RPHI B) 2608250027 C) 2608250137  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  174800N 1244300E -  173600N 1254500E -  165300N 1253600E -  170500N 1243400E -  174800N 1244300E  (122NM EAST OF PALANAN AP).  F) SFC G) UNL    CREATED: 22 AUG 2026 14:25  SOURCE: EUECYIYN</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>124.883333,18.916667,0 125.95,18.783333,0 125.85,18.066667,0 124.8,18.183333,0 124.883333,18.916667,0</coordinates>
+            <coordinates>124.716667,17.8,0 125.75,17.6,0 125.6,16.883333,0 124.566667,17.083333,0 124.716667,17.8,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -205,6 +205,30 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>163.0,-62.2,0 163.0,-62.6,0 162.56,-62.55,0 163.0,-62.2,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B4250/26</name>
+      <description>B4250/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1909N11858E037  A) RPHI B) 2608240000 C) 2608240106  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  193100N 1182800E -  192600N 1193100E -  184700N 1192800E -  185200N 1182400E -  193100N 1182800E  (72NM NORTHWEST LAOAG AP).  F) SFC G) UNL    CREATED: 20 AUG 2026 11:00  SOURCE: EUECYIYN</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>118.466667,19.516667,0 119.516667,19.433333,0 119.466667,18.783333,0 118.4,18.866667,0 118.466667,19.516667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B4252/26</name>
+      <description>B4252/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1830N12522E039  A) RPHI B) 2608240001 C) 2608240111  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  185500N 1245300E -  184700N 1255700E -  180400N 1255100E -  181100N 1244800E -  185500N 1245300E  (150NM NORTHEAST OF PALANAN AP).  F) SFC G) UNL    CREATED: 20 AUG 2026 11:40  SOURCE: EUECYIYN</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>124.883333,18.916667,0 125.95,18.783333,0 125.85,18.066667,0 124.8,18.183333,0 124.883333,18.916667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
