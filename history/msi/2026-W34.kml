@@ -182,17 +182,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2398/26</name>
-      <description>201415Z AUG 26  HYDROPAC 2398/26  GULF OF OMAN.  U.A.E.  1. WOODEN DEBRIS ADRIFT IN 25-13.12N 056-29.18E.  2. CANCEL THIS MSG 231415Z AUG 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>56.486333,25.218667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2395/26</name>
       <description>201210Z AUG 26  HYDROPAC 2395/26  SEA OF JAPAN.  RUSSIA.  1. MISSILE OPERATIONS 1400Z TO 0800Z DAILY     25 THRU 30 AUG IN AREA BOUND BY     42-43.90N 132-50.60E, 42-30.50N 133-14.00E,     41-24.40N 133-11.30E, 41-21.20N 132-24.60E,     42-21.60N 132-08.00E, 42-48.30N 132-28.50E,     42-51.50N 132-30.80E.  2. CANCEL THIS MSG 310900Z AUG 26.</description>
       <Polygon>
