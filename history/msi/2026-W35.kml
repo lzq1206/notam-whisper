@@ -155,33 +155,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2402/26</name>
-      <description>210022Z AUG 26  HYDROPAC 2402/26.  NORTH PACIFIC.  PHILIPPINE SEA.  SOUTH CHINA SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     232300Z TO 240500Z AUG IN AREAS BOUND BY:     A. 19-30.37N 118-28.02E, 19-25.37N 119-30.73E,        18-47.73N 119-27.25E, 18-52.72N 118-24.77E.     B. 18-54.22N 124-53.80E, 18-46.88N 125-56.03E,        18-04.07N 125-50.30E, 18-11.35N 124-48.32E.     C. 15-21.78N 147-38.83E, 14-50.07N 149-48.88E,        12-44.63N 149-15.78E, 13-16.05N 147-06.85E.  2. CANCEL</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>118.467,19.506167,0 119.512167,19.422833,0 119.454167,18.7955,0 118.412833,18.878667,0 118.467,19.506167,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>124.896667,18.903667,0 125.933833,18.781333,0 125.838333,18.067833,0 124.805333,18.189167,0 124.896667,18.903667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>147.647167,15.363,0 149.814667,14.8345,0 149.263,12.743833,0 147.114167,13.2675,0 147.647167,15.363,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2395/26</name>
       <description>201210Z AUG 26  HYDROPAC 2395/26  SEA OF JAPAN.  RUSSIA.  1. MISSILE OPERATIONS 1400Z TO 0800Z DAILY     25 THRU 30 AUG IN AREA BOUND BY     42-43.90N 132-50.60E, 42-30.50N 133-14.00E,     41-24.40N 133-11.30E, 41-21.20N 132-24.60E,     42-21.60N 132-08.00E, 42-48.30N 132-28.50E,     42-51.50N 132-30.80E.  2. CANCEL THIS MSG 310900Z AUG 26.</description>
       <Polygon>
