@@ -138,54 +138,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A3803/26</name>
-      <description>A3803/26 NOTAMN  Q)ZPKM/QRDCA/IV/BO/W/000/999/2813N10840E016  A)ZPKM B)2608250315 C)2608250340   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N282700E1083400-N282400E1085300-N275900E1084700-N280300E1082800,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 20 AUG 2026 10:22  SOURCE: ZBBBYNYX</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>108.566667,28.45,0 108.883333,28.4,0 108.783333,27.983333,0 108.466667,28.05,0 108.566667,28.45,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A3804/26</name>
-      <description>A3804/26 NOTAMN  Q)ZPKM/QRDCA/IV/BO/W/000/999/2734N10831E022  A)ZPKM B)2608250315 C)2608250346   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N275500E1082500-N275100E1084700-N271300E1083800-N271700E1081600,  BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 20 AUG 2026 10:22  SOURCE: ZBBBYNYX</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>108.416667,27.916667,0 108.783333,27.85,0 108.633333,27.216667,0 108.266667,27.283333,0 108.416667,27.916667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>B4282/26</name>
-      <description>B4282/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1830N11852E037  A) RPHI B) 2608250024 C) 2608250132  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  185400N 1182400E -  184400N 1192700E -  180600N 1192000E -  181600N 1181800E -  185400N 1182400E  (66NM WEST OF LAOAG AP).  F) SFC G) UNL    CREATED: 22 AUG 2026 14:15  SOURCE: EUECYIYN</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>118.4,18.9,0 119.45,18.733333,0 119.333333,18.1,0 118.3,18.266667,0 118.4,18.9,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>B4284/26</name>
-      <description>B4284/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1721N12510E039  A) RPHI B) 2608250027 C) 2608250137  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  174800N 1244300E -  173600N 1254500E -  165300N 1253600E -  170500N 1243400E -  174800N 1244300E  (122NM EAST OF PALANAN AP).  F) SFC G) UNL    CREATED: 22 AUG 2026 14:25  SOURCE: EUECYIYN</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>124.716667,17.8,0 125.75,17.6,0 125.6,16.883333,0 124.566667,17.083333,0 124.716667,17.8,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>F2959/26</name>
       <description>F2959/26 NOTAMN  Q) YMMM/QWUXX/IV/BO/W/000/999/6223S16254E020  A) YMMM  B) 2608140000 C) 2608262359  D) DAILY 0000-1800 2100-2359  E) RUSSIAN AEROSPACE ACTIVITIES WILL TAKE PLACE  FLW ADVICE FROM STATE ATM CORPORATION OF RUSSIA:  AEROSPACE FLIGHT ACTIVITIES, POSSIBILE DEBRIS IN THE FOLLOWING  AREA:621200S 1630000E - 623600S 1630000E - 623300S 1623336E - 621200S  1630000E  F) SFC G) UNL    CREATED: 10 AUG 2026 03:46  SOURCE: YBBBZEZX</description>
       <styleUrl>#polyStyle</styleUrl>
