@@ -23,26 +23,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 803/26</name>
-      <description>190136Z AUG 26  NAVAREA IV 803/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      201519Z TO 202001Z AUG, ALTERNATE     211457Z TO 211939Z, 221435Z TO 221917Z,     231412Z TO 231854Z, 241350Z TO 241832Z,     251328Z TO 251810Z AND     261305Z TO 261747Z AUG IN AREAS BOUND BY:     A. 31-37.00N 077-09.00W, 32-23.00N 076-52.00W,        33-08.00N 075-40.00W, 33-12.00N 075-13.00W,        32-54.00N 074-58.00W, 32-36.00N 075-02.00W,        31-51.00N 076-13.00W, 31-32.00N 077</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-77.15,31.616667,0 -76.866667,32.383333,0 -75.666667,33.133333,0 -75.216667,33.2,0 -74.966667,32.9,0 -75.033333,32.6,0 -76.216667,31.85,0 -77.05,31.533333,0 -77.15,31.616667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.630333,28.653,0 -80.233333,29.0,0 -80.083333,28.883333,0 -80.542,28.490333,0 -80.630333,28.653,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 563/26</name>
       <description>200537Z AUG 26  NAVAREA XII 563/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 250942Z TO 251405Z AUG, ALTERNATE        260927Z TO 261350Z, 270913Z TO 271336Z,        280858Z TO 281321Z, 290844Z TO 291307Z,        300830Z TO 301253Z AND        310815Z TO 311238Z AUG IN AREA BOUND BY        34-28.00N 120-21.00W, 34-40.00N 120-37.00W,        34-39.00N 120-39.00W, 34-34.00N 120-39.00W,        34-19.00N 120-34.00W, 33-04.00N 119-51.00W,        32-20.00N 119-20.0</description>
       <MultiGeometry>
@@ -201,17 +181,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>144.441333,31.235667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2341/26</name>
-      <description>150302Z AUG 26  HYDROPAC 2341/26.  EASTERN INDIAN OCEAN.  SOUTH PACIFIC.  TASMAN SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     201739Z TO 202235Z, 211717Z TO 212213Z,     221655Z TO 222151Z, 231632Z TO 232128Z,     241610Z TO 242106Z, 251548Z TO 252044Z     AND 261525Z TO 262021Z AUG     IN AREA BOUND BY     39-52.00S 082-05.00E, 46-48.00S 097-01.00E,     51-17.00S 115-27.00E, 51-19.00S 138-10.00E,     47-11.00S 158-59.00E, 48-02.00S 159-55.00E,     49-27.00S 159-48.00E, 53-45.00S 138-13.00E, </description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>82.083333,-39.866667,0 97.016667,-46.8,0 115.45,-51.283333,0 138.166667,-51.316667,0 158.983333,-47.183333,0 159.916667,-48.033333,0 159.8,-49.45,0 138.216667,-53.75,0 114.466667,-53.616667,0 95.283333,-48.883333,0 80.15,-41.6,0 82.083333,-39.866667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
