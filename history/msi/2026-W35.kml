@@ -50,26 +50,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 540/26</name>
-      <description>100530Z AUG 26  NAVAREA XII 540/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2100Z TO 1800Z DAILY 13 THRU 26 AUG     IN AREAS BOUND BY:     A. 33-06.05N 128-42.07W, 32-50.48N 127-12.42W,        28-19.72N 128-15.70W, 28-36.02N 129-37.43W.     B. 38-46.77N 172-48.63W, 38-15.70N 170-15.70W,        31-07.28N 172-31.87W, 31-32.10N 174-48.60W.  2. CANCEL THIS MSG 271900Z AUG 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-128.701167,33.100833,0 -127.207,32.841333,0 -128.261667,28.328667,0 -129.623833,28.600333,0 -128.701167,33.100833,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-172.8105,38.7795,0 -170.261667,38.261667,0 -172.531167,31.121333,0 -174.81,31.535,0 -172.8105,38.7795,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROLANT 1644/26</name>
       <description>221041Z AUG 26  HYDROLANT 1644/26  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      1900Z TO 0001Z DAILY 27 AUG THRU 06 SEP     IN AREAS BOUND BY:     A. 04-07.00N 032-44.00W, 03-39.00N 028-39.00W,        03-05.00N 028-43.00W, 03-34.00N 032-48.00W.     B. 05-37.00N 050-14.00W, 05-45.00N 048-54.00W,        05-35.00N 048-53.00W, 05-27.00N 050-13.00W.     C. 05-41.00N 048-34.00W, 05-43.00N 047-02.00W,        05-19.00N 047-01.00W, 05-17.00N 048-34.00W.     D. 04-29.00N 033-35.00W, 03-</description>
       <MultiGeometry>
@@ -186,26 +166,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2289/26</name>
-      <description>100808Z AUG 26  HYDROPAC 2289/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2100Z TO 1800Z DAILY 13 THRU 26 AUG     IN AREAS BOUND BY:     A. 59-42.60S 165-49.20E, 59-42.60S 180-00.00E,        62-33.00S 180-00.00E, 62-33.00S 162-33.60E.     B. 59-42.60S 180-00.00W, 58-39.87S 161-41.05W,        57-28.80S 126-01.20W, 60-23.40S 122-04.80W,        61-31.90S 161-16.02W, 62-33.00S 180-00.00W.  2. CANCEL THIS MSG 271900Z AUG 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>165.82,-59.71,0 180.0,-59.71,0 180.0,-62.55,0 162.56,-62.55,0 165.82,-59.71,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-180.0,-59.71,0 -161.684167,-58.6645,0 -126.02,-57.48,0 -122.08,-60.39,0 -161.267,-61.531667,0 -180.0,-62.55,0 -180.0,-59.71,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 178/26</name>
       <description>200038Z AUG 26  HYDROARC 178/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     202100Z TO 202359Z, 0001Z TO 1800Z AND     2100Z TO 2359Z DAILY 21 THRU 29 AND     300001Z TO 301800Z IN AREAS BOUND BY:     A. 70-13.00N 045-43.00E, 70-02.00N 047-12.00E,        68-49.00N 045-50.00E, 69-00.00N 044-27.00E.     B. 77-52.00N 061-55.00E, 77-37.00N 063-39.00E,        76-39.00N 060-30.00E, 76-56.00N 058-52.00E.  2. CANCEL THIS MSG 301900Z AUG 26.</description>
       <MultiGeometry>
@@ -235,33 +195,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 168/26</name>
-      <description>122001Z AUG 26  HYDROARC 168/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      132100Z TO 132359Z, 0001Z TO 1800Z AND     2100Z TO 2359Z DAILY 14 THRU 26 AND     270001Z TO 271800Z AUG IN AREAS BOUND BY:     A. 69-17.00N 051-14.00E, 69-01.00N 052-02.00E,        68-19.00N 050-27.00E, 68-33.00N 049-48.00E.     B. 70-33.94N 032-36.68E, 70-46.27N 033-52.16E,        69-45.82N 035-13.22E, 69-34.82N 033-57.43E.     C. 72-47.18N 029-27.88E, 73-01.54N 030-54.23E,        71-53.17N</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>51.233333,69.283333,0 52.033333,69.016667,0 50.45,68.316667,0 49.8,68.55,0 51.233333,69.283333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>32.611333,70.565667,0 33.869333,70.771167,0 35.220333,69.763667,0 33.957167,69.580333,0 32.611333,70.565667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>29.464667,72.786333,0 30.903833,73.025667,0 32.914333,71.886167,0 31.420333,71.659667,0 29.464667,72.786333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>NAVAREA XII 558/26</name>
