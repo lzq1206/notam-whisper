@@ -173,17 +173,5 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
-    <Placemark>
-      <name>F2960/26</name>
-      <description>F2960/26 NOTAMN  Q) YMMM/QWMXX/IV/BO/W/000/999/6223S16254E020  A) YMMM  B) 2608270000 C) 2608271800  E) RUSSIAN AEROSPACE ACTIVITIES WILL TAKE PLACE  FLW ADVICE FROM STATE ATM CORPORATION OF RUSSIA:  AEROSPACE FLIGHT ACTIVITIES, POSSIBILE DEBRIS IN THE FOLLOWING  AREA:621200S 1630000E - 623600S 1630000E - 623300S 1623336E - 621200S  1630000E  F) SFC G) UNL    CREATED: 10 AUG 2026 03:47  SOURCE: YBBBZEZX</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>163.0,-62.2,0 163.0,-62.6,0 162.56,-62.55,0 163.0,-62.2,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
   </Document>
 </kml>
