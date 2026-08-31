@@ -137,5 +137,17 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
+    <Placemark>
+      <name>P4267/26</name>
+      <description>P4267/26 NOTAMN  Q)RJJJ/QXXXX/IV/NBO/E/000/165/3016N12604E030  A)RJJJ B)2609090800 C)2609131100  D)0800/1100  E)DUE TO AN AEROSPACE FLIGHT ACTIVITY, THE FLIGHT SAFETY OF THE  AIRCRAFT IN FOLLOWING AREA MAY BE AFFECTED THRU SEP 09-13 2026,  0800-1100 DLY    AREA:  304300N1255000E - 301300N1253300E - 294800N1261500E - 301500N1263600E  - 304300N1255000E    ALTITUDE:  SFC - UNL    RMK: ATC WILL NOT CLEAR IFR FLT THRU THIS AREA FOR THE FLIGHT SAFETY  F)SFC G)UNL    CREATED: 31 AUG 2026 04:34  SOURCE:</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>125.833333,30.716667,0 125.55,30.216667,0 126.25,29.8,0 126.6,30.25,0 125.833333,30.716667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
   </Document>
 </kml>
