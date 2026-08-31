@@ -30,26 +30,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 806/26</name>
-      <description>190742Z AUG 26  NAVAREA IV 806/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      250549Z TO 251032Z AUG, ALTERNATE      260852Z TO 261335Z, 270830Z TO 271313Z,      280808Z TO 281251Z, 290745Z TO 291228Z,      300723Z TO 301206Z AND      310701Z TO 311144Z AUG IN AREAS BOUND BY:     A. 31-34.00N 077-10.00W, 32-23.00N 076-52.00W,        33-08.00N 075-40.00W, 33-12.00N 075-13.00W,        32-54.00N 074-58.00W, 32-39.00N 074-57.00W,        31-51.00N 076-13.00W, 31-31.00N</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-77.166667,31.566667,0 -76.866667,32.383333,0 -75.666667,33.133333,0 -75.216667,33.2,0 -74.966667,32.9,0 -74.95,32.65,0 -76.216667,31.85,0 -77.1,31.516667,0 -77.166667,31.566667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.630333,28.653,0 -80.066667,29.15,0 -79.95,29.05,0 -80.542,28.490333,0 -80.630333,28.653,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 587/26</name>
       <description>212338Z AUG 26  NAVAREA XII 587/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 010801ZTO 011226Z SEP, ALTERNATE         020746Z TO 021211Z, 030732Z TO 031157Z,         040718Z TO 041143Z, 050703Z TO 051128Z,        060649Z TO 061114Z AND         070634Z TO 071059Z SEP IN AREA BOUND BY        29-48.00N 117-39.00W, 34-28.00N 120-18.00W,        34-40.00N 120-36.00W, 34-39.00N 120-39.00W,        34-30.00N 120-39.00W, 29-35.00N 118-12.00W,        29-52.00N 117-54.</description>
       <MultiGeometry>
@@ -64,33 +44,6 @@
           <outerBoundaryIs>
             <LinearRing>
               <coordinates>-117.65,29.8,0 -117.9,29.866667,0 -118.2,29.583333,0 -118.133333,29.4,0 -118.033333,29.25,0 -117.983333,29.033333,0 -117.316667,28.2,0 -117.316667,28.833333,0 -117.266667,29.6,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 563/26</name>
-      <description>200537Z AUG 26  NAVAREA XII 563/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 250942Z TO 251405Z AUG, ALTERNATE        260927Z TO 261350Z, 270913Z TO 271336Z,        280858Z TO 281321Z, 290844Z TO 291307Z,        300830Z TO 301253Z AND        310815Z TO 311238Z AUG IN AREA BOUND BY        34-28.00N 120-21.00W, 34-40.00N 120-37.00W,        34-39.00N 120-39.00W, 34-34.00N 120-39.00W,        34-19.00N 120-34.00W, 33-04.00N 119-51.00W,        32-20.00N 119-20.0</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-120.35,34.466667,0 -120.616667,34.666667,0 -120.65,34.65,0 -120.65,34.566667,0 -120.566667,34.316667,0 -119.85,33.066667,0 -119.333333,32.333333,0 -119.3,32.35,0 -119.616667,33.05,0 -120.35,34.466667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -118.816667,31.333333,0 -118.833333,31.316667,0 -118.65,30.6,0 -118.366667,29.9,0 -118.133333,29.4,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -118.133333,29.4,0 -118.033333,29.25,0 -117.983333,29.033333,0 -117.35,28.216667,0 -117.266667,29.6,0 -117.65,29.8,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -228,28 +181,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>177.8,-39.2,0 177.95,-39.2,0 178.5,-39.1,0 178.5,-39.3,0 177.8,-39.4,0 177.8,-39.2,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2395/26</name>
-      <description>201210Z AUG 26  HYDROPAC 2395/26  SEA OF JAPAN.  RUSSIA.  1. MISSILE OPERATIONS 1400Z TO 0800Z DAILY     25 THRU 30 AUG IN AREA BOUND BY     42-43.90N 132-50.60E, 42-30.50N 133-14.00E,     41-24.40N 133-11.30E, 41-21.20N 132-24.60E,     42-21.60N 132-08.00E, 42-48.30N 132-28.50E,     42-51.50N 132-30.80E.  2. CANCEL THIS MSG 310900Z AUG 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>132.843333,42.731667,0 133.233333,42.508333,0 133.188333,41.406667,0 132.41,41.353333,0 132.133333,42.36,0 132.475,42.805,0 132.513333,42.858333,0 132.843333,42.731667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2388/26</name>
-      <description>170739Z AUG 26  HYDROPAC 2388/26.  EASTERN INDIAN OCEAN.  SOUTH PACIFIC.  TASMAN SEA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     250809Z TO 251305Z, 261112Z TO 261608Z,      271050Z TO 271546Z, 281028Z TO 281524Z,      291005Z TO 291501Z, 300943Z TO 301439Z      AND 310921Z TO 311417Z AUG     IN AREA BOUND BY     39-52.00S 082-05.00E, 46-48.00S 097-01.00E,     51-17.00S 115-27.00E, 51-19.00S 138-10.00E,     47-11.00S 158-59.00E, 48-02.00S 159-55.00E,     49-27.00S 159-48.00E, 53-45.00S 138-13.00</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>82.083333,-39.866667,0 97.016667,-46.8,0 115.45,-51.283333,0 138.166667,-51.316667,0 158.983333,-47.183333,0 159.916667,-48.033333,0 159.8,-49.45,0 138.216667,-53.75,0 114.466667,-53.616667,0 95.283333,-48.883333,0 80.15,-41.6,0 82.083333,-39.866667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
