@@ -137,6 +137,51 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 2505/26</name>
+      <description>011425Z SEP 26  HYDROPAC 2505/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1134Z TO 1738Z DAILY 05 THRU 11 SEP     IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL THIS MSG 111838Z SEP 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2498/26</name>
+      <description>011150Z SEP 26  HYDROPAC 2498/26.  ANDAMAN SEA.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      032100Z TO 040100Z SEP     A. IN AREAS BOUND BY:        A. 12-00.00N 084-45.00E, 12-45.00N 085-00.00E,           12-20.00N 086-20.00E, 11-35.00N 086-05.00E.        B. 10-55.00N 087-50.00E, 11-55.00N 088-00.00E,           11-05.00N 090-30.00E, 10-05.00N 090-20.00E.        C. 07-50.00N 095-10.00E, 09-35.00N 095-10.00E,           09-35.00N 096-05.00E, 07-50.00N 096-05.00E.     B. IN AREA WITHIN T</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>84.75,12.0,0 85.0,12.75,0 86.333333,12.333333,0 86.083333,11.583333,0 84.75,12.0,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>87.833333,10.916667,0 88.0,11.916667,0 90.5,11.083333,0 90.333333,10.083333,0 87.833333,10.916667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>95.166667,7.833333,0 95.166667,9.583333,0 96.083333,9.583333,0 96.083333,7.833333,0 95.166667,7.833333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>80.23,13.72,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 2491/26</name>
       <description>310931Z AUG 26  HYDROPAC 2491/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     012119Z TO 012145Z SEP IN AREA BOUND BY     28-16.00S 170-42.00W, 29-09.00S 164-42.00W,     30-09.00S 163-42.00W, 29-16.00S 169-42.00W.  2. CANCEL HYDROPAC 2456/26.  3. CANCEL THIS MSG 012245Z SEP 26.</description>
       <Polygon>
@@ -165,17 +210,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2479/26</name>
-      <description>301253Z AUG 26  HYDROPAC 2479/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     312129Z TO 312152Z AUG IN AREA BOUND BY     27-47.00S 176-37.00W, 29-07.00S 168-29.00W,     30-07.00S 167-29.00W, 28-47.00S 175-37.00W.  2. CANCEL HYDROPAC 2444/26.   3. CANCEL THIS MSG 312252Z AUG 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-176.616667,-27.783333,0 -168.483333,-29.116667,0 -167.483333,-30.116667,0 -175.616667,-28.783333,0 -176.616667,-27.783333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -254,6 +288,46 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 199/26</name>
+      <description>010331Z SEP 26  HYDROARC 199/26.  GREENLAND SEA.  NORWEGIAN SEA.  NORWAY.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      1600Z TO 2135Z DAILY 04 THRU 10 SEP     IN AREAS BOUND BY:     A. 68-59.33N 015-28.04E, 69-13.36N 015-58.52E,        70-53.82N 014-10.90E, 70-41.62N 012-51.94E.     B. 71-03.42N 015-12.97E, 74-15.83N 009-52.26E,        76-50.36N 003-23.81E, 79-11.76N 006-04.25W,        79-55.85N 010-21.89W, 79-41.45N 011-34.90W,        78-03.47N 004-13.39W, 76-01.02N 002-00.03E,        73-32.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>15.467333,68.988833,0 15.975333,69.222667,0 14.181667,70.897,0 12.865667,70.693667,0 15.467333,68.988833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>15.216167,71.057,0 9.871,74.263833,0 3.396833,76.839333,0 -6.070833,79.196,0 -10.364833,79.930833,0 -11.581667,79.690833,0 -4.223167,78.057833,0 2.0005,76.017,0 7.204,73.535333,0 11.625,70.502,0 15.216167,71.057,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 197/26</name>
+      <description>311832Z AUG 26  HYDROARC 197/26  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0100Z TO 1400Z DAILY     04 AND 05 SEP IN AREAS BOUND BY:     A. 69-22.00N 037-56.00E, 68-58.00N 041-58.00E,        67-59.00N 044-09.00E, 66-58.00N 044-24.00E,        66-53.00N 044-09.00E, 68-22.00N 041-02.00E,        68-42.00N 038-33.00E, 68-58.00N 037-36.00E.     B. 67-32.00N 045-06.00E, 67-18.00N 045-33.00E,        67-13.00N 045-16.00E, 67-20.00N 044-55.00E.  2. CANCEL THIS MSG 051500Z SEP 26.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>37.933333,69.366667,0 41.966667,68.966667,0 44.15,67.983333,0 44.4,66.966667,0 44.15,66.883333,0 41.033333,68.366667,0 38.55,68.7,0 37.6,68.966667,0 37.933333,69.366667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>45.1,67.533333,0 45.55,67.3,0 45.266667,67.216667,0 44.916667,67.333333,0 45.1,67.533333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
     </Placemark>
   </Document>
 </kml>
