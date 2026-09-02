@@ -160,17 +160,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2491/26</name>
-      <description>310931Z AUG 26  HYDROPAC 2491/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     012119Z TO 012145Z SEP IN AREA BOUND BY     28-16.00S 170-42.00W, 29-09.00S 164-42.00W,     30-09.00S 163-42.00W, 29-16.00S 169-42.00W.  2. CANCEL HYDROPAC 2456/26.  3. CANCEL THIS MSG 012245Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-170.7,-28.266667,0 -164.7,-29.15,0 -163.7,-30.15,0 -169.7,-29.266667,0 -170.7,-28.266667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2489/26</name>
       <description>310835Z AUG 26  HYDROPAC 2489/26.  NORTH PACIFIC.  SEA OF OKHOTSK.  KAMCHATKA.  1. MISSILE OPERATIONS 1400Z TO 0900Z      DAILY 04 THRU 11 SEP IN AREA BOUND BY     56-34.00N 154-14.00E, 56-34.00N 156-18.20E,     55-44.00N 155-32.00E, 52-35.00N 155-32.00E,     52-13.10N 158-25.00E, 52-54.30N 159-42.00E,     52-46.00N 160-30.00E, 51-40.00N 160-30.00E,     50-26.00N 158-48.00E, 49-23.50N 157-28.50E,     50-13.60N 156-03.00E, 51-30.10N 158-03.10E,     52-06.00N 154-14.00E.  2. CANCEL THIS MSG 121000</description>
       <Polygon>
@@ -311,17 +300,6 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2456/26</name>
-      <description>271158Z AUG 26  HYDROPAC 2456/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      012112Z TO 012157Z SEP IN AREA BOUND BY     28-47.00S 172-56.00W, 28-41.00S 168-50.00W,     29-36.00S 162-44.00W, 29-40.00S 167-03.00W.  2. CANCEL THIS MSG 012257Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-172.933333,-28.783333,0 -168.833333,-28.683333,0 -162.733333,-29.6,0 -167.05,-29.666667,0 -172.933333,-28.783333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
     </Placemark>
   </Document>
 </kml>
