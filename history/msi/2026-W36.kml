@@ -188,40 +188,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2498/26</name>
-      <description>011150Z SEP 26  HYDROPAC 2498/26.  ANDAMAN SEA.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      032100Z TO 040100Z SEP     A. IN AREAS BOUND BY:        A. 12-00.00N 084-45.00E, 12-45.00N 085-00.00E,           12-20.00N 086-20.00E, 11-35.00N 086-05.00E.        B. 10-55.00N 087-50.00E, 11-55.00N 088-00.00E,           11-05.00N 090-30.00E, 10-05.00N 090-20.00E.        C. 07-50.00N 095-10.00E, 09-35.00N 095-10.00E,           09-35.00N 096-05.00E, 07-50.00N 096-05.00E.     B. IN AREA WITHIN T</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>84.75,12.0,0 85.0,12.75,0 86.333333,12.333333,0 86.083333,11.583333,0 84.75,12.0,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>87.833333,10.916667,0 88.0,11.916667,0 90.5,11.083333,0 90.333333,10.083333,0 87.833333,10.916667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>95.166667,7.833333,0 95.166667,9.583333,0 96.083333,9.583333,0 96.083333,7.833333,0 95.166667,7.833333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>80.23,13.72,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2489/26</name>
       <description>310835Z AUG 26  HYDROPAC 2489/26.  NORTH PACIFIC.  SEA OF OKHOTSK.  KAMCHATKA.  1. MISSILE OPERATIONS 1400Z TO 0900Z      DAILY 04 THRU 11 SEP IN AREA BOUND BY     56-34.00N 154-14.00E, 56-34.00N 156-18.20E,     55-44.00N 155-32.00E, 52-35.00N 155-32.00E,     52-13.10N 158-25.00E, 52-54.30N 159-42.00E,     52-46.00N 160-30.00E, 51-40.00N 160-30.00E,     50-26.00N 158-48.00E, 49-23.50N 157-28.50E,     50-13.60N 156-03.00E, 51-30.10N 158-03.10E,     52-06.00N 154-14.00E.  2. CANCEL THIS MSG 121000</description>
       <Polygon>
