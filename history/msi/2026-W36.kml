@@ -263,26 +263,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 197/26</name>
-      <description>311832Z AUG 26  HYDROARC 197/26  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0100Z TO 1400Z DAILY     04 AND 05 SEP IN AREAS BOUND BY:     A. 69-22.00N 037-56.00E, 68-58.00N 041-58.00E,        67-59.00N 044-09.00E, 66-58.00N 044-24.00E,        66-53.00N 044-09.00E, 68-22.00N 041-02.00E,        68-42.00N 038-33.00E, 68-58.00N 037-36.00E.     B. 67-32.00N 045-06.00E, 67-18.00N 045-33.00E,        67-13.00N 045-16.00E, 67-20.00N 044-55.00E.  2. CANCEL THIS MSG 051500Z SEP 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>37.933333,69.366667,0 41.966667,68.966667,0 44.15,67.983333,0 44.4,66.966667,0 44.15,66.883333,0 41.033333,68.366667,0 38.55,68.7,0 37.6,68.966667,0 37.933333,69.366667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>45.1,67.533333,0 45.55,67.3,0 45.266667,67.216667,0 44.916667,67.333333,0 45.1,67.533333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 587/26</name>
       <description>212338Z AUG 26  NAVAREA XII 587/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 010801ZTO 011226Z SEP, ALTERNATE         020746Z TO 021211Z, 030732Z TO 031157Z,         040718Z TO 041143Z, 050703Z TO 051128Z,        060649Z TO 061114Z AND         070634Z TO 071059Z SEP IN AREA BOUND BY        29-48.00N 117-39.00W, 34-28.00N 120-18.00W,        34-40.00N 120-36.00W, 34-39.00N 120-39.00W,        34-30.00N 120-39.00W, 29-35.00N 118-12.00W,        29-52.00N 117-54.</description>
       <MultiGeometry>
@@ -348,33 +328,6 @@
           <outerBoundaryIs>
             <LinearRing>
               <coordinates>33.6,70.2,0 35.5,70.2,0 35.5,69.575,0 33.6,69.575,0 33.6,70.2,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA IV 825/26</name>
-      <description>241921Z AUG 26  NAVAREA IV 825/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      301110Z TO 301216Z AUG, ALTERNATE     311110Z TO 311216Z AUG, 011107Z TO 011214Z,     021104Z TO 021211Z, 031104Z TO 031211Z,     041101Z TO 041208Z AND 051056Z TO 051203Z SEP     IN AREAS BOUND BY:     A. 32-38.00N 067-27.00W, 33-34.00N 064-52.00W,        33-24.00N 063-48.00W, 33-12.00N 063-44.00W,        32-44.00N 064-13.00W, 32-27.00N 067-24.00W.     B. 29-35.00N 078-19.00W, 30-08.00N</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-67.45,32.633333,0 -64.866667,33.566667,0 -63.8,33.4,0 -63.733333,33.2,0 -64.216667,32.733333,0 -67.4,32.45,0 -67.45,32.633333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-78.316667,29.583333,0 -77.283333,30.133333,0 -76.55,30.166667,0 -76.5,30.05,0 -77.066667,29.683333,0 -78.25,29.45,0 -78.316667,29.583333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.665,28.686667,0 -80.45,28.783333,0 -80.016667,28.95,0 -79.8,28.966667,0 -79.883333,28.833333,0 -80.183333,28.566667,0 -80.522833,28.457,0 -80.665,28.686667,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
