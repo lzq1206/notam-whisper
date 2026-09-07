@@ -1473,27 +1473,87 @@
       return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
-    function relatedLaunchesForRows(rows, launches = upcomingLaunches) {
+    function warningTimeMatchesLaunch(row, launch) {
+      const fromTs = Date.parse(row.from_utc);
+      const toTs = Date.parse(row.to_utc);
+      const launchTs = Number(launch.ts);
       const TIME_TOLERANCE_MS = 30 * 60 * 1000;
-      const MAX_SITE_DISTANCE_KM = 120;
+      return [fromTs, toTs, launchTs].every(Number.isFinite) &&
+        launchTs >= fromTs - TIME_TOLERANCE_MS && launchTs <= toTs + TIME_TOLERANCE_MS;
+    }
+
+    function launchCorridorPairMatches(launch, first, second) {
+      // Two contemporaneous exclusion-area centres often form the downrange
+      // corridor.  The launch site can sit just beyond its first point, so use
+      // a local tangent-plane extended line instead of requiring a
+      // centre to be close to the pad.
+      const launchLat = Number.parseFloat(launch.lat);
+      const launchLon = Number.parseFloat(launch.lon);
+      const firstLat = Number.parseFloat(first.lat);
+      const firstLon = Number.parseFloat(first.lon);
+      const secondLat = Number.parseFloat(second.lat);
+      const secondLon = Number.parseFloat(second.lon);
+      if (![launchLat, launchLon, firstLat, firstLon, secondLat, secondLon].every(Number.isFinite)) return false;
+
+      const kmPerDegree = 111.195;
+      const longitudeScale = Math.cos(launchLat * Math.PI / 180);
+      const toLocal = (lat, lon) => [
+        (lon - launchLon) * kmPerDegree * longitudeScale,
+        (lat - launchLat) * kmPerDegree,
+      ];
+      const [ax, ay] = toLocal(firstLat, firstLon);
+      const [bx, by] = toLocal(secondLat, secondLon);
+      const dx = bx - ax;
+      const dy = by - ay;
+      const segmentKm = Math.hypot(dx, dy);
+      if (segmentKm < 80) return false;
+
+      const projection = (-(ax * dx + ay * dy)) / (segmentKm * segmentKm);
+      const crossTrackKm = Math.abs(ax * dy - ay * dx) / segmentKm;
+      const beyondEndpointKm = projection < 0
+        ? -projection * segmentKm
+        : projection > 1 ? (projection - 1) * segmentKm : 0;
+      const allowedCrossTrackKm = Math.min(220, Math.max(80, segmentKm * 0.10));
+      return crossTrackKm <= allowedCrossTrackKm && beyondEndpointKm <= 1300;
+    }
+
+    function relatedWarningRowsForLaunch(launch, rows) {
+      const launchLat = Number.parseFloat(launch.lat);
+      const launchLon = Number.parseFloat(launch.lon);
+      if (![launchLat, launchLon].every(Number.isFinite)) return [];
+
+      const timeMatched = (rows || []).filter(row => {
+        const rowLat = Number.parseFloat(row.lat);
+        const rowLon = Number.parseFloat(row.lon);
+        return warningTimeMatchesLaunch(row, launch) && Number.isFinite(rowLat) && Number.isFinite(rowLon);
+      });
+      const related = new Set(timeMatched.filter(row =>
+        launchDistanceKm(Number.parseFloat(row.lat), Number.parseFloat(row.lon), launchLat, launchLon) <= 120
+      ));
+
+      // A pair supplies directional evidence.  Mark both members, which keeps
+      // a multi-zone downrange chain together instead of showing only the one
+      // closest to the launch site.
+      for (let firstIndex = 0; firstIndex < timeMatched.length; firstIndex++) {
+        for (let secondIndex = firstIndex + 1; secondIndex < timeMatched.length; secondIndex++) {
+          const first = timeMatched[firstIndex];
+          const second = timeMatched[secondIndex];
+          if (launchCorridorPairMatches(launch, first, second)) {
+            related.add(first);
+            related.add(second);
+          }
+        }
+      }
+      return (rows || []).filter(row => related.has(row));
+    }
+
+    function relatedLaunchesForRows(rows, launches = upcomingLaunches) {
       const related = [];
       const seen = new Set();
       (launches || []).forEach(launch => {
         const launchTs = Number(launch.ts);
-        const launchLat = Number.parseFloat(launch.lat);
-        const launchLon = Number.parseFloat(launch.lon);
-        if (![launchTs, launchLat, launchLon].every(Number.isFinite)) return;
-        const matched = (rows || []).some(row => {
-          const fromTs = Date.parse(row.from_utc);
-          const toTs = Date.parse(row.to_utc);
-          const rowLat = Number.parseFloat(row.lat);
-          const rowLon = Number.parseFloat(row.lon);
-          if (![fromTs, toTs, rowLat, rowLon].every(Number.isFinite)) return false;
-          const timeMatches = launchTs >= fromTs - TIME_TOLERANCE_MS &&
-            launchTs <= toTs + TIME_TOLERANCE_MS;
-          return timeMatches && launchDistanceKm(rowLat, rowLon, launchLat, launchLon) <= MAX_SITE_DISTANCE_KM;
-        });
-        if (!matched) return;
+        if (!Number.isFinite(launchTs)) return;
+        if (!relatedWarningRowsForLaunch(launch, rows).length) return;
         const key = `${launch.mission || ''}:${launchTs}`;
         if (!seen.has(key)) {
           seen.add(key);
@@ -1501,10 +1561,6 @@
         }
       });
       return related.sort((a, b) => Number(a.ts) - Number(b.ts));
-    }
-
-    function relatedWarningRowsForLaunch(launch, rows) {
-      return (rows || []).filter(row => relatedLaunchesForRows([row], [launch]).length > 0);
     }
 
     function notamDisplayTitle(row, rows) {

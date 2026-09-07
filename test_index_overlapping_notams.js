@@ -25,6 +25,8 @@ const signatures = [
   'function notamGeometryKey(',
   'function overlappingNotamRows(',
   'function launchDistanceKm(',
+  'function warningTimeMatchesLaunch(',
+  'function launchCorridorPairMatches(',
   'function relatedLaunchesForRows(',
   'function relatedWarningRowsForLaunch(',
   'function notamDisplayTitle(',
@@ -105,6 +107,29 @@ if (relatedLaunchesForRows(mismatchedVandenbergWarning, trancheLaunch).length !=
 }
 if (relatedWarningRowsForLaunch(trancheLaunch[0], mismatchedVandenbergWarning).length !== 0) {
   throw new Error('Tranche launch popup must not list the time-mismatched warning');
+}
+
+const jiuquanLaunch = {
+  mission: 'Jiuquan test launch', ts: Date.parse('2026-09-09T09:00:00Z'), lat: 40.6, lon: 99.9,
+};
+const jiuquanCorridor = [
+  { notam_id: 'A4176/26', from_utc: '2026-09-09T08:50:00Z', to_utc: '2026-09-09T09:20:00Z', lat: '40.3', lon: '105.0' },
+  { notam_id: 'A4177/26', from_utc: '2026-09-09T08:50:00Z', to_utc: '2026-09-09T09:20:00Z', lat: '39.5', lon: '111.0' },
+  { notam_id: 'P4267/26', from_utc: '2026-09-09T08:50:00Z', to_utc: '2026-09-09T09:20:00Z', lat: '38.5', lon: '118.0' },
+];
+if (relatedWarningRowsForLaunch(jiuquanLaunch, jiuquanCorridor).length !== 3) {
+  throw new Error('Aligned Jiuquan downrange warnings must be linked through the launch-site extension');
+}
+
+const wenchangLaunch = {
+  mission: 'Wenchang test launch', ts: Date.parse('2026-09-11T16:00:00Z'), lat: 19.615, lon: 110.951,
+};
+const wenchangCorridor = [
+  { notam_id: 'B4419/26', from_utc: '2026-09-11T16:00:00Z', to_utc: '2026-09-14T20:00:00Z', lat: '12.75', lon: '116.17' },
+  { notam_id: 'B4420/26', from_utc: '2026-09-11T16:00:00Z', to_utc: '2026-09-14T20:00:00Z', lat: '8.18', lon: '119.43' },
+];
+if (relatedWarningRowsForLaunch(wenchangLaunch, wenchangCorridor).length !== 2) {
+  throw new Error('Aligned Wenchang downrange warnings must be linked through the launch-site extension');
 }
 
 const renderRowsBlock = extractFunctionBlock(html, 'function renderRows(');
