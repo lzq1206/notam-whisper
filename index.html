@@ -512,6 +512,10 @@
       { altitudeDeg: -12, color: '#3b82f6', weight: 1.7 },
       { altitudeDeg: -18, color: '#1e3a8a', weight: 1.6 }
     ];
+    // With a 2° longitude sampling grid, the solar terminator can shift by
+    // more than 12° of latitude between adjacent samples near its steepest
+    // section. A smaller continuity threshold incorrectly splits one contour.
+    const SOLAR_CURVE_MAX_LAT_JUMP_DEG = 35;
     const SOLAR_NIGHT_OPACITY = 0.35;
     const solarOverlayPane = map.createPane('solarOverlayPane');
     solarOverlayPane.style.zIndex = 420;
@@ -630,7 +634,7 @@
             const distance = Math.abs(lat - segment[segment.length - 1][0]);
             if (!assigned.has(index) && distance < bestDistance) { bestDistance = distance; bestIndex = index; }
           });
-          if (bestIndex >= 0 && bestDistance <= 12) {
+          if (bestIndex >= 0 && bestDistance <= SOLAR_CURVE_MAX_LAT_JUMP_DEG) {
             segment.push([roots[bestIndex], lon]);
             assigned.add(bestIndex);
             nextActive.push(segment);
