@@ -77,6 +77,7 @@ COUNTRY_FETCH_RETRIES = 3
 RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 GLOBAL_SUPPLEMENT_URL = "https://raw.githubusercontent.com/Joey0609/notams/main/data_dict.json"
 GLOBAL_SUPPLEMENT_TYPES = {"launch", "missile", "reentry"}
+KAZAKHSTAN_NOTAM_URL = "https://notam.ans.kz/notam_en/"
 FAA_TFR_LIST_URL = "https://tfr.faa.gov/tfrapi/getTfrList"
 FAA_TFR_DETAIL_URL = "https://tfr.faa.gov/tfrapi/getWebText"
 FAA_TFR_MAX_DETAILS = 20
@@ -222,6 +223,13 @@ def _schedule_allows_time(raw, event_time):
                 return int(start) <= hhmm <= int(end)
         return False
 
+    numeric_dated_windows = re.findall(r'(?<!\d)(\d{1,2})\s+(\d{4})-(\d{4})', schedule)
+    if numeric_dated_windows:
+        for day, start, end in numeric_dated_windows:
+            if int(day) == event_time.day:
+                return int(start) <= hhmm <= int(end)
+        return False
+
     # Complex weekly/conditional schedules are not sufficiently precise for
     # automatic launch correlation; explicit aerospace wording can still pass.
     return False
@@ -315,7 +323,7 @@ def _parse_q_line(raw):
     qcode = qcode_match.group(1) if qcode_match else ''
 
     center_match = re.search(
-        r'Q\)\s*[A-Z0-9]{4}/[A-Z0-9]{5}/[^/]+/[^/]+/[^/]+/\d{3}/\d{3}/(\d{4,6})([NS])(\d{5,7})([EW])(\d{3})',
+        r'Q\)\s*[A-Z0-9]{4}/[A-Z0-9]{5}/[^/]+/[^/]+/[^/]+/\d{3}/\d{3}/(\d{4,6})([NS])(\d{5,7})([EW])/?(\d{3})',
         raw,
         re.I
     )
@@ -708,6 +716,69 @@ def fetch_global_notam_supplement():
             'notam': n,
         })
     print(f"[global] Supplemental NOTAMs after filter: {len(rows)}")
+    return rows
+
+def _parse_kazakhstan_notam_blocks(payload):
+    """Extract ICAO NOTAM blocks from Kazaeronavigatsia's public HTML list."""
+    text = html_lib.unescape(str(payload or ''))
+    text = re.sub(r'<br\s*/?>', '\n', text, flags=re.I)
+    text = re.sub(r'</(?:div|p|li|section|article)>', '\n', text, flags=re.I)
+    text = re.sub(r'<[^>]+>', '', text)
+    text = re.sub(r'\r', '', text)
+    blocks = []
+    for chunk in re.split(r'(?=\([A-Z]\d{4}/\d{2}\s+NOTAM[A-Z])', text):
+        if not re.match(r'^\([A-Z]\d{4}/\d{2}\s+NOTAM[A-Z]', chunk):
+            continue
+        block = chunk.split('[Published', 1)[0].strip()
+        if block:
+            blocks.append(' '.join(block.split()))
+    return blocks
+
+def fetch_kazakhstan_notams(launch_contexts=()):
+    """Fetch Kazakh official NOTAMs and retain only launch-correlated danger areas."""
+    rows = []
+    try:
+        # The official host occasionally serves an incomplete certificate chain.
+        # The fixed HTTPS endpoint is used directly; only public NOTAM text is read.
+        response = requests.get(KAZAKHSTAN_NOTAM_URL, headers=make_headers(), timeout=30, verify=False)
+        if response.status_code != 200:
+            print(f"[kazakhstan] Non-200 response: HTTP {response.status_code}")
+            return rows
+    except Exception as exc:
+        print(f"[kazakhstan] Error fetching official NOTAM list: {exc}")
+        return rows
+
+    for raw in _parse_kazakhstan_notam_blocks(response.text):
+        notam_id = _extract_notam_id(raw)
+        series, number, year = _normalize_notam_number(notam_id)
+        lat, lon, radius, qcode = _parse_q_line(raw)
+        fir_match = re.search(r'\bA\)\s*([A-Z]{4})\b', raw)
+        begin_match = re.search(r'\bB\)\s*(\d{10}|PERM)\b', raw)
+        end_match = re.search(r'\bC\)\s*(\d{10}|PERM)\b', raw)
+        notam = {
+            'raw': raw,
+            'series': series,
+            'number': number,
+            'year': year,
+            'notam_id': notam_id,
+            'fir': fir_match.group(1) if fir_match else '',
+            'from': _parse_notam_time(begin_match.group(1)) if begin_match else '',
+            'to': _parse_notam_time(end_match.group(1)) if end_match else '',
+            'latitude': lat,
+            'longitude': lon,
+            'radius': radius,
+            'notamCode': qcode,
+        }
+        launch_match = _correlate_silent_launch_notam(notam, launch_contexts)
+        if not launch_match or not _passes_filters(notam):
+            continue
+        print(f"[kazakhstan] Correlated {notam_id} with upcoming launch: {launch_match}")
+        rows.append({
+            'id': f"kazakhstan-{notam_id}",
+            '_country': 'Kazakhstan',
+            'notam': notam,
+        })
+    print(f"[kazakhstan] Official launch-correlated NOTAMs: {len(rows)}")
     return rows
 
 def fetch_faa_notams(launch_contexts=()):
@@ -1225,9 +1296,11 @@ def main():
     supplemental = fetch_faa_notams(launch_contexts)
     faa_tfrs = fetch_faa_space_tfrs()
     global_supplement = fetch_global_notam_supplement()
+    kazakhstan_supplement = fetch_kazakhstan_notams(launch_contexts)
     items = merge_notams(items, supplemental)
     items = merge_notams(items, faa_tfrs)
     items = merge_notams(items, global_supplement)
+    items = merge_notams(items, kazakhstan_supplement)
 
     # Write notams.csv
     with open('notams.csv', 'w', newline='', encoding='utf-8') as f:

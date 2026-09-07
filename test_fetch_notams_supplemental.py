@@ -33,6 +33,42 @@ def test_parse_q_line():
     assert radius == '013'
 
 
+def test_parse_q_line_accepts_icao_center_radius_separator():
+    raw = (
+        'K2360/26 NOTAMN Q)UACN/QRDCA/IV/BO/W/000/999/4723N06722E/022 '
+        'A)UACN B)2609091545 C)2609131610 E)DANGER AREA UAD26 ACTIVATED F)GND G)UNL'
+    )
+    lat, lon, radius, qcode = _parse_q_line(raw)
+    assert qcode == 'QRDCA'
+    assert abs(lat - 47.383333) < 1e-5
+    assert abs(lon - 67.366667) < 1e-5
+    assert radius == '022'
+
+
+def test_official_kazakhstan_feed_correlates_baikonur_danger_area(monkeypatch):
+    import fetch_notams
+
+    class FakeResponse:
+        status_code = 200
+        text = (
+            '(K2360/26 NOTAMN Q)UACN/QRDCA/IV/BO/W/000/999/4723N06722E/022 '
+            'A)UACN B)2609091545 C)2609131610 D)09 1545-1745 '
+            'E)DANGER AREA UAD26 ACTIVATED F)GND G)UNL [Published 09 Sep]'
+        )
+
+    monkeypatch.setattr(fetch_notams.requests, 'get', lambda *args, **kwargs: FakeResponse())
+    monkeypatch.setattr(fetch_notams, '_is_in_time_window', lambda _from, _to: True)
+    rows = fetch_notams.fetch_kazakhstan_notams([{
+        'mission': 'Progress MS-35',
+        'time': datetime.datetime(2026, 9, 9, 16, 15),
+        'site': 'Baikonur Cosmodrome',
+        'lat': 45.964,
+        'lon': 63.305,
+    }])
+
+    assert [row['notam']['notam_id'] for row in rows] == ['K2360/26']
+
+
 def test_merge_notams_dedupes_by_notam_id():
     primary = [
         {'id': '1', 'notam': {'series': 'A', 'number': 787, 'year': '2026', 'raw': 'x'}},
@@ -224,7 +260,11 @@ def test_passes_filters_does_not_treat_airspace_as_space_keyword():
     }) is False
 
 
-def test_silent_baikonur_launch_notams_require_time_and_space_correlation():
+def test_silent_baikonur_launch_notams_require_time_and_space_correlation(monkeypatch):
+    # These fixtures are intentionally historical; keep the test focused on
+    # correlation rather than the wall-clock freshness filter.
+    import fetch_notams
+    monkeypatch.setattr(fetch_notams, '_is_in_time_window', lambda _from, _to: True)
     launch = [{
         'mission': 'Soyuz MS-29',
         'time': datetime.datetime(2026, 7, 14, 14, 47),
@@ -277,7 +317,9 @@ def test_silent_baikonur_launch_notams_require_time_and_space_correlation():
     assert _correlate_silent_launch_notam(daily_area, launch) == ''
 
 
-def test_named_danger_area_can_match_launch_without_rocket_keyword():
+def test_named_danger_area_can_match_launch_without_rocket_keyword(monkeypatch):
+    import fetch_notams
+    monkeypatch.setattr(fetch_notams, '_is_in_time_window', lambda _from, _to: True)
     launch = [{
         'mission': 'Soyuz MS-29',
         'time': datetime.datetime(2026, 7, 14, 14, 47),
