@@ -1482,6 +1482,35 @@
         launchTs >= fromTs - TIME_TOLERANCE_MS && launchTs <= toTs + TIME_TOLERANCE_MS;
     }
 
+    function warningScheduleAllowsLaunch(row, launch) {
+      const raw = String(row.raw || '').toUpperCase();
+      const scheduleMatch = raw.match(/\bD\)\s*(.*?)(?=\s+E\)|$)/s);
+      if (!scheduleMatch) return true;
+      const schedule = scheduleMatch[1].replace(/\s+/g, ' ').trim();
+      const launchDate = new Date(Number(launch.ts));
+      if (!Number.isFinite(launchDate.getTime())) return false;
+      const monthNumbers = { JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5, JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11 };
+      const datedRange = schedule.match(/DAILY\s+(\d{1,2})\s+([A-Z]{3})\s+THRU\s+(\d{1,2})\s+([A-Z]{3})/);
+      const sameMonthRange = schedule.match(/DAILY\s+(\d{1,2})\s+THRU\s+(\d{1,2})\s+([A-Z]{3})/);
+      if (datedRange || sameMonthRange) {
+        const parts = datedRange
+          ? [datedRange[1], datedRange[2], datedRange[3], datedRange[4]]
+          : [sameMonthRange[1], sameMonthRange[3], sameMonthRange[2], sameMonthRange[3]];
+        const start = Date.UTC(launchDate.getUTCFullYear(), monthNumbers[parts[1]], Number(parts[0]));
+        let endYear = launchDate.getUTCFullYear();
+        if (monthNumbers[parts[3]] < monthNumbers[parts[1]]) endYear += 1;
+        const end = Date.UTC(endYear, monthNumbers[parts[3]], Number(parts[2]), 23, 59, 59);
+        const launchDay = Date.UTC(launchDate.getUTCFullYear(), launchDate.getUTCMonth(), launchDate.getUTCDate());
+        if (launchDay < start || launchDay > end) return false;
+      }
+      const timeRange = schedule.match(/(\d{4})Z?\s*(?:TO|-)\s*(\d{4})Z?/);
+      if (!timeRange) return true;
+      const start = Number(timeRange[1]);
+      const end = Number(timeRange[2]);
+      const launchTime = launchDate.getUTCHours() * 100 + launchDate.getUTCMinutes();
+      return start <= end ? launchTime >= start && launchTime <= end : launchTime >= start || launchTime <= end;
+    }
+
     function launchCorridorPairMatches(launch, first, second) {
       // Two contemporaneous exclusion-area centres often form the downrange
       // corridor.  The launch site can sit just beyond its first point, so use
@@ -1506,7 +1535,16 @@
       const dx = bx - ax;
       const dy = by - ay;
       const segmentKm = Math.hypot(dx, dy);
-      if (segmentKm < 80) return false;
+      if (segmentKm < 80 || segmentKm > 4500) return false;
+
+      // A downrange chain leaves the site in one broad direction.  This
+      // excludes coincident but unrelated warning areas on opposite sides of
+      // the globe before testing their extended line.
+      const firstDistanceKm = Math.hypot(ax, ay);
+      const secondDistanceKm = Math.hypot(bx, by);
+      if (!firstDistanceKm || !secondDistanceKm) return false;
+      const sameDirection = (ax * bx + ay * by) / (firstDistanceKm * secondDistanceKm);
+      if (sameDirection < Math.cos(Math.PI / 4)) return false;
 
       const projection = (-(ax * dx + ay * dy)) / (segmentKm * segmentKm);
       const crossTrackKm = Math.abs(ax * dy - ay * dx) / segmentKm;
@@ -1525,7 +1563,8 @@
       const timeMatched = (rows || []).filter(row => {
         const rowLat = Number.parseFloat(row.lat);
         const rowLon = Number.parseFloat(row.lon);
-        return warningTimeMatchesLaunch(row, launch) && Number.isFinite(rowLat) && Number.isFinite(rowLon);
+        return warningTimeMatchesLaunch(row, launch) && warningScheduleAllowsLaunch(row, launch) &&
+          Number.isFinite(rowLat) && Number.isFinite(rowLon);
       });
       const related = new Set(timeMatched.filter(row =>
         launchDistanceKm(Number.parseFloat(row.lat), Number.parseFloat(row.lon), launchLat, launchLon) <= 120

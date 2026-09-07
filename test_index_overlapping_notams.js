@@ -26,6 +26,7 @@ const signatures = [
   'function overlappingNotamRows(',
   'function launchDistanceKm(',
   'function warningTimeMatchesLaunch(',
+  'function warningScheduleAllowsLaunch(',
   'function launchCorridorPairMatches(',
   'function relatedLaunchesForRows(',
   'function relatedWarningRowsForLaunch(',
@@ -130,6 +131,23 @@ const wenchangCorridor = [
 ];
 if (relatedWarningRowsForLaunch(wenchangLaunch, wenchangCorridor).length !== 2) {
   throw new Error('Aligned Wenchang downrange warnings must be linked through the launch-site extension');
+}
+
+const globalFalsePair = [
+  {
+    notam_id: 'NAVAREA IV 845/26', from_utc: '2026-09-01T16:52:00Z', to_utc: '2026-10-15T02:51:00Z',
+    lat: '15.966667', lon: '-53.858333', raw: 'D) 0021Z TO 0151Z DAILY 15 SEP THRU 15 OCT E) SPACE DEBRIS',
+  },
+  {
+    notam_id: 'HYDROPAC 2489/26', from_utc: '2026-08-31T08:35:00Z', to_utc: '2026-09-12T10:00:00Z',
+    lat: '52.666154', lon: '157.333077', raw: 'D) 1400Z TO 0900Z DAILY 04 THRU 11 SEP E) MISSILE OPERATIONS',
+  },
+];
+if (warningScheduleAllowsLaunch(globalFalsePair[0], jiuquanLaunch)) {
+  throw new Error('A future-dated daily schedule must not match the Jiuquan launch');
+}
+if (relatedWarningRowsForLaunch(jiuquanLaunch, globalFalsePair).length !== 0) {
+  throw new Error('Cross-ocean MSI warnings must not become a Jiuquan corridor');
 }
 
 const renderRowsBlock = extractFunctionBlock(html, 'function renderRows(');
