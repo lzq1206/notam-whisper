@@ -112,6 +112,17 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 2597/26</name>
+      <description>090925Z SEP 26  HYDROPAC 2597/26.  SEA OF JAPAN.  RUSSIA.  1. MISSILE OPERATIONS 1400Z TO 0800Z      DAILY 14 THRU 18 SEP IN AREA BOUND BY     42-31.50N 131-16.00E, 42-38.40N 131-32.00E,     42-42.50N 132-22.40E, 42-32.00N 133-01.00E,     41-33.80N 133-34.20E, 41-12.50N 132-13.50E,     42-06.50N 131-51.10E, 42-09.90N 131-24.10E,     42-23.50N 130-56.70E, 42-29.20N 131-02.40E.  2. CANCEL THIS MSG 190900Z SEP 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>131.266667,42.525,0 131.533333,42.64,0 132.373333,42.708333,0 133.016667,42.533333,0 133.57,41.563333,0 132.225,41.208333,0 131.851667,42.108333,0 131.401667,42.165,0 130.945,42.391667,0 131.04,42.486667,0 131.266667,42.525,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 2551/26</name>
       <description>021642Z SEP 26  HYDROPAC 2551/26  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     101724Z TO 102102Z, 111710Z TO 112048Z,     121656Z TO 122034Z, 131642Z TO 132020Z,     141628Z TO 142006Z, 151614Z TO 151952Z,     AND 161601Z TO 161939Z SEP IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL THIS MSG 162039Z SEP 26.</description>
       <Polygon>
@@ -191,6 +202,28 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>144.446667,31.236833,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 223/26</name>
+      <description>090157Z SEP 26  HYDROARC 223/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 0200Z TO 1500Z DAILY     11 THRU 13 SEP IN AREA BOUND BY     69-53.00N 032-57.00E, 70-07.00N 032-57.00E,     70-07.00N 035-20.00E, 69-15.00N 035-20.00E.  2. CANCEL THIS MSG 131600Z SEP 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>32.95,69.883333,0 32.95,70.116667,0 35.333333,70.116667,0 35.333333,69.25,0 32.95,69.883333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 221/26</name>
+      <description>081758Z SEP 26  HYDROARC 221/26.  BARENTS SEA.  KARA SEA.  RUSSIA.  1. MISSILE OPERATIONS 0200Z TO 1400Z      DAILY 12 AND 13 SEP IN AREA BOUND BY     67-19.00N 045-00.00E, 67-48.70N 046-34.00E,     67-51.00N 046-42.00E, 68-18.00N 048-13.00E,     70-13.00N 055-43.00E, 70-21.00N 059-21.00E,     69-50.00N 060-49.00E, 69-21.90N 060-29.00E,     69-55.00N 058-51.00E, 69-48.00N 056-12.00E,     67-57.00N 049-03.00E, 67-51.00N 048-46.20E,     67-50.20N 048-44.00E, 67-38.00N 048-04.00E,     67-34.00N 047</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>45.0,67.316667,0 46.566667,67.811667,0 46.7,67.85,0 48.216667,68.3,0 55.716667,70.216667,0 59.35,70.35,0 60.816667,69.833333,0 60.483333,69.365,0 58.85,69.916667,0 56.2,69.8,0 49.05,67.95,0 48.77,67.85,0 48.733333,67.836667,0 48.066667,67.633333,0 47.85,67.566667,0 45.783333,66.933333,0 45.0,67.316667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
