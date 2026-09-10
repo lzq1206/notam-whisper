@@ -3,6 +3,17 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
+      <name>NAVAREA IV 870/26</name>
+      <description>021815Z SEP 26  NAVAREA IV 870/26.  NORTH ATLANTIC.  FRENCH GUIANA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0111Z TO 0151Z DAILY 15 SEP THRU 15 OCT     IN AREA BOUND BY     05-48.00N 052-54.00W, 05-50.55N 052-26.40W,     05-12.60N 052-40.98W, 05-23.46N 052-53.80W.  2. CANCEL THIS MSG 150251Z OCT 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-52.9,5.8,0 -52.44,5.8425,0 -52.683,5.21,0 -52.896667,5.391,0 -52.9,5.8,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA IV 862/26</name>
       <description>052223Z SEP 26  NAVAREA IV 862/26.  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2134Z TO 2357Z DAILY 13 THRU 19 SEP        IN AREA BOUND BY     08-58.00N 050-28.00W, 08-06.00N 047-28.00W,     03-21.00N 032-11.00W, 00-57.00N 032-55.00W,     05-44.00N 048-12.00W.  2. CANCEL THIS MSG 200057Z SEP 26.</description>
       <Polygon>
@@ -72,6 +83,17 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROLANT 1792/26</name>
+      <description>100927Z SEP 26  HYDROLANT 1792/26.  SOUTH ATLANTIC.  BRAZIL.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0800Z TO 2000Z DAILY 15 THRU 17 SEP      IN AREA BOUND BY     05-55.28S 034-34.36W, 06-13.92S 034-39.38W,     06-23.59S 034-34.44W, 06-31.87S 034-11.54W,     06-23.83S 034-01.81W, 06-03.44S 033-56.53W,     05-52.66S 034-03.34W, 05-49.30S 034-25.37W.  2. CANCEL THIS MSG 172100Z SEP 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-34.572667,-5.921333,0 -34.656333,-6.232,0 -34.574,-6.393167,0 -34.192333,-6.531167,0 -34.030167,-6.397167,0 -33.942167,-6.057333,0 -34.055667,-5.877667,0 -34.422833,-5.821667,0 -34.572667,-5.921333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
     </Placemark>
     <Placemark>
       <name>HYDROLANT 1783/26</name>
@@ -196,12 +218,12 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2442/26</name>
-      <description>261201Z AUG 26  HYDROPAC 2442/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      2100Z TO 1300Z DAILY 30 AUG THRU 02, 05 AND 06 SEP,      ALTERNATE 2100Z TO 1300Z DAILY 07 THRU 09 SEP     IN AREA WITHIN 25 MILES OF 31-14.21N 144-26.80E.  2. CANCEL THIS MSG 101400Z SEP 26.</description>
+      <name>HYDROARC 228/26</name>
+      <description>101300Z SEP 26  HYDROARC 228/26.  ARCTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0128Z TO 0244Z DAILY 15 SEP THRU 15 OCT     IN AREA BOUND BY     77-06.00N 161-35.00E, 76-42.00N 163-41.00E,     81-06.00N 135-04.00W, 81-42.00N 134-18.00W.  2. CANCEL THIS MSG 150344Z OCT 26.</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>144.446667,31.236833,0</coordinates>
+            <coordinates>161.583333,77.1,0 163.683333,76.7,0 -135.066667,81.1,0 -134.3,81.7,0 161.583333,77.1,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -260,26 +282,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 593/26</name>
-      <description>252341Z AUG 26  NAVAREA XII 593/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 041128Z TO 041553Z SEP, ALTERNATE        051113Z TO 051538Z, 061059Z TO 061524Z,        071045Z TO 071510Z, 081030Z TO 081455Z,        091016Z TO 091441Z AND 101001Z TO 101426Z SEP        IN AREA BOUND BY        29-48.00N 117-39.00W, 34-28.00N 120-18.00W,        34-40.00N 120-36.00W, 34-39.00N 120-39.00W,        34-30.00N 120-39.00W, 29-35.00N 118-12.00W,        29-52.00N 117-54.00</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -120.3,34.466667,0 -120.6,34.666667,0 -120.65,34.65,0 -120.65,34.5,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -117.9,29.866667,0 -118.2,29.583333,0 -118.133333,29.4,0 -118.033333,29.25,0 -117.983333,29.033333,0 -117.316667,28.2,0 -117.316667,28.833333,0 -117.266667,29.6,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2505/26</name>
