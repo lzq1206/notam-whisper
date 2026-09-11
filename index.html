@@ -721,20 +721,23 @@
       return degreeArray;
     }
 
-    function isSouthSideNight(date) {
-      const northAlt = sunAltitudeRadians(date, 89.9, 0);
-      const southAlt = sunAltitudeRadians(date, -89.9, 0);
-      if (Number.isFinite(northAlt) && Number.isFinite(southAlt)) {
-        return southAlt < northAlt;
-      }
-      return sunAltitudeRadians(date, -85, 0) < 0;
-    }
-
-    function buildNightPolygonFromTerminator(date, terminatorPoints) {
-      if (isSouthSideNight(date)) {
-        return terminatorPoints.slice().reverse().concat([[-90, -180], [-90, 180]]);
-      }
-      return terminatorPoints.concat([[90, 180], [90, -180]]);
+    // The shaded region must use the same spherical 0° contour as the
+    // visible sunset line.  The previous fill used buildSolarCurveSegments(),
+    // an older longitude-root approximation; near the date line and polar
+    // regions it could select a different branch and visibly spill across the
+    // sunset boundary.  A world-sized outer ring with the daylight hemisphere
+    // as a hole gives Leaflet an exact, stable night mask.
+    function buildNightMaskRings(date) {
+      const daylightBoundary = buildSolarAltitudeCircle(date, 0);
+      if (daylightBoundary.length < 3) return null;
+      const centerLon = daylightBoundary.reduce((sum, point) => sum + point[1], 0) / daylightBoundary.length;
+      const outerRing = [
+        [-89.999, centerLon - 180],
+        [-89.999, centerLon + 180],
+        [89.999, centerLon + 180],
+        [89.999, centerLon - 180]
+      ];
+      return { outerRing, daylightBoundary };
     }
 
     function shiftLonPath(path, lonOffset) {
@@ -767,10 +770,8 @@
     function renderSolarOverlay2D(date) {
       clearSolarOverlay2D();
       if (!date) return;
-      const sunsetSegments = buildSolarCurveSegments(date, 0);
-      const sunsetTerminator = sunsetSegments.reduce((longest, segment) => segment.length > longest.length ? segment : longest, []);
-      if (sunsetTerminator.length < 2) return;
-      const nightPolygon = buildNightPolygonFromTerminator(date, sunsetTerminator);
+      const nightMask = buildNightMaskRings(date);
+      if (!nightMask) return;
       const solarCurves = SOLAR_CURVE_DEFINITIONS.map(def => ({
         ...def,
         points: buildSolarAltitudeCircle(date, def.altitudeDeg)
@@ -778,11 +779,15 @@
       const [minWrap, maxWrap] = getVisibleWorldWrapRange();
       for (let wrap = minWrap; wrap <= maxWrap; wrap++) {
         const lonOffset = wrap * 360;
-        L.polygon(shiftLonPath(nightPolygon, lonOffset), {
+        L.polygon([
+          shiftLonPath(nightMask.outerRing, lonOffset),
+          shiftLonPath(nightMask.daylightBoundary, lonOffset)
+        ], {
           pane: 'solarOverlayPane',
           stroke: false,
           fillColor: '#000',
           fillOpacity: SOLAR_NIGHT_OPACITY,
+          fillRule: 'evenodd',
           interactive: false,
           noClip: true
         }).addTo(solarOverlayLayer2D);

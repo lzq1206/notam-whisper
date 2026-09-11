@@ -37,6 +37,15 @@ assertContains(/createPane\('notamPane'\)[\s\S]*?zIndex\s*=\s*440/,
 assertContains(/const warningPane = isMaritime \? 'msiPane' : 'notamPane'/,
   'warning geometry must be routed to the correct pane');
 
+const nightMask = extractFunctionBlock(html, 'function buildNightMaskRings(');
+if (!nightMask || !/buildSolarAltitudeCircle\(date, 0\)/.test(nightMask)) {
+  throw new Error('night mask must derive its boundary from the spherical sunset contour');
+}
+assertContains(/L\.polygon\(\[\s*shiftLonPath\(nightMask\.outerRing, lonOffset\),\s*shiftLonPath\(nightMask\.daylightBoundary, lonOffset\)/,
+  'night mask must render the daylight hemisphere as a hole');
+assertContains(/fillRule:\s*'evenodd'/,
+  'night mask must use even-odd filling so shading cannot cross the sunset contour');
+
 const defaultRange = extractFunctionBlock(html, 'function defaultPastLaunchDateRange(');
 if (!defaultRange) throw new Error('default historical launch date range helper is missing');
 global.localIsoDate = d => {
