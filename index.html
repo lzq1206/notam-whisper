@@ -28,7 +28,7 @@
 
     .view-toggle {
       position: absolute;
-      bottom: 30px;
+      bottom: 54px;
       right: 10px;
       z-index: 1000;
       background: rgba(45, 45, 45, 0.85);
@@ -141,6 +141,38 @@
       align-items: center;
     }
 
+    .date-range {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .date-range label {
+      display: block;
+      min-width: 0;
+    }
+
+    .date-range input {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 2px;
+    }
+
+    .control-row {
+      gap: 6px;
+      flex-wrap: nowrap;
+    }
+
+    .control-row button {
+      flex: 1 1 0;
+      min-width: 0;
+      white-space: nowrap;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
     .small {
       font-size: 11px;
       color: #aaa;
@@ -204,15 +236,44 @@
 
     .past-launch-range {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 4px;
       margin-top: 4px;
       font-size: 11px;
     }
 
+    .past-launch-range label {
+      display: block;
+      min-width: 0;
+      padding: 0 2px;
+    }
+
+    .past-launch-range label > span {
+      display: block;
+      white-space: nowrap;
+    }
+
     .past-launch-range input {
-      width: 100%;
+      width: calc(100% - 4px);
       box-sizing: border-box;
+      margin-top: 2px;
+      padding: 3px 4px;
+      font-size: 10px;
+    }
+
+    .legend-launches-primary {
+      display: flex;
+      width: 100%;
+      gap: 4px;
+    }
+
+    .legend-launches-primary .legend-row {
+      flex: 1 1 0;
+      min-width: 0;
+      gap: 4px;
+      margin-top: 4px;
+      white-space: nowrap;
+      font-size: clamp(9px, 2.8vw, 11px);
     }
 
     .legend-row {
@@ -236,6 +297,20 @@
     .cesium-widget-credits {
       display: none !important;
     }
+
+    @media (max-width: 600px) {
+      .view-toggle {
+        bottom: 62px;
+        right: 8px;
+        padding: 7px 10px;
+        gap: 5px;
+        font-size: 11px;
+      }
+
+      .date-range {
+        gap: 6px;
+      }
+    }
   </style>
 </head>
 
@@ -247,19 +322,13 @@
       <div class="small" id="panelSubtitle">红(近) → 蓝(远)</div>
       <div class="legend"></div>
 
-      <div style="margin-top:8px;">
-        <label for="startDate" id="startDateLabel">开始日期：</label><br />
-        <input id="startDate" type="date" />
+      <div class="date-range">
+        <label for="startDate"><span id="startDateLabel">开始日期：</span><input id="startDate" type="date" /></label>
+        <label for="endDate"><span id="endDateLabel">结束日期：</span><input id="endDate" type="date" /></label>
       </div>
-      <div>
-        <label for="endDate" id="endDateLabel">结束日期：</label><br />
-        <input id="endDate" type="date" />
-      </div>
-      <div class="row" style="margin-top:6px;">
+      <div class="row control-row" style="margin-top:6px;">
         <button id="applyBtn">应用筛选</button>
         <button id="resetBtn">重置</button>
-      </div>
-      <div class="row" style="margin-top:6px;">
         <button id="downloadKmlBtn">下载当前显示 KML</button>
       </div>
 
@@ -283,9 +352,11 @@
         <label><span id="pastLaunchEndLabel">历史结束：</span><input id="pastLaunchEndDate" type="date" /></label>
       </div>
       <div class="legend-launches">
-        <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> <span id="launchPastLegend">🚀 已发射</span></div>
-        <div class="legend-row"><span class="dot" style="background:#ef2b2b; border:1px solid #fff;"></span> <span id="launchUpcomingNearLegend">🚀 即将发射 (近)</span></div>
-        <div class="legend-row"><span class="dot" style="background:#2b5bff; border:1px solid #fff;"></span> <span id="launchUpcomingFarLegend">🚀 即将发射 (远)</span></div>
+        <div class="legend-launches-primary">
+          <div class="legend-row"><span class="dot" style="background:#22c55e; border:1px solid #fff;"></span> <span id="launchPastLegend">🚀 已发射</span></div>
+          <div class="legend-row"><span class="dot" style="background:#ef2b2b; border:1px solid #fff;"></span> <span id="launchUpcomingNearLegend">🚀 即将发射 (近)</span></div>
+          <div class="legend-row"><span class="dot" style="background:#2b5bff; border:1px solid #fff;"></span> <span id="launchUpcomingFarLegend">🚀 即将发射 (远)</span></div>
+        </div>
         <div class="legend-row" style="margin-left:2px;" id="launchSiteLegend">📡 发射场站</div>
         <div class="legend-row" style="margin-top:5px; border-top:1px solid #eee; padding-top:5px;">
           <div style="width:14px; height:14px; border:2.5px solid #fff; box-shadow:0 0 10px #fff; border-radius:50%; background:#888; margin-right:6px;"></div>
