@@ -155,9 +155,11 @@
 
     .date-range input {
       display: block;
-      width: 100%;
+      width: calc(100% - 4px);
       box-sizing: border-box;
       margin-top: 2px;
+      padding: 3px 4px;
+      font-size: 10px;
     }
 
     .control-row {
@@ -171,6 +173,16 @@
       white-space: nowrap;
       padding-left: 5px;
       padding-right: 5px;
+    }
+
+    .control-row #resetBtn {
+      flex: 0 0 auto;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    .control-row #downloadKmlBtn {
+      flex: 1.8 1 0;
     }
 
     .small {
