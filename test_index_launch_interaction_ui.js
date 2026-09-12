@@ -72,5 +72,11 @@ assertContains(/\.panel\s*\{[\s\S]*?width:\s*min\(354px,\s*calc\(100vw - 20px\)\
   'panel width must remain fixed while history details expand');
 assertContains(/\.launch-history-list\s*\{[\s\S]*?max-width:\s*100%[\s\S]*?overflow-x:\s*hidden/,
   'history list must stay within the fixed panel width');
+assertContains(/LOCAL_UPCOMING_LAUNCHES_URL\s*=\s*['"]\.\/upcoming_launches\.csv['"]/,
+  'local upcoming launch data source should be loaded');
+assertContains(/localUpcoming\s*=\s*localRows\.map\(row\s*=>/,
+  'local upcoming launches should be normalized into the upcoming launch layer');
+assertContains(/const rllUrl = l\.url \|\| \(l\.sourceLabel \? '' : `https:\/\/www\.rocketlaunch\.live\//,
+  'local launches should not receive a fabricated RocketLaunch.Live URL');
 
 console.log('test_index_launch_interaction_ui.js passed');

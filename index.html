@@ -2275,6 +2275,7 @@
     // ═══════════════════════════════════════════════════════
     const LAUNCH_SITES_URL = './launch_sites.csv';
     const LAUNCH_LOG_URL = './past_launches.csv';
+    const LOCAL_UPCOMING_LAUNCHES_URL = './upcoming_launches.csv';
     const RLL_UPCOMING_URL = 'https://fdo.rocketlaunch.live/json/launches/next/5';
 
     // Location slug (from RocketLaunch.Live) → launch_sites.csv abbreviation
@@ -2295,6 +2296,8 @@
       'oriental-spaceport-haiyang': 'YSLA',
       'yangjiang-sea-launch': 'SSLA',
       'rizhao-sea-launch': 'RSLA',
+      'shanghai-sea-launch': 'SHSL',
+      'shanghai-offshore-launch': 'SHSL',
       'satish-dhawan-space-centre': 'SDSC',
       'plesetsk-cosmodrome': 'Plesetsk',
       'tanegashima-space-center': 'TNSC',
@@ -2327,6 +2330,8 @@
       'oriental-spaceport-haiyang': { lat: 36.641494, lon: 121.201445 },
       'yangjiang-sea-launch': { lat: 21.283339, lon: 112.000012 },
       'rizhao-sea-launch': { lat: 35.358220, lon: 119.645866 },
+      'shanghai-sea-launch': { lat: 31.2, lon: 123.7 },
+      'shanghai-offshore-launch': { lat: 31.2, lon: 123.7 },
       'satish-dhawan-space-centre': { lat: 13.9, lon: 80.4 },
       'baikonur': { lat: 45.6, lon: 63.4 },
       'plesetsk-cosmodrome': { lat: 62.8, lon: 40.1 },
@@ -2505,10 +2510,50 @@
         let upcomingCount = 0;
         try {
           upcomingLaunches = [];
-          const rllResp = await fetch(RLL_UPCOMING_URL, { cache: 'no-store' });
-          const rllData = await rllResp.json();
-          const list = rllData.result || [];
-          upcomingLaunches = [];
+          let localUpcoming = [];
+          try {
+            const localResp = await fetch(LOCAL_UPCOMING_LAUNCHES_URL, { cache: 'no-store' });
+            const localRows = parseCsv(await localResp.text());
+            localUpcoming = localRows.map(row => {
+              const d = parseLaunchDate(row['Launch Date and Time (UTC)']);
+              const lat = parseFloat(row['Latitude']);
+              const lon = parseFloat(row['Longitude']);
+              if (!d || !isFinite(d.getTime()) || !isFinite(lat) || !isFinite(lon)) return null;
+              const siteAbbr = (row['Launch Site (Abbrv.)'] || '').trim();
+              const siteName = (row['Launch Site (Full)'] || siteAbbr || '').trim();
+              return {
+                name: row['Official Payload Name'] || t('launch_unknown_mission'),
+                vehicle: { name: row['Launch Vehicle'] || t('launch_unknown_vehicle') },
+                pad: {
+                  name: (row['Launch Pad'] || '').trim(),
+                  location: {
+                    name: siteName,
+                    slug: (row['Location Slug'] || '').trim(),
+                    latitude: lat,
+                    longitude: lon
+                  }
+                },
+                win_open: d.toISOString(),
+                launch_description: row['Description'] || '',
+                slug: `local-${siteAbbr || 'launch'}-${d.toISOString().replace(/[:.]/g, '-')}`,
+                url: (row['Details URL'] || '').trim(),
+                sourceLabel: 'Data by local schedule'
+              };
+            }).filter(Boolean);
+          } catch (localErr) {
+            console.warn('[local launches] Failed to load upcoming launches:', localErr);
+          }
+
+          let remoteUpcoming = [];
+          try {
+            const rllResp = await fetch(RLL_UPCOMING_URL, { cache: 'no-store' });
+            const rllData = await rllResp.json();
+            remoteUpcoming = rllData.result || [];
+          } catch (rllErr) {
+            console.warn('[RLL] Failed to fetch upcoming launches:', rllErr);
+          }
+
+          const list = [...localUpcoming, ...remoteUpcoming];
 
           const upcomingTimes = list.map(l => {
             const d = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
@@ -2534,7 +2579,8 @@
             const dateStr = formatLaunchDateWithLocal(t0);
             const weather = l.weather_temp ? ` (${l.weather_temp}°C ${l.weather_condition || ''})` : '';
             const desc = l.launch_description || '';
-            const rllUrl = `https://www.rocketlaunch.live/launch/${l.slug}`;
+            const rllUrl = l.url || (l.sourceLabel ? '' : `https://www.rocketlaunch.live/launch/${l.slug}`);
+            const sourceLabel = l.sourceLabel || 'Data by RocketLaunch.Live';
 
             const color = launchColor(t0, now, minLaunchTs, maxLaunchTs);
             const isLaunchGlow = t0 ? isRocketCloudVisible(t0.toISOString(), t0.toISOString(), lat, lon) : false;
@@ -2567,8 +2613,8 @@
                 ${t('launch_time_label')}: ${dateStr}${weather}<br/>
                 ${warningStatus}
                 ${desc ? '<hr/><div style="max-width:320px;max-height:120px;overflow:auto;font-size:11px;">' + desc + '</div>' : ''}
-                <a href="${rllUrl}" target="_blank" style="font-size:11px;">${t('launch_details_link')}</a><br/>
-                <small style="color:#888;">Data by RocketLaunch.Live</small>
+                ${rllUrl ? `<a href="${rllUrl}" target="_blank" style="font-size:11px;">${t('launch_details_link')}</a><br/>` : ''}
+                <small style="color:#888;">${escapeHtml(sourceLabel)}</small>
               `;
             }, { maxWidth: 340 });
             lMarker.on('click', () => selectLaunchForSolarOverlay(launchRecord));

@@ -49,3 +49,4 @@ id,name,abbreviation,country,latitude,longitude,type,status
 48,Arnhem Space Centre,ASC,Australia,-12.381,136.819,Suborbital,Active
 49,Yangjiang Sea Launch,SSLA,China,21.283339,112.000012,Orbital (Sea),Active
 50,Rizhao Sea Launch,RSLA,China,35.358220,119.645866,Orbital (Sea),Active
+51,Shanghai Sea Launch,SHSL,China,31.200000,123.700000,Orbital (Sea),Active
