@@ -860,7 +860,10 @@
         points: buildSolarAltitudeCircle(date, def.altitudeDeg)
       }));
       const [minWrap, maxWrap] = getVisibleWorldWrapRange();
-      for (let wrap = minWrap; wrap <= maxWrap; wrap++) {
+      // Solar contours use an unwrapped longitude path.  The path may be
+      // anchored in the adjacent world copy, so render one neighboring copy
+      // on each side of the currently visible range as well.
+      for (let wrap = minWrap - 1; wrap <= maxWrap + 1; wrap++) {
         const lonOffset = wrap * 360;
         L.polygon([
           shiftLonPath(nightMask.outerRing, lonOffset),
