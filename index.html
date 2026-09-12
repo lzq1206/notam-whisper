@@ -796,10 +796,11 @@
       return segments.filter(segment => segment.length >= 2);
     }
 
-    function toCesiumDegreesArray(points) {
+    function toCesiumDegreesArray(points, preserveUnwrappedLongitude = false) {
       const degreeArray = [];
       points.forEach(([lat, lon]) => {
-        if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) degreeArray.push(lon, lat);
+        if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90
+          && (preserveUnwrappedLongitude || Math.abs(lon) <= 180)) degreeArray.push(lon, lat);
       });
       return degreeArray;
     }
@@ -891,7 +892,13 @@
       clearSolarOverlay3D();
       if (!date || !cesiumViewer) return;
       SOLAR_CURVE_DEFINITIONS.forEach(curve => {
-        const degreeArray = toCesiumDegreesArray(buildSolarAltitudeCircle(date, curve.altitudeDeg));
+        // Keep the continuous, unwrapped longitude path.  Cesium converts
+        // longitudes outside [-180, 180] to the same globe position, while
+        // filtering them would remove the segment crossing the date line.
+        const degreeArray = toCesiumDegreesArray(
+          buildSolarAltitudeCircle(date, curve.altitudeDeg),
+          true
+        );
         if (degreeArray.length < 4) return;
         const curveEntity = cesiumViewer.entities.add({
           polyline: {
