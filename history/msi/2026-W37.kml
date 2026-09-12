@@ -222,17 +222,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 212/26</name>
-      <description>041851Z SEP 26  HYDROARC 212/26.  BARENTS SEA.  KARA SEA.  RUSSIA.  1. MISSILE OPERATIONS 0200Z TO 1700Z DAILY     08 THRU 11 SEP IN AREA BOUND BY     67-19.00N 045-00.00E, 67-48.70N 046-34.00E,     68-18.00N 048-13.00E, 70-13.00N 055-43.00E,     70-21.00N 059-21.00E, 69-50.00N 060-49.00E,     69-55.00N 058-51.00E, 69-48.00N 056-12.00E,     67-57.00N 049-03.00E, 67-51.00N 048-46.20E,     67-38.00N 048-04.00E.  2. CANCEL THIS MSG 111800Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>45.0,67.316667,0 46.566667,67.811667,0 48.216667,68.3,0 55.716667,70.216667,0 59.35,70.35,0 60.816667,69.833333,0 58.85,69.916667,0 56.2,69.8,0 49.05,67.95,0 48.77,67.85,0 48.066667,67.633333,0 45.0,67.316667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 201/26</name>
       <description>011652Z SEP 26  HYDROARC 201/26.  ARCTIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0128Z TO 0244Z DAILY 15 SEP THRU 15 OCT     IN AREAS BOUND BY     81-42.00N 134-18.00W, 81-06.00N 135-04.00W,     76-42.00N 163-41.00W, 77-06.00N 161-35.00W.  2. CANCEL THIS MSG 150344Z OCT 26.</description>
       <Polygon>
@@ -321,17 +310,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>154.233333,56.566667,0 156.303333,56.566667,0 155.533333,55.733333,0 155.533333,52.583333,0 158.416667,52.218333,0 159.7,52.905,0 160.5,52.766667,0 160.5,51.666667,0 158.8,50.433333,0 157.475,49.391667,0 156.05,50.226667,0 158.051667,51.501667,0 154.233333,52.1,0 154.233333,56.566667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2505/26</name>
-      <description>011425Z SEP 26  HYDROPAC 2505/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1134Z TO 1738Z DAILY 05 THRU 11 SEP     IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL THIS MSG 111838Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
