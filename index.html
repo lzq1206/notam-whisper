@@ -1460,7 +1460,7 @@
       try {
         const from = new Date(fromStr);
         const to = toStr ? new Date(toStr) : from;
-        if (isNaN(from.getTime())) return false;
+        if (isNaN(from.getTime()) || isNaN(to.getTime())) return false;
 
         const durationHr = (to.getTime() - from.getTime()) / 3600000;
         if (durationHr > 12) return false;
@@ -1470,38 +1470,29 @@
           return false;
         }
 
-        const checkDays = [from];
-        if (to.getTime() > from.getTime()) {
-          const noonFrom = SunCalc.getTimes(from, lat, lon).solarNoon;
-          const noonTo = SunCalc.getTimes(to, lat, lon).solarNoon;
-          if (noonFrom && noonTo && noonFrom.getTime() !== noonTo.getTime()) {
-            checkDays.push(to);
-          }
+        // Keep the glow timestamp consistent with the solar overlay, which
+        // is also rendered at the NOTAM interval midpoint.
+        const midpoint = new Date((from.getTime() + to.getTime()) / 2);
+        const times = SunCalc.getTimes(midpoint, lat, lon);
+        // SunCalc 1.9.0 properties: sunset, night (astronomical dusk),
+        // nightEnd (astronomical dawn), sunrise.
+        const duskLimit = times.night || times.astronomicalDusk || times.dusk;
+        const dawnLimit = times.nightEnd || times.astronomicalDawn || times.dawn;
+
+        if (!times.sunset || !duskLimit || !dawnLimit || !times.sunrise) {
+          console.warn(`[Glow Debug] ${notamId} - Missing solar data for ${midpoint.toISOString().slice(0, 10)}`, {times});
+          return false;
         }
 
-        for (const d of checkDays) {
-          const times = SunCalc.getTimes(d, lat, lon);
-          // SunCalc 1.9.0 properties: sunset, night (astronomical dusk), nightEnd (astronomical dawn), sunrise
-          const duskLimit = times.night || times.astronomicalDusk || times.dusk;
-          const dawnLimit = times.nightEnd || times.astronomicalDawn || times.dawn;
-
-          if (!times.sunset || !duskLimit) {
-            console.warn(`[Glow Debug] ${notamId} - Missing solar data for ${d.toISOString().slice(0,10)}`, {times});
-            continue;
-          }
-
-          const isOverlap = (s1, e1, s2, e2) => s1.getTime() <= e2.getTime() && e1.getTime() >= s2.getTime();
-          
-          const evOverlap = isOverlap(from, to, times.sunset, duskLimit);
-          const moOverlap = isOverlap(from, to, dawnLimit, times.sunrise);
-
-          if (evOverlap || moOverlap) {
-             console.log(`[Glow Debug] ${notamId} MATCHED! Source: ${fromStr}, Sunset: ${times.sunset.toISOString()}, DuskLimit: ${duskLimit.toISOString()}`);
-             return true;
-          }
+        const midpointTs = midpoint.getTime();
+        const eveningTwilight = midpointTs >= times.sunset.getTime() && midpointTs <= duskLimit.getTime();
+        const morningTwilight = midpointTs >= dawnLimit.getTime() && midpointTs <= times.sunrise.getTime();
+        if (eveningTwilight || morningTwilight) {
+          console.log(`[Glow Debug] ${notamId} MATCHED at midpoint: ${midpoint.toISOString()}, Sunset: ${times.sunset.toISOString()}, DuskLimit: ${duskLimit.toISOString()}`);
+          return true;
         }
         return false;
-      } catch(e) { 
+      } catch(e) {
         console.error(`[Glow Debug] Crash for ${notamId}:`, e);
         return false; 
       }
