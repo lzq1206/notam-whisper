@@ -58,7 +58,7 @@ FAA_SUPPLEMENTAL_FIRS = [
     "ENOR", "ENOB", "ESAA", "ESOS", "EFIN",
     "LFFF", "LFBB", "LFMM", "LSAS", "EDWW",
     "LTAA", "OJAC", "LLLL", "OIIX", "OAKX",
-    "UACN", "UAAA", "UATT", "UCFM", "UHHH", "UHPP", "UHMM", "UWWW", "URRV", "UUWV",
+    "UACN", "UAAA", "UATT", "UAII", "UCFM", "UHHH", "UHPP", "UHMM", "UWWW", "URRV", "UUWV",
     "RJTG", "RJJJ", "RKRR", "VOMF", "VABF", "VIDF",
     "YMMM", "NZZC", "NFFF", "AYPM",
     "FACT", "FAJO", "FMMM", "FIMM", "FSSS",
@@ -88,7 +88,7 @@ SILENT_LAUNCH_MIN_CEILING_FL = 300
 SILENT_LAUNCH_TIME_TOLERANCE_MINUTES = 20
 SILENT_LAUNCH_MAX_DISTANCE_NM = 1000
 LAUNCH_SITE_FIRS = {
-    'baikonur cosmodrome': {'UACN', 'UAAA', 'UATT'},
+    'baikonur cosmodrome': {'UACN', 'UAAA', 'UATT', 'UAII'},
 }
 
 def make_headers():
@@ -120,21 +120,64 @@ def _load_launch_site_coordinates():
         print(f"[launch-context] Unable to read launch_sites.csv: {exc}")
     return sites
 
+def _load_local_upcoming_launch_context(path=None):
+    """Load manually curated upcoming launches used by the frontend.
+
+    The remote launch feed can omit regional launches or publish them late.
+    Reusing the local schedule keeps NOTAM correlation consistent with the
+    launch list shown to users, including Baikonur backup windows.
+    """
+    path = path or os.path.join(os.path.dirname(os.path.abspath(__file__)), 'upcoming_launches.csv')
+    contexts = []
+    try:
+        with open(path, 'r', encoding='utf-8', newline='') as handle:
+            for row in csv.DictReader(handle):
+                value = str(row.get('Launch Date and Time (UTC)', '') or '').strip()
+                launch_time = None
+                for fmt in ('%Y %b %d %H%M', '%Y %b %d %H%M%S'):
+                    try:
+                        launch_time = datetime.datetime.strptime(value, fmt)
+                        break
+                    except ValueError:
+                        continue
+                if not launch_time:
+                    continue
+                try:
+                    lat = float(row.get('Latitude', ''))
+                    lon = float(row.get('Longitude', ''))
+                except (TypeError, ValueError):
+                    continue
+                site = str(row.get('Launch Site (Full)', '') or '').strip()
+                if not site:
+                    site = str(row.get('Launch Site (Abbrv.)', '') or '').strip()
+                contexts.append({
+                    'mission': str(row.get('Official Payload Name', '') or '').strip(),
+                    'time': launch_time,
+                    'site': site,
+                    'lat': lat,
+                    'lon': lon,
+                })
+    except OSError as exc:
+        print(f"[launch-context] Local upcoming schedule unavailable: {exc}")
+    return contexts
+
 def fetch_upcoming_launch_context():
-    """Return upcoming launches with a known site and exact UTC launch time."""
+    """Return remote and local launches with a known site and UTC time."""
+    contexts = _load_local_upcoming_launch_context()
     try:
         response = requests.get(UPCOMING_LAUNCH_URL, headers=make_headers(), timeout=30)
         if response.status_code != 200:
             print(f"[launch-context] Upcoming launch feed unavailable: HTTP {response.status_code}")
-            return []
+            print(f"[launch-context] Using {len(contexts)} local schedule entries")
+            return contexts
         payload = response.json()
     except Exception as exc:
         print(f"[launch-context] Error fetching upcoming launches: {exc}")
-        return []
+        print(f"[launch-context] Using {len(contexts)} local schedule entries")
+        return contexts
 
     sites = _load_launch_site_coordinates()
     records = payload.get('result', []) if isinstance(payload, dict) else []
-    contexts = []
     for record in records:
         if not isinstance(record, dict):
             continue
@@ -144,13 +187,20 @@ def fetch_upcoming_launch_context():
         coordinates = sites.get(location_name.casefold())
         if not launch_time or not coordinates:
             continue
-        contexts.append({
+        remote_context = {
             'mission': str(record.get('name', '') or '').strip(),
             'time': launch_time,
             'site': location_name,
             'lat': coordinates[0],
             'lon': coordinates[1],
-        })
+        }
+        duplicate = any(
+            item['time'] == remote_context['time']
+            and item['site'].casefold() == remote_context['site'].casefold()
+            for item in contexts
+        )
+        if not duplicate:
+            contexts.append(remote_context)
     print(f"[launch-context] Upcoming launches with mapped sites: {len(contexts)}")
     return contexts
 

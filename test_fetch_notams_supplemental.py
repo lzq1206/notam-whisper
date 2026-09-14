@@ -69,6 +69,63 @@ def test_official_kazakhstan_feed_correlates_baikonur_danger_area(monkeypatch):
     assert [row['notam']['notam_id'] for row in rows] == ['K2360/26']
 
 
+def test_local_upcoming_schedule_supplies_baikonur_context(tmp_path):
+    import fetch_notams
+
+    path = tmp_path / 'upcoming_launches.csv'
+    path.write_text(
+        'Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,'
+        'Launch Vehicle,Official Payload Name,Launch Site (Full),Launch Pad,'
+        'Location Slug,Details URL,Description\n'
+        '2026 SEP 16 1333,Baikonur,45.996034,63.564003,Soyuz 2.1b,'
+        'Progress MS-35 (96P),Baikonur Cosmodrome,31/6,,,'
+        'Manual schedule\n',
+        encoding='utf-8',
+    )
+
+    contexts = fetch_notams._load_local_upcoming_launch_context(str(path))
+    assert contexts == [{
+        'mission': 'Progress MS-35 (96P)',
+        'time': datetime.datetime(2026, 9, 16, 13, 33),
+        'site': 'Baikonur Cosmodrome',
+        'lat': 45.996034,
+        'lon': 63.564003,
+    }]
+
+
+def test_official_feed_correlates_progress_ms35_baikonur_chain(monkeypatch):
+    import fetch_notams
+
+    class FakeResponse:
+        status_code = 200
+        text = (
+            '(C6157/26 NOTAMN Q)UAII/QRPCA/IV/NBO/W/000/999/4600N06334E/017 '
+            'A)UAII B)2609161320 C)2609191245 '
+            'D)SEP 16 1320-1350, SEP 18 1230-1300, SEP 19 1215-1245 '
+            'E)PROHIBITED AREA ACTIVATED IN AREA RADIUS 16,2 NM CENTRE 455946N 0633351E F)GND G)UNL [Published 12 Sep] '
+            '(K2526/26 NOTAMN Q)UACN/QRDCA/IV/BO/W/000/999/4723N06722E/022 '
+            'A)UACN B)2609161300 C)2609191350 '
+            'D)SEP 16 1300-1500, SEP 18 1215-1415, SEP 19 1150-1350 '
+            'E)DANGER AREA UAD26 ACTIVATED F)GND G)UNL [Published 12 Sep] '
+            '(A5906/26 NOTAMN Q)UAAA/QRDCA/IV/BO/W/000/999/5054N08323E/033 '
+            'A)UAAA B)2609161325 C)2609191250 '
+            'D)SEP 16 1325-1355, SEP 18 1240-1310, SEP 19 1220-1250 '
+            'E)DANGER AREA UAD31 ACTIVATED F)GND G)UNL [Published 12 Sep]'
+        )
+
+    monkeypatch.setattr(fetch_notams.requests, 'get', lambda *args, **kwargs: FakeResponse())
+    monkeypatch.setattr(fetch_notams, '_is_in_time_window', lambda _from, _to: True)
+    rows = fetch_notams.fetch_kazakhstan_notams([{
+        'mission': 'Progress MS-35 (96P)',
+        'time': datetime.datetime(2026, 9, 16, 13, 33),
+        'site': 'Baikonur Cosmodrome',
+        'lat': 45.996034,
+        'lon': 63.564003,
+    }])
+
+    assert [row['notam']['notam_id'] for row in rows] == ['C6157/26', 'K2526/26', 'A5906/26']
+
+
 def test_merge_notams_dedupes_by_notam_id():
     primary = [
         {'id': '1', 'notam': {'series': 'A', 'number': 787, 'year': '2026', 'raw': 'x'}},
