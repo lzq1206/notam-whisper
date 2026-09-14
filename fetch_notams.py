@@ -94,6 +94,13 @@ LAUNCH_SITE_FIRS = {
     'guiana space centre': {'SOOO', 'TTZP', 'KZWY'},
     'ariane launch area 1 (elv)': {'SOOO', 'TTZP', 'KZWY'},
     'ela-1': {'SOOO', 'TTZP', 'KZWY'},
+    # Vandenberg launches use the Los Angeles FIR locally and the Oakland
+    # oceanic FIR for the Pacific downrange corridor.
+    'vandenberg space force base': {'KZLA', 'KZAK'},
+    'vandenberg sfb': {'KZLA', 'KZAK'},
+    'vandenberg air force base': {'KZLA', 'KZAK'},
+    'vsfb': {'KZLA', 'KZAK'},
+    'slc-4e': {'KZLA', 'KZAK'},
 }
 
 # FAA is the normal supplemental source for the oceanic/downrange records, but

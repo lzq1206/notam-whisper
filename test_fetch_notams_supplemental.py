@@ -170,6 +170,26 @@ def test_local_upcoming_schedule_supplies_sentinel_3c_context():
     }
 
 
+def test_vandenberg_ussf259_coverage_and_local_context():
+    import fetch_notams
+
+    assert {'KZLA', 'KZAK'}.issubset(set(FAA_SUPPLEMENTAL_FIRS))
+    for alias in ('vandenberg space force base', 'vandenberg sfb', 'vsfb', 'slc-4e'):
+        assert fetch_notams.LAUNCH_SITE_FIRS[alias] == {'KZLA', 'KZAK'}
+
+    contexts = fetch_notams._load_local_upcoming_launch_context(
+        'upcoming_launches.csv'
+    )
+    ussf = next(item for item in contexts if item['mission'] == 'USSF-259')
+    assert ussf == {
+        'mission': 'USSF-259',
+        'time': datetime.datetime(2026, 9, 16, 1, 0),
+        'site': 'Vandenberg Space Force Base',
+        'lat': 34.632,
+        'lon': -120.611,
+    }
+
+
 def test_french_guiana_manual_fallback_contains_current_vv30_records():
     import fetch_notams
 
