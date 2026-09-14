@@ -145,6 +145,44 @@ def test_faa_supplemental_firs_include_zxxx():
     assert 'UACN' in FAA_SUPPLEMENTAL_FIRS
 
 
+def test_french_guiana_launch_coverage_includes_downrange_firs():
+    import fetch_notams
+
+    assert {'SOOO', 'TTZP', 'KZWY'}.issubset(set(FAA_SUPPLEMENTAL_FIRS))
+    assert fetch_notams.LAUNCH_SITE_FIRS['guiana space centre (kourou)'] == {
+        'SOOO', 'TTZP', 'KZWY'
+    }
+
+
+def test_local_upcoming_schedule_supplies_sentinel_3c_context():
+    import fetch_notams
+
+    contexts = fetch_notams._load_local_upcoming_launch_context(
+        'upcoming_launches.csv'
+    )
+    sentinel = next(item for item in contexts if 'Sentinel-3C' in item['mission'])
+    assert sentinel == {
+        'mission': 'Sentinel-3C & FLEX',
+        'time': datetime.datetime(2026, 9, 15, 1, 21),
+        'site': 'Guiana Space Centre (Kourou)',
+        'lat': 5.239,
+        'lon': -52.768,
+    }
+
+
+def test_french_guiana_manual_fallback_contains_current_vv30_records():
+    import fetch_notams
+
+    rows = fetch_notams.fetch_french_guiana_manual_notams()
+    assert {row['notam']['notam_id'] for row in rows} == {
+        'G0275/26', 'G0276/26', 'G0277/26', 'G0278/26',
+        'G0280/26', 'A1400/26', 'A1026/26',
+    }
+    assert next(row for row in rows if row['notam']['notam_id'] == 'A1026/26')[
+        'notam'
+    ]['polygon']
+
+
 def test_fetch_country_retries_retryable_status():
     import fetch_notams
 
@@ -526,7 +564,7 @@ def test_fetch_faa_notams_logs_non_json_response():
     )
 
 
-def test_fetch_faa_notams_reaches_third_page_for_launch_record():
+def test_fetch_faa_notams_reaches_third_page_for_launch_record(monkeypatch):
     """A launch NOTAM on FAA page 3 must not be silently omitted."""
     import fetch_notams
 
@@ -585,6 +623,7 @@ def test_fetch_faa_notams_reaches_third_page_for_launch_record():
     fetch_notams.requests.Session = lambda: _Session()
     fetch_notams.FAA_SUPPLEMENTAL_FIRS = ['VOMF']
     fetch_notams.FAA_REQUEST_DELAY_SECONDS = 0
+    monkeypatch.setattr(fetch_notams, '_is_in_time_window', lambda _from, _to: True)
     try:
         rows = fetch_notams.fetch_faa_notams()
     finally:
@@ -609,7 +648,7 @@ def test_fetch_faa_notams_reaches_third_page_for_launch_record():
     assert matches[0]['notam'].get('longitude') == 82.791667
 
 
-def test_global_supplement_parses_key_notams():
+def test_global_supplement_parses_key_notams(monkeypatch):
     import fetch_notams
 
     class FakeResponse:
@@ -653,6 +692,7 @@ def test_global_supplement_parses_key_notams():
 
     original_get = fetch_notams.requests.get
     fetch_notams.requests.get = lambda *args, **kwargs: FakeResponse()
+    monkeypatch.setattr(fetch_notams, '_is_in_time_window', lambda _from, _to: True)
     try:
         rows = fetch_global_notam_supplement()
     finally:

@@ -53,7 +53,7 @@ FAA_SUPPLEMENTAL_FIRS = [
     # when notammap missed items.  Keep this list targeted to major launch and
     # oceanic FIRs to avoid broad crawling / rate pressure.
     "KZAK", "KZLA", "KZMA", "KZNY", "KZHU", "KZJX", "PAZA",
-    "MMFR", "SBAO", "SBCW", "SBAZ", "SOOO",
+    "MMFR", "SBAO", "SBCW", "SBAZ", "SOOO", "TTZP", "KZWY",
     "GMMM", "GCCC", "LPPO", "EGTT", "EGPX", "EISN",
     "ENOR", "ENOB", "ESAA", "ESOS", "EFIN",
     "LFFF", "LFBB", "LFMM", "LSAS", "EDWW",
@@ -89,7 +89,54 @@ SILENT_LAUNCH_TIME_TOLERANCE_MINUTES = 20
 SILENT_LAUNCH_MAX_DISTANCE_NM = 1000
 LAUNCH_SITE_FIRS = {
     'baikonur cosmodrome': {'UACN', 'UAAA', 'UATT', 'UAII'},
+    # French Guiana launch and downrange FIRs used by Vega/Ariane missions.
+    'guiana space centre (kourou)': {'SOOO', 'TTZP', 'KZWY'},
+    'guiana space centre': {'SOOO', 'TTZP', 'KZWY'},
+    'ariane launch area 1 (elv)': {'SOOO', 'TTZP', 'KZWY'},
+    'ela-1': {'SOOO', 'TTZP', 'KZWY'},
 }
+
+# FAA is the normal supplemental source for the oceanic/downrange records, but
+# the public endpoint can temporarily return 403.  Keep the currently issued
+# VV30 records as a short-lived, manually verified fallback; the normal time
+# filter removes them automatically after 25 September 2026.
+FRENCH_GUIANA_MANUAL_NOTAM_SOURCE = (
+    'https://notac.aero/notams/?q=VV30&from=2026-09-14&to=2026-09-25'
+)
+FRENCH_GUIANA_MANUAL_NOTAM_RAW = (
+    "G0275/26 NOTAMN Q) SOOO/QRRCA/IV/BO /W /245/999/0514N05247W019 "
+    "A) SOOO B) 2609140900 C) 2609250151 "
+    "E) ZONE SO-R4 ACTIVE - VEGA VV30 LAUNCHING F) FL245 G) UNL",
+    "G0276/26 NOTAMN Q) SOOO/QRDCA/IV/BO /W /000/999/0558N05258W046 "
+    "A) SOOO B) 2609150021 C) 2609250151 D) 0021-0151 "
+    "E) SO-D1 ACTIVATED - 'VEGA VV30' LAUNCHING. F) SFC G) UNL",
+    "G0277/26 NOTAMN Q) SOOO/QRDCA/IV/BO /W /000/999/0558N05221W052 "
+    "A) SOOO B) 2609150021 C) 2609250151 D) 0021-0151 "
+    "E) SO-D2 ACTIVATED - 'VEGA VV30' LAUNCHING. F) SFC G) UNL",
+    "G0278/26 NOTAMN Q) SOOO/QWMLW/IV/BO /W /000/999/0909N05244W029 "
+    "A) SOOO B) 2609150021 C) 2609250151 D) 0021-0151 "
+    "E) RISK OF ELEMENTS FALLOUT DURING THE LAUNCH OF 'VEGA VV30' ROCKET: "
+    "LATERAL LIMITS (ZA/VV30): 093600N 0524500W 093600N 0524200W "
+    "084100N 0524300W 084100N 0524600W 093600N 0524500W. F) SFC G) UNL",
+    "G0280/26 NOTAMN Q) SOOO/QRRCA/IV/BO /W /000/660/0518N05247W024 "
+    "A) SOOO B) 2609142045 C) 2609250221 D) 2045-0221 "
+    "E) SOR1 ACTIVATION FOR VV30 LAUNCHING PROTECTION. MANDATORY BYPASS "
+    "DURING ACTIVATION. F) GND G) FL660",
+    "A1400/26 NOTAMN Q) TTZP/QRDCA/IV/BO/W/000/999/1450N05112W999 "
+    "A) TTZP B) 2609150021 C) 2609150151 "
+    "E) DANGER AREA ACTIVATED WITHIN TTZP DUE TO THE VEGAC LAUNCH VV30. "
+    "THE PIARCO ACC STRONGLY CAUTIONS AIRCRAFT NOT TO OPERATE WITHIN THE "
+    "DANGER AREA BOUNDED BY COORDINATES: 0923N05336W - 1026N05335W - "
+    "1026N05150W - 0935N05151W - 0923N05336W. BACK UP DATES: 260916 "
+    "260917 260918 260919 260920 260921 260922 260923 260924 260925. "
+    "F) SFC G) UNL",
+    "A1026/26 NOTAMN Q) KZWY/QRACA/IV/NBO/W/000/999/ "
+    "A) KZWY B) 2609150021 C) 2609250151 D) DAILY 0021-0151 "
+    "E) ZWY AIRSPACE DUE TO A FRENCH GUIANA SPACE CENTER LAUNCH, VEGA VV30, "
+    "ZNY OCEANIC CTA/FIR ZNY WILL NOT ACCEPT IFR FLIGHTS WI AN AREA DEFINED "
+    "AS 241400N0552000W TO 241600N0550400W TO 212100N0543800W TO "
+    "211900N0545400W TO POINT OF ORIGIN. SFC-UNL F) SFC G) UNL",
+)
 
 def make_headers():
     return {
@@ -768,6 +815,49 @@ def fetch_global_notam_supplement():
     print(f"[global] Supplemental NOTAMs after filter: {len(rows)}")
     return rows
 
+
+def fetch_french_guiana_manual_notams():
+    """Return manually verified VV30 records when FAA is unavailable."""
+    rows = []
+    for raw in FRENCH_GUIANA_MANUAL_NOTAM_RAW:
+        notam_id = _extract_notam_id(raw)
+        series, number, year = _normalize_notam_number(notam_id)
+        lat, lon, radius, qcode = _parse_q_line(raw)
+        polygons = _extract_raw_coordinate_rings(raw)
+        polygon = polygons[0] if len(polygons) == 1 else polygons
+        if polygon and (lat == '' or lon == ''):
+            points = [point for ring in polygons for point in ring]
+            lat = round(sum(point[0] for point in points) / len(points), 6)
+            lon = round(sum(point[1] for point in points) / len(points), 6)
+            radius = ''
+        b_match = re.search(r'\bB\)\s*([0-9]{10}|PERM)\b', raw)
+        c_match = re.search(r'\bC\)\s*([0-9]{10}|PERM)\b', raw)
+        fir_match = re.search(r'\bA\)\s*([A-Z0-9]{4})\b', raw)
+        notam = {
+            'raw': raw,
+            'series': series,
+            'number': number,
+            'year': year,
+            'notam_id': notam_id,
+            'fir': fir_match.group(1) if fir_match else '',
+            'from': _parse_notam_time(b_match.group(1)) if b_match else '',
+            'to': _parse_notam_time(c_match.group(1)) if c_match else '',
+            'latitude': lat,
+            'longitude': lon,
+            'radius': radius,
+            'notamCode': qcode,
+            'polygon': polygon,
+            '_trusted_launch_source': True,
+        }
+        if _passes_filters(notam):
+            rows.append({
+                'id': f'french-guiana-{notam_id}',
+                '_country': 'French Guiana',
+                'notam': notam,
+            })
+    print(f"[french-guiana] Manually verified VV30 fallback NOTAMs: {len(rows)}")
+    return rows
+
 def _parse_kazakhstan_notam_blocks(payload):
     """Extract ICAO NOTAM blocks from Kazaeronavigatsia's public HTML list."""
     text = html_lib.unescape(str(payload or ''))
@@ -1346,10 +1436,12 @@ def main():
     supplemental = fetch_faa_notams(launch_contexts)
     faa_tfrs = fetch_faa_space_tfrs()
     global_supplement = fetch_global_notam_supplement()
+    french_guiana_supplement = fetch_french_guiana_manual_notams()
     kazakhstan_supplement = fetch_kazakhstan_notams(launch_contexts)
     items = merge_notams(items, supplemental)
     items = merge_notams(items, faa_tfrs)
     items = merge_notams(items, global_supplement)
+    items = merge_notams(items, french_guiana_supplement)
     items = merge_notams(items, kazakhstan_supplement)
 
     # Write notams.csv
