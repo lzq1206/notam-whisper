@@ -54,8 +54,8 @@ if (exactBoundary.length !== 0) {
   throw new Error('a launch must stop being upcoming at its scheduled UTC time');
 }
 
-if (!/const\s+list\s*=\s*filterFutureLaunches\(\[\.\.\.localUpcoming,\s*\.\.\.remoteUpcoming\],\s*now\.getTime\(\)\)/.test(html)) {
-  throw new Error('local and remote launch records must share the future-time filter');
+if (!/const\s+nowMs\s*=\s*now\.getTime\(\);[\s\S]*?filterFutureLaunches\(localUpcoming,\s*nowMs\)[\s\S]*?filterFutureLaunches\(remoteUpcoming,\s*nowMs\)/.test(html)) {
+  throw new Error('local and remote launch records must share the future-time filter before merging');
 }
 if (!/scheduleUpcomingLaunchExpiry\(\);/.test(html) || !/launchRecord\.marker\s*=\s*lMarker;/.test(html)) {
   throw new Error('upcoming markers must be scheduled for automatic expiry');

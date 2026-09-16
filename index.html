@@ -2489,6 +2489,61 @@
       });
     }
 
+    function launchNameKey(launch) {
+      const value = launch?.name || launch?.mission || launch?.payload || '';
+      return String(value).toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '');
+    }
+
+    function launchLocationKeys(launch) {
+      const location = launch?.pad?.location || {};
+      return [...new Set([location.slug, location.name]
+        .map(value => normalizeLocationKey(value))
+        .filter(Boolean))];
+    }
+
+    function launchNamesMatch(first, second) {
+      const firstKey = launchNameKey(first);
+      const secondKey = launchNameKey(second);
+      const generic = new Set(['tbd', 'unknown', 'unknownpayload', 'unknownmission']);
+      if (!firstKey || !secondKey || generic.has(firstKey) || generic.has(secondKey)) return false;
+      return firstKey === secondKey ||
+        (firstKey.length >= 8 && secondKey.length >= 8 &&
+          (firstKey.includes(secondKey) || secondKey.includes(firstKey)));
+    }
+
+    function launchLocationsMatch(first, second) {
+      const firstKeys = launchLocationKeys(first);
+      const secondKeys = launchLocationKeys(second);
+      return firstKeys.some(key => secondKeys.includes(key));
+    }
+
+    function launchRecordsMatch(first, second) {
+      const firstTs = launchTimestamp(first);
+      const secondTs = launchTimestamp(second);
+      const sameTime = Number.isFinite(firstTs) && Number.isFinite(secondTs) &&
+        Math.abs(firstTs - secondTs) <= 2 * 60 * 60 * 1000;
+      const sameLocation = launchLocationsMatch(first, second);
+      const sameName = launchNamesMatch(first, second);
+      // A named mission may be rescheduled; the same mission at the same site
+      // is still one launch. Generic TBD records require both time and site.
+      return sameName ? (sameTime || sameLocation) : (sameTime && sameLocation);
+    }
+
+    function mergeUpcomingLaunches(localLaunches, remoteLaunches) {
+      const local = Array.isArray(localLaunches) ? localLaunches : [];
+      const remote = Array.isArray(remoteLaunches) ? remoteLaunches : [];
+      const localOnly = [];
+
+      local.forEach(fallback => {
+        // RocketLaunch.Live remains authoritative whenever it contains the
+        // same launch; manually curated data only fills an API omission.
+        if (remote.some(apiLaunch => launchRecordsMatch(fallback, apiLaunch))) return;
+        if (localOnly.some(existing => launchRecordsMatch(fallback, existing))) return;
+        localOnly.push(fallback);
+      });
+      return [...remote, ...localOnly];
+    }
+
     function coordsForRllLoc(padLoc, options = {}) {
       if (!padLoc) return null;
       const siteOnly = !!options.siteOnly;
@@ -2611,7 +2666,11 @@
             console.warn('[RLL] Failed to fetch upcoming launches:', rllErr);
           }
 
-          const list = filterFutureLaunches([...localUpcoming, ...remoteUpcoming], now.getTime());
+          const nowMs = now.getTime();
+          const list = mergeUpcomingLaunches(
+            filterFutureLaunches(localUpcoming, nowMs),
+            filterFutureLaunches(remoteUpcoming, nowMs)
+          );
 
           const upcomingTimes = list.map(launchTimestamp).filter(Number.isFinite);
           const { minTs: minLaunchTs, maxTs: maxLaunchTs } = getTimelineBounds(filteredDataRows, upcomingTimes);
