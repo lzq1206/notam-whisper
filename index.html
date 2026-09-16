@@ -2366,9 +2366,47 @@
     let launchLayerGroup = L.layerGroup().addTo(map);
     let pastLaunchLayerGroup = L.layerGroup();
     let pastLaunchMarkerRecords = [];
+    let upcomingLaunchExpiryTimer = null;
     let launchSites = {}; // abbrev -> {lat, lon, name}
     // Also build a by-name index for RLL lookups
     let launchSitesByName = {}; // partial name -> {lat, lon}
+    function scheduleUpcomingLaunchExpiry() {
+      if (upcomingLaunchExpiryTimer !== null) {
+        clearTimeout(upcomingLaunchExpiryTimer);
+        upcomingLaunchExpiryTimer = null;
+      }
+
+      const nowMs = Date.now();
+      const nextTs = upcomingLaunches
+        .map(launch => Number(launch.ts))
+        .filter(ts => Number.isFinite(ts) && ts > nowMs)
+        .sort((a, b) => a - b)[0];
+      if (!Number.isFinite(nextTs)) return;
+
+      // Re-check just after the scheduled time so a page left open removes
+      // the marker without requiring a manual reload.
+      const delay = Math.min(Math.max(nextTs - nowMs + 1000, 1000), 2147483647);
+      upcomingLaunchExpiryTimer = setTimeout(() => {
+        upcomingLaunchExpiryTimer = null;
+        const currentNowMs = Date.now();
+        const active = upcomingLaunches.filter(launch => {
+          const ts = Number(launch.ts);
+          return !Number.isFinite(ts) || ts > currentNowMs;
+        });
+
+        if (active.length !== upcomingLaunches.length) {
+          const activeSet = new Set(active);
+          upcomingLaunches.forEach(launch => {
+            if (!activeSet.has(launch) && launch.marker) {
+              launchLayerGroup.removeLayer(launch.marker);
+            }
+          });
+          upcomingLaunches = active;
+          if (is3D) renderOnGlobe(filteredDataRows);
+        }
+        scheduleUpcomingLaunchExpiry();
+      }, delay);
+    }
 
     function isPastLaunchInSelectedRange(timestamp) {
       if (!Number.isFinite(timestamp)) return false;
@@ -2436,6 +2474,21 @@
       return new Date(Date.UTC(parseInt(m[3]), month, parseInt(m[2]), hr, parseInt(m[5])));
     }
 
+    function launchTimestamp(launch) {
+      if (!launch) return null;
+      const d = launch.win_open ? new Date(launch.win_open) : parseDescriptionDate(launch.launch_description);
+      return d && Number.isFinite(d.getTime()) ? d.getTime() : null;
+    }
+
+    function filterFutureLaunches(launches, nowMs = Date.now()) {
+      return (launches || []).filter(launch => {
+        const timestamp = launchTimestamp(launch);
+        // Keep records without a published time visible as TBD; only a known
+        // launch time that has elapsed is removed from the upcoming layer.
+        return timestamp === null || timestamp > nowMs;
+      });
+    }
+
     function coordsForRllLoc(padLoc, options = {}) {
       if (!padLoc) return null;
       const siteOnly = !!options.siteOnly;
@@ -2468,6 +2521,10 @@
     async function loadLaunchData() {
       launchStatusEl.textContent = t('launch_loading');
       try {
+        if (upcomingLaunchExpiryTimer !== null) {
+          clearTimeout(upcomingLaunchExpiryTimer);
+          upcomingLaunchExpiryTimer = null;
+        }
         // 1. Load launch sites from GitHub (purple background markers)
         const sitesResp = await fetch(LAUNCH_SITES_URL, { cache: 'no-store' });
         const sitesText = await sitesResp.text();
@@ -2554,12 +2611,9 @@
             console.warn('[RLL] Failed to fetch upcoming launches:', rllErr);
           }
 
-          const list = [...localUpcoming, ...remoteUpcoming];
+          const list = filterFutureLaunches([...localUpcoming, ...remoteUpcoming], now.getTime());
 
-          const upcomingTimes = list.map(l => {
-            const d = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
-            return (d && isFinite(d.getTime())) ? d.getTime() : null;
-          }).filter(t => t);
+          const upcomingTimes = list.map(launchTimestamp).filter(Number.isFinite);
           const { minTs: minLaunchTs, maxTs: maxLaunchTs } = getTimelineBounds(filteredDataRows, upcomingTimes);
 
           list.forEach((l, idx) => {
@@ -2576,7 +2630,8 @@
             const vehicleName = l.vehicle?.name || '';
             const locName = loc?.name || '';
             const padName = l.pad?.name || '';
-            const t0 = l.win_open ? new Date(l.win_open) : parseDescriptionDate(l.launch_description);
+            const t0Ts = launchTimestamp(l);
+            const t0 = Number.isFinite(t0Ts) ? new Date(t0Ts) : null;
             const dateStr = formatLaunchDateWithLocal(t0);
             const weather = l.weather_temp ? ` (${l.weather_temp}°C ${l.weather_condition || ''})` : '';
             const desc = l.launch_description || '';
@@ -2601,6 +2656,7 @@
               iconAnchor: [14, 14]
             });
             const lMarker = L.marker([lat, lon], { icon: lIcon, zIndexOffset: 2000 });
+            launchRecord.marker = lMarker;
             lMarker.bindPopup(() => {
               const relatedWarnings = relatedWarningRowsForLaunch(launchRecord, filteredDataRows);
               const warningIds = [...new Set(relatedWarnings.map(row => row.notam_id || row.id).filter(Boolean))];
@@ -2626,6 +2682,8 @@
         } catch (rllErr) {
           console.warn('[RLL] Failed to fetch upcoming launches:', rllErr);
         }
+
+        scheduleUpcomingLaunchExpiry();
 
         // 4. Load historical CSV (all data)
         let pastCount = 0;
