@@ -156,37 +156,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2640/26</name>
-      <description>121555Z SEP 26  HYDROPAC 2640/26  NORTH PACIFIC.  PHILIPPINE SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     152100Z TO 160300Z SEP IN AREAS BOUND BY:     A. 19-37.45N 123-14.78E, 19-37.12N 123-26.22E,        18-54.02N 123-24.80E, 18-54.34N 123-13.41E.     B. 20-02.06N 123-15.65E, 20-01.73N 123-27.13E,        19-18.64N 123-25.72E, 19-18.96N 123-14.30E.  2. CANCEL THIS MSG 160400Z SEP 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>123.246333,19.624167,0 123.437,19.618667,0 123.413333,18.900333,0 123.2235,18.905667,0 123.246333,19.624167,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>123.260833,20.034333,0 123.452167,20.028833,0 123.428667,19.310667,0 123.238333,19.316,0 123.260833,20.034333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2637/26</name>
-      <description>120702Z SEP 26  HYDROPAC 2637/26  EASTERN INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     152100Z TO 160300Z SEP IN AREA BOUND BY     43-40.64S 120-54.03E, 43-42.11S 122-08.48E,     48-11.42S 122-00.60E, 48-09.82S 120-39.87E.  2. CANCEL THIS MSG 160400Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>120.9005,-43.677333,0 122.141333,-43.701833,0 122.01,-48.190333,0 120.6645,-48.163667,0 120.9005,-43.677333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2636/26</name>
       <description>120652Z SEP 26  HYDROPAC 2636/26  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     170100Z TO 170700Z SEP IN AREA BOUND BY     51-08.34S 168-41.58W, 53-51.96S 152-28.98W,     53-57.18S 131-36.66W, 54-51.00S 131-31.44W,     54-44.94S 152-25.26W, 52-02.16S 168-36.72W.  2. CANCEL THIS MSG 170800Z SEP 26.</description>
       <Polygon>
