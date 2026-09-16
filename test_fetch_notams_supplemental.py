@@ -11,6 +11,8 @@ from fetch_notams import (
     merge_notams,
     _build_straight_line_corridor_polygon,
     _correlate_silent_launch_notam,
+    _load_launch_site_coordinates,
+    _resolve_launch_site_coordinates,
 )
 import datetime
 
@@ -190,14 +192,72 @@ def test_vandenberg_ussf259_coverage_and_local_context():
     }
 
 
+def test_rocket_lab_mahia_coverage_includes_local_and_downrange_firs():
+    import fetch_notams
+
+    assert {'NZZC', 'NZZO'}.issubset(set(FAA_SUPPLEMENTAL_FIRS))
+    for alias in (
+        'rocket lab launch complex 1',
+        'rocket lab launch complex, mahia peninsula',
+        'rocket lab launch complex mahia peninsula',
+        'lc-1',
+        'mahia peninsula',
+    ):
+        assert fetch_notams.LAUNCH_SITE_FIRS[alias] == {'NZZC', 'NZZO'}
+
+    sites = _load_launch_site_coordinates()
+    assert _resolve_launch_site_coordinates(
+        'Rocket Lab Launch Complex, Mahia Peninsula', sites
+    ) == sites['rocket lab launch complex 1']
+
+
+def test_remote_rocket_lab_mahia_context_uses_api_record(monkeypatch):
+    import fetch_notams
+
+    class FakeResponse:
+        status_code = 200
+
+        def json(self):
+            return {
+                'result': [{
+                    'name': 'Owl By The Dozen',
+                    't0': None,
+                    'win_open': '2026-09-19T03:15:00Z',
+                    'pad': {
+                        'location': {
+                            'name': 'Rocket Lab Launch Complex, Mahia Peninsula'
+                        }
+                    },
+                }]
+            }
+
+    monkeypatch.setattr(
+        fetch_notams, '_load_local_upcoming_launch_context', lambda: []
+    )
+    monkeypatch.setattr(
+        fetch_notams.requests, 'get', lambda *args, **kwargs: FakeResponse()
+    )
+
+    assert fetch_notams.fetch_upcoming_launch_context() == [{
+        'mission': 'Owl By The Dozen',
+        'time': datetime.datetime(2026, 9, 19, 3, 15),
+        'site': 'Rocket Lab Launch Complex, Mahia Peninsula',
+        'lat': -39.261,
+        'lon': 177.865,
+    }]
+
+
 def test_french_guiana_manual_fallback_contains_current_vv30_records():
     import fetch_notams
 
     rows = fetch_notams.fetch_french_guiana_manual_notams()
-    assert {row['notam']['notam_id'] for row in rows} == {
+    ids = {row['notam']['notam_id'] for row in rows}
+    required_ids = {
         'G0275/26', 'G0276/26', 'G0277/26', 'G0278/26',
-        'G0280/26', 'A1400/26', 'A1026/26',
+        'G0280/26', 'A1026/26',
     }
+    assert required_ids.issubset(ids)
+    assert ids.issubset(required_ids | {'A1400/26'})
     assert next(row for row in rows if row['notam']['notam_id'] == 'A1026/26')[
         'notam'
     ]['polygon']

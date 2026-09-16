@@ -60,7 +60,7 @@ FAA_SUPPLEMENTAL_FIRS = [
     "LTAA", "OJAC", "LLLL", "OIIX", "OAKX",
     "UACN", "UAAA", "UATT", "UAII", "UCFM", "UHHH", "UHPP", "UHMM", "UWWW", "URRV", "UUWV",
     "RJTG", "RJJJ", "RKRR", "VOMF", "VABF", "VIDF",
-    "YMMM", "NZZC", "NFFF", "AYPM",
+    "YMMM", "NZZC", "NZZO", "NFFF", "AYPM",
     "FACT", "FAJO", "FMMM", "FIMM", "FSSS",
 ]
 FAA_PAGE_SIZE = 30
@@ -87,6 +87,22 @@ SILENT_LAUNCH_QCODES = {"QRPCA", "QRDCA"}
 SILENT_LAUNCH_MIN_CEILING_FL = 300
 SILENT_LAUNCH_TIME_TOLERANCE_MINUTES = 20
 SILENT_LAUNCH_MAX_DISTANCE_NM = 1000
+MAHIA_LAUNCH_FIRS = {'NZZC', 'NZZO'}
+
+# RocketLaunch.Live uses a descriptive location label for Mahia, while the
+# local launch-site table uses the shorter canonical site name.  Keep this
+# translation explicit so a remote API record can still seed NOTAM
+# correlation without changing or replacing the API feed.
+LAUNCH_SITE_COORDINATE_ALIASES = {
+    'rocket lab launch complex, mahia peninsula': 'rocket lab launch complex 1',
+    'rocket lab launch complex mahia peninsula': 'rocket lab launch complex 1',
+    'rocket lab launch complex 1, mahia peninsula': 'rocket lab launch complex 1',
+    'rocket lab launch complex 1a': 'rocket lab launch complex 1',
+    'rocket lab launch complex 1b': 'rocket lab launch complex 1',
+    'lc-1': 'rocket lab launch complex 1',
+    'mahia peninsula': 'rocket lab launch complex 1',
+}
+
 LAUNCH_SITE_FIRS = {
     'baikonur cosmodrome': {'UACN', 'UAAA', 'UATT', 'UAII'},
     # French Guiana launch and downrange FIRs used by Vega/Ariane missions.
@@ -101,6 +117,17 @@ LAUNCH_SITE_FIRS = {
     'vandenberg air force base': {'KZLA', 'KZAK'},
     'vsfb': {'KZLA', 'KZAK'},
     'slc-4e': {'KZLA', 'KZAK'},
+    # Mahia launches use NZZC for the local danger area and NZZO for the
+    # Auckland Oceanic downrange/debris-return areas.
+    'rocket lab launch complex 1': MAHIA_LAUNCH_FIRS,
+    'rocket lab launch complex': MAHIA_LAUNCH_FIRS,
+    'rocket lab launch complex, mahia peninsula': MAHIA_LAUNCH_FIRS,
+    'rocket lab launch complex mahia peninsula': MAHIA_LAUNCH_FIRS,
+    'rocket lab launch complex 1, mahia peninsula': MAHIA_LAUNCH_FIRS,
+    'rocket lab launch complex 1a': MAHIA_LAUNCH_FIRS,
+    'rocket lab launch complex 1b': MAHIA_LAUNCH_FIRS,
+    'lc-1': MAHIA_LAUNCH_FIRS,
+    'mahia peninsula': MAHIA_LAUNCH_FIRS,
 }
 
 # FAA is the normal supplemental source for the oceanic/downrange records, but
@@ -157,13 +184,24 @@ def _parse_iso_datetime(value):
     except (TypeError, ValueError):
         return None
 
+def _launch_site_key(value):
+    return re.sub(r'\s+', ' ', str(value or '').strip()).casefold()
+
+def _canonical_launch_site_key(value):
+    key = _launch_site_key(value)
+    return LAUNCH_SITE_COORDINATE_ALIASES.get(key, key)
+
+def _resolve_launch_site_coordinates(location_name, sites):
+    """Resolve a remote launch-location label against local site coordinates."""
+    return sites.get(_canonical_launch_site_key(location_name))
+
 def _load_launch_site_coordinates():
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'launch_sites.csv')
     sites = {}
     try:
         with open(path, 'r', encoding='utf-8') as handle:
             for row in csv.DictReader(handle):
-                name = str(row.get('name', '') or '').strip().casefold()
+                name = _launch_site_key(row.get('name', ''))
                 if not name:
                     continue
                 try:
@@ -235,10 +273,13 @@ def fetch_upcoming_launch_context():
     for record in records:
         if not isinstance(record, dict):
             continue
-        launch_time = _parse_iso_datetime(record.get('t0'))
+        # RLL may leave the exact T-0 unset while publishing a precise window
+        # opening.  Use the published window time so upcoming launches such
+        # as Owl By The Dozen still seed regional NOTAM correlation.
+        launch_time = _parse_iso_datetime(record.get('t0') or record.get('win_open'))
         location = ((record.get('pad') or {}).get('location') or {})
         location_name = str(location.get('name', '') or '').strip()
-        coordinates = sites.get(location_name.casefold())
+        coordinates = _resolve_launch_site_coordinates(location_name, sites)
         if not launch_time or not coordinates:
             continue
         remote_context = {
@@ -250,7 +291,7 @@ def fetch_upcoming_launch_context():
         }
         duplicate = any(
             item['time'] == remote_context['time']
-            and item['site'].casefold() == remote_context['site'].casefold()
+            and _canonical_launch_site_key(item['site']) == _canonical_launch_site_key(remote_context['site'])
             for item in contexts
         )
         if not duplicate:
@@ -938,7 +979,9 @@ def fetch_faa_notams(launch_contexts=()):
     }
     active_launch_firs = set()
     for launch in launch_contexts or []:
-        active_launch_firs.update(LAUNCH_SITE_FIRS.get(str(launch.get('site', '')).casefold(), set()))
+        active_launch_firs.update(
+            LAUNCH_SITE_FIRS.get(_launch_site_key(launch.get('site', '')), set())
+        )
 
     for fir in FAA_SUPPLEMENTAL_FIRS:
         session = requests.Session()
