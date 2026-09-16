@@ -14,7 +14,11 @@ if (!/\n51,Shanghai Sea Launch,SHSL,China,31\.200000,123\.700000,Orbital \(Sea\)
 if (!/2026 SEP 15 2155,SHSL,31\.2,123\.7,TBD,Shanghai Sea Launch,Shanghai Sea Launch/.test(upcoming)) {
   throw new Error('Shanghai Sea Launch local schedule must use 2026-09-15 21:55 UTC');
 }
-if (!/A4352\/26,ZSHA,2026-09-15T21:50:00Z,2026-09-15T22:11:00Z,31\.2,123\.7,011,QRDCA/.test(notams)) {
+// The rolling NOTAM snapshot removes expired records.  Validate A4352/26's
+// geometry when it is still present, while the synthetic row below keeps the
+// launch-matching regression independent of snapshot retention.
+if (notams.includes('A4352/26,') &&
+    !/A4352\/26,ZSHA,2026-09-15T21:50:00Z,2026-09-15T22:11:00Z,31\.2,123\.7,011,QRDCA/.test(notams)) {
   throw new Error('A4352/26 must remain centered at 31.2,123.7 with the supplied time window');
 }
 if (!/LOCAL_UPCOMING_LAUNCHES_URL/.test(html) || !/sourceLabel: 'Data by local schedule'/.test(html)) {
