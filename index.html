@@ -1095,7 +1095,7 @@
           upcomingLaunches.forEach(launch => {
             if (!launch.lat || !launch.lon) return;
             const iconColor = launch.color || 'yellow';
-            cesiumViewer.entities.add({
+            addCesiumEntity({
               position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
               billboard: {
                 image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="${iconColor}" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>`))),
@@ -2683,6 +2683,23 @@
       });
     }
 
+    function orderUpcomingLaunchesFor2D(launches) {
+      return (Array.isArray(launches) ? launches : [])
+        .map((launch, index) => ({ launch, index, timestamp: launchTimestamp(launch) }))
+        .sort((first, second) => {
+          const firstHasTime = Number.isFinite(first.timestamp);
+          const secondHasTime = Number.isFinite(second.timestamp);
+          // Keep TBD records below timed records when markers overlap.
+          if (firstHasTime !== secondHasTime) return firstHasTime ? 1 : -1;
+          if (!firstHasTime) return first.index - second.index;
+          // Render farther future launches first; the nearest future launch is
+          // rendered last and receives the highest Leaflet stack rank.
+          if (first.timestamp !== second.timestamp) return second.timestamp - first.timestamp;
+          return first.index - second.index;
+        })
+        .map(item => item.launch);
+    }
+
     function launchNameKey(launch) {
       const value = launch?.name || launch?.mission || launch?.payload || '';
       return String(value).toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '');
@@ -2869,7 +2886,8 @@
           const upcomingTimes = list.map(launchTimestamp).filter(Number.isFinite);
           const { minTs: minLaunchTs, maxTs: maxLaunchTs } = getTimelineBounds(filteredDataRows, upcomingTimes);
 
-          list.forEach((l, idx) => {
+          const orderedList = orderUpcomingLaunchesFor2D(list);
+          orderedList.forEach((l, idx) => {
             const loc = l.pad?.location;
             let lat = loc?.latitude, lon = loc?.longitude;
             if (loc) {
@@ -2908,7 +2926,7 @@
               iconSize: [28, 28],
               iconAnchor: [14, 14]
             });
-            const lMarker = L.marker([lat, lon], { icon: lIcon, zIndexOffset: 2000 });
+            const lMarker = L.marker([lat, lon], { icon: lIcon, zIndexOffset: 2000 + idx });
             launchRecord.marker = lMarker;
             lMarker.bindPopup(() => {
               const relatedWarnings = relatedWarningRowsForLaunch(launchRecord, filteredDataRows);

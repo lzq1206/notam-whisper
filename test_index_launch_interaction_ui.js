@@ -22,8 +22,16 @@ function extractFunctionBlock(src, signature) {
 
 assertContains(/lMarker\.on\('click',\s*\(\)\s*=>\s*selectLaunchForSolarOverlay\(launchRecord\)\)/,
   '2D upcoming launch click must select the launch time for the solar overlay');
-assertContains(/addCesiumEntity\([\s\S]*?description:\s*`<b>\$\{launch\.mission\}[\s\S]*?launchSolarSelection\(launch\)\)/,
-  '3D upcoming launch entity must carry a launch solar selection');
+const renderOnGlobe = extractFunctionBlock(html, 'function renderOnGlobe(');
+if (!renderOnGlobe) throw new Error('renderOnGlobe function is missing');
+const upcomingGlobeBlockStart = renderOnGlobe.indexOf('upcomingLaunches.forEach');
+const upcomingGlobeBlockEnd = renderOnGlobe.indexOf('// 排序', upcomingGlobeBlockStart);
+const upcomingGlobeBlock = upcomingGlobeBlockStart >= 0 && upcomingGlobeBlockEnd > upcomingGlobeBlockStart
+  ? renderOnGlobe.slice(upcomingGlobeBlockStart, upcomingGlobeBlockEnd)
+  : '';
+if (!/addCesiumEntity\(\{[\s\S]*?description:\s*`<b>\$\{launch\.mission\}[\s\S]*?\},\s*launchSolarSelection\(launch\)\)/.test(upcomingGlobeBlock)) {
+  throw new Error('3D upcoming launch entity must carry a launch solar selection');
+}
 
 const launchSelection = extractFunctionBlock(html, 'function launchSolarSelection(');
 if (!launchSelection || !/midpoint:\s*new Date\(timestamp\)/.test(launchSelection)) {
