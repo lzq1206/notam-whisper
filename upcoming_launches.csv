@@ -3,3 +3,4 @@ Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,Launch Vehicl
 2026 SEP 15 2155,SHSL,31.2,123.7,TBD,Shanghai Sea Launch,Shanghai Sea Launch,,,"Manual schedule anchored to NOTAM A4352/26."
 2026 SEP 16 1333,Baikonur,45.996034,63.564003,Soyuz 2.1b,Progress MS-35 (96P),Baikonur Cosmodrome,31/6,,"Manual schedule anchored to official NOTAMs C6157/26, K2526/26 and A5906/26."
 2026 SEP 16 0100,VSFB,34.632,-120.611,Falcon 9,USSF-259,Vandenberg Space Force Base,SLC-4E,,https://www.spacex.com/launches/ussf259,"Manual schedule anchored to the current public launch window; classified mission, with KZLA local and KZAK Pacific downrange coverage."
+2026 SEP 28 1215,Starbase,25.997,-97.156,Starship,Starship Orbital Flight 1 (Starship Flight 14),SpaceX Starbase (Boca Chica),Orbital Pad 2,starbase,https://www.rocketlaunch.live/launch/starship-flight-1,"Manual fallback from the RocketLaunch.Live mission page; scheduled 2026-09-28 12:15 UTC."

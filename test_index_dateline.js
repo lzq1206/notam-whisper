@@ -29,6 +29,7 @@ const signatures = [
   'function compactDatelineSegments(',
   'function splitDatelinePath(',
   'function splitDatelineCoordinates(',
+  'function expandDatelineWorldCopies(',
 ];
 for (const signature of signatures) {
   const block = extractFunctionBlock(html, signature);
@@ -68,6 +69,15 @@ if (Math.max(...compactLongitudes) - Math.min(...compactLongitudes) > 80) {
   throw new Error('Compact rings still span most of the world');
 }
 
+const worldCopies = expandDatelineWorldCopies(compact);
+if (worldCopies.length !== compact.length * 2) {
+  throw new Error(`Expected a westward world copy for each compact ring, got ${worldCopies.length}`);
+}
+const westCopy = worldCopies.slice(compact.length);
+if (westCopy.some(ring => ring.some(point => point[1] > -130 || point[1] < -260))) {
+  throw new Error(`Westward world copy is not positioned next to the canonical world: ${JSON.stringify(westCopy)}`);
+}
+
 const pathSegments = splitDatelineCoordinates([[0, 179], [0, -179]], false, true);
 if (pathSegments.length !== 2 || pathSegments.some(segment => segment.length < 2)) {
   throw new Error(`Crossing path was not split at the date line: ${JSON.stringify(pathSegments)}`);
@@ -77,6 +87,9 @@ const ordinary = [[10, 120], [11, 121], [12, 120]];
 const ordinarySegments = splitDatelineCoordinates(ordinary, true, true);
 if (ordinarySegments.length !== 1 || JSON.stringify(ordinarySegments[0]) !== JSON.stringify(ordinary)) {
   throw new Error('An ordinary polygon should not be changed by anti-meridian handling');
+}
+if (expandDatelineWorldCopies(ordinarySegments).length !== 1) {
+  throw new Error('An ordinary polygon should not receive duplicate world copies');
 }
 
 console.log('test_index_dateline.js passed');

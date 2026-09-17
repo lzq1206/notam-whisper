@@ -1757,6 +1757,7 @@
 
       if (currentFeatureGroup) map.removeLayer(currentFeatureGroup);
       const group = L.featureGroup();
+      const primaryBounds = L.latLngBounds();
       currentFeatureGroup = group;
       rows.forEach(r => {
         const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
@@ -1809,9 +1810,15 @@
           const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
 
           coordinatesList.forEach(pts => {
-            const segments = isMaritime
+            const primarySegments = isMaritime
               ? splitDisconnectedCoordinatePath(pts)
               : splitDatelineCoordinates(pts, !isRoute, true);
+            primarySegments.forEach(segPts => {
+              if (segPts.length >= 2) primaryBounds.extend(segPts);
+            });
+            const segments = isMaritime
+              ? primarySegments
+              : expandDatelineWorldCopies(primarySegments);
             segments.forEach(segPts => {
               let shape;
               if (segPts.length >= 3 && !isRoute) {
@@ -1858,13 +1865,17 @@
           shape.bindPopup(popup);
           attachNotamClickForSolarOverlay(shape, r, lat, lon);
           shape.addTo(group);
+          primaryBounds.extend(shape.getBounds());
           layers.push(shape);
         }
       });
 
       if (layers.length) {
         group.addTo(map);
-        try { map.fitBounds(group.getBounds(), { padding: [20, 20] }); } catch (e) { }
+        try {
+          const bounds = primaryBounds.isValid() ? primaryBounds : group.getBounds();
+          map.fitBounds(bounds, { padding: [20, 20] });
+        } catch (e) { }
       }
       if (selectedNotamSolarState && selectedNotamSolarState.midpoint) {
         renderSolarOverlay2D(selectedNotamSolarState.midpoint);
@@ -2115,6 +2126,25 @@
       }
       if (segments.length < 2) return [normalized];
       return compactDatelineSegments(segments, compact);
+    }
+
+    function expandDatelineWorldCopies(segments) {
+      if (!Array.isArray(segments) || segments.length === 0) return segments;
+      const usesCompactWorldCopy = segments.some(segment =>
+        Array.isArray(segment) && segment.some(point => point[1] < -180 || point[1] > 180)
+      );
+      if (!usesCompactWorldCopy) return segments;
+
+      // Leaflet normalizes the map center back to the canonical world after
+      // crossing 180°. The compact render copy (for example 163E..229E)
+      // remains in the adjacent world and then disappears from the viewport.
+      // Keep one equivalent copy 360° west so panning to the west of New
+      // Zealand still shows the same geometry. Do not feed this duplicate
+      // into fitBounds; renderRows keeps a separate primary bounds object.
+      const westCopy = segments.map(segment => segment.map(point => [
+        point[0], point[1] - 360
+      ]));
+      return segments.concat(westCopy);
     }
 
     /**

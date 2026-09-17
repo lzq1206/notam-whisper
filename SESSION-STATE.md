@@ -2,6 +2,10 @@
 
 ## WAL
 
+- 2026-09-18 audit: RocketLaunch.Live's unauthenticated `/json/launches/next/{n}` response ignores `{n}` and returns only five records, ending at USSF-385 on 2026-09-26; the requested Starship Orbital Flight 1 / Starship Flight 14 is scheduled for 2026-09-28 12:15 UTC and is absent from `upcoming_launches.csv`. Planned fix: add the verified RLL mission page as a local fallback schedule entry, leave the original RocketLaunch.Live API request and API-authoritative merge unchanged, and add a regression assertion. The homepage NOTAM default remains seven days.
+- 2026-09-18 audit: The anti-meridian renderer currently compacts a crossing polygon into a single longitude range above 180 degrees. Leaflet can normalize the map center to the opposite world copy while the layer remains in the first copy, so the New Zealand/eastern-ocean geometry disappears when panning west of the date line. Planned fix: retain the compact fit copy and render adjacent wrapped copies for 2D Leaflet layers, with dedicated bounds that exclude duplicate copies; preserve canonical KML and Cesium geometry and add a world-copy regression test.
+- 2026-09-18 result: Added the Starship Flight 14 local fallback from the verified RocketLaunch.Live mission page (2026-09-28 12:15 UTC, Starbase / Orbital Pad 2) while keeping the RLL API request and API-authoritative merge unchanged. Added adjacent westward Leaflet world copies for anti-meridian geometry and excluded those duplicates from map fitting. Targeted launch/date-line tests pass; the full frontend sweep passes 20/21, with only the pre-existing OrbitWhisper-link assertion failing.
+
 - 2026-09-18 user correction: The initial NOTAM date range must remain seven days; revert only the 30-day default introduced in `003bf49`. Keep the upstream record coverage and anti-meridian rendering fixes unchanged.
 - 2026-09-18 result: Restored `endEl.value = plusDays(today, 7)` and updated the regression assertion. The NOTAM source/parser, 30-day backend fetch horizon, requested records, and anti-meridian rendering logic were left unchanged.
 
