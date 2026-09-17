@@ -2319,9 +2319,7 @@
       const today = isoDate(new Date());
       if (!startEl.value) {
         startEl.value = today;
-        // Keep the initial view aligned with the fetcher's 30-day horizon so
-        // newly issued notices such as RPHI B4913/26 are visible immediately.
-        endEl.value = plusDays(today, 30);
+        endEl.value = plusDays(today, 7);
       }
     }
 

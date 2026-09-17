@@ -2,6 +2,9 @@
 
 ## WAL
 
+- 2026-09-18 user correction: The initial NOTAM date range must remain seven days; revert only the 30-day default introduced in `003bf49`. Keep the upstream record coverage and anti-meridian rendering fixes unchanged.
+- 2026-09-18 result: Restored `endEl.value = plusDays(today, 7)` and updated the regression assertion. The NOTAM source/parser, 30-day backend fetch horizon, requested records, and anti-meridian rendering logic were left unchanged.
+
 - 2026-09-18: Fix planned for missing launch NOTAMs A4456/26, A4457/26, A4631/26, and A4632/26. The upstream `data_dict.json` stores these in `FOCUSED_NOTAM_DATA`, while `_iter_global_supplement_features()` currently reads only `NOTAM_DATA`; extend the parser to cover both sections and add a focused-schema regression test. Preserve the RocketLaunch.Live API and existing NOTAM filters.
 - 2026-09-18 result: Extended the Joey supplement parser to read both `FOCUSED_NOTAM_DATA`/`GEOMETRY` and `NOTAM_DATA`/`COORDINATES`. The targeted Python suite passed 36/36, and a live upstream `data_dict.json` parse returned all four requested IDs with four-point polygons. A full local refresh was attempted but the local network returned TLS EOF errors for RocketLaunch.Live and notammap.org, so existing generated outputs were left unchanged for the CI refresh.
 - 2026-09-18 published: GitHub Actions run `35260011771` completed successfully after commit `ad2c8af`; generated `notams.csv`, KML, and weekly history now contain A4456/26, A4457/26, A4631/26, and A4632/26. Both `rocket.rainywhisper.com/notams.csv` and the GitHub Pages CSV were verified to expose all four records.
