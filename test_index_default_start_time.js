@@ -34,8 +34,8 @@ if (!/startEl\.value\s*=\s*today\s*;?/.test(setDefaultDatesBlock)) {
   throw new Error('setDefaultDates should set startEl.value to today');
 }
 
-if (!/endEl\.value\s*=\s*plusDays\(today,\s*7\)\s*;?/.test(setDefaultDatesBlock)) {
-  throw new Error('setDefaultDates should set endEl.value to plusDays(today, 7)');
+if (!/endEl\.value\s*=\s*plusDays\(today,\s*30\)\s*;?/.test(setDefaultDatesBlock)) {
+  throw new Error('setDefaultDates should set endEl.value to plusDays(today, 30)');
 }
 
 if (/localStorage\.setItem\(['"]notam_start_date['"]/.test(html)) {

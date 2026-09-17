@@ -892,6 +892,51 @@ def test_global_supplement_parses_focused_joey_data_dict_schema(monkeypatch):
     assert len(by_id['A4632/26']['notam']['polygon']) == 4
 
 
+def test_global_supplement_retains_current_spaceflight_corridors(monkeypatch):
+    import fetch_notams
+
+    payload = {
+        'NOTAM_DATA': {
+            'CODE': ['B1847/26', 'A0095/26', 'B4913/26', 'B4610/26'],
+            'GEOMETRY': [
+                'PATH|M=N2558W09711|L=N2600W09700|L=N2600W09555|L=N2430W09300|L=N2430W09103|L=N2333W09127|L=N2344W09307|L=N2408W09404|L=N2501W09550|L=N2521W09619|L=N2550W09707|Z',
+                'PATH|M=S2630E07500|L=S2704E07318|L=S2436E07206|L=S2342E07500|Z',
+                'PATH|M=N124502E1292602|L=N124831E1300000|L=N080452E1300000|L=N080433E1295646|Z',
+                'PATH|M=S581500W1310000|L=S614115W1310000|L=S613154W1611601|L=S623600E1630000|L=S621200E1630000|L=S594236E1654912|L=S583952W1614103|Z',
+            ],
+            'PLATID': ['MMFR_B1847', 'FIMM_A0095', 'RPHI_B4913', 'NZZO_B4610'],
+            'RAWMESSAGE': [
+                'B1847/26 NOTAMN Q)MMFR/QRDCA/IV/BO/W/000/999/ A)MMFR B)2609221215 C)2609281408 E)DANGEROUS AREA F)SFC G)UNL',
+                'A0095/26 NOTAMN Q)FIMM/QRALW/IV/NBO/AE/000/999/2025S07540E005 A)FIMM B)2609221223 C)2609281447 E)SPACE VEHICLE RE-ENTRY F)SFC G)UNL',
+                'B4913/26 NOTAMN Q)RPHI/QWMLW/IV/BO/W/000/999/1027N12958E145 A)RPHI B)2610070323 C)2610140453 E)SPECIAL OPS F)SFC G)UNL',
+                'B4610/26 NOTAMN Q)NZZO/QRDCA/IV/BO/W/000/999/6026S16152W999 A)NZZO B)2609170800 C)2609212100 E)SPACE LAUNCH AND DEBRIS RETURN F)SFC G)UNL',
+            ],
+            'SOURCE': ['NOTAM', 'NOTAM', 'NOTAM', 'NOTAM'],
+            'FIR': ['MMFR', 'FIMM', 'RPHI', 'NZZO'],
+        }
+    }
+
+    class FakeResponse:
+        status_code = 200
+
+        def json(self):
+            return payload
+
+    monkeypatch.setattr(fetch_notams.requests, 'get', lambda *args, **kwargs: FakeResponse())
+    monkeypatch.setattr(fetch_notams, '_is_in_time_window', lambda *_: True)
+
+    rows = fetch_notams.fetch_global_notam_supplement()
+    by_id = {row['notam']['notam_id']: row for row in rows}
+
+    assert set(by_id) == {'B1847/26', 'A0095/26', 'B4913/26', 'B4610/26'}
+    assert len(by_id['B1847/26']['notam']['polygon']) == 11
+    assert len(by_id['A0095/26']['notam']['polygon']) == 4
+    assert len(by_id['B4913/26']['notam']['polygon']) == 4
+    assert len(by_id['B4610/26']['notam']['polygon']) == 7
+    assert by_id['B1847/26']['notam']['fir'] == 'MMFR'
+    assert by_id['A0095/26']['notam']['fir'] == 'FIMM'
+
+
 def test_parse_faa_space_tfr_detail():
     import fetch_notams
 

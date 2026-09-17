@@ -1154,10 +1154,10 @@
              polyCoords.forEach(points => {
                const segments = isMaritime
                  ? splitDisconnectedCoordinatePath(points)
-                 : [normalizeDatelineCoordinates(points)];
+                 : splitDatelineCoordinates(points, true, true);
                segments.forEach(segPts => {
                  if (segPts.length < 2) return;
-                 const flatPoints = toCesiumDegreesArray(segPts);
+                 const flatPoints = toCesiumDegreesArray(segPts, true);
                  if (flatPoints.length < 4) return;
                  const entityOptions = {
                    polygon: {
@@ -1811,7 +1811,7 @@
           coordinatesList.forEach(pts => {
             const segments = isMaritime
               ? splitDisconnectedCoordinatePath(pts)
-              : [normalizeDatelineCoordinates(pts)];
+              : splitDatelineCoordinates(pts, !isRoute, true);
             segments.forEach(segPts => {
               let shape;
               if (segPts.length >= 3 && !isRoute) {
@@ -1982,6 +1982,141 @@
       return pts;
     }
 
+    function wrapDatelineLongitude(lon) {
+      let wrapped = lon;
+      while (wrapped > 180) wrapped -= 360;
+      while (wrapped < -180) wrapped += 360;
+      return wrapped;
+    }
+
+    function sameDatelinePoint(a, b) {
+      return Math.abs(a[0] - b[0]) < 1e-8 && Math.abs(a[1] - b[1]) < 1e-8;
+    }
+
+    function dedupeDatelinePoints(points) {
+      const result = [];
+      for (const point of points) {
+        if (!result.length || !sameDatelinePoint(result[result.length - 1], point)) {
+          result.push([point[0], point[1]]);
+        }
+      }
+      if (result.length > 1 && sameDatelinePoint(result[0], result[result.length - 1])) {
+        result.pop();
+      }
+      return result;
+    }
+
+    function clipDatelineRingAtLongitude(points, boundary, keepGreater) {
+      if (!Array.isArray(points) || points.length < 3) return [];
+      const result = [];
+      const isInside = point => keepGreater
+        ? point[1] >= boundary - 1e-9
+        : point[1] <= boundary + 1e-9;
+      let previous = points[points.length - 1];
+      let previousInside = isInside(previous);
+
+      for (const current of points) {
+        const currentInside = isInside(current);
+        if (currentInside !== previousInside && current[1] !== previous[1]) {
+          const ratio = (boundary - previous[1]) / (current[1] - previous[1]);
+          result.push([
+            previous[0] + (current[0] - previous[0]) * ratio,
+            boundary,
+          ]);
+        }
+        if (currentInside) result.push([current[0], current[1]]);
+        previous = current;
+        previousInside = currentInside;
+      }
+      return dedupeDatelinePoints(result);
+    }
+
+    function compactDatelineSegments(segments, compact) {
+      if (!compact || segments.length < 2) return segments;
+      const hasPositive = segments.some(segment => segment.some(point => point[1] > 0));
+      const hasNegative = segments.some(segment => segment.some(point => point[1] < 0));
+      if (!hasPositive || !hasNegative) return segments;
+
+      // Keep both sides in one local world copy (for example 163E..229E).
+      // This lets a Mahia marker near 178E and its west-Pacific downrange
+      // polygon remain visible together instead of fitting to opposite map
+      // edges. Cesium accepts longitudes outside [-180, 180] and wraps them
+      // to the same physical locations.
+      return segments.map(segment => segment.map(point => [
+        point[0],
+        point[1] < 0 ? point[1] + 360 : point[1],
+      ]));
+    }
+
+    function splitDatelinePath(points, compact) {
+      const normalized = normalizeDatelineCoordinates(points);
+      if (normalized.length <= 1) return [normalized];
+      const segments = [];
+      let current = [[normalized[0][0], wrapDatelineLongitude(normalized[0][1])]];
+      let previous = normalized[0];
+
+      for (let i = 1; i < normalized.length; i++) {
+        const next = normalized[i];
+        let previousBand = Math.floor((previous[1] + 180) / 360);
+        const nextBand = Math.floor((next[1] + 180) / 360);
+        const direction = nextBand >= previousBand ? 1 : -1;
+
+        while (previousBand !== nextBand) {
+          const boundary = direction > 0
+            ? 180 + previousBand * 360
+            : -180 + previousBand * 360;
+          const ratio = (boundary - previous[1]) / (next[1] - previous[1]);
+          const intersection = [
+            previous[0] + (next[0] - previous[0]) * ratio,
+            boundary,
+          ];
+          current.push([intersection[0], boundary - previousBand * 360]);
+          if (current.length >= 2) segments.push(dedupeDatelinePoints(current));
+          previousBand += direction;
+          current = [[intersection[0], boundary - previousBand * 360]];
+        }
+
+        current.push([next[0], wrapDatelineLongitude(next[1])]);
+        previous = next;
+      }
+      if (current.length >= 2) segments.push(dedupeDatelinePoints(current));
+      return compactDatelineSegments(segments.filter(segment => segment.length >= 2), compact);
+    }
+
+    /**
+     * Split an anti-meridian-crossing polygon into renderable rings. The
+     * optional compact flag keeps the resulting pieces in the same world
+     * copy, which is important for a map view containing both sides of the
+     * date line. For open paths, use closeRing=false so the first/last points
+     * are not implicitly connected.
+     */
+    function splitDatelineCoordinates(points, closeRing = true, compact = true) {
+      if (!Array.isArray(points) || points.length === 0) return [];
+      if (points.length < 2) return [points.map(point => [point[0], point[1]])];
+      if (!closeRing) return splitDatelinePath(points, compact);
+
+      const normalized = normalizeDatelineCoordinates(points);
+      const longitudes = normalized.map(point => point[1]);
+      const minLongitude = Math.min(...longitudes);
+      const maxLongitude = Math.max(...longitudes);
+      const minBand = Math.floor((minLongitude + 180) / 360);
+      const maxBand = Math.floor((maxLongitude + 180) / 360);
+      if (minBand === maxBand) return [normalized];
+
+      const segments = [];
+      for (let band = minBand; band <= maxBand; band++) {
+        const left = -180 + band * 360;
+        const right = 180 + band * 360;
+        let clipped = clipDatelineRingAtLongitude(normalized, left, true);
+        clipped = clipDatelineRingAtLongitude(clipped, right, false);
+        if (clipped.length >= 3) {
+          segments.push(clipped.map(point => [point[0], point[1] - band * 360]));
+        }
+      }
+      if (segments.length < 2) return [normalized];
+      return compactDatelineSegments(segments, compact);
+    }
+
     /**
      * Calculate great-circle distance in kilometers between two points where a and b are [lat, lon] arrays.
      */
@@ -2065,7 +2200,7 @@
       coordinatesList.forEach(points => {
         const segments = isMaritime
           ? splitDisconnectedCoordinatePath(points)
-          : [normalizeDatelineCoordinates(points)];
+          : splitDatelineCoordinates(points, !isRoute, false);
         segments.forEach(pts => {
           const coordText = pts.map(p => `${p[1]},${p[0]},0`).join(' ');
           if (pts.length >= 3 && !isRoute) {
@@ -2184,7 +2319,9 @@
       const today = isoDate(new Date());
       if (!startEl.value) {
         startEl.value = today;
-        endEl.value = plusDays(today, 7);
+        // Keep the initial view aligned with the fetcher's 30-day horizon so
+        // newly issued notices such as RPHI B4913/26 are visible immediately.
+        endEl.value = plusDays(today, 30);
       }
     }
 
