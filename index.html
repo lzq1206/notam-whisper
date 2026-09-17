@@ -805,23 +805,49 @@
       return degreeArray;
     }
 
+    function isPointInSolarRing(point, ring) {
+      if (!Array.isArray(point) || point.length < 2 || !Array.isArray(ring) || ring.length < 3) {
+        return false;
+      }
+      const pointLat = point[0];
+      const pointLon = point[1];
+      let inside = false;
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const [latI, lonI] = ring[i];
+        const [latJ, lonJ] = ring[j];
+        const crossesLongitude = (lonI > pointLon) !== (lonJ > pointLon);
+        if (crossesLongitude && pointLat < (latJ - latI) * (pointLon - lonI) / (lonJ - lonI) + latI) {
+          inside = !inside;
+        }
+      }
+      return inside;
+    }
+
     // The shaded region must use the same spherical 0° contour as the
     // visible sunset line.  The previous fill used buildSolarCurveSegments(),
     // an older longitude-root approximation; near the date line and polar
     // regions it could select a different branch and visibly spill across the
-    // sunset boundary.  A world-sized outer ring with the daylight hemisphere
-    // as a hole gives Leaflet an exact, stable night mask.
+    // sunset boundary.  In the unwrapped lon/lat projection, the terminator
+    // ring's planar interior can be either night or daylight depending on the
+    // solar declination.  The antipodal subsolar point is always night, so use
+    // it to choose between a direct ring and an outer-world-minus-ring mask.
     function buildNightMaskRings(date) {
       const daylightBoundary = buildSolarAltitudeCircle(date, 0);
       if (daylightBoundary.length < 3) return null;
-      const centerLon = daylightBoundary.reduce((sum, point) => sum + point[1], 0) / daylightBoundary.length;
+      const subsolar = getSubsolarPoint(date);
+      const antiSubsolarPoint = subsolar
+        ? [-subsolar.latDeg, subsolar.lonDeg + 180]
+        : null;
+      const nightBoundaryIsInner = !!antiSubsolarPoint
+        && isPointInSolarRing(antiSubsolarPoint, daylightBoundary);
+      const centerLon = daylightBoundary[0][1] + 180;
       const outerRing = [
         [-89.999, centerLon - 180],
         [-89.999, centerLon + 180],
         [89.999, centerLon + 180],
         [89.999, centerLon - 180]
       ];
-      return { outerRing, daylightBoundary };
+      return { outerRing, daylightBoundary, nightBoundaryIsInner };
     }
 
     function shiftLonPath(path, lonOffset) {
@@ -866,10 +892,13 @@
       // on each side of the currently visible range as well.
       for (let wrap = minWrap - 1; wrap <= maxWrap + 1; wrap++) {
         const lonOffset = wrap * 360;
-        L.polygon([
-          shiftLonPath(nightMask.outerRing, lonOffset),
-          shiftLonPath(nightMask.daylightBoundary, lonOffset)
-        ], {
+        const maskRings = nightMask.nightBoundaryIsInner
+          ? [shiftLonPath(nightMask.daylightBoundary, lonOffset)]
+          : [
+              shiftLonPath(nightMask.outerRing, lonOffset),
+              shiftLonPath(nightMask.daylightBoundary, lonOffset)
+            ];
+        L.polygon(maskRings, {
           pane: 'solarOverlayPane',
           stroke: false,
           fillColor: '#000',

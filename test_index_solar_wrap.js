@@ -9,8 +9,12 @@ if (!/const \[minWrap, maxWrap\] = getVisibleWorldWrapRange\(\);[\s\S]*?for \(le
   throw new Error('Solar overlay must render adjacent world-wrap copies');
 }
 
-if (!/shiftLonPath\(nightMask\.outerRing, lonOffset\)[\s\S]*?shiftLonPath\(nightMask\.daylightBoundary, lonOffset\)/.test(html)) {
-  throw new Error('Night mask must be shifted with the same world-wrap offset');
+if (!/const maskRings = nightMask\.nightBoundaryIsInner[\s\S]*?shiftLonPath\(nightMask\.daylightBoundary, lonOffset\)/.test(html)) {
+  throw new Error('Night mask variants must be shifted with the same world-wrap offset');
+}
+
+if (!/isPointInSolarRing\(antiSubsolarPoint, daylightBoundary\)/.test(html)) {
+  throw new Error('Night mask must classify the terminator side using the antipodal subsolar point');
 }
 
 if (!/L\.polyline\(shiftLonPath\(curve\.points, lonOffset\)/.test(html)) {

@@ -41,8 +41,10 @@ const nightMask = extractFunctionBlock(html, 'function buildNightMaskRings(');
 if (!nightMask || !/buildSolarAltitudeCircle\(date, 0\)/.test(nightMask)) {
   throw new Error('night mask must derive its boundary from the spherical sunset contour');
 }
-assertContains(/L\.polygon\(\[\s*shiftLonPath\(nightMask\.outerRing, lonOffset\),\s*shiftLonPath\(nightMask\.daylightBoundary, lonOffset\)/,
-  'night mask must render the daylight hemisphere as a hole');
+assertContains(/const maskRings = nightMask\.nightBoundaryIsInner[\s\S]*?shiftLonPath\(nightMask\.outerRing, lonOffset\)[\s\S]*?shiftLonPath\(nightMask\.daylightBoundary, lonOffset\)/,
+  'night mask must retain the outer-world-minus-daylight-hole fallback');
+assertContains(/L\.polygon\(maskRings,/,
+  'night mask must render the side-classified ring set');
 assertContains(/fillRule:\s*'evenodd'/,
   'night mask must use even-odd filling so shading cannot cross the sunset contour');
 
