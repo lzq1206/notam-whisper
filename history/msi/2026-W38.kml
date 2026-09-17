@@ -3,6 +3,26 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
+      <name>NAVAREA IV 897/26</name>
+      <description>150802Z SEP 26  NAVAREA IV 897/26.  GULF OF AMERICA.  YUCATAN CHANNEL.  TEXAS.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      221215Z TO 221414Z SEP, ALTERNATE      1215Z TO 1414Z DAILY 23 THRU 28 SEP     IN AREAS BOUND BY:     A. 25-58.00N 097-13.00W, 26-02.00N 097-13.00W,        26-04.00N 097-10.00W, 26-04.00N 097-04.00W,        26-04.00N 096-49.00W, 26-01.00N 096-17.00W,        26-01.00N 095-12.00W, 25-59.00N 094-36.00W,        25-59.00N 094-05.00W, 25-25.00N 093-06.00W,        25-31.00N 091</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-97.216667,25.966667,0 -97.216667,26.033333,0 -97.166667,26.066667,0 -97.066667,26.066667,0 -96.816667,26.066667,0 -96.283333,26.016667,0 -95.2,26.016667,0 -94.6,25.983333,0 -94.083333,25.983333,0 -93.1,25.416667,0 -91.766667,25.516667,0 -88.866667,23.533333,0 -88.55,23.066667,0 -86.4,22.05,0 -84.983333,21.633333,0 -82.633333,20.983333,0 -81.7,20.716667,0 -79.733333,20.116667,0 -78.783333,19.766667,0 -78.066667,19.383333,0 -78.3,19.316667,0 -79.316667,19.566667,0 -79.733333,19.733333,0 -81.216667,20.2,0 -83.216667,20.716667,0 -84.9,21.1,0 -86.7,21.716667,0 -87.433333,21.983333,0 -89.166667,22.65,0 -89.683333,22.75,0 -92.6,22.966667,0 -95.033333,24.3,0 -96.816667,25.633333,0 -97.083333,25.8,0 -97.216667,25.966667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-92.966667,25.2,0 -93.866667,25.516667,0 -95.4,25.7,0 -96.533333,26.033333,0 -96.816667,26.066667,0 -97.066667,26.066667,0 -97.166667,26.066667,0 -97.216667,26.033333,0 -97.216667,25.966667,0 -97.083333,25.8,0 -96.783333,25.683333,0 -95.083333,25.033333,0 -94.133333,24.483333,0 -93.533333,24.333333,0 -92.866667,24.416667,0 -92.716667,24.75,0 -92.966667,25.2,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA IV 870/26</name>
       <description>021815Z SEP 26  NAVAREA IV 870/26.  NORTH ATLANTIC.  FRENCH GUIANA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0111Z TO 0151Z DAILY 15 SEP THRU 15 OCT     IN AREA BOUND BY     05-48.00N 052-54.00W, 05-50.55N 052-26.40W,     05-12.60N 052-40.98W, 05-23.46N 052-53.80W.  2. CANCEL THIS MSG 150251Z OCT 26.</description>
       <Polygon>
@@ -12,6 +32,26 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA XII 637/26</name>
+      <description>151951Z SEP 26  NAVAREA XII 637/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1427Z TO 1833Z DAILY 22 THRU 28 SEP     IN AREAS BOUND BY:     A. 23-55.00N 144-37.00E, 26-07.00N 151-14.00E,        27-41.00N 156-20.00E, 29-25.00N 165-03.00E,        30-26.00N 172-41.00E, 29-41.00N 176-14.00E,        29-13.00N 170-10.00E, 28-28.00N 164-59.00E,        26-39.00N 156-15.00E, 23-28.00N 144-48.00E.     B. 23-46.00N 156-11.00W, 24-52.00N 159-19.00W,        27-38.00N 167-49.00W, 29-25.00N 1</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>144.616667,23.916667,0 151.233333,26.116667,0 156.333333,27.683333,0 165.05,29.416667,0 172.683333,30.433333,0 176.233333,29.683333,0 170.166667,29.216667,0 164.983333,28.466667,0 156.25,26.65,0 144.8,23.466667,0 144.616667,23.916667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-156.183333,23.766667,0 -159.316667,24.866667,0 -167.816667,27.633333,0 -175.0,29.416667,0 -176.583333,29.75,0 -180.0,29.816667,0 -180.0,30.933333,0 -175.0,31.183333,0 -171.483333,31.283333,0 -161.25,30.55,0 -155.666667,29.616667,0 -151.583333,28.816667,0 -145.433333,26.883333,0 -145.466667,26.833333,0 -154.533333,24.05,0 -156.183333,23.766667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>NAVAREA XII 629/26</name>
@@ -81,6 +121,68 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROPAC 2688/26</name>
+      <description>151951Z SEP 26  HYDROPAC 2688/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1427Z TO 1833Z DAILY 22 THRU 28 SEP     IN AREAS BOUND BY:     A. 23-55.00N 144-37.00E, 26-07.00N 151-14.00E,        27-41.00N 156-20.00E, 29-25.00N 165-03.00E,        30-26.00N 172-41.00E, 29-41.00N 176-14.00E,        29-13.00N 170-10.00E, 28-28.00N 164-59.00E,        26-39.00N 156-15.00E, 23-28.00N 144-48.00E.     B. 23-46.00N 156-11.00W, 24-52.00N 159-19.00W,        27-38.00N 167-49.00W, 29-25.00N 175</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>144.616667,23.916667,0 151.233333,26.116667,0 156.333333,27.683333,0 165.05,29.416667,0 172.683333,30.433333,0 176.233333,29.683333,0 170.166667,29.216667,0 164.983333,28.466667,0 156.25,26.65,0 144.8,23.466667,0 144.616667,23.916667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-156.183333,23.766667,0 -159.316667,24.866667,0 -167.816667,27.633333,0 -175.0,29.416667,0 -176.583333,29.75,0 -180.0,29.816667,0 -180.0,30.933333,0 -175.0,31.183333,0 -171.483333,31.283333,0 -161.25,30.55,0 -155.666667,29.616667,0 -151.583333,28.816667,0 -145.433333,26.883333,0 -145.466667,26.833333,0 -154.533333,24.05,0 -156.183333,23.766667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2687/26</name>
+      <description>150900Z SEP 26  HYDROPAC 2687/26.  INDIAN OCEAN.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1223Z TO 1447Z DAILY 22 THRU 28 SEP     IN AREA BOUND BY     24-36.00S 072-06.00E, 23-03.00S 076-59.00E,     21-45.00S 080-57.00E, 18-56.00S 087-42.00E,     16-14.00S 093-37.00E, 15-16.00S 095-26.00E,     15-18.00S 095-31.00E, 15-25.00S 095-50.00E,     15-30.00S 096-12.00E, 15-34.00S 096-34.00E,     15-34.00S 097-02.00E, 15-33.00S 097-14.00E,     15-30.00S 097-33.00E, 15-28.00S 097-42.00E,     15-26.00S 0</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>72.1,-24.6,0 76.983333,-23.05,0 80.95,-21.75,0 87.7,-18.933333,0 93.616667,-16.233333,0 95.433333,-15.266667,0 95.516667,-15.3,0 95.833333,-15.416667,0 96.2,-15.5,0 96.566667,-15.566667,0 97.033333,-15.566667,0 97.233333,-15.55,0 97.55,-15.5,0 97.7,-15.466667,0 97.833333,-15.433333,0 97.966667,-15.4,0 98.05,-15.366667,0 98.183333,-15.316667,0 98.233333,-15.3,0 98.516667,-15.933333,0 96.633333,-17.066667,0 91.033333,-19.933333,0 84.1,-23.033333,0 79.1,-24.983333,0 73.3,-27.066667,0 72.1,-24.6,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2686/26</name>
+      <description>150834Z SEP 26  HYDROPAC 2686/26.  SOUTH PACIFIC.  FRENCH POLYNESIA.  PITCAIRN ISLANDS.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2107Z TO 0108Z DAILY 22 THRU 28 SEP     IN AREA BOUND BY     19-51.00S 149-00.00W, 19-23.00S 148-49.00W,     24-58.00S 133-10.00W, 26-10.00S 129-09.00W,     27-34.00S 123-03.00W, 28-11.00S 118-33.00W,     28-45.00S 112-39.00W, 28-18.00S 111-00.00W,     28-26.00S 103-26.00W, 26-55.00S 101-39.00W,     26-32.00S 099-12.00W, 25-17.00S 091-56.00W,     23-54.00S 083-47.00W</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-149.0,-19.85,0 -148.816667,-19.383333,0 -133.166667,-24.966667,0 -129.15,-26.166667,0 -123.05,-27.566667,0 -118.55,-28.183333,0 -112.65,-28.75,0 -111.0,-28.3,0 -103.433333,-28.433333,0 -101.65,-26.916667,0 -99.2,-26.533333,0 -91.933333,-25.283333,0 -83.783333,-23.9,0 -82.816667,-27.283333,0 -82.783333,-30.35,0 -85.566667,-31.033333,0 -87.566667,-30.633333,0 -93.1,-30.966667,0 -102.1,-31.516667,0 -106.883333,-31.25,0 -113.016667,-30.6,0 -119.3,-29.316667,0 -125.1,-28.1,0 -132.833333,-26.183333,0 -149.0,-19.85,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2681/26</name>
+      <description>162128Z SEP 26  HYDROPAC 2681/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0800Z TO 2100Z DAILY 17 THRU 21 SEP     IN AREAS BOUND BY:     A. 59-42.36S 165-49.12E, 59-42.36S 180-00.00E,        62-33.00S 180-00.00E, 62-33.00S 165-49.12E.     B. 59-42.36S 180-00.00W, 58-39.52S 161-41.03W,        57-28.48S 126-01.12W, 60-23.24S 122-04.48W,        61-31.54S 161-16.01W, 62-33.00S 180-00.00W.  2. CANCEL THIS MSG 212200Z SEP 26.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>165.818667,-59.706,0 180.0,-59.706,0 180.0,-62.55,0 165.818667,-62.55,0 165.818667,-59.706,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-180.0,-59.706,0 -161.683833,-58.658667,0 -126.018667,-57.474667,0 -122.074667,-60.387333,0 -161.266833,-61.525667,0 -180.0,-62.55,0 -180.0,-59.706,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>HYDROPAC 2662/26</name>
       <description>150716Z SEP 26  HYDROPAC 2662/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 0115Z TO 2330Z      DAILY 19 SEP THRU 01 OCT:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 177-46.20E, 39-07.80S 178-18.00E,        39-19.20S 178-18.00E, 39-22.80S 177-48.00E,        39-15.00S 177-45.00E.     B. SPACE DEBRIS IN AREA BOUND BY        37-51.00S 178-18.00W, 37-00.00S 172-42.02W,        38-54.00S 172-06.00W, 39-42.00S 177-48.00W.  2. CANCEL THIS MSG 020030Z OCT 26.</description>
       <MultiGeometry>
@@ -143,12 +245,12 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 232/26</name>
-      <description>131906Z SEP 26  HYDROARC 232/26.  NORWEGIAN SEA.  NORWAY.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      1800Z TO 0300Z DAILY 14 THRU 19 SEP      IN AREA BOUND BY     69-53.08N 016-21.58E, 70-12.38N 015-13.81E,     69-36.32N 013-40.39E, 69-23.53N 014-20.64E,     69-23.11N 015-14.66E.  2. CANCEL THIS MSG 200400Z SEP 26.</description>
+      <name>HYDROARC 240/26</name>
+      <description>161857Z SEP 26  HYDROARC 240/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 2100Z TO 1800Z DAILY     21 THRU 24 SEP IN AREA BOUND BY     72-52.25N 034-14.50E, 72-27.17N 037-59.50E,     70-49.00N 036-34.00E, 69-42.50N 033-08.50E,     69-47.00N 032-36.50E, 71-02.00N 032-21.25E.  2. CANCEL THIS MSG 251900Z SEP 26.</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>16.359667,69.884667,0 15.230167,70.206333,0 13.673167,69.605333,0 14.344,69.392167,0 15.244333,69.385167,0 16.359667,69.884667,0</coordinates>
+            <coordinates>34.241667,72.870833,0 37.991667,72.452833,0 36.566667,70.816667,0 33.141667,69.708333,0 32.608333,69.783333,0 32.354167,71.033333,0 34.241667,72.870833,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -160,6 +262,17 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>161.583333,77.1,0 163.683333,76.7,0 -135.066667,81.1,0 -134.3,81.7,0 161.583333,77.1,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 232/26</name>
+      <description>131906Z SEP 26  HYDROARC 232/26.  NORWEGIAN SEA.  NORWAY.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      1800Z TO 0300Z DAILY 14 THRU 19 SEP      IN AREA BOUND BY     69-53.08N 016-21.58E, 70-12.38N 015-13.81E,     69-36.32N 013-40.39E, 69-23.53N 014-20.64E,     69-23.11N 015-14.66E.  2. CANCEL THIS MSG 200400Z SEP 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>16.359667,69.884667,0 15.230167,70.206333,0 13.673167,69.605333,0 14.344,69.392167,0 15.244333,69.385167,0 16.359667,69.884667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
