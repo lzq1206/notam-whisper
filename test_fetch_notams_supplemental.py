@@ -845,6 +845,53 @@ def test_global_supplement_parses_current_joey_data_dict_schema():
     assert by_id['P3221/26']['_country'] == 'JAPAN'
 
 
+def test_global_supplement_parses_focused_joey_data_dict_schema(monkeypatch):
+    import fetch_notams
+
+    payload = {
+        'FOCUSED_NOTAM_DATA': {
+            'CODE': ['A4456/26', 'A4457/26', 'A4631/26', 'A4632/26'],
+            'GEOMETRY': [
+                'PATH|M=N333400E1103100|L=N333200E1104400|L=N331000E1104100|L=N331100E1102700|Z',
+                'PATH|M=N303500E1095700|L=N303300E1101900|L=N295400E1101300|L=N295700E1095100|Z',
+                'PATH|M=N395800E0995300|L=N395600E1001500|L=N393900E1001200|L=N394100E0995000|Z',
+                'PATH|M=N293700E0980200|L=N293400E0983400|L=N284400E0982700|L=N284800E0975500|Z',
+            ],
+            'PLATID': [
+                'ZHWH_I_ZBBBYNYX_A4456_26',
+                'ZHWH_I_ZBBBYNYX_A4457_26',
+                'ZLHW_I_ZBBBYNYX_A4631_26',
+                'ZPKM_I_ZBBBYNYX_A4632_26',
+            ],
+            'RAWMESSAGE': [
+                'A4456/26 NOTAMN Q)ZXXX/QRDCA/IV/BO/W/000/999/3322N11036E013 A)ZLHW ZHWH B)2609191043 C)2609191106 E)A TEMPORARY DANGER AREA ESTABLISHED F)SFC G)UNL',
+                'A4457/26 NOTAMN Q)ZHWH/QRDCA/IV/BO/W/000/999/3015N11005E022 A)ZHWH B)2609191044 C)2609191111 E)A TEMPORARY DANGER AREA ESTABLISHED F)SFC G)UNL',
+                'A4631/26 NOTAMN Q)ZLHW/QRDCA/IV/BO/W/000/999/3948N10002E012 A)ZLHW B)2609200354 C)2609200415 E)A TEMPORARY DANGER AREA ESTABLISHED F)SFC G)UNL',
+                'A4632/26 NOTAMN Q)ZPKM/QRDCA/IV/BO/W/000/999/2910N09814E029 A)ZPKM B)2609200356 C)2609200435 E)A TEMPORARY DANGER AREA ESTABLISHED F)SFC G)UNL',
+            ],
+            'SOURCE': ['NOTAM', 'NOTAM', 'NOTAM', 'NOTAM'],
+            'FIR': ['ZLHW', 'ZHWH', 'ZLHW', 'ZPKM'],
+        }
+    }
+
+    class FakeResponse:
+        status_code = 200
+
+        def json(self):
+            return payload
+
+    monkeypatch.setattr(fetch_notams.requests, 'get', lambda *args, **kwargs: FakeResponse())
+    monkeypatch.setattr(fetch_notams, '_is_in_time_window', lambda *_: True)
+
+    rows = fetch_notams.fetch_global_notam_supplement()
+    by_id = {row['notam']['notam_id']: row for row in rows}
+
+    assert set(by_id) == {'A4456/26', 'A4457/26', 'A4631/26', 'A4632/26'}
+    assert by_id['A4631/26']['_country'] == 'CHINA'
+    assert by_id['A4631/26']['notam']['polygon'][0] == [39.966667, 99.883333]
+    assert len(by_id['A4632/26']['notam']['polygon']) == 4
+
+
 def test_parse_faa_space_tfr_detail():
     import fetch_notams
 

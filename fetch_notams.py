@@ -548,33 +548,41 @@ def _iter_global_supplement_features(data):
                 yield item
         return
 
-    section = data.get('NOTAM_DATA')
-    if not isinstance(section, dict) or not isinstance(section.get('CODE'), list):
-        section = data
-    codes = section.get('CODE', [])
-    raws = section.get('RAWMESSAGE', [])
-    coordinates = section.get('COORDINATES', [])
-    platform_ids = section.get('PLATID', [])
-    firs = section.get('FIR', [])
-    sources = section.get('SOURCE', [])
-    size = min(len(codes), len(raws))
-    for index in range(size):
-        source = str(sources[index] if index < len(sources) else 'NOTAM').strip().upper()
-        if source and source != 'NOTAM':
-            continue
-        fir = str(firs[index] if index < len(firs) else '').strip().upper()
-        code = str(codes[index] or '').strip().upper()
-        platform_id = str(platform_ids[index] if index < len(platform_ids) else '').strip()
-        coordinate_text = coordinates[index] if index < len(coordinates) else ''
-        yield {
-            '_supplement_schema': 'joey_data_dict',
-            'id': f"joey-{platform_id or code}",
-            'name': code,
-            'description': str(raws[index] or ''),
-            'fir': fir,
-            'country': _supplement_country_from_fir(fir),
-            'polygon': _parse_supplement_polygon(coordinate_text),
-        }
+    sections = []
+    for section_name in ('FOCUSED_NOTAM_DATA', 'NOTAM_DATA'):
+        section = data.get(section_name)
+        if isinstance(section, dict) and isinstance(section.get('CODE'), list):
+            sections.append(section)
+    if not sections:
+        sections = [data]
+
+    for section in sections:
+        codes = section.get('CODE', [])
+        raws = section.get('RAWMESSAGE', [])
+        # The focused feed calls this field GEOMETRY, while the regular
+        # NOTAM_DATA feed has historically called it COORDINATES.
+        coordinates = section.get('COORDINATES') or section.get('GEOMETRY') or []
+        platform_ids = section.get('PLATID', [])
+        firs = section.get('FIR', [])
+        sources = section.get('SOURCE', [])
+        size = min(len(codes), len(raws))
+        for index in range(size):
+            source = str(sources[index] if index < len(sources) else 'NOTAM').strip().upper()
+            if source and source != 'NOTAM':
+                continue
+            fir = str(firs[index] if index < len(firs) else '').strip().upper()
+            code = str(codes[index] or '').strip().upper()
+            platform_id = str(platform_ids[index] if index < len(platform_ids) else '').strip()
+            coordinate_text = coordinates[index] if index < len(coordinates) else ''
+            yield {
+                '_supplement_schema': 'joey_data_dict',
+                'id': f"joey-{platform_id or code}",
+                'name': code,
+                'description': str(raws[index] or ''),
+                'fir': fir,
+                'country': _supplement_country_from_fir(fir),
+                'polygon': _parse_supplement_polygon(coordinate_text),
+            }
 
 def _parse_faa_tfr_time(text):
     text = str(text or '').strip()
