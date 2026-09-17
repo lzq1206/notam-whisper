@@ -30,7 +30,8 @@ const helperSource = [
   'function normalizeLongitude(',
   'function getSubsolarPoint(',
   'function buildSolarAltitudeCircle(',
-  'function isPointInSolarRing('
+  'function isPointInSolarRing(',
+  'function buildNightMaskRings('
 ].map(signature => extractFunctionBlock(html, signature)).join('\n');
 
 const helpers = new Function('SunCalc', `${helperSource}; return {
@@ -38,17 +39,21 @@ const helpers = new Function('SunCalc', `${helperSource}; return {
   normalizeLongitude,
   getSubsolarPoint,
   buildSolarAltitudeCircle,
-  isPointInSolarRing
+  isPointInSolarRing,
+  buildNightMaskRings
 };`)(fakeModule.exports);
 
 function classify(date) {
   const subsolar = helpers.getSubsolarPoint(date);
   const boundary = helpers.buildSolarAltitudeCircle(date, 0);
+  const mask = helpers.buildNightMaskRings(date);
   const antiSubsolar = [-subsolar.latDeg, subsolar.lonDeg + 180];
   return {
     subsolar,
     boundary,
-    nightBoundaryIsInner: helpers.isPointInSolarRing(antiSubsolar, boundary),
+    nightBoundaryIsInner: mask.nightBoundaryIsInner,
+    outerCenterLon: mask.outerRing.reduce((sum, point) => sum + point[1], 0) / mask.outerRing.length,
+    boundaryMeanLon: boundary.reduce((sum, point) => sum + point[1], 0) / boundary.length,
     antiAltitudeDeg: helpers.sunAltitudeRadians(
       date,
       antiSubsolar[0],
@@ -65,6 +70,9 @@ if (!a0095.nightBoundaryIsInner || a0095.antiAltitudeDeg > -89) {
 const northernSummer = classify(new Date('2026-06-21T12:00:00Z'));
 if (northernSummer.nightBoundaryIsInner || northernSummer.antiAltitudeDeg > -89) {
   throw new Error(`Northern-summer mask must select the outer-minus-daylight-hole form: ${JSON.stringify(northernSummer)}`);
+}
+if (Math.abs(northernSummer.outerCenterLon - northernSummer.boundaryMeanLon) > 1e-9) {
+  throw new Error(`Outer ring anchor must follow the unwrapped boundary mean: ${JSON.stringify(northernSummer)}`);
 }
 
 console.log('Solar night-side regression test passed.');

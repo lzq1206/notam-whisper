@@ -840,7 +840,7 @@
         : null;
       const nightBoundaryIsInner = !!antiSubsolarPoint
         && isPointInSolarRing(antiSubsolarPoint, daylightBoundary);
-      const centerLon = daylightBoundary[0][1] + 180;
+      const centerLon = daylightBoundary.reduce((sum, point) => sum + point[1], 0) / daylightBoundary.length;
       const outerRing = [
         [-89.999, centerLon - 180],
         [-89.999, centerLon + 180],
