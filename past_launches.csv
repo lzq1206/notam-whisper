@@ -1,5 +1,6 @@
 Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,Launch Vehicle,Official Payload Name,Success,Launch Site (Full)
 2026 SEP 17 1650,Plesetsk,62.9273,40.45,Soyuz 2.1b Fregat-M,Soyuz 2.1b/Fregat | Kosmos (Unknown Payload),S,"43/3 (43L) / Plesetsk Cosmodrome, Russian Federation"
+2026 SEP 17 1650,Plesetsk,62.9273,40.45,Soyuz 2.1b Fregat-M,Soyuz 2.1b/Fregat | Glonass-K1 No. 20 (?),S,"43/3 (43L) / Plesetsk Cosmodrome, Russian Federation"
 2026 SEP 17 0240,JSLC,40.969117,100.343333,Kuaizhou 11,SpaceTY-51 & 52,S,"Launch Area 95A / Jiuquan Satellite Launch Center, People's Republic of China"
 2026 SEP 17 0107,VSFB,34.632,-120.611,Falcon 9 Block 5,USSF-259,,"Space Launch Complex 4E / Vandenberg SFB, CA, USA"
 2026 SEP 17 0032,WSLC,19.59755,110.936481,Long March 12,SatNet LEO Group 25,S,"Commercial LC-2 / Wenchang Space Launch Site, People's Republic of China"
@@ -23,6 +24,7 @@ Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,Launch Vehicl
 2026 AUG 25 0933,CCSFS,28.56194122,-80.57735736,Falcon 9 Block 5,Starlink Group 10-49,S,"Space Launch Complex 40 / Cape Canaveral SFS, FL, USA"
 2026 AUG 25 0321,TSLC,38.8583,111.5802,Long March 6C,7 satellites,S,"Launch Complex 9A / Taiyuan Satellite Launch Center, People's Republic of China"
 2026 AUG 24 0240,Plesetsk,62.9273,40.45,Soyuz 2.1b Fregat,Soyuz 2.1b/Fregat | Glonass-K1 No. 19,S,"43/3 (43L) / Plesetsk Cosmodrome, Russian Federation"
+2026 AUG 24 0240,Plesetsk,62.9273,40.45,Soyuz 2.1b Fregat,Soyuz 2.1b/Fregat | Glonass-K1 No. 19 (?),S,"43/3 (43L) / Plesetsk Cosmodrome, Russian Federation"
 2026 AUG 22 0725,VSFB,34.632,-120.611,Falcon 9 Block 5,Starlink Group 15-20,S,"Space Launch Complex 4E / Vandenberg SFB, CA, USA"
 2026 AUG 21 1514,CCSFS,28.56194122,-80.57735736,Falcon 9 Block 5,Starlink Group 10-39,S,"Space Launch Complex 40 / Cape Canaveral SFS, FL, USA"
 2026 AUG 20 1304,LC-1,-39.262833,177.864469,Electron,The Lightning God Defends (iQPS Launch 8),,"Rocket Lab Launch Complex 1B / Rocket Lab Launch Complex 1, Mahia Peninsula, New Zealand"
