@@ -12,6 +12,11 @@ if (!/'wenchang-space-launch-site':\s*'WSLC'/.test(html)) {
   throw new Error('Wenchang slug should map to WSLC');
 }
 
+if (!/'wenchang-satellite-launch-center':\s*'WSLC'/.test(html) ||
+    !/'taiyuan-satellite-launch-center':\s*'TSLC'/.test(html)) {
+  throw new Error('current RocketLaunch.Live satellite-center slugs should map to launch sites');
+}
+
 if (!/'jiuquan-satellite-launch-center':\s*'JSLC'/.test(html)) {
   throw new Error('Jiuquan slug should map to JSLC');
 }
@@ -49,20 +54,21 @@ if (!/if\s*\(\s*normalizedName && launchSitesByName\[normalizedName\]\s*\)/.test
   throw new Error('coordsForRllLoc should look up launch site coordinates by normalized name');
 }
 
-if (!/const hasApiCoords = isFinite\(parseFloat\(lat\)\) && isFinite\(parseFloat\(lon\)\);/.test(html)) {
-  throw new Error('Upcoming launch loop should detect API coordinates robustly');
+if (!/function launchLocationObject\(launch\)/.test(html) || !/function launchCoordinates\(launch\)/.test(html)) {
+  throw new Error('Upcoming launch loop should normalize current and legacy RLL location schemas');
 }
 
-if (!/coordsForRllLoc\(loc, \{ siteOnly: hasApiCoords \}\)/.test(html)) {
-  throw new Error('Upcoming launch loop should avoid hardcoded fallback when API coords exist');
+if (!/const loc = launchLocationObject\(l\)/.test(html) || !/const coords = launchCoordinates\(l\)/.test(html)) {
+  throw new Error('Upcoming launch loop should resolve coordinates through the normalized launch schema');
 }
 
-if (!/if \(!isFinite\(parseFloat\(lat\)\) \|\| !isFinite\(parseFloat\(lon\)\)\) return;/.test(html)) {
-  throw new Error('Upcoming launch loop should validate both latitude and longitude');
+if (!/if \(!coords\) return;/.test(html)) {
+  throw new Error('Upcoming launch loop should skip only launches without resolvable coordinates');
 }
 
-if (!/if \(!hasApiCoords && coords\) \{ lat = coords\.lat; lon = coords\.lon; \}/.test(html)) {
-  throw new Error('Upcoming launch loop should only override coordinates when API coords are missing');
+if (!/'taiyuan-satellite-launch-center':\s*\{\s*lat:\s*37\.5,\s*lon:\s*112\.6\s*\}/.test(html) ||
+    !/'wenchang-satellite-launch-center':\s*\{\s*lat:\s*19\.615,\s*lon:\s*110\.951\s*\}/.test(html)) {
+  throw new Error('current satellite-center slugs should have hardcoded coordinate fallbacks');
 }
 
 if (!/if\s*\(\s*!launchSitesByName\[normalizedName\]\s*\)\s*\{[\s\S]*?launchSitesByName\[normalizedName\]\s*=\s*\{\s*lat\s*,\s*lon\s*\}\s*;\s*\}/s.test(html)) {

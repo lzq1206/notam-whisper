@@ -2487,6 +2487,7 @@
       'xichang-satellite-launch-center': 'XSLC',
       'taiyuan-satellite-launch-center': 'TSLC',
       'wenchang-space-launch-site': 'WSLC',
+      'wenchang-satellite-launch-center': 'WSLC',
       'haiyang-sea-launch': 'YSLA',
       'oriental-spaceport-haiyang': 'YSLA',
       'yangjiang-sea-launch': 'SSLA',
@@ -2521,6 +2522,7 @@
       'xichang-satellite-launch-center': { lat: 28.25, lon: 102 },
       'taiyuan-satellite-launch-center': { lat: 37.5, lon: 112.6 },
       'wenchang-space-launch-site': { lat: 19.615, lon: 110.951 },
+      'wenchang-satellite-launch-center': { lat: 19.615, lon: 110.951 },
       'haiyang-sea-launch': { lat: 36.641494, lon: 121.201445 },
       'oriental-spaceport-haiyang': { lat: 36.641494, lon: 121.201445 },
       'yangjiang-sea-launch': { lat: 21.283339, lon: 112.000012 },
@@ -2668,9 +2670,27 @@
       return new Date(Date.UTC(parseInt(m[3]), month, parseInt(m[2]), hr, parseInt(m[5])));
     }
 
+    function parseLaunchTimestampValue(value) {
+      if (value === null || value === undefined || value === '') return null;
+      if (typeof value === 'number' || /^\d+$/.test(String(value).trim())) {
+        const numeric = Number(value);
+        if (!Number.isFinite(numeric)) return null;
+        const milliseconds = Math.abs(numeric) < 1e12 ? numeric * 1000 : numeric;
+        const numericDate = new Date(milliseconds);
+        return Number.isFinite(numericDate.getTime()) ? numericDate : null;
+      }
+      const parsed = new Date(String(value).trim());
+      return Number.isFinite(parsed.getTime()) ? parsed : null;
+    }
+
     function launchTimestamp(launch) {
       if (!launch) return null;
-      const d = launch.win_open ? new Date(launch.win_open) : parseDescriptionDate(launch.launch_description);
+      // RocketLaunch.Live now publishes the authoritative scheduled time in
+      // `t0`; `win_open` is often null and remains a compatibility fallback.
+      const d = parseLaunchTimestampValue(launch.t0)
+        || parseLaunchTimestampValue(launch.win_open)
+        || parseLaunchTimestampValue(launch.net)
+        || parseDescriptionDate(launch.launch_description);
       return d && Number.isFinite(d.getTime()) ? d.getTime() : null;
     }
 
@@ -2706,8 +2726,11 @@
     }
 
     function launchLocationKeys(launch) {
-      const location = launch?.pad?.location || {};
-      return [...new Set([location.slug, location.name]
+      const location = launch?.pad?.location;
+      const locationValues = typeof location === 'string'
+        ? [location]
+        : [location?.slug, location?.name, launch?.pad?.location_slug, launch?.pad?.location_name];
+      return [...new Set(locationValues
         .map(value => normalizeLocationKey(value))
         .filter(Boolean))];
     }
@@ -2758,8 +2781,8 @@
     function coordsForRllLoc(padLoc, options = {}) {
       if (!padLoc) return null;
       const siteOnly = !!options.siteOnly;
-      const slug = (padLoc.slug || '').toLowerCase();
-      const name = (padLoc.name || '').toLowerCase();
+      const slug = (typeof padLoc === 'string' ? '' : (padLoc.slug || '')).toLowerCase();
+      const name = (typeof padLoc === 'string' ? padLoc : (padLoc.name || '')).toLowerCase();
       const mappedAbbr = RLL_LOC_TO_SITE_ABBR[slug];
       if (mappedAbbr && launchSites[mappedAbbr]) {
         return { lat: launchSites[mappedAbbr].lat, lon: launchSites[mappedAbbr].lon };
@@ -2782,6 +2805,36 @@
         }
       }
       return null;
+    }
+
+    function launchLocationObject(launch) {
+      const pad = launch?.pad || {};
+      const location = pad.location;
+      if (location && typeof location === 'object') return location;
+      if (typeof location === 'string') return { name: location };
+      return {
+        name: pad.location_name || launch?.location_name || '',
+        slug: pad.location_slug || launch?.location_slug || ''
+      };
+    }
+
+    function launchCoordinates(launch) {
+      const pad = launch?.pad || {};
+      const location = launchLocationObject(launch);
+      const directPairs = [
+        [location.latitude, location.longitude],
+        [location.lat, location.lon],
+        [pad.latitude, pad.longitude],
+        [pad.lat, pad.lon],
+        [launch?.latitude, launch?.longitude],
+        [launch?.lat, launch?.lon]
+      ];
+      for (const [lat, lon] of directPairs) {
+        if (isFinite(parseFloat(lat)) && isFinite(parseFloat(lon))) {
+          return { lat: parseFloat(lat), lon: parseFloat(lon) };
+        }
+      }
+      return coordsForRllLoc(location);
     }
 
     async function loadLaunchData() {
@@ -2888,14 +2941,10 @@
 
           const orderedList = orderUpcomingLaunchesFor2D(list);
           orderedList.forEach((l, idx) => {
-            const loc = l.pad?.location;
-            let lat = loc?.latitude, lon = loc?.longitude;
-            if (loc) {
-              const hasApiCoords = isFinite(parseFloat(lat)) && isFinite(parseFloat(lon));
-              const coords = coordsForRllLoc(loc, { siteOnly: hasApiCoords });
-              if (!hasApiCoords && coords) { lat = coords.lat; lon = coords.lon; }
-            }
-            if (!isFinite(parseFloat(lat)) || !isFinite(parseFloat(lon))) return;
+            const loc = launchLocationObject(l);
+            const coords = launchCoordinates(l);
+            if (!coords) return;
+            const { lat, lon } = coords;
 
             const missionName = l.name || t('launch_unknown_mission');
             const vehicleName = l.vehicle?.name || '';

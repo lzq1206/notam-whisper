@@ -21,10 +21,12 @@ function extractFunctionBlock(src, signature) {
 }
 
 const parseDescriptionDateBlock = extractFunctionBlock(html, 'function parseDescriptionDate(');
+const parseLaunchTimestampValueBlock = extractFunctionBlock(html, 'function parseLaunchTimestampValue(');
 const timestampBlock = extractFunctionBlock(html, 'function launchTimestamp(');
 const orderBlock = extractFunctionBlock(html, 'function orderUpcomingLaunchesFor2D(');
-if (!parseDescriptionDateBlock || !timestampBlock || !orderBlock) throw new Error('2D launch ordering helpers are missing');
+if (!parseDescriptionDateBlock || !parseLaunchTimestampValueBlock || !timestampBlock || !orderBlock) throw new Error('2D launch ordering helpers are missing');
 global.eval(parseDescriptionDateBlock);
+global.eval(parseLaunchTimestampValueBlock);
 global.eval(timestampBlock);
 global.eval(orderBlock);
 

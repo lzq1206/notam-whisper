@@ -21,12 +21,14 @@ function extractFunctionBlock(src, signature) {
 }
 
 const parseDescriptionDateBlock = extractFunctionBlock(html, 'function parseDescriptionDate(');
+const parseLaunchTimestampValueBlock = extractFunctionBlock(html, 'function parseLaunchTimestampValue(');
 const launchTimestampBlock = extractFunctionBlock(html, 'function launchTimestamp(');
 const filterFutureLaunchesBlock = extractFunctionBlock(html, 'function filterFutureLaunches(');
-if (!parseDescriptionDateBlock || !launchTimestampBlock || !filterFutureLaunchesBlock) {
+if (!parseDescriptionDateBlock || !parseLaunchTimestampValueBlock || !launchTimestampBlock || !filterFutureLaunchesBlock) {
   throw new Error('launch expiry helpers are missing');
 }
 global.eval(parseDescriptionDateBlock);
+global.eval(parseLaunchTimestampValueBlock);
 global.eval(launchTimestampBlock);
 global.eval(filterFutureLaunchesBlock);
 

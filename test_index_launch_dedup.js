@@ -22,6 +22,7 @@ function extractFunctionBlock(src, signature) {
 
 const blocks = [
   ['normalizeLocationKey', 'function normalizeLocationKey('],
+  ['parseLaunchTimestampValueBlock', 'function parseLaunchTimestampValue('],
   ['launchTimestampBlock', 'function launchTimestamp('],
   ['launchNameKeyBlock', 'function launchNameKey('],
   ['launchLocationKeysBlock', 'function launchLocationKeys('],
