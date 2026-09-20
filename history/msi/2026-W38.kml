@@ -267,48 +267,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 232/26</name>
-      <description>131906Z SEP 26  HYDROARC 232/26.  NORWEGIAN SEA.  NORWAY.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      1800Z TO 0300Z DAILY 14 THRU 19 SEP      IN AREA BOUND BY     69-53.08N 016-21.58E, 70-12.38N 015-13.81E,     69-36.32N 013-40.39E, 69-23.53N 014-20.64E,     69-23.11N 015-14.66E.  2. CANCEL THIS MSG 200400Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>16.359667,69.884667,0 15.230167,70.206333,0 13.673167,69.605333,0 14.344,69.392167,0 15.244333,69.385167,0 16.359667,69.884667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA IV 862/26</name>
-      <description>052223Z SEP 26  NAVAREA IV 862/26.  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2134Z TO 2357Z DAILY 13 THRU 19 SEP        IN AREA BOUND BY     08-58.00N 050-28.00W, 08-06.00N 047-28.00W,     03-21.00N 032-11.00W, 00-57.00N 032-55.00W,     05-44.00N 048-12.00W.  2. CANCEL THIS MSG 200057Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-50.466667,8.966667,0 -47.466667,8.1,0 -32.183333,3.35,0 -32.916667,0.95,0 -48.2,5.733333,0 -50.466667,8.966667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA IV 861/26</name>
-      <description>072122Z SEP 26  NAVAREA IV 861/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      131840Z TO 132110Z SEP, ALTERNATE     1840Z TO 2110Z DAILY 14 THRU 19 SEP     IN AREAS BOUND BY:     A. 29-16.00N 075-11.00W, 29-35.00N 072-08.00W,        29-21.00N 071-15.00W, 28-38.00N 071-15.00W,        28-19.00N 072-12.00W, 28-46.00N 075-11.00W.     B. 28-36.52N 080-35.63W, 28-39.00N 080-29.00W,        28-39.00N 080-06.00W, 28-33.00N 080-06.00W,        28-31.00N 080-22.00W, 28-31.00N</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-75.183333,29.266667,0 -72.133333,29.583333,0 -71.25,29.35,0 -71.25,28.633333,0 -72.2,28.316667,0 -75.183333,28.766667,0 -75.183333,29.266667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-80.593833,28.608667,0 -80.483333,28.65,0 -80.1,28.65,0 -80.1,28.55,0 -80.366667,28.516667,0 -80.554667,28.516667,0 -80.593833,28.608667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA IV 845/26</name>
       <description>011652Z SEP 26  NAVAREA IV 845/26.  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0021Z TO 0151Z DAILY 15 SEP THRU 15 OCT     IN AREAS BOUND BY:     A. 09-36.00N 052-45.00W, 09-36.00N 052-42.00W,        08-41.00N 052-43.00W, 08-41.00N 052-46.00W.     B. 24-14.00N 055-20.00W, 24-16.00N 055-04.00W,        21-21.00N 054-38.00W, 21-19.00N 054-54.00W.  2. CANCEL THIS MSG 150251Z OCT 26.</description>
       <MultiGeometry>
@@ -327,28 +285,6 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROLANT 1803/26</name>
-      <description>112318Z SEP 26  HYDROLANT 1803/26.  SOUTH ATLANTIC.  BRAZIL.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0800Z TO 2000Z DAILY 15 THRU 19 SEP     IN AREA BOUND BY     05-55.28S 034-34.36W, 06-13.92S 034-39.38W,     06-23.59S 034-34.44W, 06-31.87S 034-11.54W,     06-23.83S 034-01.81W, 06-03.44S 033-56.53W,     05-52.66S 034-03.34W, 05-49.30S 034-25.37W.  2. CANCEL HYDROLANT 1798/26.  3. CANCEL THIS MSG 192100Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-34.572667,-5.921333,0 -34.656333,-6.232,0 -34.574,-6.393167,0 -34.192333,-6.531167,0 -34.030167,-6.397167,0 -33.942167,-6.057333,0 -34.055667,-5.877667,0 -34.422833,-5.821667,0 -34.572667,-5.921333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROLANT 1783/26</name>
-      <description>052223Z SEP 26  HYDROLANT 1783/26.  NORTH ATLANTIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     2134Z TO 2357Z DAILY 13 THRU 19 SEP        IN AREA BOUND BY     08-58.00N 050-28.00W, 08-06.00N 047-28.00W,     03-21.00N 032-11.00W, 00-57.00N 032-55.00W,     05-44.00N 048-12.00W.  2. CANCEL THIS MSG 200057Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-50.466667,8.966667,0 -47.466667,8.1,0 -32.183333,3.35,0 -32.916667,0.95,0 -48.2,5.733333,0 -50.466667,8.966667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2627/26</name>
