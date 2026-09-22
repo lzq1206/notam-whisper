@@ -1955,10 +1955,6 @@
       return `${utc} / ${local} Local`;
     }
 
-    function cleanWeatherString(weatherText) {
-      return (weatherText || '').replace(/^\s*\(/, '').replace(/\)\s*$/, '').trim();
-    }
-
     function xmlEscape(s) {
       return String(s ?? '')
         .replace(/&/g, '&amp;')
@@ -2336,7 +2332,6 @@
           `${t('kml_vehicle')}: ${l.vehicle || ''}`,
           `${t('kml_location')}: ${l.location || ''}`,
           `${t('kml_time')}: ${l.dateStr || ''}`,
-          `${t('kml_weather')}: ${l.weather || ''}`,
           `${t('kml_details')}: ${l.description || ''}`,
           `${t('kml_link')}: ${l.url || ''}`,
         ].join('\n');
@@ -2732,6 +2727,17 @@
       return (launches || []).filter(launch => launchWindowIsActiveOrFuture(launch, nowMs));
     }
 
+    function hasConcreteLaunchWindow(launch) {
+      if (!launch) return false;
+      const startTs = parseLaunchTimestampValue(launch.window_start)?.getTime();
+      const endTs = parseLaunchTimestampValue(launch.window_end)?.getTime();
+      const scheduledTs = parseLaunchTimestampValue(launch.net)?.getTime()
+        || parseLaunchTimestampValue(launch.t0)?.getTime();
+      return Number.isFinite(startTs) && Number.isFinite(endTs) &&
+        Number.isFinite(scheduledTs) && endTs >= startTs &&
+        scheduledTs >= startTs && scheduledTs <= endTs;
+    }
+
     function orderUpcomingLaunchesFor2D(launches) {
       return (Array.isArray(launches) ? launches : [])
         .map((launch, index) => ({ launch, index, timestamp: launchTimestamp(launch) }))
@@ -2911,7 +2917,7 @@
     function spaceDevsUpcomingUrl(nowMs = Date.now()) {
       const params = new URLSearchParams({
         limit: '100',
-        mode: 'list',
+        mode: 'normal',
         ordering: 'window_start',
         window_end__gte: new Date(nowMs).toISOString()
       });
@@ -2922,7 +2928,14 @@
       const response = await fetch(spaceDevsUpcomingUrl(nowMs), { cache: 'no-store' });
       if (!response.ok) throw new Error(`Launch Library 2 returned HTTP ${response.status}`);
       const data = await response.json();
-      return Array.isArray(data.results) ? data.results : [];
+      return Array.isArray(data.results)
+        ? data.results.map(launch => ({
+            ...launch,
+            isSpaceDevsRecord: true,
+            sourceLabel: 'Data by The Space Devs',
+            spaceDevsUrl: safeLaunchHttpUrl(launch.url)
+          }))
+        : [];
     }
 
     function safeLaunchHttpUrl(value) {
@@ -3029,7 +3042,8 @@
           m.addTo(launchLayerGroup);
         });
 
-        // 3. Fetch upcoming launches from RocketLaunch.Live (free: next 5)
+        // 3. Fetch upcoming launches. Launch Library 2 is primary; the
+        // RocketLaunch.Live/local layer is retained only as a failure fallback.
         const now = new Date();
         let upcomingCount = 0;
         try {
@@ -3085,14 +3099,23 @@
             console.warn('[Space Devs] Failed to fetch launch metadata:', spaceDevsErr);
           }
 
-          const list = mergeUpcomingLaunches(
+          const fallbackList = mergeUpcomingLaunches(
             filterFutureLaunches(localUpcoming, nowMs),
             filterFutureLaunches(remoteUpcoming, nowMs)
           );
-          const enrichedList = filterFutureLaunches(
-            enrichUpcomingLaunchesWithSpaceDevs(list, spaceDevsUpcoming),
+          const fallbackEnrichedList = filterFutureLaunches(
+            enrichUpcomingLaunchesWithSpaceDevs(fallbackList, spaceDevsUpcoming),
             nowMs
           );
+          const primarySpaceDevsList = filterFutureLaunches(spaceDevsUpcoming, nowMs)
+            .filter(hasConcreteLaunchWindow);
+          // The primary feed is intentionally strict: every displayed record
+          // has the API's explicit start/end window and a scheduled NET time.
+          // If that request is unavailable, use the pre-existing RLL/local
+          // fallback so the launch layer remains useful offline.
+          const enrichedList = primarySpaceDevsList.length
+            ? primarySpaceDevsList
+            : fallbackEnrichedList;
 
           const upcomingTimes = enrichedList.map(launchTimestamp).filter(Number.isFinite);
           const { minTs: minLaunchTs, maxTs: maxLaunchTs } = getTimelineBounds(filteredDataRows, upcomingTimes);
@@ -3114,12 +3137,12 @@
             const windowStartTs = launchWindowStartTimestamp(l);
             const windowEndTs = launchWindowEndTimestamp(l);
             const windowStr = launchWindowLabel(l);
-            const weather = l.weather_temp ? ` (${l.weather_temp}°C ${l.weather_condition || ''})` : '';
             const desc = l.launch_description || '';
             const rllUrl = l.url || (l.sourceLabel ? '' : `https://www.rocketlaunch.live/launch/${l.slug}`);
-            const safeRllUrl = safeLaunchHttpUrl(rllUrl);
-            const spaceDevsUrl = safeLaunchHttpUrl(l.spaceDevsUrl);
-            const sourceLabel = l.sourceLabel || 'Data by RocketLaunch.Live';
+            const isSpaceDevsRecord = !!l.isSpaceDevsRecord || l.sourceLabel === 'Data by The Space Devs';
+            const safeRllUrl = isSpaceDevsRecord ? '' : safeLaunchHttpUrl(rllUrl);
+            const spaceDevsUrl = safeLaunchHttpUrl(l.spaceDevsUrl || (isSpaceDevsRecord ? rllUrl : ''));
+            const sourceLabel = l.sourceLabel || (isSpaceDevsRecord ? 'Data by The Space Devs' : 'Data by RocketLaunch.Live');
             const imageUrl = launchImageUrl(l);
             const imageCredit = launchImageCredit(l);
 
@@ -3132,9 +3155,8 @@
               windowStartTs, windowEndTs,
               expiryTs: Number.isFinite(windowEndTs) ? windowEndTs : t0Ts,
               location: `${locName}${padName ? ' / ' + padName : ''}`,
-              weather: cleanWeatherString(weather),
               description: desc,
-              url: safeRllUrl,
+              url: safeRllUrl || spaceDevsUrl,
               spaceDevsUrl,
               windowStr,
               imageUrl,
@@ -3160,7 +3182,7 @@
                 <b style="color:${escapeHtml(color)}">${escapeHtml(missionName)}</b><br/>
                 ${vehicleName ? `${t('kml_vehicle')}: ${escapeHtml(vehicleName)}<br/>` : ''}
                 ${t('launch_site_label')}: ${escapeHtml(locName)}${padName ? ' / ' + escapeHtml(padName) : ''}<br/>
-                ${t('launch_time_label')}: ${escapeHtml(dateStr)}${launchRecord.weather ? ` (${escapeHtml(launchRecord.weather)})` : ''}<br/>
+                ${t('launch_time_label')}: ${escapeHtml(dateStr)}<br/>
                 ${windowStr ? `${t('launch_window_label')}: ${escapeHtml(windowStr)}<br/>` : ''}
                 ${warningStatus}
                 ${desc ? '<hr/><div style="max-width:320px;max-height:120px;overflow:auto;font-size:11px;white-space:pre-wrap;">' + escapeHtml(desc) + '</div>' : ''}

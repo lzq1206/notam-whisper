@@ -78,7 +78,7 @@ if (mergedRescheduled.length !== 2) {
   throw new Error('different site labels must not collapse launches without a matching location key');
 }
 
-if (!/const\s+list\s*=\s*mergeUpcomingLaunches\([\s\S]*?filterFutureLaunches\(localUpcoming[\s\S]*?filterFutureLaunches\(remoteUpcoming/.test(html)) {
+if (!/const\s+fallbackList\s*=\s*mergeUpcomingLaunches\([\s\S]*?filterFutureLaunches\(localUpcoming[\s\S]*?filterFutureLaunches\(remoteUpcoming/.test(html)) {
   throw new Error('API and local launches must be filtered and merged through the deduplication layer');
 }
 if (!/return\s+\[\.\.\.remote,\s*\.\.\.localOnly\];/.test(html)) {

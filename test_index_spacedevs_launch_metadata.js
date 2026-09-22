@@ -24,6 +24,7 @@ const functionNames = [
   'launchTimestamp',
   'launchWindowStartTimestamp',
   'launchWindowEndTimestamp',
+  'hasConcreteLaunchWindow',
   'launchNameKey',
   'launchNamesMatch',
   'safeLaunchHttpUrl',
@@ -71,6 +72,15 @@ if (enriched.window_start !== metadata.window_start || enriched.window_end !== m
 if (enriched.spaceDevsUrl !== metadata.url) {
   throw new Error('Space Devs detail URL was not retained');
 }
+if (!hasConcreteLaunchWindow(metadata)) {
+  throw new Error('a complete Space Devs launch window should be accepted');
+}
+if (hasConcreteLaunchWindow({ ...metadata, net: null })) {
+  throw new Error('a launch without a concrete NET should be excluded');
+}
+if (hasConcreteLaunchWindow({ ...metadata, net: '2026-09-23T14:00:00Z' })) {
+  throw new Error('a scheduled time outside the API window should be excluded');
+}
 if (launchImageUrl(enriched) !== metadata.image.image_url || launchImageCredit(enriched) !== 'Test credit') {
   throw new Error('launch image helper did not prefer the full image URL and credit');
 }
@@ -81,8 +91,17 @@ if (safeLaunchHttpUrl('javascript:alert(1)') !== '') {
 if (!/const\s+SPACEDEVS_UPCOMING_URL\s*=\s*['"]https:\/\/ll\.thespacedevs\.com\/2\.3\.0\/launches\//.test(html)) {
   throw new Error('Launch Library 2 endpoint is missing');
 }
-if (!/mode:\s*'list'/.test(html) || !/window_end__gte:\s*new Date\(nowMs\)\.toISOString\(\)/.test(html)) {
-  throw new Error('Space Devs request must use list mode and an end-of-window lower bound');
+if (!/limit:\s*'100'/.test(html) || !/mode:\s*'normal'/.test(html) ||
+  !/window_end__gte:\s*new Date\(nowMs\)\.toISOString\(\)/.test(html)) {
+  throw new Error('Space Devs request must use the full-detail mode, a 100-row limit, and an end-of-window lower bound');
+}
+if (!/const\s+primarySpaceDevsList\s*=\s*filterFutureLaunches\(spaceDevsUpcoming,\s*nowMs\)[\s\S]*?\.filter\(hasConcreteLaunchWindow\)/.test(html) ||
+  !/const\s+enrichedList\s*=\s*primarySpaceDevsList\.length\s*\?\s*primarySpaceDevsList/.test(html)) {
+  throw new Error('Space Devs records must be the primary filtered upcoming-launch list');
+}
+if (/weather_temp/.test(html) || /weather:\s*cleanWeatherString/.test(html) || /launchRecord\.weather/.test(html) ||
+  /kml_weather\)\}:\s*\$\{l\.weather/.test(html)) {
+  throw new Error('future launch temperature must not be rendered');
 }
 if (!/buildLaunchImageMarkup\(launchRecord,\s*missionName\)/.test(html) ||
   !/buildLaunchImageMarkup\(launch,\s*launch\.mission/.test(html)) {
