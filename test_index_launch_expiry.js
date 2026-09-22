@@ -23,13 +23,21 @@ function extractFunctionBlock(src, signature) {
 const parseDescriptionDateBlock = extractFunctionBlock(html, 'function parseDescriptionDate(');
 const parseLaunchTimestampValueBlock = extractFunctionBlock(html, 'function parseLaunchTimestampValue(');
 const launchTimestampBlock = extractFunctionBlock(html, 'function launchTimestamp(');
+const launchWindowStartTimestampBlock = extractFunctionBlock(html, 'function launchWindowStartTimestamp(');
+const launchWindowEndTimestampBlock = extractFunctionBlock(html, 'function launchWindowEndTimestamp(');
+const launchWindowIsActiveOrFutureBlock = extractFunctionBlock(html, 'function launchWindowIsActiveOrFuture(');
 const filterFutureLaunchesBlock = extractFunctionBlock(html, 'function filterFutureLaunches(');
-if (!parseDescriptionDateBlock || !parseLaunchTimestampValueBlock || !launchTimestampBlock || !filterFutureLaunchesBlock) {
+if (!parseDescriptionDateBlock || !parseLaunchTimestampValueBlock || !launchTimestampBlock ||
+  !launchWindowStartTimestampBlock || !launchWindowEndTimestampBlock ||
+  !launchWindowIsActiveOrFutureBlock || !filterFutureLaunchesBlock) {
   throw new Error('launch expiry helpers are missing');
 }
 global.eval(parseDescriptionDateBlock);
 global.eval(parseLaunchTimestampValueBlock);
 global.eval(launchTimestampBlock);
+global.eval(launchWindowStartTimestampBlock);
+global.eval(launchWindowEndTimestampBlock);
+global.eval(launchWindowIsActiveOrFutureBlock);
 global.eval(filterFutureLaunchesBlock);
 
 const now = Date.parse('2026-09-16T01:30:00Z');
@@ -38,6 +46,16 @@ const records = [
   { name: 'Shanghai Sea Launch', win_open: '2026-09-15T21:55:00Z' },
   { name: 'Progress MS-35 (96P)', win_open: '2026-09-16T13:33:00Z' },
   { name: 'Time TBD', win_open: '' },
+  {
+    name: 'Window still open',
+    window_start: '2026-09-15T23:00:00Z',
+    window_end: '2026-09-16T03:00:00Z',
+  },
+  {
+    name: 'Window already closed',
+    window_start: '2026-09-15T23:00:00Z',
+    window_end: '2026-09-16T01:29:59Z',
+  },
 ];
 const active = filterFutureLaunches(records, now);
 const activeNames = active.map(record => record.name);
@@ -47,6 +65,9 @@ if (activeNames.includes('Sentinel-3C & FLEX') || activeNames.includes('Shanghai
 }
 if (!activeNames.includes('Progress MS-35 (96P)') || !activeNames.includes('Time TBD')) {
   throw new Error('future and time-undisclosed launches must remain visible');
+}
+if (!activeNames.includes('Window still open') || activeNames.includes('Window already closed')) {
+  throw new Error('upcoming filtering must use the API launch-window end time');
 }
 
 const exactBoundary = filterFutureLaunches([

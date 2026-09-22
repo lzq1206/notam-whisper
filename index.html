@@ -462,6 +462,8 @@
         launch_upcoming: '即将发射',
         launch_site_label: '发射场',
         launch_time_label: '时间',
+        launch_window_label: '发射窗口',
+        launch_image_alt: '火箭发射图片',
         launch_details_link: '🔗 详情 / 直播',
         launch_related_warnings: '已关联航天警告（{count} 条）',
         launch_no_related_warning: '当前未发现时间和地点均匹配的 NOTAM / MSI',
@@ -541,6 +543,8 @@
         launch_upcoming: 'Upcoming launch',
         launch_site_label: 'Launch site',
         launch_time_label: 'Time',
+        launch_window_label: 'Launch window',
+        launch_image_alt: 'Rocket launch image',
         launch_details_link: '🔗 Details / Stream',
         launch_related_warnings: 'Related aerospace warnings ({count})',
         launch_no_related_warning: 'No NOTAM / MSI currently matches both the launch time and site',
@@ -1109,7 +1113,7 @@
                 verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
                 eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
-              description: `<b>${launch.mission}</b><br/>${launch.dateStr}`
+              description: `${buildLaunchImageMarkup(launch, launch.mission || t('launch_image_alt'))}<b>${escapeHtml(launch.mission || t('launch_unknown_mission'))}</b><br/>${launch.vehicle ? `${t('kml_vehicle')}: ${escapeHtml(launch.vehicle)}<br/>` : ''}${t('launch_time_label')}: ${escapeHtml(launch.dateStr)}${launch.windowStr ? `<br/>${t('launch_window_label')}: ${escapeHtml(launch.windowStr)}` : ''}`
             }, launchSolarSelection(launch));
           });
         }
@@ -2472,6 +2476,7 @@
     const LAUNCH_LOG_URL = './past_launches.csv';
     const LOCAL_UPCOMING_LAUNCHES_URL = './upcoming_launches.csv';
     const RLL_UPCOMING_URL = 'https://fdo.rocketlaunch.live/json/launches/next/5';
+    const SPACEDEVS_UPCOMING_URL = 'https://ll.thespacedevs.com/2.3.0/launches/';
 
     // Location slug (from RocketLaunch.Live) → launch_sites.csv abbreviation
     // Prefer launch_sites.csv coordinates when possible to keep map positions consistent.
@@ -2574,20 +2579,20 @@
 
       const nowMs = Date.now();
       const nextTs = upcomingLaunches
-        .map(launch => Number(launch.ts))
+        .map(launch => Number.isFinite(Number(launch.expiryTs)) ? Number(launch.expiryTs) : Number(launch.ts))
         .filter(ts => Number.isFinite(ts) && ts > nowMs)
         .sort((a, b) => a - b)[0];
       if (!Number.isFinite(nextTs)) return;
 
-      // Re-check just after the scheduled time so a page left open removes
-      // the marker without requiring a manual reload.
+      // Re-check just after the launch window closes so a page left open
+      // removes the marker without requiring a manual reload.
       const delay = Math.min(Math.max(nextTs - nowMs + 1000, 1000), 2147483647);
       upcomingLaunchExpiryTimer = setTimeout(() => {
         upcomingLaunchExpiryTimer = null;
         const currentNowMs = Date.now();
         const active = upcomingLaunches.filter(launch => {
-          const ts = Number(launch.ts);
-          return !Number.isFinite(ts) || ts > currentNowMs;
+          const expiryTs = Number.isFinite(Number(launch.expiryTs)) ? Number(launch.expiryTs) : Number(launch.ts);
+          return !Number.isFinite(expiryTs) || expiryTs > currentNowMs;
         });
 
         if (active.length !== upcomingLaunches.length) {
@@ -2688,19 +2693,43 @@
       // RocketLaunch.Live now publishes the authoritative scheduled time in
       // `t0`; `win_open` is often null and remains a compatibility fallback.
       const d = parseLaunchTimestampValue(launch.t0)
+        || parseLaunchTimestampValue(launch.net)
+        || parseLaunchTimestampValue(launch.window_start)
         || parseLaunchTimestampValue(launch.win_open)
+        || parseDescriptionDate(launch.launch_description);
+      return d && Number.isFinite(d.getTime()) ? d.getTime() : null;
+    }
+
+    function launchWindowStartTimestamp(launch) {
+      if (!launch) return null;
+      const d = parseLaunchTimestampValue(launch.window_start)
+        || parseLaunchTimestampValue(launch.window_open)
+        || parseLaunchTimestampValue(launch.win_open)
+        || parseLaunchTimestampValue(launch.t0)
         || parseLaunchTimestampValue(launch.net)
         || parseDescriptionDate(launch.launch_description);
       return d && Number.isFinite(d.getTime()) ? d.getTime() : null;
     }
 
+    function launchWindowEndTimestamp(launch) {
+      if (!launch) return null;
+      const d = parseLaunchTimestampValue(launch.window_end)
+        || parseLaunchTimestampValue(launch.window_close)
+        || parseLaunchTimestampValue(launch.win_close)
+        || parseLaunchTimestampValue(launch.t1);
+      return d && Number.isFinite(d.getTime()) ? d.getTime() : null;
+    }
+
+    function launchWindowIsActiveOrFuture(launch, nowMs = Date.now()) {
+      const endTs = launchWindowEndTimestamp(launch);
+      if (endTs !== null) return endTs > nowMs;
+      const startTs = launchWindowStartTimestamp(launch);
+      // Keep records without a published time visible as TBD.
+      return startTs === null || startTs > nowMs;
+    }
+
     function filterFutureLaunches(launches, nowMs = Date.now()) {
-      return (launches || []).filter(launch => {
-        const timestamp = launchTimestamp(launch);
-        // Keep records without a published time visible as TBD; only a known
-        // launch time that has elapsed is removed from the upcoming layer.
-        return timestamp === null || timestamp > nowMs;
-      });
+      return (launches || []).filter(launch => launchWindowIsActiveOrFuture(launch, nowMs));
     }
 
     function orderUpcomingLaunchesFor2D(launches) {
@@ -2761,6 +2790,48 @@
       // A named mission may be rescheduled; the same mission at the same site
       // is still one launch. Generic TBD records require both time and site.
       return sameName ? (sameTime || sameLocation) : (sameTime && sameLocation);
+    }
+
+    function launchMetadataMatchScore(target, candidate) {
+      const targetTs = launchTimestamp(target);
+      const candidateTs = launchTimestamp(candidate);
+      const timeDiff = Number.isFinite(targetTs) && Number.isFinite(candidateTs)
+        ? Math.abs(targetTs - candidateTs)
+        : Infinity;
+      const sameName = launchNamesMatch(target, candidate);
+      const sameTime = timeDiff <= 48 * 60 * 60 * 1000;
+      if (!sameName && !sameTime) return -Infinity;
+
+      let score = sameName ? 100 : 0;
+      if (sameTime) score += 30;
+      if (timeDiff <= 5 * 60 * 1000) score += 20;
+      else if (timeDiff <= 2 * 60 * 60 * 1000) score += 10;
+      return score;
+    }
+
+    function enrichLaunchWithSpaceDevs(target, metadataLaunches) {
+      const candidates = (Array.isArray(metadataLaunches) ? metadataLaunches : [])
+        .map(candidate => ({ candidate, score: launchMetadataMatchScore(target, candidate) }))
+        .filter(item => Number.isFinite(item.score))
+        .sort((first, second) => second.score - first.score);
+      const match = candidates[0]?.candidate;
+      if (!match) return target;
+
+      return {
+        ...match,
+        ...target,
+        image: target.image || match.image,
+        infographic: target.infographic || match.infographic,
+        window_start: target.window_start || match.window_start,
+        window_end: target.window_end || match.window_end,
+        net: target.net || match.net,
+        spaceDevsUrl: safeLaunchHttpUrl(match.url || target.spaceDevsUrl)
+      };
+    }
+
+    function enrichUpcomingLaunchesWithSpaceDevs(launches, metadataLaunches) {
+      return (Array.isArray(launches) ? launches : [])
+        .map(launch => enrichLaunchWithSpaceDevs(launch, metadataLaunches));
     }
 
     function mergeUpcomingLaunches(localLaunches, remoteLaunches) {
@@ -2835,6 +2906,82 @@
         }
       }
       return coordsForRllLoc(location);
+    }
+
+    function spaceDevsUpcomingUrl(nowMs = Date.now()) {
+      const params = new URLSearchParams({
+        limit: '100',
+        mode: 'list',
+        ordering: 'window_start',
+        window_end__gte: new Date(nowMs).toISOString()
+      });
+      return `${SPACEDEVS_UPCOMING_URL}?${params.toString()}`;
+    }
+
+    async function fetchSpaceDevsUpcomingLaunches(nowMs = Date.now()) {
+      const response = await fetch(spaceDevsUpcomingUrl(nowMs), { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Launch Library 2 returned HTTP ${response.status}`);
+      const data = await response.json();
+      return Array.isArray(data.results) ? data.results : [];
+    }
+
+    function safeLaunchHttpUrl(value) {
+      if (!value) return '';
+      try {
+        const parsed = new URL(String(value), 'https://rocket.rainywhisper.com/');
+        return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.href : '';
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function launchImageUrl(launch) {
+      const candidates = [
+        launch?.imageUrl,
+        launch?.image?.image_url,
+        launch?.image?.thumbnail_url,
+        launch?.infographic?.image_url,
+        launch?.infographic?.thumbnail_url
+      ];
+      return candidates.map(safeLaunchHttpUrl).find(Boolean) || '';
+    }
+
+    function launchImageCredit(launch) {
+      return launch?.imageCredit
+        || launch?.image?.credit
+        || launch?.infographic?.credit
+        || '';
+    }
+
+    function launchVehicleName(launch) {
+      return launch?.vehicle?.name
+        || launch?.rocket?.configuration?.full_name
+        || launch?.rocket?.configuration?.name
+        || '';
+    }
+
+    function launchWindowLabel(launch) {
+      const startTs = launchWindowStartTimestamp(launch);
+      const endTs = launchWindowEndTimestamp(launch);
+      if (startTs === null && endTs === null) return '';
+      const start = startTs === null ? t('time_tbd') : formatLaunchDateWithLocal(new Date(startTs));
+      const end = endTs === null ? t('time_tbd') : formatLaunchDateWithLocal(new Date(endTs));
+      return `${start} – ${end}`;
+    }
+
+    function buildLaunchImageMarkup(launch, altText) {
+      const imageUrl = launchImageUrl(launch);
+      if (!imageUrl) return '';
+      const credit = launchImageCredit(launch);
+      return `
+        <div style="margin:6px 0;text-align:center;">
+          <a href="${escapeHtml(imageUrl)}" target="_blank" rel="noopener noreferrer">
+            <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(altText || t('launch_image_alt'))}"
+              loading="lazy" referrerpolicy="no-referrer"
+              style="display:block;width:100%;max-height:190px;object-fit:cover;border-radius:6px;" />
+          </a>
+          ${credit ? `<small style="color:#888;">${escapeHtml(credit)}</small>` : ''}
+        </div>`;
     }
 
     async function loadLaunchData() {
@@ -2921,6 +3068,7 @@
             console.warn('[local launches] Failed to load upcoming launches:', localErr);
           }
 
+          const nowMs = now.getTime();
           let remoteUpcoming = [];
           try {
             const rllResp = await fetch(RLL_UPCOMING_URL, { cache: 'no-store' });
@@ -2930,16 +3078,26 @@
             console.warn('[RLL] Failed to fetch upcoming launches:', rllErr);
           }
 
-          const nowMs = now.getTime();
+          let spaceDevsUpcoming = [];
+          try {
+            spaceDevsUpcoming = await fetchSpaceDevsUpcomingLaunches(nowMs);
+          } catch (spaceDevsErr) {
+            console.warn('[Space Devs] Failed to fetch launch metadata:', spaceDevsErr);
+          }
+
           const list = mergeUpcomingLaunches(
             filterFutureLaunches(localUpcoming, nowMs),
             filterFutureLaunches(remoteUpcoming, nowMs)
           );
+          const enrichedList = filterFutureLaunches(
+            enrichUpcomingLaunchesWithSpaceDevs(list, spaceDevsUpcoming),
+            nowMs
+          );
 
-          const upcomingTimes = list.map(launchTimestamp).filter(Number.isFinite);
+          const upcomingTimes = enrichedList.map(launchTimestamp).filter(Number.isFinite);
           const { minTs: minLaunchTs, maxTs: maxLaunchTs } = getTimelineBounds(filteredDataRows, upcomingTimes);
 
-          const orderedList = orderUpcomingLaunchesFor2D(list);
+          const orderedList = orderUpcomingLaunchesFor2D(enrichedList);
           orderedList.forEach((l, idx) => {
             const loc = launchLocationObject(l);
             const coords = launchCoordinates(l);
@@ -2947,16 +3105,23 @@
             const { lat, lon } = coords;
 
             const missionName = l.name || t('launch_unknown_mission');
-            const vehicleName = l.vehicle?.name || '';
+            const vehicleName = launchVehicleName(l);
             const locName = loc?.name || '';
             const padName = l.pad?.name || '';
             const t0Ts = launchTimestamp(l);
             const t0 = Number.isFinite(t0Ts) ? new Date(t0Ts) : null;
             const dateStr = formatLaunchDateWithLocal(t0);
+            const windowStartTs = launchWindowStartTimestamp(l);
+            const windowEndTs = launchWindowEndTimestamp(l);
+            const windowStr = launchWindowLabel(l);
             const weather = l.weather_temp ? ` (${l.weather_temp}°C ${l.weather_condition || ''})` : '';
             const desc = l.launch_description || '';
             const rllUrl = l.url || (l.sourceLabel ? '' : `https://www.rocketlaunch.live/launch/${l.slug}`);
+            const safeRllUrl = safeLaunchHttpUrl(rllUrl);
+            const spaceDevsUrl = safeLaunchHttpUrl(l.spaceDevsUrl);
             const sourceLabel = l.sourceLabel || 'Data by RocketLaunch.Live';
+            const imageUrl = launchImageUrl(l);
+            const imageCredit = launchImageCredit(l);
 
             const color = launchColor(t0, now, minLaunchTs, maxLaunchTs);
             const isLaunchGlow = t0 ? isRocketCloudVisible(t0.toISOString(), t0.toISOString(), lat, lon) : false;
@@ -2964,10 +3129,16 @@
 
             const launchRecord = {
               lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color, ts: t0 ? t0.getTime() : null,
+              windowStartTs, windowEndTs,
+              expiryTs: Number.isFinite(windowEndTs) ? windowEndTs : t0Ts,
               location: `${locName}${padName ? ' / ' + padName : ''}`,
               weather: cleanWeatherString(weather),
               description: desc,
-              url: rllUrl
+              url: safeRllUrl,
+              spaceDevsUrl,
+              windowStr,
+              imageUrl,
+              imageCredit
             };
             const lIcon = L.divIcon({
               html: `<div style="background:${color}; width:24px; height:24px; border-radius:50%; ${launchGlowStyle} display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
@@ -2984,14 +3155,18 @@
                 ? `<div style="margin-top:5px;color:#b91c1c;"><b>${t('launch_related_warnings', { count: warningIds.length })}:</b><br/>${warningIds.map(escapeHtml).join(' · ')}</div>`
                 : `<div style="margin-top:5px;color:#666;">${t('launch_no_related_warning')}</div>`;
               return `
+                ${buildLaunchImageMarkup(launchRecord, missionName)}
                 <div style="font-size:12px;color:#666;">${t('launch_upcoming')}</div>
-                <b style="color:${color}">${missionName}</b><br/>
-                ${t('launch_site_label')}: ${locName}${padName ? ' / ' + padName : ''}<br/>
-                ${t('launch_time_label')}: ${dateStr}${weather}<br/>
+                <b style="color:${escapeHtml(color)}">${escapeHtml(missionName)}</b><br/>
+                ${vehicleName ? `${t('kml_vehicle')}: ${escapeHtml(vehicleName)}<br/>` : ''}
+                ${t('launch_site_label')}: ${escapeHtml(locName)}${padName ? ' / ' + escapeHtml(padName) : ''}<br/>
+                ${t('launch_time_label')}: ${escapeHtml(dateStr)}${launchRecord.weather ? ` (${escapeHtml(launchRecord.weather)})` : ''}<br/>
+                ${windowStr ? `${t('launch_window_label')}: ${escapeHtml(windowStr)}<br/>` : ''}
                 ${warningStatus}
-                ${desc ? '<hr/><div style="max-width:320px;max-height:120px;overflow:auto;font-size:11px;">' + desc + '</div>' : ''}
-                ${rllUrl ? `<a href="${rllUrl}" target="_blank" style="font-size:11px;">${t('launch_details_link')}</a><br/>` : ''}
-                <small style="color:#888;">${escapeHtml(sourceLabel)}</small>
+                ${desc ? '<hr/><div style="max-width:320px;max-height:120px;overflow:auto;font-size:11px;white-space:pre-wrap;">' + escapeHtml(desc) + '</div>' : ''}
+                ${safeRllUrl ? `<a href="${escapeHtml(safeRllUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:11px;">${t('launch_details_link')}</a><br/>` : ''}
+                ${spaceDevsUrl && spaceDevsUrl !== safeRllUrl ? `<a href="${escapeHtml(spaceDevsUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:11px;">Launch Library 2</a><br/>` : ''}
+                <small style="color:#888;">${escapeHtml(sourceLabel)}${imageUrl ? ` · ${escapeHtml(imageCredit || 'The Space Devs image')}` : ''}</small>
               `;
             }, { maxWidth: 340 });
             lMarker.on('click', () => selectLaunchForSolarOverlay(launchRecord));

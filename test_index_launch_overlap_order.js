@@ -42,7 +42,7 @@ if (JSON.stringify(orderedNames) !== JSON.stringify(expected)) {
   throw new Error(`unexpected overlap order: ${JSON.stringify(orderedNames)}`);
 }
 
-if (!/const\s+orderedList\s*=\s*orderUpcomingLaunchesFor2D\(list\)/.test(html)) {
+if (!/const\s+orderedList\s*=\s*orderUpcomingLaunchesFor2D\(enrichedList\)/.test(html)) {
   throw new Error('2D upcoming markers must use the deterministic overlap order');
 }
 if (!/zIndexOffset:\s*2000\s*\+\s*idx/.test(html)) {
