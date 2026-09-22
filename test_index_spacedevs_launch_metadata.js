@@ -81,6 +81,24 @@ if (hasConcreteLaunchWindow({ ...metadata, net: null })) {
 if (hasConcreteLaunchWindow({ ...metadata, net: '2026-09-23T14:00:00Z' })) {
   throw new Error('a scheduled time outside the API window should be excluded');
 }
+if (hasConcreteLaunchWindow({
+  ...metadata,
+  net: '2026-11-30T00:00:00Z',
+  window_start: '2026-11-30T00:00:00Z',
+  window_end: '2026-11-30T00:00:00Z',
+  net_precision: { id: 7, name: 'Month', abbrev: 'M' },
+})) {
+  throw new Error('month-only Space Devs records must be excluded');
+}
+if (!hasConcreteLaunchWindow({
+  ...metadata,
+  net: '2026-11-24T05:03:00Z',
+  window_start: '2026-11-24T05:03:00Z',
+  window_end: '2026-11-24T05:03:00Z',
+  net_precision: { id: 1, name: 'Minute', abbrev: 'MIN' },
+})) {
+  throw new Error('minute-precision Space Devs records should be accepted');
+}
 if (launchImageUrl(enriched) !== metadata.image.image_url || launchImageCredit(enriched) !== 'Test credit') {
   throw new Error('launch image helper did not prefer the full image URL and credit');
 }
@@ -106,6 +124,9 @@ if (/weather_temp/.test(html) || /weather:\s*cleanWeatherString/.test(html) || /
 if (!/buildLaunchImageMarkup\(launchRecord,\s*missionName\)/.test(html) ||
   !/buildLaunchImageMarkup\(launch,\s*launch\.mission/.test(html)) {
   throw new Error('2D and 3D launch details must render the launch image when available');
+}
+if (/Launch Library 2<\/a>/.test(html)) {
+  throw new Error('the launch popup must not expose a Launch Library 2 hyperlink');
 }
 
 console.log('Launch Library 2 metadata regression test passed.');

@@ -61,7 +61,7 @@ if (!/const\s+launchRows\s*=\s*launchToggle\.checked\s*\?\s*upcomingLaunchesForN
   throw new Error('current-view KML must use the NOTAM date-range subset');
 }
 if (!/function\s+applyFilter\([\s\S]*?renderRows\(filtered\)/.test(html) ||
-  !/function\s+renderRows\(rows\)\s*\{[\s\S]*?syncUpcomingLaunchLayerToNotamRange\(\);/.test(html)) {
+  !/function\s+renderRows\(rows\)\s*\{[\s\S]*?syncUpcomingLaunchLayerToNotamRange\(\);[\s\S]*?updateUpcomingLaunchColors\(\);/.test(html)) {
   throw new Error('applying the NOTAM filter must rebuild the synchronized launch layer');
 }
 

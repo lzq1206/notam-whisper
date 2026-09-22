@@ -50,4 +50,14 @@ if (!/Math\.max\(\s*now\s*\+\s*86400000\s*,\s*\.\.\.mergedTimes\s*\)/.test(html)
   throw new Error('getTimelineBounds should include now + 86400000 safety window');
 }
 
+if (!/function\s+buildUpcomingLaunchIcon\(launch,\s*color\)/.test(html) ||
+  !/function\s+updateUpcomingLaunchColors\(\)[\s\S]*?getTimelineBounds\(filteredDataRows,\s*launchTimes\)[\s\S]*?launch\.color\s*=\s*color[\s\S]*?setIcon\(buildUpcomingLaunchIcon\(launch,\s*color\)\)/.test(html)) {
+  throw new Error('upcoming launch icons must be recolored from the active NOTAM timeline');
+}
+
+const renderRowsBlock = extractFunctionBlock(html, 'function renderRows(');
+if (!renderRowsBlock || !/syncUpcomingLaunchLayerToNotamRange\(\);[\s\S]*?updateUpcomingLaunchColors\(\);/.test(renderRowsBlock)) {
+  throw new Error('renderRows must refresh launch colors after every NOTAM filter action');
+}
+
 console.log('test_index_launch_color_mapping.js passed');
