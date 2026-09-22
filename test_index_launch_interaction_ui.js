@@ -29,8 +29,8 @@ const upcomingGlobeBlockEnd = renderOnGlobe.indexOf('// 排序', upcomingGlobeBl
 const upcomingGlobeBlock = upcomingGlobeBlockStart >= 0 && upcomingGlobeBlockEnd > upcomingGlobeBlockStart
   ? renderOnGlobe.slice(upcomingGlobeBlockStart, upcomingGlobeBlockEnd)
   : '';
-if (!/addCesiumEntity\(\{[\s\S]*?description:\s*`<b>\$\{launch\.mission\}[\s\S]*?\},\s*launchSolarSelection\(launch\)\)/.test(upcomingGlobeBlock)) {
-  throw new Error('3D upcoming launch entity must carry a launch solar selection');
+if (!/addCesiumEntity\(\{[\s\S]*?description:\s*`\$\{buildLaunchImageMarkup\(launch,[\s\S]*?\},\s*launchSolarSelection\(launch\)\)/.test(upcomingGlobeBlock)) {
+  throw new Error('3D upcoming launch entity must carry image-capable details and a launch solar selection');
 }
 
 const launchSelection = extractFunctionBlock(html, 'function launchSolarSelection(');
