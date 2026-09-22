@@ -163,26 +163,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2681/26</name>
-      <description>162128Z SEP 26  HYDROPAC 2681/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0800Z TO 2100Z DAILY 17 THRU 21 SEP     IN AREAS BOUND BY:     A. 59-42.36S 165-49.12E, 59-42.36S 180-00.00E,        62-33.00S 180-00.00E, 62-33.00S 165-49.12E.     B. 59-42.36S 180-00.00W, 58-39.52S 161-41.03W,        57-28.48S 126-01.12W, 60-23.24S 122-04.48W,        61-31.54S 161-16.01W, 62-33.00S 180-00.00W.  2. CANCEL THIS MSG 212200Z SEP 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>165.818667,-59.706,0 180.0,-59.706,0 180.0,-62.55,0 165.818667,-62.55,0 165.818667,-59.706,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-180.0,-59.706,0 -161.683833,-58.658667,0 -126.018667,-57.474667,0 -122.074667,-60.387333,0 -161.266833,-61.525667,0 -180.0,-62.55,0 -180.0,-59.706,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2662/26</name>
       <description>150716Z SEP 26  HYDROPAC 2662/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 0115Z TO 2330Z      DAILY 19 SEP THRU 01 OCT:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 177-46.20E, 39-07.80S 178-18.00E,        39-19.20S 178-18.00E, 39-22.80S 177-48.00E,        39-15.00S 177-45.00E.     B. SPACE DEBRIS IN AREA BOUND BY        37-51.00S 178-18.00W, 37-00.00S 172-42.02W,        38-54.00S 172-06.00W, 39-42.00S 177-48.00W.  2. CANCEL THIS MSG 020030Z OCT 26.</description>
       <MultiGeometry>
