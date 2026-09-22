@@ -10,11 +10,16 @@ if (!/const\s+RLL_UPCOMING_URL\s*=\s*['"]https:\/\/fdo\.rocketlaunch\.live\/json
 }
 
 if (!/const\s+rllResp\s*=\s*await\s+fetch\(RLL_UPCOMING_URL,\s*\{\s*cache:\s*['"]no-store['"]\s*\}\)/.test(html)) {
-  throw new Error('Upcoming launches must continue to come from the RocketLaunch.Live API');
+  throw new Error('RocketLaunch.Live must remain available as the upcoming-launch fallback');
 }
 
 if (!/remoteUpcoming\s*=\s*rllData\.result\s*\|\|\s*\[\]/.test(html)) {
   throw new Error('RocketLaunch.Live API results must continue through the existing merge path');
+}
+
+if (!/const\s+primarySpaceDevsList\s*=\s*filterFutureLaunches\(spaceDevsUpcoming,\s*nowMs\)[\s\S]*?\.filter\(hasConcreteLaunchWindow\)/.test(html) ||
+  !/const\s+enrichedList\s*=\s*primarySpaceDevsList\.length\s*\?\s*primarySpaceDevsList\s*:\s*fallbackEnrichedList/.test(html)) {
+  throw new Error('Launch Library 2 must be the primary upcoming-launch source with an RLL/local fallback');
 }
 
 if (!schedule.includes('2026 SEP 28 1215,Starbase,25.997,-97.156,Starship,Starship Orbital Flight 1 (Starship Flight 14)')) {
