@@ -1805,6 +1805,7 @@
     function renderRows(rows) {
       filteredDataRows = rows;
       syncUpcomingLaunchLayerToNotamRange();
+      updateUpcomingLaunchColors();
       updateLaunchSummary();
       if (is3D) {
         renderOnGlobe(rows);
@@ -2657,6 +2658,8 @@
             }
           });
           upcomingLaunches = active;
+          syncUpcomingLaunchLayerToNotamRange();
+          updateUpcomingLaunchColors();
           updateLaunchSummary();
           if (is3D) renderOnGlobe(filteredDataRows);
         }
@@ -2713,6 +2716,34 @@
       const s = minTs || now.getTime();
       const e = maxTs || (s + 7 * 86400000);
       return colorByTime(ts, s, e);
+    }
+
+    function buildUpcomingLaunchIcon(launch, color) {
+      const launchGlowStyle = launch?.isLaunchGlow
+        ? 'box-shadow: 0 0 15px 4px #fff;'
+        : 'border: 2px solid #fff;';
+      return L.divIcon({
+        html: `<div style="background:${color}; width:24px; height:24px; border-radius:50%; ${launchGlowStyle} display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
+        className: 'launch-upcoming-icon',
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+      });
+    }
+
+    function updateUpcomingLaunchColors() {
+      const visibleLaunches = upcomingLaunchesForNotamRange();
+      const launchTimes = visibleLaunches.map(launch => launch.ts).filter(Number.isFinite);
+      const { minTs, maxTs } = getTimelineBounds(filteredDataRows, launchTimes);
+      const now = new Date();
+      visibleLaunches.forEach(launch => {
+        const timestamp = Number(launch.ts);
+        const date = Number.isFinite(timestamp) ? new Date(timestamp) : null;
+        const color = launchColor(date, now, minTs, maxTs);
+        launch.color = color;
+        if (launch.marker && typeof launch.marker.setIcon === 'function') {
+          launch.marker.setIcon(buildUpcomingLaunchIcon(launch, color));
+        }
+      });
     }
 
     function parseDescriptionDate(desc) {
@@ -2793,9 +2824,30 @@
       const endTs = parseLaunchTimestampValue(launch.window_end)?.getTime();
       const scheduledTs = parseLaunchTimestampValue(launch.net)?.getTime()
         || parseLaunchTimestampValue(launch.t0)?.getTime();
-      return Number.isFinite(startTs) && Number.isFinite(endTs) &&
-        Number.isFinite(scheduledTs) && endTs >= startTs &&
-        scheduledTs >= startTs && scheduledTs <= endTs;
+      if (!Number.isFinite(startTs) || !Number.isFinite(endTs) ||
+        !Number.isFinite(scheduledTs) || endTs < startTs ||
+        scheduledTs < startTs || scheduledTs > endTs) {
+        return false;
+      }
+
+      // Space Devs normalizes approximate dates to midnight, so the ISO
+      // timestamp alone cannot distinguish a month-only record from an exact
+      // launch time.  Prefer the API's explicit precision classification.
+      const rawPrecision = launch.net_precision;
+      const precision = typeof rawPrecision === 'object'
+        ? (rawPrecision.name || rawPrecision.abbrev || '')
+        : rawPrecision;
+      const precisionKey = String(precision || '').trim().toLowerCase();
+      if (precisionKey) {
+        return ['second', 'minute', 'hour', 'sec', 'min', 'hr', 's', 'm', 'h'].includes(precisionKey);
+      }
+
+      // Compatibility fallback for fixtures/feeds without net_precision:
+      // accept an ISO time only when its published window is narrower than a
+      // full day; broad day/month/year placeholders are excluded.
+      const scheduledText = String(launch.net || launch.t0 || '');
+      const hasIsoTime = /T\d{2}:\d{2}(?::\d{2})?/.test(scheduledText);
+      return hasIsoTime && (endTs - startTs) < 24 * 60 * 60 * 1000;
     }
 
     function orderUpcomingLaunchesFor2D(launches) {
@@ -3207,10 +3259,10 @@
 
             const color = launchColor(t0, now, minLaunchTs, maxLaunchTs);
             const isLaunchGlow = t0 ? isRocketCloudVisible(t0.toISOString(), t0.toISOString(), lat, lon) : false;
-            const launchGlowStyle = isLaunchGlow ? 'box-shadow: 0 0 15px 4px #fff;' : 'border: 2px solid #fff;';
 
             const launchRecord = {
               lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color, ts: t0 ? t0.getTime() : null,
+              isLaunchGlow,
               windowStartTs, windowEndTs,
               expiryTs: Number.isFinite(windowEndTs) ? windowEndTs : t0Ts,
               location: `${locName}${padName ? ' / ' + padName : ''}`,
@@ -3221,12 +3273,7 @@
               imageUrl,
               imageCredit
             };
-            const lIcon = L.divIcon({
-              html: `<div style="background:${color}; width:24px; height:24px; border-radius:50%; ${launchGlowStyle} display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
-              className: 'launch-upcoming-icon',
-              iconSize: [28, 28],
-              iconAnchor: [14, 14]
-            });
+            const lIcon = buildUpcomingLaunchIcon(launchRecord, color);
             const lMarker = L.marker([lat, lon], { icon: lIcon, zIndexOffset: 2000 + idx });
             launchRecord.marker = lMarker;
             lMarker.bindPopup(() => {
@@ -3238,7 +3285,7 @@
               return `
                 ${buildLaunchImageMarkup(launchRecord, missionName)}
                 <div style="font-size:12px;color:#666;">${t('launch_upcoming')}</div>
-                <b style="color:${escapeHtml(color)}">${escapeHtml(missionName)}</b><br/>
+                <b style="color:${escapeHtml(launchRecord.color || color)}">${escapeHtml(missionName)}</b><br/>
                 ${vehicleName ? `${t('kml_vehicle')}: ${escapeHtml(vehicleName)}<br/>` : ''}
                 ${t('launch_site_label')}: ${escapeHtml(locName)}${padName ? ' / ' + escapeHtml(padName) : ''}<br/>
                 ${t('launch_time_label')}: ${escapeHtml(dateStr)}<br/>
@@ -3246,7 +3293,6 @@
                 ${warningStatus}
                 ${desc ? '<hr/><div style="max-width:320px;max-height:120px;overflow:auto;font-size:11px;white-space:pre-wrap;">' + escapeHtml(desc) + '</div>' : ''}
                 ${safeRllUrl ? `<a href="${escapeHtml(safeRllUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:11px;">${t('launch_details_link')}</a><br/>` : ''}
-                ${spaceDevsUrl && spaceDevsUrl !== safeRllUrl ? `<a href="${escapeHtml(spaceDevsUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:11px;">Launch Library 2</a><br/>` : ''}
                 <small style="color:#888;">${escapeHtml(sourceLabel)}${imageUrl ? ` · ${escapeHtml(imageCredit || 'The Space Devs image')}` : ''}</small>
               `;
             }, { maxWidth: 340 });
