@@ -1052,6 +1052,42 @@
     let upcomingLaunches = [];
     let pastLaunches = [];
 
+    function getNotamLaunchDateRange(startValue, endValue) {
+      const startText = startValue === undefined ? startEl.value : startValue;
+      const endText = endValue === undefined ? endEl.value : endValue;
+      const start = startText ? Date.parse(`${startText}T00:00:00Z`) : -Infinity;
+      const end = endText ? Date.parse(`${endText}T23:59:59Z`) : Infinity;
+      return {
+        start: Number.isFinite(start) ? start : -Infinity,
+        end: Number.isFinite(end) ? end : Infinity
+      };
+    }
+
+    function isUpcomingLaunchInNotamRange(launch, range = getNotamLaunchDateRange()) {
+      const timestamp = Number(launch?.ts);
+      if (!Number.isFinite(timestamp)) {
+        return range.start === -Infinity && range.end === Infinity;
+      }
+      return timestamp >= range.start && timestamp <= range.end;
+    }
+
+    function upcomingLaunchesForNotamRange(launches = upcomingLaunches, range = getNotamLaunchDateRange()) {
+      return (Array.isArray(launches) ? launches : [])
+        .filter(launch => isUpcomingLaunchInNotamRange(launch, range));
+    }
+
+    function syncUpcomingLaunchLayerToNotamRange() {
+      const visible = new Set(upcomingLaunchesForNotamRange());
+      upcomingLaunches.forEach(launch => {
+        if (!launch.marker) return;
+        if (visible.has(launch)) {
+          if (!launchLayerGroup.hasLayer(launch.marker)) launch.marker.addTo(launchLayerGroup);
+        } else if (launchLayerGroup.hasLayer(launch.marker)) {
+          launchLayerGroup.removeLayer(launch.marker);
+        }
+      });
+    }
+
     function renderOnGlobe(rows) {
       try {
         if (!cesiumViewer || !rows) return;
@@ -1096,7 +1132,7 @@
           }
 
           // 1b. Render Upcoming Launches (Dynamic)
-          upcomingLaunches.forEach(launch => {
+          upcomingLaunchesForNotamRange().forEach(launch => {
             if (!launch.lat || !launch.lon) return;
             const iconColor = launch.color || 'yellow';
             addCesiumEntity({
@@ -1121,7 +1157,7 @@
         // 排序：时间早的最后渲染（叠在上方）
         rows.sort((a,b) => (Date.parse(b.from_utc) || 0) - (Date.parse(a.from_utc) || 0));
 
-        const launchTimes = upcomingLaunches.map(l => l.ts).filter(Number.isFinite);
+        const launchTimes = upcomingLaunchesForNotamRange().map(l => l.ts).filter(Number.isFinite);
         const { minTs, maxTs } = getTimelineBounds(rows, launchTimes);
 
         rows.forEach(r => {
@@ -1255,7 +1291,7 @@
         }
       });
 
-        console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunches.length} upcoming, ${pastLaunches.length} past.`);
+        console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunchesForNotamRange().length} upcoming in the NOTAM date range, ${pastLaunches.length} past.`);
         if (cesiumViewer.entities.values.length > 0) {
           cesiumViewer.zoomTo(cesiumViewer.entities);
         }
@@ -1708,10 +1744,13 @@
       return (rows || []).filter(row => related.has(row));
     }
 
-    function relatedLaunchesForRows(rows, launches = upcomingLaunches) {
+    function relatedLaunchesForRows(rows, launches) {
+      const launchList = launches === undefined
+        ? (typeof upcomingLaunchesForNotamRange === 'function' ? upcomingLaunchesForNotamRange() : upcomingLaunches)
+        : launches;
       const related = [];
       const seen = new Set();
-      (launches || []).forEach(launch => {
+      (launchList || []).forEach(launch => {
         const launchTs = Number(launch.ts);
         if (!Number.isFinite(launchTs)) return;
         if (!relatedWarningRowsForLaunch(launch, rows).length) return;
@@ -1765,6 +1804,8 @@
 
     function renderRows(rows) {
       filteredDataRows = rows;
+      syncUpcomingLaunchLayerToNotamRange();
+      updateLaunchSummary();
       if (is3D) {
         renderOnGlobe(rows);
       }
@@ -1785,7 +1826,7 @@
       // 排序：时间早的（即将发生/红色）最后渲染，排在最上方
       rows.sort((a, b) => (Date.parse(b.from_utc) || 0) - (Date.parse(a.from_utc) || 0));
 
-      const launchTimes = upcomingLaunches.map(l => l.ts).filter(Number.isFinite);
+      const launchTimes = upcomingLaunchesForNotamRange().map(l => l.ts).filter(Number.isFinite);
       const { minTs, maxTs } = getTimelineBounds(rows, launchTimes);
 
       if (currentFeatureGroup) map.removeLayer(currentFeatureGroup);
@@ -1898,7 +1939,13 @@
           shape.bindPopup(popup);
           attachNotamClickForSolarOverlay(shape, r, lat, lon);
           shape.addTo(group);
-          primaryBounds.extend(shape.getBounds());
+          try {
+            primaryBounds.extend(shape.getBounds());
+          } catch (boundsErr) {
+            // Some Leaflet path types need a map reference before computing
+            // their bounds; the warning centre remains a safe fit fallback.
+            primaryBounds.extend([lat, lon]);
+          }
           layers.push(shape);
         }
       });
@@ -2299,7 +2346,7 @@
 
     function generateCurrentViewKml() {
       const rows = Array.isArray(filteredDataRows) ? filteredDataRows : [];
-      const launchRows = launchToggle.checked && Array.isArray(upcomingLaunches) ? upcomingLaunches : [];
+      const launchRows = launchToggle.checked ? upcomingLaunchesForNotamRange() : [];
       const placemarks = [];
 
       rows.forEach(r => {
@@ -2563,9 +2610,21 @@
     let pastLaunchLayerGroup = L.layerGroup();
     let pastLaunchMarkerRecords = [];
     let upcomingLaunchExpiryTimer = null;
+    let launchSummaryState = null;
     let launchSites = {}; // abbrev -> {lat, lon, name}
     // Also build a by-name index for RLL lookups
     let launchSitesByName = {}; // partial name -> {lat, lon}
+
+    function updateLaunchSummary() {
+      if (!launchSummaryState) return;
+      launchStatusEl.textContent = t('launch_summary', {
+        upcoming: upcomingLaunchesForNotamRange().length,
+        past: launchSummaryState.past,
+        sites: launchSummaryState.sites,
+        range: launchSummaryState.range
+      });
+    }
+
     function scheduleUpcomingLaunchExpiry() {
       if (upcomingLaunchExpiryTimer !== null) {
         clearTimeout(upcomingLaunchExpiryTimer);
@@ -2598,6 +2657,7 @@
             }
           });
           upcomingLaunches = active;
+          updateLaunchSummary();
           if (is3D) renderOnGlobe(filteredDataRows);
         }
         scheduleUpcomingLaunchExpiry();
@@ -3045,7 +3105,6 @@
         // 3. Fetch upcoming launches. Launch Library 2 is primary; the
         // RocketLaunch.Live/local layer is retained only as a failure fallback.
         const now = new Date();
-        let upcomingCount = 0;
         try {
           upcomingLaunches = [];
           let localUpcoming = [];
@@ -3194,8 +3253,8 @@
             lMarker.on('click', () => selectLaunchForSolarOverlay(launchRecord));
             lMarker.addTo(launchLayerGroup);
             upcomingLaunches.push(launchRecord);
-            upcomingCount++;
           });
+          syncUpcomingLaunchLayerToNotamRange();
         } catch (rllErr) {
           console.warn('[RLL] Failed to fetch upcoming launches:', rllErr);
         }
@@ -3270,12 +3329,12 @@
           ? `${isoDate(new Date(Math.min(...pastDates)))} – ${isoDate(new Date(Math.max(...pastDates)))}`
           : t('launch_history_empty');
         rebuildPastLaunchLayer();
-        launchStatusEl.textContent = t('launch_summary', {
-          upcoming: upcomingCount,
+        launchSummaryState = {
           past: pastCount,
           sites: Object.keys(launchSites).length,
           range: historyRange
-        });
+        };
+        updateLaunchSummary();
 
         renderRows(filteredDataRows);
       } catch (err) {

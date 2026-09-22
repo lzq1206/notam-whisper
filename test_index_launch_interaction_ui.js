@@ -24,7 +24,7 @@ assertContains(/lMarker\.on\('click',\s*\(\)\s*=>\s*selectLaunchForSolarOverlay\
   '2D upcoming launch click must select the launch time for the solar overlay');
 const renderOnGlobe = extractFunctionBlock(html, 'function renderOnGlobe(');
 if (!renderOnGlobe) throw new Error('renderOnGlobe function is missing');
-const upcomingGlobeBlockStart = renderOnGlobe.indexOf('upcomingLaunches.forEach');
+const upcomingGlobeBlockStart = renderOnGlobe.indexOf('upcomingLaunchesForNotamRange().forEach');
 const upcomingGlobeBlockEnd = renderOnGlobe.indexOf('// 排序', upcomingGlobeBlockStart);
 const upcomingGlobeBlock = upcomingGlobeBlockStart >= 0 && upcomingGlobeBlockEnd > upcomingGlobeBlockStart
   ? renderOnGlobe.slice(upcomingGlobeBlockStart, upcomingGlobeBlockEnd)

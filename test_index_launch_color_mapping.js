@@ -38,7 +38,7 @@ if (!/const\s*\{\s*minTs\s*:\s*minLaunchTs\s*,\s*maxTs\s*:\s*maxLaunchTs\s*\}\s*
   throw new Error('Upcoming launch bounds should include filteredDataRows and upcomingTimes');
 }
 
-if (!/const\s+launchTimes\s*=\s*upcomingLaunches\.map\(\s*l\s*=>\s*l\.ts\s*\)\.filter\(\s*Number\.isFinite\s*\)\s*;/.test(html)) {
+if (!/const\s+launchTimes\s*=\s*upcomingLaunchesForNotamRange\(\)\.map\(\s*l\s*=>\s*l\.ts\s*\)\.filter\(\s*Number\.isFinite\s*\)\s*;/.test(html)) {
   throw new Error('NOTAM rendering should gather launch timestamps for shared timeline bounds');
 }
 
