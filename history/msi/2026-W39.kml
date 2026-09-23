@@ -74,26 +74,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 625/26</name>
-      <description>110707Z SEP 26  NAVAREA XII 625/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 160100Z TO 160523Z SEP, ALTERNATE         0100Z TO 0523Z DAILY 17 THRU 22 SEP         IN AREA BOUND BY        32-01.00N 120-03.00W, 32-01.00N 120-00.00W,        33-22.00N 120-12.00W, 34-27.00N 120-23.00W,        34-40.00N 120-36.00W, 34-39.00N 120-40.00W,        34-20.00N 120-39.00W, 33-04.00N 120-20.00W.     B. 160100Z TO 160543Z SEP, ALTERNATE         0100Z TO 0543Z DAILY 17 THR</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-120.05,32.016667,0 -120.0,32.016667,0 -120.2,33.366667,0 -120.383333,34.45,0 -120.6,34.666667,0 -120.666667,34.65,0 -120.65,34.333333,0 -120.333333,33.066667,0 -120.05,32.016667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-119.266667,27.666667,0 -119.883333,28.683333,0 -119.916667,28.95,0 -119.783333,30.75,0 -118.766667,28.916667,0 -118.716667,28.65,0 -119.266667,27.666667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROLANT 237/26(54)</name>
       <description>031744Z FEB 26  HYDROLANT 237/26(54).  AEGEAN SEA.  DNC 09.  1. MISSILE OPERATIONS 0530Z TO SUNSET DAILY EVERY     WEDNESDAY THRU SATURDAY UNTIL 14 JUN AND     16 SEB THRU 31 DEC IN AREAS:     A. BOUND BY        35-36.00N 024-07.00E, 36-18.00N 024-07.00E,        36-18.00N 025-59.00E, 36-25.00N 026-12.00E,        36-16.00N 026-40.00E, 35-36.00N 026-41.00E,        35-31.00N 024-11.00E.     B. WITHIN ONE MILE OF 35-32.00N 024-13.00E.     C. WITHIN ONE MILE OF 35-36.33N 024-10.00E.  2. CANCEL THIS M</description>
       <MultiGeometry>
@@ -209,17 +189,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2626/26</name>
-      <description>080604Z SEP 26  HYDROPAC 2626/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0245Z TO 0723Z DAILY 16 THRU 22 SEP     IN AREA BOUND BY     27-48.00S 136-13.00W, 27-19.00S 133-10.00W,     43-24.00S 129-14.00W, 59-13.00S 122-24.00W,     59-42.00S 127-43.00W, 43-51.00S 133-07.00W.  2. CANCEL THIS MSG 220823Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-136.216667,-27.8,0 -133.166667,-27.316667,0 -129.233333,-43.4,0 -122.4,-59.216667,0 -127.716667,-59.7,0 -133.116667,-43.85,0 -136.216667,-27.8,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
