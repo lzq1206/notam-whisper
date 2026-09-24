@@ -209,33 +209,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2726/26</name>
-      <description>201153Z SEP 26  HYDROPAC 2726/26  SOUTH CHINA SEA.  SULU SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     231100Z TO 231700Z SEP IN AREAS BOUND BY:     A. 12-24.60N 116-04.20E, 13-17.40N 115-24.60E,        13-37.20N 115-52.20E, 12-43.80N 116-31.20E.     B. 07-47.00N 119-21.60E, 08-40.80N 118-43.20E,        09-00.00N 119-10.80E, 08-06.60N 119-48.60E.     C. 07-35.40N 119-23.40E, 08-28.80N 118-45.00E,        08-54.00N 119-21.60E, 08-00.60N 119-59.40E.  2. CANCEL THIS MSG 231800Z SEP 2</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>116.07,12.41,0 115.41,13.29,0 115.87,13.62,0 116.52,12.73,0 116.07,12.41,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>119.36,7.783333,0 118.72,8.68,0 119.18,9.0,0 119.81,8.11,0 119.36,7.783333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>119.39,7.59,0 118.75,8.48,0 119.36,8.9,0 119.99,8.01,0 119.39,7.59,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 1650/25(16)</name>
       <description>242359Z JUN 25  HYDROPAC 1650/25(16).  NORTH PACIFIC.  DNC 25.  M/V MORNING MIDAS SANK IN 45-16.88N 179-14.13W.  VESSELS IN VICINITY REQUESTED TO NAVIGATE WITH  CAUTION AND REPORT PRESENCE OF OIL SHEENS OR  DEBRIS TO USCG SECTOR WESTERN ALASKA AND US ARCTIC,  PHONE: 907 428 4100, E-MAIL: SOUTHWESTERNAK@USCG.MIL.</description>
       <Polygon>
