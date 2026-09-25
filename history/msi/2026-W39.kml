@@ -34,6 +34,26 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>NAVAREA XII 662/26</name>
+      <description>191638Z SEP 26  NAVAREA XII 662/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 301600Z TO 302025Z SEP, ALTERNATE        1600Z TO 2025Z DAILY 01 THRU 06 OCT        IN AREA BOUND BY        29-48.00N 117-39.00W, 34-28.00N 120-18.00W,        34-40.00N 120-36.00W, 34-39.00N 120-39.00W,        34-30.00N 120-39.00W, 29-35.00N 118-12.00W,        29-52.00N 117-54.00W.     B. 301600Z TO 302043Z SEP, ALTERNATE        1600Z TO 2043Z DAILY 01 THRU 06 OCT        IN AREA BO</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-117.65,29.8,0 -120.3,34.466667,0 -120.6,34.666667,0 -120.65,34.65,0 -120.65,34.5,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-117.65,29.8,0 -117.9,29.866667,0 -118.2,29.583333,0 -118.133333,29.4,0 -118.033333,29.25,0 -117.983333,29.033333,0 -117.316667,28.2,0 -117.316667,28.833333,0 -117.266667,29.6,0 -117.65,29.8,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA XII 657/26</name>
       <description>231328Z SEP 26  NAVAREA XII 657/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1427Z TO 1833Z DAILY 28 SEP THRU 04 OCT     IN AREA BOUND BY     23-55.00N 144-37.00E, 26-07.00N 151-14.00E,     27-41.00N 156-20.00E, 29-25.00N 165-03.00E,     30-26.00N 172-41.00E, 30-56.00N 180-00.00W,     31-11.00N 175-00.00W, 31-17.00N 171-29.00W,     30-33.00N 161-15.00W, 29-37.00N 155-40.00W,     28-49.00N 151-35.00W, 26-53.00N 145-26.00W,     26-50.00N 145-28.00W, 24-03.00N 154-32.00W,     23-4</description>
       <Polygon>
@@ -98,17 +118,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>144.616667,23.916667,0 151.233333,26.116667,0 156.333333,27.683333,0 165.05,29.416667,0 172.683333,30.433333,0 -180.0,30.933333,0 -175.0,31.183333,0 -171.483333,31.283333,0 -161.25,30.55,0 -155.666667,29.616667,0 -151.583333,28.816667,0 -145.433333,26.883333,0 -145.466667,26.833333,0 -154.533333,24.05,0 -156.183333,23.766667,0 -159.316667,24.866667,0 -167.816667,27.633333,0 -175.0,29.416667,0 -176.583333,29.75,0 -180.0,29.816667,0 176.233333,29.683333,0 170.166667,29.216667,0 164.983333,28.466667,0 156.25,26.65,0 144.8,23.466667,0 144.616667,23.916667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2755/26</name>
-      <description>230850Z SEP 26  HYDROPAC 2755/26.  ARABIAN SEA.  PAKISTAN.  1. MISSILE AND GUNNERY OPERATIONS      231900Z TO 251300Z SEP IN AREA BOUND BY     25-28.00N 063-18.00E, 25-28.00N 066-00.00E,     23-35.00N 066-00.00E, 23-35.00N 063-18.00E.  2. CANCEL THIS MSG 251400Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>63.3,25.466667,0 66.0,25.466667,0 66.0,23.583333,0 63.3,23.583333,0 63.3,25.466667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -198,34 +207,23 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 247/26</name>
-      <description>200046Z SEP 26  HYDROARC 247/26.  NORWEGIAN SEA.  NORWAY.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0700Z TO 1500Z DAILY 21 THRU 25 SEP     IN AREA BOUND BY     69-06.78N 015-37.92E, 69-08.28N 015-40.68E,     69-43.80N 014-59.76E, 69-45.12N 014-33.72E,     69-37.26N 014-25.74E, 69-06.18N 015-32.70E,     69-06.78N 015-37.92E.  2. CANCEL THIS MSG 251600Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>15.632,69.113,0 15.678,69.138,0 14.996,69.73,0 14.562,69.752,0 14.429,69.621,0 15.545,69.103,0 15.632,69.113,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 240/26</name>
-      <description>161857Z SEP 26  HYDROARC 240/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 2100Z TO 1800Z DAILY     21 THRU 24 SEP IN AREA BOUND BY     72-52.25N 034-14.50E, 72-27.17N 037-59.50E,     70-49.00N 036-34.00E, 69-42.50N 033-08.50E,     69-47.00N 032-36.50E, 71-02.00N 032-21.25E.  2. CANCEL THIS MSG 251900Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>34.241667,72.870833,0 37.991667,72.452833,0 36.566667,70.816667,0 33.141667,69.708333,0 32.608333,69.783333,0 32.354167,71.033333,0 34.241667,72.870833,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 228/26</name>
       <description>101300Z SEP 26  HYDROARC 228/26.  ARCTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0128Z TO 0244Z DAILY 15 SEP THRU 15 OCT     IN AREA BOUND BY     77-06.00N 161-35.00E, 76-42.00N 163-41.00E,     81-06.00N 135-04.00W, 81-42.00N 134-18.00W.  2. CANCEL THIS MSG 150344Z OCT 26.</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>161.583333,77.1,0 163.683333,76.7,0 -135.066667,81.1,0 -134.3,81.7,0 161.583333,77.1,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 247/26</name>
+      <description>200046Z SEP 26  HYDROARC 247/26.  NORWEGIAN SEA.  NORWAY.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0700Z TO 1500Z DAILY 21 THRU 25 SEP     IN AREA BOUND BY     69-06.78N 015-37.92E, 69-08.28N 015-40.68E,     69-43.80N 014-59.76E, 69-45.12N 014-33.72E,     69-37.26N 014-25.74E, 69-06.18N 015-32.70E,     69-06.78N 015-37.92E.  2. CANCEL THIS MSG 251600Z SEP 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>15.632,69.113,0 15.678,69.138,0 14.996,69.73,0 14.562,69.752,0 14.429,69.621,0 15.545,69.103,0 15.632,69.113,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
