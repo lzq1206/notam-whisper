@@ -258,6 +258,18 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>B1975/26</name>
+      <description>B1975/26 NOTAMN  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2609281215  C) 2610041452  D) DLY 1215-1452  E) AIRSPACE LAUNCH OPERATIONS ADVISORY: IN THE EVENT OF A     DEBRIS-GENERATING SPACE LAUNCH VEHICLE MISHAP THERE IS THE POTENTIAL     FOR DEBRIS FALLING WITHIN THE AREA DEFINED AS     2557N 09711W - 2600N 09700W - 2600N 09555W - 2502N 09400W -     2430N 09300W - 2430N 08921W - 2404N 08833W - 2218N 08600W -     2200N 08600W - 2109N 08534W - 2225N 08918W - 2220N 09351W     2326N 09415W - 2553</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.183333,25.95,0 -97.0,26.0,0 -95.916667,26.0,0 -94.0,25.033333,0 -93.0,24.5,0 -89.35,24.5,0 -88.55,24.066667,0 -86.0,22.3,0 -86.0,22.0,0 -85.566667,21.15,0 -89.3,22.416667,0 -93.85,22.333333,0 -94.25,23.433333,0 -97.166667,25.883333,0 -97.183333,25.95,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B4714/26</name>
       <description>B4714/26 NOTAMN  Q) NZZC/QRDCA/IV/BO /W /000/999/3916S17813E040  A) NZZC B) 2609252345 C) 2609260205  E) TEMPO DANGER AREA NZD031 (MAHIA EAST CAPE) IS PRESCRIBED AS FLW:  EXCLUDING THAT AREA CO-INCIDENT WITH NZR401, ALL THAT AIRSPACE   BOUNDED BY A LINE JOINING:  39 06 00.00 S 177 36 00.00 E  39 06 00.00 S 177 54 00.00 E  38 54 00.00 S 178 18 00.00 E  38 54 00.00 S 178 54 00.00 E  39 30 00.00 S 179 00 00.00 E  39 39 00.00 S 177 48 00.00 E  39 12 00.00 S 177 24 00.00 E  39 06 00.00 S 177 36 00.00</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -325,6 +337,18 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-167.0,-35.4,0 -160.47,-33.8,0 -159.5,-36.0,0 -166.4,-37.6,0 -167.0,-35.4,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>G0316/26</name>
+      <description>G0316/26 NOTAMN  Q) SOOO/QWMLW/IV/BO /W /000/999/0756N05221W119  A) SOOO B) 2609281215 C) 2610041634  D) 1215-1634  E) RISK OF ELEMENTS FALLOUT DURING LAUNCH OF STARSHIP 14  CONTROL RESTRICTIONS AND REROUTING SET UP TO AVOID AREA  LATERAL LIMITS :  080900N0540000W 085700N0540000W 070000N0503800W 064000N0505200W  F) SFC G) UNL    CREATED: 25 SEP 2026 17:37  SOURCE: EUECYIYN</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-54.0,8.15,0 -54.0,8.95,0 -50.633333,7.0,0 -50.866667,6.666667,0 -54.0,8.15,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
