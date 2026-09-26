@@ -196,17 +196,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 248/26</name>
-      <description>200513Z SEP 26  HYDROARC 248/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 0400Z TO 1500Z     DAILY 25 AND 26 SEP IN AREA BOUND BY     70-18.00N 036-10.00E, 69-53.00N 036-50.00E,     69-31.00N 034-45.00E, 69-27.80N 033-24.50E,     69-32.00N 033-17.80E, 69-53.00N 034-12.00E.  2. CANCEL THIS MSG 261600Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>36.166667,70.3,0 36.833333,69.883333,0 34.75,69.516667,0 33.408333,69.463333,0 33.296667,69.533333,0 34.2,69.883333,0 36.166667,70.3,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 228/26</name>
       <description>101300Z SEP 26  HYDROARC 228/26.  ARCTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0128Z TO 0244Z DAILY 15 SEP THRU 15 OCT     IN AREA BOUND BY     77-06.00N 161-35.00E, 76-42.00N 163-41.00E,     81-06.00N 135-04.00W, 81-42.00N 134-18.00W.  2. CANCEL THIS MSG 150344Z OCT 26.</description>
       <Polygon>
