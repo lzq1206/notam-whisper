@@ -54,6 +54,54 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>FDC 6/5573</name>
+      <description>FDC 6/5573 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Monday, September 28, 2026 Local. NOTAM Number : FDC 6/5573 Download shapefiles Issue Date : September 26, 2026 at 0200 UTC Location : Starbase, Texas Beginning Date and Time : September 28, 2026 at 1200 UTC Ending Date and Time : September 28, 2026 at 1408 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To: Affected Areas Operating Rest</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.116667,26.066667,0 -96.916667,26.066667,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/5574</name>
+      <description>FDC 6/5574 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Tuesday, September 29, 2026 Local. NOTAM Number : FDC 6/5574 Download shapefiles Issue Date : September 26, 2026 at 0200 UTC Location : Starbase, Texas Beginning Date and Time : September 29, 2026 at 1200 UTC Ending Date and Time : September 29, 2026 at 1408 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To: Affected Areas Operating Res</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.116667,26.066667,0 -96.916667,26.066667,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/5575</name>
+      <description>FDC 6/5575 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Wednesday, September 30, 2026 Local. NOTAM Number : FDC 6/5575 Download shapefiles Issue Date : September 26, 2026 at 0200 UTC Location : Starbase, Texas Beginning Date and Time : September 30, 2026 at 1200 UTC Ending Date and Time : September 30, 2026 at 1408 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To: Affected Areas Operating R</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.116667,26.066667,0 -96.916667,26.066667,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A4685/26</name>
+      <description>A4685/26 NOTAMN  Q) KZAK/QRACA/IV/NBO/W/000/999/  A) KZAK  B) 2609281427  C) 2609281833  E) SPACEX HAS PLANNED A ROCKET LAUNCH. DEBRIS FM THIS LAUNCH WILL FALL WI AN AREA DEFINED  AS 270000N 1574400E TO 270000N 1550000E TO 262100N 1550000E TO POINT OF ORIGIN. IN THE INTEREST OF SAFETY ALL NON-PARTICIPATING AIR TFC ARE ADZ TO AVOID THE NOTAMED AREA. IFR ACFT UNDER ATC JURISDICTION SHOULD ANTICIPATE CLR AROUND THE NOTAMED AREA.  F) SFC  G) UNL    CREATED: 25 SEP 2026 20:00  SOURCE: </description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>157.733333,27.0,0 155.0,27.0,0 155.0,26.35,0 157.733333,27.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B4912/26</name>
       <description>B4912/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1945N12932E089  A) RPHI B) 2610070323 C) 2610140453  D) 0323 - 0453  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY KOREA.  EST FALL AREA OF UNBURNED DEBRIS WI:  210000N 1284522E -  210000N 1295838E -  182943N 1301736E -  182122N 1290634E -  210000N 1284522E  (380NM EAST OF BASCO PRINCIPAL AP (CLASS 2))  F) SFC G) UNL    CREATED: 17 SEP 2026 13:16  SOURCE: EUECYIYN</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -126,8 +174,8 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>A0370/26</name>
-      <description>A0370/26 NOTAMN  Q) MKJK/QRTCA/IV/BO/W/000/999/1713N07808W999  A) MKJK  B) 2609281215 C) 2610041408  D) DAILY 1215-1408  E) RESTRICTED AREA (DEBRIS RESPONSE AREA) ACT DUE LAUNCH OF SPACEX STARSHIP FLT-14;   ALL FLT PROHIBITED WI THE FLW COORD:   2000N 08200W  2000N 07855W  1907N 07630W  1830N 07500W  1700N 07300W  1656N 07303W  1700N 07312W  1724N 07417W  1836N 07712W  1926N 08012W  2000N 08200W.  F) SFC G) UNL    CREATED: 23 SEP 2026 23:09  SOURCE: MKJKYNYX</description>
+      <name>A0388/26</name>
+      <description>A0388/26 NOTAMN  Q) MKJK/QRTCA/IV/BO/W/000/999/1713N07808W999  A) MKJK  B) 2609281215 C) 2610041414  D) DAILY 1215-1414  E) RESTRICTED AREA (DEBRIS RESPONSE AREA) ACT DUE LAUNCH OF SPACEX STARSHIP FLT-14;   ALL FLT PROHIBITED WI THE FLW COORD:   2000N 08200W  2000N 07855W  1907N 07630W  1830N 07500W  1700N 07300W  1656N 07303W  1700N 07312W  1724N 07417W  1836N 07712W  1926N 08012W  2000N 08200W.  F) SFC G) UNL    CREATED: 25 SEP 2026 22:41  SOURCE: MKJKYNYX</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
@@ -145,6 +193,18 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-73.066667,16.95,0 -71.666667,16.433333,0 -70.483333,16.0,0 -69.933333,15.8,0 -67.2,15.033333,0 -67.083333,15.566667,0 -68.216667,16.0,0 -71.666667,17.0,0 -73.0,17.0,0 -73.066667,16.95,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A0575/26</name>
+      <description>A0575/26 NOTAMN  Q) MDCS/QRDCA/IV/BO/W/000/999/1822N06957W999  A) MDCS B) 2609281215 C) 2609281408  E) DUE TO SPACEX STARSHIP FLIGHT-14 SPACE OPERATIONS,   A DEBRIS RESPONSE AREA (DRA) IS ESTABLISHED.   ALL FLIGHT OPERATIONS ARE PROHIBITED WITHIN THE AREA   DESCRIBED BELOW DURING THE PERIOD OF THIS NOTAM.   THE DRA IS BOUNDED BY:   1626N07140W   1600N07030W   1600N06811W   1624N06910W   1721N07142W  1626N07140W   AIRCRAFT SHALL AVOID THE AREA AND COMPLY WITH ATC   INSTRUCTIONS. ATFM MEASURES, IN</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-71.666667,16.433333,0 -70.5,16.0,0 -68.183333,16.0,0 -69.166667,16.4,0 -71.7,17.35,0 -71.666667,16.433333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -270,37 +330,49 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B4714/26</name>
-      <description>B4714/26 NOTAMN  Q) NZZC/QRDCA/IV/BO /W /000/999/3916S17813E040  A) NZZC B) 2609252345 C) 2609260205  E) TEMPO DANGER AREA NZD031 (MAHIA EAST CAPE) IS PRESCRIBED AS FLW:  EXCLUDING THAT AREA CO-INCIDENT WITH NZR401, ALL THAT AIRSPACE   BOUNDED BY A LINE JOINING:  39 06 00.00 S 177 36 00.00 E  39 06 00.00 S 177 54 00.00 E  38 54 00.00 S 178 18 00.00 E  38 54 00.00 S 178 54 00.00 E  39 30 00.00 S 179 00 00.00 E  39 39 00.00 S 177 48 00.00 E  39 12 00.00 S 177 24 00.00 E  39 06 00.00 S 177 36 00.00</description>
+      <name>G0316/26</name>
+      <description>G0316/26 NOTAMN  Q) SOOO/QWMLW/IV/BO /W /000/999/0756N05221W119  A) SOOO B) 2609281215 C) 2610041634  D) 1215-1634  E) RISK OF ELEMENTS FALLOUT DURING LAUNCH OF STARSHIP 14  CONTROL RESTRICTIONS AND REROUTING SET UP TO AVOID AREA  LATERAL LIMITS :  080900N0540000W 085700N0540000W 070000N0503800W 064000N0505200W  F) SFC G) UNL    CREATED: 25 SEP 2026 17:37  SOURCE: EUECYIYN</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>177.6,-39.1,0 177.9,-39.1,0 178.3,-38.9,0 178.9,-38.9,0 179.0,-39.5,0 177.8,-39.65,0 177.4,-39.2,0 177.6,-39.1,0</coordinates>
+            <coordinates>-54.0,8.15,0 -54.0,8.95,0 -50.633333,7.0,0 -50.866667,6.666667,0 -54.0,8.15,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B4715/26</name>
-      <description>B4715/26 NOTAMN  Q) NZZO/QRDCA/IV/BO /W /000/999/3812S17510W153  A) NZZO B) 2609252345 C) 2609260205  E) TEMPO DANGER AREA NZD032 (NORTH CHATHAM ISLANDS) IS PRESCRIBED AS  FLW:  ALL THAT AIRSPACE BOUNDED BY A LINE JOINING:  37 45 36.00 S 178 18 00.00 W  36 36 00.00 S 172 48 00.00 W  38 33 00.00 S 172 00 00.00 W  39 39 00.00 S 177 40 12.00 W  37 45 36.00 S 178 18 00.00 W  ACTIVITY: ROCKET DEBRIS RETURN  USING AGENCY: ROCKET LAB LIMITED, RANGE CONTROL CENTRE,   TEL +64 28 255 11638   PRESCRIBED PU</description>
+      <name>W3068/26</name>
+      <description>W3068/26 NOTAMN   Q)SCIZ/QXXXX/IV/NBO/W/000/999/2918S10101W980  A)SCIZ B)2609282107 C)2610050108  D)SEP 28-29 29-30 BTN 2107-0108   30-OCT 01 01-02 02-03 03-04 04-05 DLY BTN 2107-0108  E)ZONE ...D... IN WATERS PACIFIC OCEAN DUE TO SPACE VEHICLE RE-ENTRY  AND SPLASHDOWN ACTIVITY.  THE AFECCTED AREA IS BOUNDED BY NXT GEO COORD:  291100S/1200000W  280000S/1200000W  281100S/1183300W  284500S/1123900W  281800S/1110000W  282600S/1032600W  265500S/1013900W  263200S/0991200W  251700S/0915600W  235400S/0</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>-178.3,-37.76,0 -172.8,-36.6,0 -172.0,-38.55,0 -177.67,-39.65,0 -178.3,-37.76,0</coordinates>
+            <coordinates>-120.0,-29.183333,0 -120.0,-28.0,0 -118.55,-28.183333,0 -112.65,-28.75,0 -111.0,-28.3,0 -103.433333,-28.433333,0 -101.65,-26.916667,0 -99.2,-26.533333,0 -91.933333,-25.283333,0 -83.783333,-23.9,0 -82.816667,-27.283333,0 -82.783333,-30.35,0 -85.566667,-31.033333,0 -87.566667,-30.633333,0 -93.1,-30.966667,0 -102.1,-31.516667,0 -106.883333,-31.25,0 -113.016667,-30.6,0 -119.3,-29.316667,0 -120.0,-29.183333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>B4716/26</name>
-      <description>B4716/26 NOTAMN  Q) NZZO/QRDCA/IV/BO /W /000/999/3549S16317W187  A) NZZO B) 2609252345 C) 2609260205  E) TEMPO DANGER AREA NZD033 (AUCKLAND OCEANIC FIR) IS   PRESCRIBED AS FLW:  ALL THAT AIRSPACE BOUNDED BY A LINE JOINING:  35 24 00 S 167 00 00 W  33 48 00 S 160 28 12 W  36 00 00 S 159 30 00 W  37 36 00 S 166 24 00 W  35 24 00 S 167 00 00 W  ACTIVITY: ROCKET DEBRIS RETURN  USING AGENCY: ROCKET LAB LIMITED, RANGE CONTROL CENTRE,   TEL +64 28 255 11638  PRESCRIBED PURSUANT TO CIVIL AVIATION RULE P</description>
+      <name>W3078/26</name>
+      <description>W3078/26 NOTAMN   Q)SCIZ/QXXXX/IV/NBO/W/000/999/4615S11109W980  A)SCIZ B)2609261343 C)2610021558  D)SEP 26 BTN 1343-1721  27 BTN 1436-1707  28 BTN 1315-1653    29 BTN 1301-1639  30 BTN 1247-1625  OCT 01 BTN 1234-1612  02 BTN 1220-1558  E)ZONE ...D... IN WATERS PACIFIC OCEAN DUE TO SPACE VEHICLE RE-ENTRY  AND SPLASHDOWN ACTIVITY.  THE AFECCTED AREA IS BOUNDED BY NXT GEO COORD:   300000S/1215300W  300000S/1200000W  284300S/1200000W  382100S/1150400W  490900S/1072200W  590900S/0953400W  595800S/099</description>
       <styleUrl>#polyStyle</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>-167.0,-35.4,0 -160.47,-33.8,0 -159.5,-36.0,0 -166.4,-37.6,0 -167.0,-35.4,0</coordinates>
+            <coordinates>-121.883333,-30.0,0 -120.0,-30.0,0 -120.0,-28.716667,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -121.883333,-30.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A0370/26</name>
+      <description>A0370/26 NOTAMN  Q) MKJK/QRTCA/IV/BO/W/000/999/1713N07808W999  A) MKJK  B) 2609281215 C) 2610041408  D) DAILY 1215-1408  E) RESTRICTED AREA (DEBRIS RESPONSE AREA) ACT DUE LAUNCH OF SPACEX STARSHIP FLT-14;   ALL FLT PROHIBITED WI THE FLW COORD:   2000N 08200W  2000N 07855W  1907N 07630W  1830N 07500W  1700N 07300W  1656N 07303W  1700N 07312W  1724N 07417W  1836N 07712W  1926N 08012W  2000N 08200W.  F) SFC G) UNL    CREATED: 23 SEP 2026 23:09  SOURCE: MKJKYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-82.0,20.0,0 -78.916667,20.0,0 -76.5,19.116667,0 -75.0,18.5,0 -73.0,17.0,0 -73.05,16.933333,0 -73.2,17.0,0 -74.283333,17.4,0 -77.2,18.6,0 -80.2,19.433333,0 -82.0,20.0,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -337,42 +409,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-167.0,-35.4,0 -160.47,-33.8,0 -159.5,-36.0,0 -166.4,-37.6,0 -167.0,-35.4,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>G0316/26</name>
-      <description>G0316/26 NOTAMN  Q) SOOO/QWMLW/IV/BO /W /000/999/0756N05221W119  A) SOOO B) 2609281215 C) 2610041634  D) 1215-1634  E) RISK OF ELEMENTS FALLOUT DURING LAUNCH OF STARSHIP 14  CONTROL RESTRICTIONS AND REROUTING SET UP TO AVOID AREA  LATERAL LIMITS :  080900N0540000W 085700N0540000W 070000N0503800W 064000N0505200W  F) SFC G) UNL    CREATED: 25 SEP 2026 17:37  SOURCE: EUECYIYN</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-54.0,8.15,0 -54.0,8.95,0 -50.633333,7.0,0 -50.866667,6.666667,0 -54.0,8.15,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>W3068/26</name>
-      <description>W3068/26 NOTAMN   Q)SCIZ/QXXXX/IV/NBO/W/000/999/2918S10101W980  A)SCIZ B)2609282107 C)2610050108  D)SEP 28-29 29-30 BTN 2107-0108   30-OCT 01 01-02 02-03 03-04 04-05 DLY BTN 2107-0108  E)ZONE ...D... IN WATERS PACIFIC OCEAN DUE TO SPACE VEHICLE RE-ENTRY  AND SPLASHDOWN ACTIVITY.  THE AFECCTED AREA IS BOUNDED BY NXT GEO COORD:  291100S/1200000W  280000S/1200000W  281100S/1183300W  284500S/1123900W  281800S/1110000W  282600S/1032600W  265500S/1013900W  263200S/0991200W  251700S/0915600W  235400S/0</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-120.0,-29.183333,0 -120.0,-28.0,0 -118.55,-28.183333,0 -112.65,-28.75,0 -111.0,-28.3,0 -103.433333,-28.433333,0 -101.65,-26.916667,0 -99.2,-26.533333,0 -91.933333,-25.283333,0 -83.783333,-23.9,0 -82.816667,-27.283333,0 -82.783333,-30.35,0 -85.566667,-31.033333,0 -87.566667,-30.633333,0 -93.1,-30.966667,0 -102.1,-31.516667,0 -106.883333,-31.25,0 -113.016667,-30.6,0 -119.3,-29.316667,0 -120.0,-29.183333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>W3078/26</name>
-      <description>W3078/26 NOTAMN   Q)SCIZ/QXXXX/IV/NBO/W/000/999/4615S11109W980  A)SCIZ B)2609261343 C)2610021558  D)SEP 26 BTN 1343-1721  27 BTN 1436-1707  28 BTN 1315-1653    29 BTN 1301-1639  30 BTN 1247-1625  OCT 01 BTN 1234-1612  02 BTN 1220-1558  E)ZONE ...D... IN WATERS PACIFIC OCEAN DUE TO SPACE VEHICLE RE-ENTRY  AND SPLASHDOWN ACTIVITY.  THE AFECCTED AREA IS BOUNDED BY NXT GEO COORD:   300000S/1215300W  300000S/1200000W  284300S/1200000W  382100S/1150400W  490900S/1072200W  590900S/0953400W  595800S/099</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-121.883333,-30.0,0 -120.0,-30.0,0 -120.0,-28.716667,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -121.883333,-30.0,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
