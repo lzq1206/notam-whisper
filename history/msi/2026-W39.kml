@@ -218,17 +218,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 247/26</name>
-      <description>200046Z SEP 26  HYDROARC 247/26.  NORWEGIAN SEA.  NORWAY.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0700Z TO 1500Z DAILY 21 THRU 25 SEP     IN AREA BOUND BY     69-06.78N 015-37.92E, 69-08.28N 015-40.68E,     69-43.80N 014-59.76E, 69-45.12N 014-33.72E,     69-37.26N 014-25.74E, 69-06.18N 015-32.70E,     69-06.78N 015-37.92E.  2. CANCEL THIS MSG 251600Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>15.632,69.113,0 15.678,69.138,0 14.996,69.73,0 14.562,69.752,0 14.429,69.621,0 15.545,69.103,0 15.632,69.113,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA IV 897/26</name>
       <description>150802Z SEP 26  NAVAREA IV 897/26.  GULF OF AMERICA.  YUCATAN CHANNEL.  TEXAS.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      221215Z TO 221414Z SEP, ALTERNATE      1215Z TO 1414Z DAILY 23 THRU 28 SEP     IN AREAS BOUND BY:     A. 25-58.00N 097-13.00W, 26-02.00N 097-13.00W,        26-04.00N 097-10.00W, 26-04.00N 097-04.00W,        26-04.00N 096-49.00W, 26-01.00N 096-17.00W,        26-01.00N 095-12.00W, 25-59.00N 094-36.00W,        25-59.00N 094-05.00W, 25-25.00N 093-06.00W,        25-31.00N 091</description>
       <MultiGeometry>
