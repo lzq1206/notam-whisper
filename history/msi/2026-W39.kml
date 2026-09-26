@@ -258,26 +258,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 629/26</name>
-      <description>090625Z SEP 26  NAVAREA XII 629/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 200147Z TO 200612Z SEP, ALTERNATE         210133Z TO 210558Z, 220118Z TO 220543Z,         230104Z TO 230529Z, 240050Z TO 240515Z,         250035Z TO 250500Z AND         260021Z TO 260446Z SEP IN AREA BOUND BY        29-48.00N 117-39.00W, 34-28.00N 120-18.00W,        34-40.00N 120-36.00W, 34-39.00N 120-39.00W,        34-30.00N 120-39.00W, 29-35.00N 118-12.00W,        29-52.00N 117-</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -120.3,34.466667,0 -120.6,34.666667,0 -120.65,34.65,0 -120.65,34.5,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -117.9,29.866667,0 -118.2,29.583333,0 -118.133333,29.4,0 -118.033333,29.25,0 -117.983333,29.033333,0 -117.316667,28.2,0 -117.316667,28.833333,0 -117.266667,29.6,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2688/26</name>
       <description>151951Z SEP 26  HYDROPAC 2688/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1427Z TO 1833Z DAILY 22 THRU 28 SEP     IN AREAS BOUND BY:     A. 23-55.00N 144-37.00E, 26-07.00N 151-14.00E,        27-41.00N 156-20.00E, 29-25.00N 165-03.00E,        30-26.00N 172-41.00E, 29-41.00N 176-14.00E,        29-13.00N 170-10.00E, 28-28.00N 164-59.00E,        26-39.00N 156-15.00E, 23-28.00N 144-48.00E.     B. 23-46.00N 156-11.00W, 24-52.00N 159-19.00W,        27-38.00N 167-49.00W, 29-25.00N 175</description>
       <MultiGeometry>
@@ -358,17 +338,6 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2656/26</name>
-      <description>150351Z SEP 26  HYDROPAC 2656/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     200334Z TO 200812Z, 210320Z TO 210758Z,      220305Z TO 220743Z, 230251Z TO 230729Z,      240237Z TO 240715Z, 250222Z TO 250700Z      AND 260208Z TO 260646Z SEP      IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL THIS MSG 260746Z SEP 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
     </Placemark>
   </Document>
 </kml>
