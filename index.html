@@ -1221,9 +1221,7 @@
 
           if (polyCoords.length > 0) {
              polyCoords.forEach(points => {
-               const segments = isMaritime
-                 ? splitDisconnectedCoordinatePath(points)
-                 : splitDatelineCoordinates(points, true, true);
+               const segments = coordinateSegmentsForRow(points, r.raw || '', isMaritime, true);
                segments.forEach(segPts => {
                  if (segPts.length < 2) return;
                  const flatPoints = toCesiumDegreesArray(segPts, true);
@@ -1882,12 +1880,10 @@
 
         if (coordinatesList.length > 0) {
           const rawText = r.raw || '';
-          const isRoute = /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
+          const isRoute = isRouteGeometry(rawText);
 
           coordinatesList.forEach(pts => {
-            const primarySegments = isMaritime
-              ? splitDisconnectedCoordinatePath(pts)
-              : splitDatelineCoordinates(pts, !isRoute, true);
+            const primarySegments = coordinateSegmentsForRow(pts, rawText, isMaritime, true);
             primarySegments.forEach(segPts => {
               if (segPts.length >= 2) primaryBounds.extend(segPts);
             });
@@ -2296,6 +2292,20 @@
       return /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
     }
 
+    function coordinateSegmentsForRow(points, rawText, isMaritime, compact = true) {
+      const isRoute = isRouteGeometry(rawText || '');
+      // Distance-based splitting is appropriate for an open route whose
+      // consecutive coordinates are accidentally separated by unrelated
+      // text. It is not appropriate for a closed maritime danger area: a
+      // valid oceanic polygon can contain edges longer than 900 km (for
+      // example HYDROPAC 2761/26). Keep those rings intact and let the
+      // anti-meridian polygon clipper create only the renderable pieces.
+      if (isMaritime && isRoute) {
+        return splitDisconnectedCoordinatePath(points);
+      }
+      return splitDatelineCoordinates(points, !isRoute, compact);
+    }
+
     function buildKmlGeometryForRow(r, lat, lon) {
       const coordinatesList = extractRowCoordinatesList(r);
       const radiusNm = parseFloat(r.radius_nm || '0');
@@ -2305,9 +2315,7 @@
       const isMaritime = isMsiOrMaritime(r);
 
       coordinatesList.forEach(points => {
-        const segments = isMaritime
-          ? splitDisconnectedCoordinatePath(points)
-          : splitDatelineCoordinates(points, !isRoute, false);
+        const segments = coordinateSegmentsForRow(points, rawText, isMaritime, false);
         segments.forEach(pts => {
           const coordText = pts.map(p => `${p[1]},${p[0]},0`).join(' ');
           if (pts.length >= 3 && !isRoute) {
