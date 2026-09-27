@@ -21789,3 +21789,703 @@ AttributeError: module 'datetime' has no attribute 'UTC'
 2026-09-17T19:45:41.767310 -   Got 1 blocks from HTML
 2026-09-17T19:45:46.773876 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
 2026-09-17T19:45:47.171957 -   Got 1 blocks from HTML
+2026-09-17T22:52:44.560163 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-17T22:52:45.613062 -   Got 117 blocks from TXT
+2026-09-17T22:52:50.616837 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-17T22:52:51.543973 -   Got 31 blocks from TXT
+2026-09-17T22:52:56.550048 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-17T22:52:56.965166 -   Got 83 blocks from TXT
+2026-09-17T22:53:01.971233 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-17T22:53:02.156708 -   Got 135 blocks from TXT
+2026-09-17T22:53:07.162751 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-17T22:53:07.820151 -   Got 23 blocks from TXT
+2026-09-17T22:53:12.826287 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-17T22:53:13.309517 -   Got 1 blocks from HTML
+2026-09-17T22:53:18.315702 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-17T22:53:18.498715 -   Got 1 blocks from HTML
+2026-09-17T22:53:23.504862 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-17T22:53:24.021252 -   Got 1 blocks from HTML
+2026-09-17T22:53:29.027450 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-17T22:53:29.397735 -   Got 1 blocks from HTML
+2026-09-17T22:53:34.404043 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-17T22:53:34.624915 -   Got 1 blocks from HTML
+2026-09-18T12:59:49.535125 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-18T12:59:50.358329 -   Got 117 blocks from TXT
+2026-09-18T12:59:55.364605 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-18T12:59:55.428389 -   Got 31 blocks from TXT
+2026-09-18T13:00:00.434358 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-18T13:00:00.521792 -   Got 83 blocks from TXT
+2026-09-18T13:00:05.527730 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-18T13:00:05.630598 -   Got 135 blocks from TXT
+2026-09-18T13:00:10.636510 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-18T13:00:11.003797 -   Got 23 blocks from TXT
+2026-09-18T13:00:16.009939 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-18T13:00:16.189973 -   Got 1 blocks from HTML
+2026-09-18T13:00:21.196476 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-18T13:00:21.311585 -   Got 1 blocks from HTML
+2026-09-18T13:00:26.317722 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-18T13:00:26.407031 -   Got 1 blocks from HTML
+2026-09-18T13:00:31.408720 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-18T13:00:31.791224 -   Got 1 blocks from HTML
+2026-09-18T13:00:36.797556 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-18T13:00:36.964932 -   Got 1 blocks from HTML
+2026-09-18T19:03:19.098109 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-18T19:03:20.393937 -   Got 117 blocks from TXT
+2026-09-18T19:03:25.400246 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-18T19:03:25.713010 -   Got 31 blocks from TXT
+2026-09-18T19:03:30.719352 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-18T19:03:31.065219 -   Got 83 blocks from TXT
+2026-09-18T19:03:36.071302 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-18T19:03:36.427486 -   Got 135 blocks from TXT
+2026-09-18T19:03:41.433572 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-18T19:03:42.577174 -   Got 23 blocks from TXT
+2026-09-18T19:03:47.583219 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-18T19:03:47.842931 -   Got 1 blocks from HTML
+2026-09-18T19:03:52.849271 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-18T19:03:53.192248 -   Got 1 blocks from HTML
+2026-09-18T19:03:58.196288 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-18T19:03:59.183410 -   Got 1 blocks from HTML
+2026-09-18T19:04:04.189715 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-18T19:04:04.718924 -   Got 1 blocks from HTML
+2026-09-18T19:04:09.725361 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-18T19:04:10.032474 -   Got 1 blocks from HTML
+2026-09-18T22:37:51.386614 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-18T22:37:52.131270 -   Got 117 blocks from TXT
+2026-09-18T22:37:57.137491 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-18T22:37:57.372827 -   Got 31 blocks from TXT
+2026-09-18T22:38:02.379073 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-18T22:38:06.440156 -   Got 83 blocks from TXT
+2026-09-18T22:38:11.446222 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-18T22:38:11.731919 -   Got 135 blocks from TXT
+2026-09-18T22:38:16.737990 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-18T22:38:17.691385 -   Got 23 blocks from TXT
+2026-09-18T22:38:22.697701 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-18T22:38:22.962127 -   Got 1 blocks from HTML
+2026-09-18T22:38:27.968420 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-18T22:38:28.259651 -   Got 1 blocks from HTML
+2026-09-18T22:38:33.265974 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-18T22:38:33.448940 -   Got 1 blocks from HTML
+2026-09-18T22:38:38.455255 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-18T22:38:38.650800 -   Got 1 blocks from HTML
+2026-09-18T22:38:43.656359 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-18T22:38:43.896133 -   Got 1 blocks from HTML
+2026-09-19T04:43:11.002013 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-19T04:43:11.572262 -   Got 117 blocks from TXT
+2026-09-19T04:43:16.578428 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-19T04:43:16.620449 -   Got 31 blocks from TXT
+2026-09-19T04:43:21.626262 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-19T04:43:21.962640 -   Got 83 blocks from TXT
+2026-09-19T04:43:26.968731 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-19T04:43:27.135916 -   Got 135 blocks from TXT
+2026-09-19T04:43:32.142000 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-19T04:43:32.528598 -   Got 23 blocks from TXT
+2026-09-19T04:43:37.534669 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-19T04:43:37.772043 -   Got 1 blocks from HTML
+2026-09-19T04:43:42.778339 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-19T04:43:43.188913 -   Got 1 blocks from HTML
+2026-09-19T04:43:48.195251 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-19T04:43:48.416492 -   Got 1 blocks from HTML
+2026-09-19T04:43:53.422664 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-19T04:43:53.932764 -   Got 1 blocks from HTML
+2026-09-19T04:43:58.939249 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-19T04:43:59.160791 -   Got 1 blocks from HTML
+2026-09-19T12:32:18.831609 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-19T12:32:19.190188 -   Got 117 blocks from TXT
+2026-09-19T12:32:24.196414 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-19T12:32:24.371451 -   Got 31 blocks from TXT
+2026-09-19T12:32:29.377508 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-19T12:32:29.533553 -   Got 83 blocks from TXT
+2026-09-19T12:32:34.539506 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-19T12:32:34.715931 -   Got 135 blocks from TXT
+2026-09-19T12:32:39.721561 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-19T12:32:39.972621 -   Got 23 blocks from TXT
+2026-09-19T12:32:44.978453 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-19T12:32:45.118654 -   Got 1 blocks from HTML
+2026-09-19T12:32:50.124876 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-19T12:32:50.449653 -   Got 1 blocks from HTML
+2026-09-19T12:32:55.455833 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-19T12:32:55.610001 -   Got 1 blocks from HTML
+2026-09-19T12:33:00.615872 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-19T12:33:01.193755 -   Got 1 blocks from HTML
+2026-09-19T12:33:06.199876 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-19T12:33:06.388504 -   Got 1 blocks from HTML
+2026-09-19T18:37:53.407789 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-19T18:37:53.589485 -   Got 117 blocks from TXT
+2026-09-19T18:37:58.595766 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-19T18:37:58.655317 -   Got 31 blocks from TXT
+2026-09-19T18:38:03.661528 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-19T18:38:03.832752 -   Got 83 blocks from TXT
+2026-09-19T18:38:08.838693 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-19T18:38:09.046327 -   Got 135 blocks from TXT
+2026-09-19T18:38:14.052438 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-19T18:38:14.445426 -   Got 23 blocks from TXT
+2026-09-19T18:38:19.451456 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-19T18:38:19.694649 -   Got 1 blocks from HTML
+2026-09-19T18:38:24.700970 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-19T18:38:25.023765 -   Got 1 blocks from HTML
+2026-09-19T18:38:30.030136 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-19T18:38:30.179304 -   Got 1 blocks from HTML
+2026-09-19T18:38:35.185534 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-19T18:38:35.578344 -   Got 1 blocks from HTML
+2026-09-19T18:38:40.584689 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-19T18:38:40.941899 -   Got 1 blocks from HTML
+2026-09-19T22:20:29.776380 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-19T22:20:30.532035 -   Got 117 blocks from TXT
+2026-09-19T22:20:35.538248 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-19T22:20:35.677844 -   Got 31 blocks from TXT
+2026-09-19T22:20:40.684054 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-19T22:20:40.733698 -   Got 83 blocks from TXT
+2026-09-19T22:20:45.739481 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-19T22:20:45.857868 -   Got 135 blocks from TXT
+2026-09-19T22:20:50.863821 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-19T22:20:51.469670 -   Got 23 blocks from TXT
+2026-09-19T22:20:56.471029 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-19T22:20:56.607142 -   Got 1 blocks from HTML
+2026-09-19T22:21:01.613392 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-19T22:21:01.714368 -   Got 1 blocks from HTML
+2026-09-19T22:21:06.717876 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-19T22:21:06.855495 -   Got 1 blocks from HTML
+2026-09-19T22:21:11.861538 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-19T22:21:12.215905 -   Got 1 blocks from HTML
+2026-09-19T22:21:17.222159 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-19T22:21:17.386513 -   Got 1 blocks from HTML
+2026-09-20T04:58:49.288096 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-20T04:58:49.615833 -   Got 117 blocks from TXT
+2026-09-20T04:58:54.621933 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-20T04:58:54.796177 -   Got 31 blocks from TXT
+2026-09-20T04:58:59.802349 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-20T04:59:00.181752 -   Got 83 blocks from TXT
+2026-09-20T04:59:05.183261 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-20T04:59:05.300819 -   Got 135 blocks from TXT
+2026-09-20T04:59:10.306743 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-20T04:59:11.453201 -   Got 23 blocks from TXT
+2026-09-20T04:59:16.459147 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-20T04:59:16.734534 -   Got 1 blocks from HTML
+2026-09-20T04:59:21.740823 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-20T04:59:21.885256 -   Got 1 blocks from HTML
+2026-09-20T04:59:26.891424 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-20T04:59:27.120119 -   Got 1 blocks from HTML
+2026-09-20T04:59:32.126341 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-20T04:59:32.519298 -   Got 1 blocks from HTML
+2026-09-20T04:59:37.525544 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-20T04:59:37.762946 -   Got 1 blocks from HTML
+2026-09-20T13:04:43.661269 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-20T13:04:45.160613 -   Got 117 blocks from TXT
+2026-09-20T13:04:50.166862 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-20T13:04:50.489870 -   Got 31 blocks from TXT
+2026-09-20T13:04:55.495973 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-20T13:04:55.889244 -   Got 83 blocks from TXT
+2026-09-20T13:05:00.895364 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-20T13:05:01.380363 -   Got 135 blocks from TXT
+2026-09-20T13:05:06.386515 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-20T13:05:07.873069 -   Got 23 blocks from TXT
+2026-09-20T13:05:12.879180 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-20T13:05:13.116827 -   Got 1 blocks from HTML
+2026-09-20T13:05:18.123146 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-20T13:05:18.445888 -   Got 1 blocks from HTML
+2026-09-20T13:05:23.452241 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-20T13:05:23.727002 -   Got 1 blocks from HTML
+2026-09-20T13:05:28.733364 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-20T13:05:29.246745 -   Got 1 blocks from HTML
+2026-09-20T13:05:34.253063 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-20T13:05:34.736882 -   Got 1 blocks from HTML
+2026-09-20T18:50:58.895650 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-20T18:50:59.148016 -   Got 117 blocks from TXT
+2026-09-20T18:51:04.154114 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-20T18:51:04.325061 -   Got 31 blocks from TXT
+2026-09-20T18:51:09.331020 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-20T18:51:09.592108 -   Got 83 blocks from TXT
+2026-09-20T18:51:14.598053 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-20T18:51:14.698533 -   Got 135 blocks from TXT
+2026-09-20T18:51:19.704456 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-20T18:51:20.015219 -   Got 23 blocks from TXT
+2026-09-20T18:51:25.021193 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-20T18:51:25.325047 -   Got 1 blocks from HTML
+2026-09-20T18:51:30.331375 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-20T18:51:30.601916 -   Got 1 blocks from HTML
+2026-09-20T18:51:35.608140 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-20T18:51:35.803050 -   Got 1 blocks from HTML
+2026-09-20T18:51:40.809189 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-20T18:51:41.187379 -   Got 1 blocks from HTML
+2026-09-20T18:51:46.193009 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-20T18:51:46.354921 -   Got 1 blocks from HTML
+2026-09-20T22:30:26.211237 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-20T22:30:26.708740 -   Got 117 blocks from TXT
+2026-09-20T22:30:31.714836 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-20T22:30:31.896253 -   Got 31 blocks from TXT
+2026-09-20T22:30:36.902034 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-20T22:30:37.063615 -   Got 83 blocks from TXT
+2026-09-20T22:30:42.069600 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-20T22:30:42.226158 -   Got 135 blocks from TXT
+2026-09-20T22:30:47.232106 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-20T22:30:47.567869 -   Got 23 blocks from TXT
+2026-09-20T22:30:52.573878 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-20T22:30:52.919994 -   Got 1 blocks from HTML
+2026-09-20T22:30:57.926198 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-20T22:30:58.229931 -   Got 1 blocks from HTML
+2026-09-20T22:31:03.236124 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-20T22:31:03.404096 -   Got 1 blocks from HTML
+2026-09-20T22:31:08.410052 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-20T22:31:09.048723 -   Got 1 blocks from HTML
+2026-09-20T22:31:14.053042 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-20T22:31:14.238148 -   Got 1 blocks from HTML
+2026-09-21T05:03:59.263949 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-21T05:03:59.518831 -   Got 117 blocks from TXT
+2026-09-21T05:04:04.524934 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-21T05:04:04.586127 -   Got 31 blocks from TXT
+2026-09-21T05:04:09.591944 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-21T05:04:09.764130 -   Got 83 blocks from TXT
+2026-09-21T05:04:14.770008 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-21T05:04:14.873212 -   Got 135 blocks from TXT
+2026-09-21T05:04:19.879032 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-21T05:04:20.164845 -   Got 23 blocks from TXT
+2026-09-21T05:04:25.170857 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-21T05:04:25.344238 -   Got 1 blocks from HTML
+2026-09-21T05:04:30.350529 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-21T05:04:30.516886 -   Got 1 blocks from HTML
+2026-09-21T05:04:35.523211 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-21T05:04:35.744953 -   Got 1 blocks from HTML
+2026-09-21T05:04:40.751211 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-21T05:04:41.144535 -   Got 1 blocks from HTML
+2026-09-21T05:04:46.149571 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-21T05:04:46.386942 -   Got 1 blocks from HTML
+2026-09-21T15:08:35.665387 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-21T15:08:36.171916 -   Got 117 blocks from TXT
+2026-09-21T15:08:41.177023 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-21T15:08:41.542086 -   Got 31 blocks from TXT
+2026-09-21T15:08:46.548041 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-21T15:08:46.891811 -   Got 83 blocks from TXT
+2026-09-21T15:08:51.897795 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-21T15:08:52.203478 -   Got 135 blocks from TXT
+2026-09-21T15:08:57.209233 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-21T15:08:57.648341 -   Got 23 blocks from TXT
+2026-09-21T15:09:02.654367 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-21T15:09:02.819141 -   Got 1 blocks from HTML
+2026-09-21T15:09:07.825219 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-21T15:09:07.995545 -   Got 1 blocks from HTML
+2026-09-21T15:09:13.001127 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-21T15:09:13.177225 -   Got 1 blocks from HTML
+2026-09-21T15:09:18.183490 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-21T15:09:18.720650 -   Got 1 blocks from HTML
+2026-09-21T15:09:23.726793 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-21T15:09:24.054576 -   Got 1 blocks from HTML
+2026-09-21T20:26:46.239078 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-21T20:26:46.785059 -   Got 117 blocks from TXT
+2026-09-21T20:26:51.791365 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-21T20:26:52.274925 -   Got 31 blocks from TXT
+2026-09-21T20:26:57.281042 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-21T20:26:57.540973 -   Got 83 blocks from TXT
+2026-09-21T20:27:02.547097 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-21T20:27:02.955207 -   Got 135 blocks from TXT
+2026-09-21T20:27:07.958480 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-21T20:27:08.747241 -   Got 23 blocks from TXT
+2026-09-21T20:27:13.753641 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-21T20:27:14.097969 -   Got 1 blocks from HTML
+2026-09-21T20:27:19.104277 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-21T20:27:19.257461 -   Got 1 blocks from HTML
+2026-09-21T20:27:24.263710 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-21T20:27:24.437650 -   Got 1 blocks from HTML
+2026-09-21T20:27:29.443989 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-21T20:27:30.327344 -   Got 1 blocks from HTML
+2026-09-21T20:27:35.333750 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-21T20:27:35.669387 -   Got 1 blocks from HTML
+2026-09-22T05:05:34.768082 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-22T05:05:35.015108 -   Got 117 blocks from TXT
+2026-09-22T05:05:40.021461 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-22T05:05:40.085248 -   Got 31 blocks from TXT
+2026-09-22T05:05:45.091527 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-22T05:05:45.165825 -   Got 83 blocks from TXT
+2026-09-22T05:05:50.171832 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-22T05:05:50.244962 -   Got 135 blocks from TXT
+2026-09-22T05:05:55.250951 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-22T05:05:55.420902 -   Got 23 blocks from TXT
+2026-09-22T05:06:00.426965 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-22T05:06:00.544082 -   Got 1 blocks from HTML
+2026-09-22T05:06:05.550469 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-22T05:06:05.813098 -   Got 1 blocks from HTML
+2026-09-22T05:06:10.819509 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-22T05:06:10.955738 -   Got 1 blocks from HTML
+2026-09-22T05:06:15.962112 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-22T05:06:16.321061 -   Got 1 blocks from HTML
+2026-09-22T05:06:21.327512 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-22T05:06:21.509673 -   Got 1 blocks from HTML
+2026-09-22T13:26:58.878282 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-22T13:26:59.564275 -   Got 117 blocks from TXT
+2026-09-22T13:27:04.570214 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-22T13:27:05.074805 -   Got 31 blocks from TXT
+2026-09-22T13:27:10.080562 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-22T13:27:10.372111 -   Got 83 blocks from TXT
+2026-09-22T13:27:15.377824 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-22T13:27:15.921481 -   Got 135 blocks from TXT
+2026-09-22T13:27:20.927207 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-22T13:27:21.649989 -   Got 23 blocks from TXT
+2026-09-22T13:27:26.655702 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-22T13:27:27.033188 -   Got 1 blocks from HTML
+2026-09-22T13:27:32.039112 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-22T13:27:32.230482 -   Got 1 blocks from HTML
+2026-09-22T13:27:37.232340 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-22T13:27:37.374950 -   Got 1 blocks from HTML
+2026-09-22T13:27:42.377344 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-22T13:27:42.995038 -   Got 1 blocks from HTML
+2026-09-22T13:27:47.998856 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-22T13:27:48.295450 -   Got 1 blocks from HTML
+2026-09-22T19:45:41.245193 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-22T19:45:41.522728 -   Got 117 blocks from TXT
+2026-09-22T19:45:46.528664 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-22T19:45:46.616251 -   Got 31 blocks from TXT
+2026-09-22T19:45:51.622166 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-22T19:45:51.728212 -   Got 83 blocks from TXT
+2026-09-22T19:45:56.733952 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-22T19:45:56.825371 -   Got 135 blocks from TXT
+2026-09-22T19:46:01.831105 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-22T19:46:04.564935 -   Got 23 blocks from TXT
+2026-09-22T19:46:09.570640 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-22T19:46:09.718104 -   Got 1 blocks from HTML
+2026-09-22T19:46:14.723884 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-22T19:46:14.873593 -   Got 1 blocks from HTML
+2026-09-22T19:46:19.879445 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-22T19:46:20.035924 -   Got 1 blocks from HTML
+2026-09-22T19:46:25.041790 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-22T19:46:25.492422 -   Got 1 blocks from HTML
+2026-09-22T19:46:30.498292 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-22T19:46:30.693737 -   Got 1 blocks from HTML
+2026-09-22T22:59:32.138697 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-22T22:59:32.930066 -   Got 117 blocks from TXT
+2026-09-22T22:59:37.936305 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-22T22:59:38.067245 -   Got 31 blocks from TXT
+2026-09-22T22:59:43.073030 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-22T22:59:43.397279 -   Got 83 blocks from TXT
+2026-09-22T22:59:48.403154 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-22T22:59:48.557576 -   Got 135 blocks from TXT
+2026-09-22T22:59:53.563416 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-22T22:59:54.169853 -   Got 23 blocks from TXT
+2026-09-22T22:59:59.175877 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-22T22:59:59.373769 -   Got 1 blocks from HTML
+2026-09-22T23:00:04.380024 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-22T23:00:04.688475 -   Got 1 blocks from HTML
+2026-09-22T23:00:09.694797 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-22T23:00:09.863438 -   Got 1 blocks from HTML
+2026-09-22T23:00:14.869506 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-22T23:00:15.577552 -   Got 1 blocks from HTML
+2026-09-22T23:00:20.583787 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-22T23:00:20.847890 -   Got 1 blocks from HTML
+2026-09-23T04:50:43.128562 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-23T04:50:44.244116 -   Got 117 blocks from TXT
+2026-09-23T04:50:49.250089 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-23T04:50:49.295899 -   Got 31 blocks from TXT
+2026-09-23T04:50:54.301688 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-23T04:50:54.342932 -   Got 83 blocks from TXT
+2026-09-23T04:50:59.348655 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-23T04:50:59.448469 -   Got 135 blocks from TXT
+2026-09-23T04:51:04.454288 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-23T04:51:04.667449 -   Got 23 blocks from TXT
+2026-09-23T04:51:09.673243 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-23T04:51:09.905210 -   Got 1 blocks from HTML
+2026-09-23T04:51:14.911528 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-23T04:51:15.071634 -   Got 1 blocks from HTML
+2026-09-23T04:51:20.077691 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-23T04:51:20.413881 -   Got 1 blocks from HTML
+2026-09-23T04:51:25.420036 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-23T04:51:25.660683 -   Got 1 blocks from HTML
+2026-09-23T04:51:30.666747 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-23T04:51:31.108425 -   Got 1 blocks from HTML
+2026-09-23T13:41:31.502636 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-23T13:41:32.268141 -   Got 117 blocks from TXT
+2026-09-23T13:41:37.274269 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-23T13:41:37.471107 -   Got 31 blocks from TXT
+2026-09-23T13:41:42.476899 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-23T13:41:43.009039 -   Got 83 blocks from TXT
+2026-09-23T13:41:48.015077 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-23T13:41:48.284535 -   Got 135 blocks from TXT
+2026-09-23T13:41:53.290486 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-23T13:41:53.659509 -   Got 23 blocks from TXT
+2026-09-23T13:41:58.665516 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-23T13:41:58.804228 -   Got 1 blocks from HTML
+2026-09-23T13:42:03.810169 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-23T13:42:03.987487 -   Got 1 blocks from HTML
+2026-09-23T13:42:08.993907 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-23T13:42:09.133115 -   Got 1 blocks from HTML
+2026-09-23T13:42:14.139284 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-23T13:42:14.502894 -   Got 1 blocks from HTML
+2026-09-23T13:42:19.509202 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-23T13:42:19.736591 -   Got 1 blocks from HTML
+2026-09-23T19:41:57.359932 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-23T19:41:58.392813 -   Got 114 blocks from TXT
+2026-09-23T19:42:03.399064 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-23T19:42:03.621018 -   Got 33 blocks from TXT
+2026-09-23T19:42:08.626820 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-23T19:42:08.944169 -   Got 81 blocks from TXT
+2026-09-23T19:42:13.950099 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-23T19:42:14.370792 -   Got 138 blocks from TXT
+2026-09-23T19:42:19.376816 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-23T19:42:19.645950 -   Got 24 blocks from TXT
+2026-09-23T19:42:24.651887 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-23T19:42:24.803353 -   Got 1 blocks from HTML
+2026-09-23T19:42:29.809416 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-23T19:42:30.024025 -   Got 1 blocks from HTML
+2026-09-23T19:42:35.030401 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-23T19:42:35.200784 -   Got 1 blocks from HTML
+2026-09-23T19:42:40.207024 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-23T19:42:41.381836 -   Got 1 blocks from HTML
+2026-09-23T19:42:46.387591 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-23T19:42:46.599318 -   Got 1 blocks from HTML
+2026-09-23T22:58:34.999383 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-23T22:58:35.216196 -   Got 114 blocks from TXT
+2026-09-23T22:58:40.222392 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-23T22:58:40.309614 -   Got 33 blocks from TXT
+2026-09-23T22:58:45.315831 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-23T22:58:45.400778 -   Got 81 blocks from TXT
+2026-09-23T22:58:50.406969 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-23T22:58:50.561161 -   Got 138 blocks from TXT
+2026-09-23T22:58:55.567326 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-23T22:58:55.995458 -   Got 24 blocks from TXT
+2026-09-23T22:59:01.001593 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-23T22:59:01.124766 -   Got 1 blocks from HTML
+2026-09-23T22:59:06.130768 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-23T22:59:06.447697 -   Got 1 blocks from HTML
+2026-09-23T22:59:11.453907 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-23T22:59:11.637122 -   Got 1 blocks from HTML
+2026-09-23T22:59:16.643458 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-23T22:59:17.195445 -   Got 1 blocks from HTML
+2026-09-23T22:59:22.201847 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-23T22:59:22.374521 -   Got 1 blocks from HTML
+2026-09-24T04:59:36.458626 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-24T04:59:36.914705 -   Got 114 blocks from TXT
+2026-09-24T04:59:41.921015 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-24T04:59:42.219621 -   Got 33 blocks from TXT
+2026-09-24T04:59:47.225659 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-24T04:59:47.324164 -   Got 81 blocks from TXT
+2026-09-24T04:59:52.325516 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-24T04:59:52.368300 -   Got 138 blocks from TXT
+2026-09-24T04:59:57.374081 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-24T04:59:57.717246 -   Got 24 blocks from TXT
+2026-09-24T05:00:02.723228 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-24T05:00:03.058266 -   Got 1 blocks from HTML
+2026-09-24T05:00:08.064529 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-24T05:00:08.313088 -   Got 1 blocks from HTML
+2026-09-24T05:00:13.319354 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-24T05:00:13.601110 -   Got 1 blocks from HTML
+2026-09-24T05:00:18.607348 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-24T05:00:19.098669 -   Got 1 blocks from HTML
+2026-09-24T05:00:24.104991 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-24T05:00:24.413051 -   Got 1 blocks from HTML
+2026-09-24T13:35:29.676956 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-24T13:35:30.436634 -   Got 114 blocks from TXT
+2026-09-24T13:35:35.442798 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-24T13:35:35.610317 -   Got 33 blocks from TXT
+2026-09-24T13:35:40.616423 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-24T13:35:40.934813 -   Got 81 blocks from TXT
+2026-09-24T13:35:45.940911 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-24T13:35:46.269544 -   Got 138 blocks from TXT
+2026-09-24T13:35:51.275586 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-24T13:35:51.483537 -   Got 24 blocks from TXT
+2026-09-24T13:35:56.487973 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-24T13:35:56.709891 -   Got 1 blocks from HTML
+2026-09-24T13:36:01.716233 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-24T13:36:02.157658 -   Got 1 blocks from HTML
+2026-09-24T13:36:07.164135 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-24T13:36:07.450836 -   Got 1 blocks from HTML
+2026-09-24T13:36:12.457119 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-24T13:36:12.915043 -   Got 1 blocks from HTML
+2026-09-24T13:36:17.921321 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-24T13:36:18.324980 -   Got 1 blocks from HTML
+2026-09-24T20:00:53.109718 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-24T20:00:53.698797 -   Got 113 blocks from TXT
+2026-09-24T20:00:58.705048 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-24T20:00:58.907570 -   Got 38 blocks from TXT
+2026-09-24T20:01:03.911872 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-24T20:01:04.033409 -   Got 84 blocks from TXT
+2026-09-24T20:01:09.034618 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-24T20:01:09.233454 -   Got 139 blocks from TXT
+2026-09-24T20:01:14.234731 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-24T20:01:14.416595 -   Got 26 blocks from TXT
+2026-09-24T20:01:19.422849 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-24T20:01:20.246035 -   Got 1 blocks from HTML
+2026-09-24T20:01:25.252445 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-24T20:01:25.440543 -   Got 1 blocks from HTML
+2026-09-24T20:01:30.446901 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-24T20:01:30.592257 -   Got 1 blocks from HTML
+2026-09-24T20:01:35.598394 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-24T20:01:36.230771 -   Got 1 blocks from HTML
+2026-09-24T20:01:41.237238 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-24T20:01:41.536667 -   Got 1 blocks from HTML
+2026-09-24T23:14:30.600562 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-24T23:14:31.188627 -   Got 113 blocks from TXT
+2026-09-24T23:14:36.194917 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-24T23:14:36.432063 -   Got 38 blocks from TXT
+2026-09-24T23:14:41.438258 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-24T23:14:41.768991 -   Got 84 blocks from TXT
+2026-09-24T23:14:46.774893 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-24T23:14:46.893694 -   Got 139 blocks from TXT
+2026-09-24T23:14:51.899702 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-24T23:14:52.167814 -   Got 26 blocks from TXT
+2026-09-24T23:14:57.174003 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-24T23:14:57.325099 -   Got 1 blocks from HTML
+2026-09-24T23:15:02.331431 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-24T23:15:02.586089 -   Got 1 blocks from HTML
+2026-09-24T23:15:07.589621 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-24T23:15:07.799958 -   Got 1 blocks from HTML
+2026-09-24T23:15:12.806139 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-24T23:15:13.032086 -   Got 1 blocks from HTML
+2026-09-24T23:15:18.038368 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-24T23:15:18.236675 -   Got 1 blocks from HTML
+2026-09-25T05:03:33.391183 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-25T05:03:33.772158 -   Got 113 blocks from TXT
+2026-09-25T05:03:38.778277 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-25T05:03:38.875783 -   Got 38 blocks from TXT
+2026-09-25T05:03:43.881691 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-25T05:03:43.974867 -   Got 84 blocks from TXT
+2026-09-25T05:03:48.980695 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-25T05:03:49.073131 -   Got 139 blocks from TXT
+2026-09-25T05:03:54.079142 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-25T05:03:55.306483 -   Got 26 blocks from TXT
+2026-09-25T05:04:00.312590 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-25T05:04:01.043236 -   Got 1 blocks from HTML
+2026-09-25T05:04:06.049598 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-25T05:04:06.286811 -   Got 1 blocks from HTML
+2026-09-25T05:04:11.293107 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-25T05:04:12.592764 -   Got 1 blocks from HTML
+2026-09-25T05:04:17.599095 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-25T05:04:17.971193 -   Got 1 blocks from HTML
+2026-09-25T05:04:22.977451 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-25T05:04:23.189225 -   Got 1 blocks from HTML
+2026-09-25T13:53:37.451339 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-25T13:53:38.190375 -   Got 113 blocks from TXT
+2026-09-25T13:53:43.191617 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-25T13:53:43.571691 -   Got 38 blocks from TXT
+2026-09-25T13:53:48.577214 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-25T13:53:48.791757 -   Got 84 blocks from TXT
+2026-09-25T13:53:53.797806 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-25T13:53:54.031267 -   Got 139 blocks from TXT
+2026-09-25T13:53:59.037103 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-25T13:53:59.656841 -   Got 26 blocks from TXT
+2026-09-25T13:54:04.662657 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-25T13:54:05.374388 -   Got 1 blocks from HTML
+2026-09-25T13:54:10.380502 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-25T13:54:10.571760 -   Got 1 blocks from HTML
+2026-09-25T13:54:15.577819 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-25T13:54:15.763100 -   Got 1 blocks from HTML
+2026-09-25T13:54:20.769475 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-25T13:54:21.268980 -   Got 1 blocks from HTML
+2026-09-25T13:54:26.275202 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-25T13:54:26.505694 -   Got 1 blocks from HTML
+2026-09-25T20:02:35.611174 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-25T20:02:38.678362 -   Got 115 blocks from TXT
+2026-09-25T20:02:43.684661 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-25T20:02:43.925090 -   Got 41 blocks from TXT
+2026-09-25T20:02:48.931140 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-25T20:02:49.657813 -   Got 84 blocks from TXT
+2026-09-25T20:02:54.663968 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-25T20:02:54.768093 -   Got 132 blocks from TXT
+2026-09-25T20:02:59.774195 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-25T20:03:00.294478 -   Got 29 blocks from TXT
+2026-09-25T20:03:05.295429 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-25T20:03:05.467213 -   Got 1 blocks from HTML
+2026-09-25T20:03:10.473591 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-25T20:03:10.794615 -   Got 1 blocks from HTML
+2026-09-25T20:03:15.800864 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-25T20:03:16.233737 -   Got 1 blocks from HTML
+2026-09-25T20:03:21.240095 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-25T20:03:22.761057 -   Got 1 blocks from HTML
+2026-09-25T20:03:27.764608 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-25T20:03:27.978670 -   Got 1 blocks from HTML
+2026-09-25T23:19:47.382543 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-25T23:19:47.953578 -   Got 115 blocks from TXT
+2026-09-25T23:19:52.959966 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-25T23:19:53.118206 -   Got 41 blocks from TXT
+2026-09-25T23:19:58.124364 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-25T23:19:58.392859 -   Got 84 blocks from TXT
+2026-09-25T23:20:03.398988 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-25T23:20:03.669353 -   Got 132 blocks from TXT
+2026-09-25T23:20:08.675498 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-25T23:20:09.163580 -   Got 29 blocks from TXT
+2026-09-25T23:20:14.169760 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-25T23:20:14.301185 -   Got 1 blocks from HTML
+2026-09-25T23:20:19.307090 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-25T23:20:19.549230 -   Got 1 blocks from HTML
+2026-09-25T23:20:24.556306 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-25T23:20:24.667315 -   Got 1 blocks from HTML
+2026-09-25T23:20:29.673702 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-25T23:20:29.880006 -   Got 1 blocks from HTML
+2026-09-25T23:20:34.886302 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-25T23:20:35.140004 -   Got 1 blocks from HTML
+2026-09-26T05:06:17.998480 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-26T05:06:18.201726 -   Got 115 blocks from TXT
+2026-09-26T05:06:23.207986 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-26T05:06:23.275238 -   Got 41 blocks from TXT
+2026-09-26T05:06:28.281270 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-26T05:06:28.368406 -   Got 84 blocks from TXT
+2026-09-26T05:06:33.374510 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-26T05:06:33.587669 -   Got 132 blocks from TXT
+2026-09-26T05:06:38.591270 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-26T05:06:38.806368 -   Got 29 blocks from TXT
+2026-09-26T05:06:43.812403 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-26T05:06:44.060227 -   Got 1 blocks from HTML
+2026-09-26T05:06:49.066406 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-26T05:06:49.276273 -   Got 1 blocks from HTML
+2026-09-26T05:06:54.282588 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-26T05:06:54.412207 -   Got 1 blocks from HTML
+2026-09-26T05:06:59.418505 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-26T05:06:59.840933 -   Got 1 blocks from HTML
+2026-09-26T05:07:04.846626 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-26T05:07:05.011417 -   Got 1 blocks from HTML
+2026-09-26T13:10:28.926494 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-26T13:10:29.897466 -   Got 115 blocks from TXT
+2026-09-26T13:10:34.903716 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-26T13:10:35.520956 -   Got 41 blocks from TXT
+2026-09-26T13:10:40.527009 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-26T13:10:40.792681 -   Got 84 blocks from TXT
+2026-09-26T13:10:45.798520 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-26T13:10:46.031045 -   Got 132 blocks from TXT
+2026-09-26T13:10:51.037053 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-26T13:10:51.718906 -   Got 29 blocks from TXT
+2026-09-26T13:10:56.724918 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-26T13:10:57.074899 -   Got 1 blocks from HTML
+2026-09-26T13:11:02.078074 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-26T13:11:02.573480 -   Got 1 blocks from HTML
+2026-09-26T13:11:07.579844 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-26T13:11:07.805239 -   Got 1 blocks from HTML
+2026-09-26T13:11:12.811286 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-26T13:11:13.350357 -   Got 1 blocks from HTML
+2026-09-26T13:11:18.351958 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-26T13:11:18.522596 -   Got 1 blocks from HTML
+2026-09-26T19:14:30.382788 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-26T19:14:30.738611 -   Got 115 blocks from TXT
+2026-09-26T19:14:35.744587 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-26T19:14:36.140864 -   Got 41 blocks from TXT
+2026-09-26T19:14:41.146846 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-26T19:14:41.645554 -   Got 84 blocks from TXT
+2026-09-26T19:14:46.652085 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-26T19:14:46.926192 -   Got 132 blocks from TXT
+2026-09-26T19:14:51.932221 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-26T19:14:52.504614 -   Got 29 blocks from TXT
+2026-09-26T19:14:57.510475 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-26T19:14:57.723920 -   Got 1 blocks from HTML
+2026-09-26T19:15:02.730315 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-26T19:15:02.987072 -   Got 1 blocks from HTML
+2026-09-26T19:15:07.993426 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-26T19:15:08.201272 -   Got 1 blocks from HTML
+2026-09-26T19:15:13.204706 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-26T19:15:13.427506 -   Got 1 blocks from HTML
+2026-09-26T19:15:18.429763 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-26T19:15:18.588289 -   Got 1 blocks from HTML
+2026-09-26T22:55:46.687587 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-09-26T22:55:46.983619 -   Got 115 blocks from TXT
+2026-09-26T22:55:51.989942 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-09-26T22:55:52.044879 -   Got 41 blocks from TXT
+2026-09-26T22:55:57.050789 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-09-26T22:55:57.373935 -   Got 84 blocks from TXT
+2026-09-26T22:56:02.380088 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-09-26T22:56:02.501718 -   Got 132 blocks from TXT
+2026-09-26T22:56:07.507808 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-09-26T22:56:07.679798 -   Got 29 blocks from TXT
+2026-09-26T22:56:12.681251 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-09-26T22:56:12.886292 -   Got 1 blocks from HTML
+2026-09-26T22:56:17.892639 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-09-26T22:56:18.279564 -   Got 1 blocks from HTML
+2026-09-26T22:56:23.285789 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-09-26T22:56:23.469014 -   Got 1 blocks from HTML
+2026-09-26T22:56:28.475381 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-09-26T22:56:29.007705 -   Got 1 blocks from HTML
+2026-09-26T22:56:34.013876 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-09-26T22:56:34.238521 -   Got 1 blocks from HTML
