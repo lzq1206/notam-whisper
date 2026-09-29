@@ -243,6 +243,18 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>A3699/26</name>
+      <description>A3699/26 NOTAMN   Q)FAJO/QWMLW/IV/BO/W/000/999/4848S02018E721  A)FAJO B)2610051028 C)2610111038  D)05 1028-1123, 06 1021-1116, 07 1013-1108, 08 1006- 1101, 09  0958-1053, 10 0951-1046, 11 0943-1038  E)AREA BOUNDED BY (3818S 01800E, 3800S 02700E, 6000S 02230E, 6000S  02036E, 5900S 01000E, 4844S 01450E): SPACEX SDA-T1A STAGE 2 ROCKET  RE-ENTRY OPS TAKING PLACE. APPLICABLE AIRSPACE DOWNGRADED TO  CLASS  G.  F)SFC G)UNL    CREATED: 29 SEP 2026 14:13  SOURCE: FAJNYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>18.0,-38.3,0 27.0,-38.0,0 22.5,-60.0,0 20.6,-60.0,0 10.0,-59.0,0 14.833333,-48.733333,0 18.0,-38.3,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B2138/26</name>
       <description>B2138/26 NOTAMN  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2610050806  C) 2610110826  D) 05 0806-0911, 06 0759-0904, 07 0751-0856, 08 0744-0849, 09 0736-0841,     10 0729-0834, 11 0721-0826  E) DANGEROUS AREA FOR LAUNCH OF ROCKET SPACEX SDA-T1A     LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:     3009N 12010W      3021N 11956W     3020N 11931W     2947N 11849W     2925N 11845W      2910N 11859W      3000N 12000W     3009N 12010W     FIR MEXIO (MMFR)  F) SFC  G) UNL    CREATED: 28 </description>
       <styleUrl>#polyStyle</styleUrl>
@@ -322,18 +334,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>144.8,23.466667,0 144.616667,23.916667,0 151.233333,26.116667,0 156.333333,27.683333,0 165.0,29.416667,0 165.0,28.466667,0 164.983333,28.466667,0 157.733333,27.0,0 155.0,27.0,0 155.0,26.35,0 144.8,23.466667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>FDC 6/5574</name>
-      <description>FDC 6/5574 AIRSPACE SPACE OPERATIONS TFR. Starbase, TX, Tuesday, September 29, 2026 Local. NOTAM Number : FDC 6/5574 Download shapefiles Issue Date : September 26, 2026 at 0200 UTC Location : Starbase, Texas Beginning Date and Time : September 29, 2026 at 1200 UTC Ending Date and Time : September 29, 2026 at 1408 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To: Affected Areas Operating Res</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.116667,26.066667,0 -96.916667,26.066667,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
