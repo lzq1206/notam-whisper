@@ -154,6 +154,17 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>HYDROLANT 1935/26</name>
+      <description>270824Z SEP 26  HYDROLANT 1935/26.  SOUTH ATLANTIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     051028Z TO 051123Z, 061021Z TO 061116Z,     071013Z TO 071108Z, 081006Z TO 081101Z,     090958Z TO 091053Z, 100951Z TO 101046Z     AND 110943Z TO 111038Z OCT     IN AREA BOUND BY     38-18.00S 018-00.00E, 38-00.00S 027-00.00E,     49-02.00S 025-15.00E, 60-00.00S 022-30.00E,     59-00.00S 010-00.00E, 48-44.00S 014-50.00E.  2. CANCEL THIS MSG 111138Z OCT 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>18.0,-38.3,0 27.0,-38.0,0 25.25,-49.033333,0 22.5,-60.0,0 10.0,-59.0,0 14.833333,-48.733333,0 18.0,-38.3,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>HYDROLANT 237/26(54)</name>
       <description>031744Z FEB 26  HYDROLANT 237/26(54).  AEGEAN SEA.  DNC 09.  1. MISSILE OPERATIONS 0530Z TO SUNSET DAILY EVERY     WEDNESDAY THRU SATURDAY UNTIL 14 JUN AND     16 SEB THRU 31 DEC IN AREAS:     A. BOUND BY        35-36.00N 024-07.00E, 36-18.00N 024-07.00E,        36-18.00N 025-59.00E, 36-25.00N 026-12.00E,        36-16.00N 026-40.00E, 35-36.00N 026-41.00E,        35-31.00N 024-11.00E.     B. WITHIN ONE MILE OF 35-32.00N 024-13.00E.     C. WITHIN ONE MILE OF 35-36.33N 024-10.00E.  2. CANCEL THIS M</description>
       <MultiGeometry>
@@ -179,6 +190,17 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2828/26</name>
+      <description>270824Z SEP 26  HYDROPAC 2828/26.  SOUTH ATLANTIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     051028Z TO 051123Z, 061021Z TO 061116Z,     071013Z TO 071108Z, 081006Z TO 081101Z,     090958Z TO 091053Z, 100951Z TO 101046Z     AND 110943Z TO 111038Z OCT     IN AREA BOUND BY     38-18.00S 018-00.00E, 38-00.00S 027-00.00E,     49-02.00S 025-15.00E, 60-00.00S 022-30.00E,     59-00.00S 010-00.00E, 48-44.00S 014-50.00E.  2. CANCEL THIS MSG 111138Z OCT 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>18.0,-38.3,0 27.0,-38.0,0 25.25,-49.033333,0 22.5,-60.0,0 10.0,-59.0,0 14.833333,-48.733333,0 18.0,-38.3,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2791/26</name>
@@ -209,6 +231,28 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-179.2355,45.281333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 272/26</name>
+      <description>291822Z SEP 26  HYDROARC 272/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 051200Z TO 051500Z     AND 0400Z TO 1500Z DAILY 06 AND 07 OCT      IN AREA BOUND BY     70-07.00N 035-56.00E, 69-27.50N 036-07.00E,     69-29.00N 035-11.00E, 69-32.50N 033-14.00E,     69-41.00N 033-04.00E, 69-44.00N 033-04.00E,     69-53.00N 033-21.00E, 70-03.00N 035-02.00E.  2. CANCEL THIS MSG 071600Z OCT 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>35.933333,70.116667,0 36.116667,69.458333,0 35.183333,69.483333,0 33.233333,69.541667,0 33.066667,69.683333,0 33.066667,69.733333,0 33.35,69.883333,0 35.033333,70.05,0 35.933333,70.116667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 271/26</name>
+      <description>291827Z SEP 26  HYDROARC 271/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 040600Z TO 041400Z     AND 050400Z TO 051130Z OCT     IN AREA BOUND BY     69-58.00N 032-42.00E, 69-58.00N 033-49.50E,     69-36.50N 033-49.50E, 69-36.50N 032-59.50E,     69-48.00N 032-42.00E.  2. CANCEL THIS MSG 051230Z OCT 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>32.7,69.966667,0 33.825,69.966667,0 33.825,69.608333,0 32.991667,69.608333,0 32.7,69.8,0 32.7,69.966667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
