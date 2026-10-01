@@ -3,28 +3,8 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
-      <name>NAVAREA IV 940/26</name>
-      <description>281343Z SEP 26  NAVAREA IV 940/26  NORTH ATLANTIC.  VIRGINIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      011130Z TO 011800Z OCT IN AREAS WITHIN:     A. 15 MILES OF 37-43.73N 075-12.98W.     B. 18 MILES OF 37-17.74N 075-01.12W.  2. CANCEL NAVAREA IV 932/26.  3. CANCEL THIS MSG 011900Z OCT 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-75.216333,37.728833,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-75.018667,37.295667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA IV 936/26</name>
-      <description>260913Z SEP 26  NAVAREA IV 936/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      020342Z TO 020525Z OCT, ALTERNATE      030338Z TO 030520Z, 040334Z TO 040516Z,     050329Z TO 050511Z, 06325Z TO 060506Z,     070320Z TO 070502Z, AND 080316Z TO 080457Z     IN AREAS BOUND BY:        A. 30-23.00N 079-06.00W, 31-01.00N 078-45.00W,           31-38.00N 077-53.00W, 31-28.00N 077-43.00W,           30-39.00N 078-10.00W, 30-11.00N 078-55.00W.        B. 28-39.52N 080-38.17W, 29-0</description>
+      <name>NAVAREA IV 952/26</name>
+      <description>301637Z SEP 26  NAVAREA IV 952/26  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      020342Z TO 020525Z OCT, ALTERNATE      030338Z TO 030520Z, 040334Z TO 040516Z,     050329Z TO 050511Z, 06325Z TO 060506Z,     070320Z TO 070502Z, AND 080316Z TO 080457Z     IN AREAS BOUND BY:     A. 30-23.00N 079-06.00W, 31-01.00N 078-45.00W,        31-38.00N 077-53.00W, 31-28.00N 077-43.00W,        30-39.00N 078-10.00W, 30-11.00N 078-55.00W.        B. 28-39.87N 080-38.28W, 29-04.00N 080-</description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
@@ -36,7 +16,7 @@
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-80.636167,28.658667,0 -80.266667,29.066667,0 -80.116667,28.95,0 -80.4,28.466667,0 -80.5245,28.466667,0 -80.636167,28.658667,0</coordinates>
+              <coordinates>-80.638,28.6645,0 -80.266667,29.066667,0 -80.116667,28.95,0 -80.4,28.466667,0 -80.529667,28.466667,0 -80.638,28.6645,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -50,8 +30,8 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 931/26</name>
-      <description>251816Z SEP 26  NAVAREA IV 931/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      011500Z TO 011550Z OCT, ALTERNATE      021438Z TO 021528Z, 031415Z TO 031505Z,     041352Z TO 041442Z, 051330Z TO 051420Z,     061304Z TO 061354Z, 071242Z TO 071332Z OCT     IN AREAS BOUND BY:     A. 30-43.00N 078-30.00W, 31-53.00N 077-11.00W,        31-43.00N 076-57.00W, 30-31.00N 078-19.00W.     B. 28-39.23N 080-37.57W, 28-43.14N 080-32.44W,        28-51.00N 080-24.00W, 28-51.00N 080-1</description>
+      <name>NAVAREA IV 951/26</name>
+      <description>301435Z SEP 26  NAVAREA IV 951/26  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      011500Z TO 011550Z OCT, ALTERNATE      021438Z TO 021528Z, 031415Z TO 031505Z,     041352Z TO 041442Z, 051330Z TO 051420Z,     061304Z TO 061354Z, 071242Z TO 071332Z OCT     IN AREAS BOUND BY:     A. 30-43.00N 078-30.00W, 31-53.00N 077-11.00W,        31-43.00N 076-57.00W, 30-31.00N 078-19.00W.        B. 28-39.38N 080-37.95W, 28-43.23N 080-32.73W,        28-51.00N 080-24.00W, 28-51.00N 080</description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
@@ -63,7 +43,7 @@
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>-80.626167,28.653833,0 -80.540667,28.719,0 -80.4,28.85,0 -80.3,28.85,0 -80.266667,28.833333,0 -80.266667,28.733333,0 -80.45,28.55,0 -80.553333,28.505,0 -80.626167,28.653833,0</coordinates>
+              <coordinates>-80.6325,28.656333,0 -80.5455,28.7205,0 -80.4,28.85,0 -80.3,28.85,0 -80.266667,28.833333,0 -80.266667,28.733333,0 -80.45,28.55,0 -80.5505,28.508333,0 -80.6325,28.656333,0</coordinates>
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
@@ -79,6 +59,75 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA XII 693/26</name>
+      <description>252011Z SEP 26  NAVAREA XII 693/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1050Z TO 0030Z DAILY 05 THRU 19 OCT     IN AREAS BOUND BY:     A. 33-47.00N 119-15.00W, 33-45.00N 119-18.00W,        33-36.00N 119-18.00W, 33-33.00N 119-14.00W,        33-33.00N 119-07.00W, 33-37.00N 119-02.00W,        33-45.00N 119-02.00W, 33-47.00N 119-05.00W.     B. 38-19.00N 125-59.00W, 38-57.00N 128-05.00W,        41-11.00N 132-05.00W, 44-07.00N 138-25.00W,        45-30.00N 137-21.00W, 42-30.00N 1</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-119.25,33.783333,0 -119.3,33.75,0 -119.3,33.6,0 -119.233333,33.55,0 -119.116667,33.55,0 -119.033333,33.616667,0 -119.033333,33.75,0 -119.083333,33.783333,0 -119.25,33.783333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-125.983333,38.316667,0 -128.083333,38.95,0 -132.083333,41.183333,0 -138.416667,44.116667,0 -137.35,45.5,0 -130.916667,42.5,0 -126.883333,40.216667,0 -125.566667,38.733333,0 -125.983333,38.316667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-124.916667,28.266667,0 -125.8,26.65,0 -128.583333,23.8,0 -132.4,19.55,0 -133.65,20.6,0 -129.85,24.866667,0 -127.05,27.75,0 -125.35,28.65,0 -124.916667,28.266667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-117.833333,33.116667,0 -117.9,33.083333,0 -117.9,32.933333,0 -117.833333,32.883333,0 -117.716667,32.883333,0 -117.633333,32.95,0 -117.633333,33.083333,0 -117.683333,33.116667,0 -117.833333,33.116667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-124.466667,37.7,0 -126.533333,38.366667,0 -130.483333,40.65,0 -136.683333,43.633333,0 -135.6,45.0,0 -129.316667,41.95,0 -125.333333,39.616667,0 -124.05,38.133333,0 -124.466667,37.7,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-123.416667,27.55,0 -124.283333,25.933333,0 -127.033333,23.066667,0 -130.8,18.8,0 -132.05,19.85,0 -128.3,24.133333,0 -125.533333,27.033333,0 -123.85,27.933333,0 -123.416667,27.55,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-117.8,32.7,0 -117.85,32.666667,0 -117.85,32.516667,0 -117.783333,32.466667,0 -117.666667,32.466667,0 -117.583333,32.533333,0 -117.583333,32.666667,0 -117.633333,32.7,0 -117.8,32.7,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-124.35,37.333333,0 -126.416667,38.0,0 -130.316667,40.3,0 -136.45,43.333333,0 -135.35,44.7,0 -129.133333,41.6,0 -125.2,39.25,0 -123.933333,37.75,0 -124.35,37.333333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-123.316667,27.116667,0 -124.166667,25.5,0 -126.9,22.616667,0 -130.65,18.35,0 -131.9,19.383333,0 -128.166667,23.683333,0 -125.433333,26.583333,0 -123.75,27.5,0 -123.316667,27.116667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>NAVAREA XII 677/26</name>
@@ -132,6 +181,47 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
+      <name>HYDROLANT 1944/26</name>
+      <description>301657Z SEP 26  HYDROLANT 1944/26  BAY OF BISCAY.  CELTIC SEA.  NORTH ATLANTIC.  FRANCE.  1. MISSILE OPERATIONS 0001Z TO 1100Z DAILY     04 THRU 21 OCT IN AREAS BOUND BY:     A. 46-16.38N 023-35.45W, 46-59.73N 019-44.15W,        45-07.98N 019-44.15W, 44-26.03N 022-49.63W.     B. 47-44.70N 005-23.50W, 47-48.72N 004-31.00W,        47-39.00N 004-01.00W, 47-21.72N 004-09.58W,        47-16.47N 005-17.68W.     C. 47-24.10N 009-51.67W, 47-31.00N 008-28.28W,        47-08.48N 008-24.55W, 47-01.62N 009-47</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-23.590833,46.273,0 -19.735833,46.9955,0 -19.735833,45.133,0 -22.827167,44.433833,0 -23.590833,46.273,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-5.391667,47.745,0 -4.516667,47.812,0 -4.016667,47.65,0 -4.159667,47.362,0 -5.294667,47.2745,0 -5.391667,47.745,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-9.861167,47.401667,0 -8.471333,47.516667,0 -8.409167,47.141333,0 -9.789167,47.027,0 -9.861167,47.401667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-8.471333,47.516667,0 -5.391667,47.745,0 -5.294667,47.2745,0 -8.409167,47.141333,0 -8.471333,47.516667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-34.911333,42.972167,0 -32.333667,43.7695,0 -31.812,42.822833,0 -34.358,42.0375,0 -34.911333,42.972167,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>HYDROLANT 1935/26</name>
       <description>270824Z SEP 26  HYDROLANT 1935/26.  SOUTH ATLANTIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     051028Z TO 051123Z, 061021Z TO 061116Z,     071013Z TO 071108Z, 081006Z TO 081101Z,     090958Z TO 091053Z, 100951Z TO 101046Z     AND 110943Z TO 111038Z OCT     IN AREA BOUND BY     38-18.00S 018-00.00E, 38-00.00S 027-00.00E,     49-02.00S 025-15.00E, 60-00.00S 022-30.00E,     59-00.00S 010-00.00E, 48-44.00S 014-50.00E.  2. CANCEL THIS MSG 111138Z OCT 26.</description>
       <Polygon>
@@ -168,6 +258,17 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2845/26</name>
+      <description>010944Z OCT 26  HYDROPAC 2845/26.  NORTH PACIFIC.  SEA OF OKHOTSK.  KAMCHATKA.  1. MISSILE OPERATIONS 1400Z TO 0900Z      DAILY 05 THRU 16 OCT IN AREA BOUND BY     56-34.00N 154-14.00E, 56-34.00N 156-18.20E,     55-44.00N 155-32.00E, 52-35.00N 155-32.00E,     52-13.10N 158-25.00E, 52-54.30N 159-42.00E,     52-46.00N 160-30.00E, 51-40.00N 160-30.00E,     50-24.90N 158-53.10E, 49-23.50N 157-28.50E,     50-13.60N 156-03.00E, 51-30.10N 158-03.10E,     52-06.00N 154-14.00E, 56-34.00N 154-14.00E.  2. </description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>154.233333,56.566667,0 156.303333,56.566667,0 155.533333,55.733333,0 155.533333,52.583333,0 158.416667,52.218333,0 159.7,52.905,0 160.5,52.766667,0 160.5,51.666667,0 158.885,50.415,0 157.475,49.391667,0 156.05,50.226667,0 158.051667,51.501667,0 154.233333,52.1,0 154.233333,56.566667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2828/26</name>
@@ -234,6 +335,53 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA IV 936/26</name>
+      <description>260913Z SEP 26  NAVAREA IV 936/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      020342Z TO 020525Z OCT, ALTERNATE      030338Z TO 030520Z, 040334Z TO 040516Z,     050329Z TO 050511Z, 06325Z TO 060506Z,     070320Z TO 070502Z, AND 080316Z TO 080457Z     IN AREAS BOUND BY:        A. 30-23.00N 079-06.00W, 31-01.00N 078-45.00W,           31-38.00N 077-53.00W, 31-28.00N 077-43.00W,           30-39.00N 078-10.00W, 30-11.00N 078-55.00W.        B. 28-39.52N 080-38.17W, 29-0</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-79.1,30.383333,0 -78.75,31.016667,0 -77.883333,31.633333,0 -77.716667,31.466667,0 -78.166667,30.65,0 -78.916667,30.183333,0 -79.1,30.383333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.636167,28.658667,0 -80.266667,29.066667,0 -80.116667,28.95,0 -80.4,28.466667,0 -80.5245,28.466667,0 -80.636167,28.658667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-71.616667,37.616667,0 -68.0,40.416667,0 -67.133333,39.8,0 -70.7,36.883333,0 -71.616667,37.616667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA IV 931/26</name>
+      <description>251816Z SEP 26  NAVAREA IV 931/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      011500Z TO 011550Z OCT, ALTERNATE      021438Z TO 021528Z, 031415Z TO 031505Z,     041352Z TO 041442Z, 051330Z TO 051420Z,     061304Z TO 061354Z, 071242Z TO 071332Z OCT     IN AREAS BOUND BY:     A. 30-43.00N 078-30.00W, 31-53.00N 077-11.00W,        31-43.00N 076-57.00W, 30-31.00N 078-19.00W.     B. 28-39.23N 080-37.57W, 28-43.14N 080-32.44W,        28-51.00N 080-24.00W, 28-51.00N 080-1</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-78.5,30.716667,0 -77.183333,31.883333,0 -76.95,31.716667,0 -78.316667,30.516667,0 -78.5,30.716667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.626167,28.653833,0 -80.540667,28.719,0 -80.4,28.85,0 -80.3,28.85,0 -80.266667,28.833333,0 -80.266667,28.733333,0 -80.45,28.55,0 -80.553333,28.505,0 -80.626167,28.653833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2750/26</name>
