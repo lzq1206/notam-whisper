@@ -317,5 +317,17 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
+    <Placemark>
+      <name>W3314/26</name>
+      <description>W3314/26 NOTAMN   Q)SCTZ/QXXXX/IV/NBO/W/000/999/4030S13030W980  A)SCTZ B)2610120406 C)2610120530  E)ZONE ...D... IN WATERS PACIFIC OCEAN DUE TO SPACE VEHICLE RE-ENTRY  ACTIVITY. THE AFECCTED AREA IS BOUNDED BY NXT GEO COORD:  500000S/1300000W  303000S/1300000W  303000S/1310000W  500000S/1310000W  500000S/1300000W  INSTRUCTIONS SANTIAGO OCEANIC CONTROL 10024KHZ FANS 1A EQUIPPED  INFO PROVIDED BY NORTHROP GRUMMAN CORPORATION  F)GND G)UNL    CREATED: 01 OCT 2026 11:22  SOURCE: SCSCYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-130.0,-50.0,0 -130.0,-30.5,0 -131.0,-30.5,0 -131.0,-50.0,0 -130.0,-50.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
   </Document>
 </kml>
