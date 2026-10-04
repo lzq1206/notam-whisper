@@ -326,41 +326,5 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
-    <Placemark>
-      <name>P4724/26</name>
-      <description>P4724/26 NOTAMN  Q)RJJJ/QXXXX/IV/NBO/E/000/999/2629N15445E573  A)RJJJ B)2609281427 C)2610041833  D)1427/1833  E)DUE TO AN AEROSPACE FLIGHT ACTIVITY, THE FLIGHT SAFETY OF THE  AIRCRAFT IN FOLLOWING AREA MAY BE AFFECTED THRU SEP 28-OCT 04 2026,  1427-1833 DLY    AREA:  2328N14448E - 2355N14437E - 2607N15114E - 2741N15620E - 2925N16500E -  2828N16500E - 2828N16459E - 2700N15744E - 2700N15500E - 2621N15500E -  2328N14448E    ALTITUDE:  SFC - UNL    RMK: ATC WILL NOT CLEAR IFR FLT THRU THIS AREA FOR </description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>144.8,23.466667,0 144.616667,23.916667,0 151.233333,26.116667,0 156.333333,27.683333,0 165.0,29.416667,0 165.0,28.466667,0 164.983333,28.466667,0 157.733333,27.0,0 155.0,27.0,0 155.0,26.35,0 144.8,23.466667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A0368/26</name>
-      <description>A0368/26 NOTAMN  Q)SMPM/QXXXX/IV/NBO/W/000/999/0906N05559W  A)SMPM B)2609281215 C)2610041630  D)1215-1630  E)A DEBRIS RESPONSE AREA HAS BEEN DEFINED WITHIN THE PARAMARIBO FIR   (SMPM) IN ASSOCIATION WITH THE LAUNCH OF THE SPACE X STARSHIP   FLIGHT-14 FROM STARBASE, TEXAS. THE AREA IS BOUNDED BY THE FOLLOWING   COORDINATES: 0906N05559W, 0916N05432W, 0857N05400W, 0809N05400W. IN   THE EVENT OF A MALFUNCTION OF THE STARSHIP VEHICLE, THE DEFINED AREA   MAY BECOME AFFECTED BY FALLING SPACE DEBRIS. AI</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-55.983333,9.1,0 -54.533333,9.266667,0 -54.0,8.95,0 -54.0,8.15,0 -55.983333,9.1,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>G0316/26</name>
-      <description>G0316/26 NOTAMN  Q) SOOO/QWMLW/IV/BO /W /000/999/0756N05221W119  A) SOOO B) 2609281215 C) 2610041634  D) 1215-1634  E) RISK OF ELEMENTS FALLOUT DURING LAUNCH OF STARSHIP 14  CONTROL RESTRICTIONS AND REROUTING SET UP TO AVOID AREA  LATERAL LIMITS :  080900N0540000W 085700N0540000W 070000N0503800W 064000N0505200W  F) SFC G) UNL    CREATED: 25 SEP 2026 17:37  SOURCE: EUECYIYN</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-54.0,8.15,0 -54.0,8.95,0 -50.633333,7.0,0 -50.866667,6.666667,0 -54.0,8.15,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
   </Document>
 </kml>
