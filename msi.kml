@@ -14,28 +14,8 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 702/26</name>
-      <description>271924Z SEP 26  NAVAREA XII 702/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 102300Z TO 110325Z OCT, ALTERNATE         2300Z TO 0325Z DAILY 11 THRU 16 OCT         IN AREA BOUND BY        29-48.00N 117-39.00W, 34-28.00N 120-18.00W,        34-40.00N 120-36.00W, 34-39.00N 120-39.00W,        34-30.00N 120-39.00W, 29-35.00N 118-12.00W,        29-52.00N 117-54.00W.     B. 102300Z TO 110343Z OCT, ALTERNATE         2300Z TO 0343Z DAILY 11 THRU 16 OCT         IN ARE</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -120.3,34.466667,0 -120.6,34.666667,0 -120.65,34.65,0 -120.65,34.5,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -117.9,29.866667,0 -118.2,29.583333,0 -118.133333,29.4,0 -118.033333,29.25,0 -117.983333,29.033333,0 -117.316667,28.2,0 -117.316667,28.833333,0 -117.266667,29.6,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 693/26</name>
-      <description>252011Z SEP 26  NAVAREA XII 693/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1050Z TO 0030Z DAILY 05 THRU 19 OCT     IN AREAS BOUND BY:     A. 33-47.00N 119-15.00W, 33-45.00N 119-18.00W,        33-36.00N 119-18.00W, 33-33.00N 119-14.00W,        33-33.00N 119-07.00W, 33-37.00N 119-02.00W,        33-45.00N 119-02.00W, 33-47.00N 119-05.00W.     B. 38-19.00N 125-59.00W, 38-57.00N 128-05.00W,        41-11.00N 132-05.00W, 44-07.00N 138-25.00W,        45-30.00N 137-21.00W, 42-30.00N 1</description>
+      <name>NAVAREA XII 705/26</name>
+      <description>060938Z OCT 26  NAVAREA XII 705/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     1455Z TO 1840Z DAILY 08 THRU 21 OCT     IN AREAS BOUND BY:     A. 33-47.00N 119-15.00W, 33-45.00N 119-18.00W,        33-36.00N 119-18.00W, 33-33.00N 119-14.00W,        33-33.00N 119-07.00W, 33-37.00N 119-02.00W,        33-45.00N 119-02.00W, 33-47.00N 119-05.00W.     B. 38-19.00N 125-59.00W, 38-57.00N 128-05.00W,        41-11.00N 132-05.00W, 44-07.00N 138-25.00W,        45-30.00N 137-21.00W</description>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
@@ -100,6 +80,54 @@
             </LinearRing>
           </outerBoundaryIs>
         </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-133.65,20.6,0 -129.85,24.866667,0 -127.05,27.75,0 -125.35,28.65,0 -124.916667,28.266667,0 -123.85,27.933333,0 -123.416667,27.55,0 -123.316667,27.116667,0 -124.166667,25.5,0 -126.9,22.616667,0 -130.65,18.35,0 -131.9,19.383333,0 -132.4,19.55,0 -133.65,20.6,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-138.416667,44.116667,0 -137.35,45.5,0 -135.6,45.0,0 -129.316667,41.95,0 -125.333333,39.616667,0 -124.05,38.133333,0 -123.933333,37.75,0 -124.35,37.333333,0 -126.416667,38.0,0 -128.083333,38.95,0 -132.083333,41.183333,0 -138.416667,44.116667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-133.65,20.6,0 -129.85,24.866667,0 -127.05,27.75,0 -125.35,28.65,0 -124.916667,28.266667,0 -123.85,27.933333,0 -123.416667,27.55,0 -123.316667,27.116667,0 -124.166667,25.5,0 -126.9,22.616667,0 -130.65,18.35,0 -131.9,19.383333,0 -132.4,19.55,0 -133.65,20.6,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-133.65,20.6,0 -129.85,24.866667,0 -127.05,27.75,0 -125.35,28.65,0 -124.916667,28.266667,0 -123.85,27.933333,0 -123.416667,27.55,0 -123.316667,27.116667,0 -124.166667,25.5,0 -126.9,22.616667,0 -130.65,18.35,0 -131.9,19.383333,0 -132.4,19.55,0 -133.65,20.6,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA XII 702/26</name>
+      <description>271924Z SEP 26  NAVAREA XII 702/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 102300Z TO 110325Z OCT, ALTERNATE         2300Z TO 0325Z DAILY 11 THRU 16 OCT         IN AREA BOUND BY        29-48.00N 117-39.00W, 34-28.00N 120-18.00W,        34-40.00N 120-36.00W, 34-39.00N 120-39.00W,        34-30.00N 120-39.00W, 29-35.00N 118-12.00W,        29-52.00N 117-54.00W.     B. 102300Z TO 110343Z OCT, ALTERNATE         2300Z TO 0343Z DAILY 11 THRU 16 OCT         IN ARE</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-117.65,29.8,0 -120.3,34.466667,0 -120.6,34.666667,0 -120.65,34.65,0 -120.65,34.5,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-117.65,29.8,0 -117.9,29.866667,0 -118.2,29.583333,0 -118.133333,29.4,0 -118.033333,29.25,0 -117.983333,29.033333,0 -117.316667,28.2,0 -117.316667,28.833333,0 -117.266667,29.6,0 -117.65,29.8,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
       </MultiGeometry>
     </Placemark>
     <Placemark>
@@ -145,47 +173,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROLANT 1944/26</name>
-      <description>301657Z SEP 26  HYDROLANT 1944/26  BAY OF BISCAY.  CELTIC SEA.  NORTH ATLANTIC.  FRANCE.  1. MISSILE OPERATIONS 0001Z TO 1100Z DAILY     04 THRU 21 OCT IN AREAS BOUND BY:     A. 46-16.38N 023-35.45W, 46-59.73N 019-44.15W,        45-07.98N 019-44.15W, 44-26.03N 022-49.63W.     B. 47-44.70N 005-23.50W, 47-48.72N 004-31.00W,        47-39.00N 004-01.00W, 47-21.72N 004-09.58W,        47-16.47N 005-17.68W.     C. 47-24.10N 009-51.67W, 47-31.00N 008-28.28W,        47-08.48N 008-24.55W, 47-01.62N 009-47</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-23.590833,46.273,0 -19.735833,46.9955,0 -19.735833,45.133,0 -22.827167,44.433833,0 -23.590833,46.273,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-5.391667,47.745,0 -4.516667,47.812,0 -4.016667,47.65,0 -4.159667,47.362,0 -5.294667,47.2745,0 -5.391667,47.745,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-9.861167,47.401667,0 -8.471333,47.516667,0 -8.409167,47.141333,0 -9.789167,47.027,0 -9.861167,47.401667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-8.471333,47.516667,0 -5.391667,47.745,0 -5.294667,47.2745,0 -8.409167,47.141333,0 -8.471333,47.516667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-34.911333,42.972167,0 -32.333667,43.7695,0 -31.812,42.822833,0 -34.358,42.0375,0 -34.911333,42.972167,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROLANT 1935/26</name>
       <description>270824Z SEP 26  HYDROLANT 1935/26.  SOUTH ATLANTIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     051028Z TO 051123Z, 061021Z TO 061116Z,     071013Z TO 071108Z, 081006Z TO 081101Z,     090958Z TO 091053Z, 100951Z TO 101046Z     AND 110943Z TO 111038Z OCT     IN AREA BOUND BY     38-18.00S 018-00.00E, 38-00.00S 027-00.00E,     49-02.00S 025-15.00E, 60-00.00S 022-30.00E,     59-00.00S 010-00.00E, 48-44.00S 014-50.00E.  2. CANCEL THIS MSG 111138Z OCT 26.</description>
       <Polygon>
@@ -222,6 +209,28 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2905/26</name>
+      <description>292249Z SEP 26  HYDROPAC 2905/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     120406Z TO 120530Z OCT IN AREA BOUND BY     50-00.00S 130-00.00W, 30-30.00S 130-00.00W,     30-30.00S 160-00.00W, 50-00.00S 160-00.00W.  2. CANCEL THIS MSG 120630Z OCT 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-130.0,-50.0,0 -130.0,-30.5,0 -160.0,-30.5,0 -160.0,-50.0,0 -130.0,-50.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 2894/26</name>
+      <description>061024Z OCT 26  HYDROPAC 2894/26.  EASTERN INDIAN OCEAN.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      090530Z TO 090700Z OCT IN AREA BOUND BY     08-31.98N 076-52.05E, 08-34.48N 076-47.68E,     08-18.85N 075-37.45E, 08-06.23N 075-40.90E,     07-54.42N 075-46.52E, 07-43.73N 075-54.10E,     07-34.50N 076-03.45E, 08-27.07N 076-51.17E.  2. CANCEL THIS MSG 090800Z OCT 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>76.8675,8.533,0 76.794667,8.574667,0 75.624167,8.314167,0 75.681667,8.103833,0 75.775333,7.907,0 75.901667,7.728833,0 76.0575,7.575,0 76.852833,8.451167,0 76.8675,8.533,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2888/26</name>
@@ -297,6 +306,26 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROARC 280/26</name>
+      <description>051820Z OCT 26  HYDROARC 280/26.  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0400Z TO 1500Z DAILY     10 THRU 13 OCT IN AREAS BOUND BY:     A. 73-48.00N 040-10.00E, 68-33.00N 044-42.00E,        66-59.00N 044-24.00E, 66-54.00N 043-31.00E,        73-33.00N 037-31.00E.     B. 67-42.00N 045-18.00E, 67-07.00N 045-42.00E,        67-07.00N 045-37.00E, 67-22.00N 044-55.00E.  2. CANCEL THIS MSG 131600Z OCT 26.</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>40.166667,73.8,0 44.7,68.55,0 44.4,66.983333,0 43.516667,66.9,0 37.516667,73.55,0 40.166667,73.8,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>45.3,67.7,0 45.7,67.116667,0 45.616667,67.116667,0 44.916667,67.366667,0 45.3,67.7,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROARC 272/26</name>
