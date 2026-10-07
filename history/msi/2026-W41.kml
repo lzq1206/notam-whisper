@@ -295,17 +295,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROARC 272/26</name>
-      <description>291822Z SEP 26  HYDROARC 272/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 051200Z TO 051500Z     AND 0400Z TO 1500Z DAILY 06 AND 07 OCT      IN AREA BOUND BY     70-07.00N 035-56.00E, 69-27.50N 036-07.00E,     69-29.00N 035-11.00E, 69-32.50N 033-14.00E,     69-41.00N 033-04.00E, 69-44.00N 033-04.00E,     69-53.00N 033-21.00E, 70-03.00N 035-02.00E.  2. CANCEL THIS MSG 071600Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>35.933333,70.116667,0 36.116667,69.458333,0 35.183333,69.483333,0 33.233333,69.541667,0 33.066667,69.683333,0 33.066667,69.733333,0 33.35,69.883333,0 35.033333,70.05,0 35.933333,70.116667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 228/26</name>
       <description>101300Z SEP 26  HYDROARC 228/26.  ARCTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0128Z TO 0244Z DAILY 15 SEP THRU 15 OCT     IN AREA BOUND BY     77-06.00N 161-35.00E, 76-42.00N 163-41.00E,     81-06.00N 135-04.00W, 81-42.00N 134-18.00W.  2. CANCEL THIS MSG 150344Z OCT 26.</description>
       <Polygon>
@@ -433,17 +422,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-129.433333,37.933333,0 -127.25,36.55,0 -132.566667,31.016667,0 -134.616667,32.4,0 -129.433333,37.933333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2791/26</name>
-      <description>231936Z SEP 26  HYDROPAC 2791/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     011606Z TO 011701Z, 021544Z TO 021639Z,     031521Z TO 031616Z, 041458Z TO 041553Z,     051436Z TO 051531Z, 061410Z TO 061505Z     AND 071348Z TO 071443Z OCT     IN AREA BOUND BY     27-06.00S 149-35.00W, 28-54.00S 148-00.00W,     37-08.00S 157-59.00W, 44-20.00S 170-14.00W,     42-41.00S 171-31.00W, 35-24.00S 159-30.00W.  2. CANCEL THIS MSG 071543Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-149.583333,-27.1,0 -148.0,-28.9,0 -157.983333,-37.133333,0 -170.233333,-44.333333,0 -171.516667,-42.683333,0 -159.5,-35.4,0 -149.583333,-27.1,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
