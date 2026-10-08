@@ -415,16 +415,5 @@
         </Polygon>
       </MultiGeometry>
     </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 677/26</name>
-      <description>240857Z SEP 26  NAVAREA XII 677/26.  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     020730Z TO 020907Z, 030725Z TO 030902Z,      040721Z TO 040858Z, 050716Z TO 050853Z,      060712Z TO 060848Z, 070707Z TO 070844Z      AND 080703Z TO 080839Z OCT     IN AREA BOUND BY     37-56.00N 129-26.00W, 36-33.00N 127-15.00W,     31-01.00N 132-34.00W, 32-24.00N 134-37.00W.  2. CANCEL THIS MSG 080939Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-129.433333,37.933333,0 -127.25,36.55,0 -132.566667,31.016667,0 -134.616667,32.4,0 -129.433333,37.933333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
   </Document>
 </kml>
