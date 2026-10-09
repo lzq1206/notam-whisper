@@ -145,17 +145,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2894/26</name>
-      <description>061024Z OCT 26  HYDROPAC 2894/26.  EASTERN INDIAN OCEAN.  INDIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      090530Z TO 090700Z OCT IN AREA BOUND BY     08-31.98N 076-52.05E, 08-34.48N 076-47.68E,     08-18.85N 075-37.45E, 08-06.23N 075-40.90E,     07-54.42N 075-46.52E, 07-43.73N 075-54.10E,     07-34.50N 076-03.45E, 08-27.07N 076-51.17E.  2. CANCEL THIS MSG 090800Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>76.8675,8.533,0 76.794667,8.574667,0 75.624167,8.314167,0 75.681667,8.103833,0 75.775333,7.907,0 75.901667,7.728833,0 76.0575,7.575,0 76.852833,8.451167,0 76.8675,8.533,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2888/26</name>
       <description>051218Z OCT 26  HYDROPAC 2888/26.  SULU SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      091700Z TO 092300Z OCT IN AREA BOUND BY     08-57.00N 119-36.00E, 08-45.00N 119-19.80E,     09-16.20N 118-57.00E, 09-28.20N 119-12.60E.  2. CANCEL THIS MSG 100001Z OCT 26.</description>
       <Polygon>
