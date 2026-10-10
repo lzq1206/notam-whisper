@@ -54,6 +54,54 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>A5085/26</name>
+      <description>A5085/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/3528N09815E013  A)ZLHW B)2610141133 C)2610141219   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N354100E0981200-N353800E0982600-N351600E0981900-N351900E0980500,  BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 10 OCT 2026 06:13  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>98.2,35.683333,0 98.433333,35.633333,0 98.316667,35.266667,0 98.083333,35.316667,0 98.2,35.683333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5086/26</name>
+      <description>A5086/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/3235N09756E032  A)ZLHW B)2610141134 C)2610141226   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N330200E0973500-N325200E0982900-N320900E0981800-N321900E0972400,  BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 10 OCT 2026 06:14  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>97.583333,33.033333,0 98.483333,32.866667,0 98.3,32.15,0 97.4,32.316667,0 97.583333,33.033333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5095/26</name>
+      <description>A5095/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/3930N10132E061  A)ZLHW B)2610140322 C)2610140436   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N400200E1024023-N395311E1001911-N385922E1002528-N390807E1024516,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 10 OCT 2026 10:14  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>102.673056,40.033333,0 100.319722,39.886389,0 100.424444,38.989444,0 102.754444,39.135278,0 102.673056,40.033333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5096/26</name>
+      <description>A5096/26 NOTAMN  Q)ZWUQ/QRDCA/IV/BO/W/000/999/3727N08432E050  A)ZWUQ B)2610140322 C)2610140436   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N380347E0851557-N374418E0833421-N365138E0834933-N371106E0853113,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 10 OCT 2026 10:14  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>85.265833,38.063056,0 83.5725,37.738333,0 83.825833,36.860556,0 85.520278,37.185,0 85.265833,38.063056,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B5404/26</name>
       <description>B5404/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1245N11610E038  A) RPHI B) 2610220200 C) 2610270500  D) 0200-0500  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  130200N 1153700E -  132100N 1160400E -  122800N 1164300E -  121000N 1161600E -  130200N 1153700E   (200NM WEST OF BUSUANGA AP).  F) SFC G) UNL    CREATED: 09 OCT 2026 04:44  SOURCE: EUECYIYN</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -121,18 +169,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-121.883333,-30.0,0 -122.733333,-27.983333,0 -120.716667,-27.15,0 -120.0,-28.716667,0 -120.0,-30.0,0 -121.883333,-30.0,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A3882/26</name>
-      <description>A3882/26 NOTAMN   Q)FAJO/QWMLW/IV/BO/W/000/999/4848S02018E721  A)FAJO B)2610100951 C)2610161001  D)10 0951-1046, 11 0943-1038, 12 0936-1031, 13 0928-1023,   14 0921-1016, 15 0913-1008,16 0905-1001  E)AREA BOUNDED BY (3818S 01800E, 3800S 02700E, 4902S 02515E, 6000S  02230E, 5900S 01000E, 4844S 01450E): SPACEX SDA-T1A STAGE 2: ROCKET  RE-ENTRY OPS TAKING PLACE.   APPLICABLE AIRSPACE DOWNGRADED TO  CLASS G.  F)SFC G)UNL    CREATED: 08 OCT 2026 13:30  SOURCE: FAJNYNYX</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>18.0,-38.3,0 27.0,-38.0,0 25.25,-49.033333,0 22.5,-60.0,0 10.0,-59.0,0 14.833333,-48.733333,0 18.0,-38.3,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -253,6 +289,18 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-121.883333,-30.0,0 -120.0,-30.0,0 -120.0,-28.716667,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -121.883333,-30.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A3882/26</name>
+      <description>A3882/26 NOTAMN   Q)FAJO/QWMLW/IV/BO/W/000/999/4848S02018E721  A)FAJO B)2610100951 C)2610161001  D)10 0951-1046, 11 0943-1038, 12 0936-1031, 13 0928-1023,   14 0921-1016, 15 0913-1008,16 0905-1001  E)AREA BOUNDED BY (3818S 01800E, 3800S 02700E, 4902S 02515E, 6000S  02230E, 5900S 01000E, 4844S 01450E): SPACEX SDA-T1A STAGE 2: ROCKET  RE-ENTRY OPS TAKING PLACE.   APPLICABLE AIRSPACE DOWNGRADED TO  CLASS G.  F)SFC G)UNL    CREATED: 08 OCT 2026 13:30  SOURCE: FAJNYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>18.0,-38.3,0 27.0,-38.0,0 25.25,-49.033333,0 22.5,-60.0,0 10.0,-59.0,0 14.833333,-48.733333,0 18.0,-38.3,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
