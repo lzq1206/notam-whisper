@@ -112,17 +112,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2928/26</name>
-      <description>081340Z OCT 26  HYDROPAC 2928/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     121230Z OCT IN AREA BOUND BY     50-00.00S 130-00.00W, 30-30.00S 130-00.00W,     30-30.00S 160-00.00W, 50-00.00S 160-00.00W  2. CANCEL HYDROPAC 2905/26.  3. CANCEL THIS MSG 121330Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-130.0,-50.0,0 -130.0,-30.5,0 -160.0,-30.5,0 -160.0,-50.0,0 -130.0,-50.0,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2920/26</name>
       <description>051229Z OCT 26  HYDROPAC 2920/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS      131130Z TO 131225Z, 141104Z TO 141159Z,       151041Z TO 151136Z, 161019Z TO 161114Z,       170956Z TO 171051Z, 180931Z TO 181026Z     AND 190908Z TO 191003Z OCT      IN AREA BOUND BY     27-06.00S 149-35.00W, 28-54.00S 148-00.00W,     37-08.00S 157-59.00W, 44-20.00S 170-14.00W,     42-41.00S 171-31.00W, 35-24.00S 159-30.00W.  2. CANCEL THIS MSG 191103Z OCT 26.</description>
       <Polygon>
