@@ -102,6 +102,42 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>A5188/26</name>
+      <description>A5188/26 NOTAMN  Q)ZWUQ/QRDCA/IV/BO/W/000/999/3914N08802E072  A)ZWUQ B)2610160022 C)2610160145   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N391250E0893445-N393221E0863257-N391410E0862928-N385440E0893116,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 13 OCT 2026 13:06  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>89.579167,39.213889,0 86.549167,39.539167,0 86.491111,39.236111,0 89.521111,38.911111,0 89.579167,39.213889,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5189/26</name>
+      <description>A5189/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/3851N09157E028  A)ZLHW B)2610160223 C)2610160346   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N385805E0923127-N390450E0912641-N384404E0912313-N383729E0922809,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 13 OCT 2026 13:06  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>92.524167,38.968056,0 91.444722,39.080556,0 91.386944,38.734444,0 92.469167,38.624722,0 92.524167,38.968056,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5190/26</name>
+      <description>A5190/26 NOTAMN  Q)ZXXX/QRDCA/IV/BO/W/000/999/3903N08943E066  A)ZLHW ZWUQ B)2610160223 C)2610160346   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N390708E0910756-N392112E0882232-N385937E0882000-N384547E0910442,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 13 OCT 2026 13:07  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>91.132222,39.118889,0 88.375556,39.353333,0 88.333333,38.993611,0 91.078333,38.763056,0 91.132222,39.118889,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B5404/26</name>
       <description>B5404/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1245N11610E038  A) RPHI B) 2610220200 C) 2610270500  D) 0200-0500  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  130200N 1153700E -  132100N 1160400E -  122800N 1164300E -  121000N 1161600E -  130200N 1153700E   (200NM WEST OF BUSUANGA AP).  F) SFC G) UNL    CREATED: 09 OCT 2026 04:44  SOURCE: EUECYIYN</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -121,18 +157,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>118.8,8.583333,0 119.25,8.9,0 119.483333,8.716667,0 120.1,7.833333,0 119.5,7.433333,0 118.883333,8.316667,0 118.8,8.583333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>A1300/26</name>
-      <description>A1300/26 NOTAMN  Q) NTTT/QRDCA/IV/BO/W/000/999/2837S14949W175  A) NTTT  B) 2610131130 C) 2610191003  D) 13 1130-1225, 14 1104-1159, 15 1041-1136, 16 1019-1114, 17   0956-1051, 18 0931-1026, 19 0908-1003  E) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX CRS-35   IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING POINTS:   2706S 14935W, 2854S 14800W, 3000S 14911W, 3000S 15246W, 2706S   14935W   THIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : NZZO    THE FRENCH VERSION OF THIS NOTAM IS C</description>
-      <styleUrl>#polyStyle</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-149.583333,-27.1,0 -148.0,-28.9,0 -149.183333,-30.0,0 -152.766667,-30.0,0 -149.583333,-27.1,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -205,6 +229,18 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-131.0,-36.633333,0 -129.133333,-43.333333,0 -121.983333,-59.416667,0 -127.4,-59.95,0 -131.0,-51.15,0 -131.0,-36.633333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A1300/26</name>
+      <description>A1300/26 NOTAMN  Q) NTTT/QRDCA/IV/BO/W/000/999/2837S14949W175  A) NTTT  B) 2610131130 C) 2610191003  D) 13 1130-1225, 14 1104-1159, 15 1041-1136, 16 1019-1114, 17   0956-1051, 18 0931-1026, 19 0908-1003  E) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX CRS-35   IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING POINTS:   2706S 14935W, 2854S 14800W, 3000S 14911W, 3000S 15246W, 2706S   14935W   THIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : NZZO    THE FRENCH VERSION OF THIS NOTAM IS C</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-149.583333,-27.1,0 -148.0,-28.9,0 -149.183333,-30.0,0 -152.766667,-30.0,0 -149.583333,-27.1,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
