@@ -3,12 +3,43 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
+      <name>NAVAREA IV 992/26</name>
+      <description>121112Z OCT 26  NAVAREA IV 992/26.  NORTH ATLANTIC.  FLORIDA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING     191030Z TO 191213Z OCT, ALTERNATE     1030Z TO 1213Z DAILY 20 THRU 25 OCT     IN AREAS BOUND BY:     A. 28-36.83N 080-35.92W, 28-36.00N 080-26.00W,        28-26.00N 080-07.00W, 28-21.00N 080-08.00W,        28-28.80N 080-32.22W.     B. 26-06.00N 076-02.00W, 26-10.00N 076-01.00W,        25-36.00N 073-56.00W, 25-27.00N 073-44.00W,        25-04.00N 073-46.00W, 24-54.00N 073-59.00W,        24-</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-80.598667,28.613833,0 -80.433333,28.6,0 -80.116667,28.433333,0 -80.133333,28.35,0 -80.537,28.48,0 -80.598667,28.613833,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-76.033333,26.1,0 -76.016667,26.166667,0 -73.933333,25.6,0 -73.733333,25.45,0 -73.766667,25.066667,0 -73.983333,24.9,0 -74.55,24.966667,0 -76.033333,26.1,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>NAVAREA IV 870/26</name>
       <description>021815Z SEP 26  NAVAREA IV 870/26.  NORTH ATLANTIC.  FRENCH GUIANA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0111Z TO 0151Z DAILY 15 SEP THRU 15 OCT     IN AREA BOUND BY     05-48.00N 052-54.00W, 05-50.55N 052-26.40W,     05-12.60N 052-40.98W, 05-23.46N 052-53.80W.  2. CANCEL THIS MSG 150251Z OCT 26.</description>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-52.9,5.8,0 -52.44,5.8425,0 -52.683,5.21,0 -52.896667,5.391,0 -52.9,5.8,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>NAVAREA XII 724/26</name>
+      <description>121112Z OCT 26  NAVAREA XII 724/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     191334Z TO 191528Z OCT, ALTERNATE     1334Z TO 1528Z DAILY 20 THRU 25 OCT     IN AREA BOUND BY     41-28.51N 140-03.17W, 30-20.60N 125-28.93W,     21-13.00N 118-21.00W, 20-52.00N 118-45.00W,     29-01.72N 127-31.33W, 40-11.11N 141-24.84W.  2. CANCEL THIS MSG 251628Z OCT 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-140.052833,41.475167,0 -125.482167,30.343333,0 -118.35,21.216667,0 -118.75,20.866667,0 -127.522167,29.028667,0 -141.414,40.185167,0 -140.052833,41.475167,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
@@ -134,26 +165,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2862/26</name>
-      <description>021205Z OCT 26  HYDROPAC 2862/26.  NORTH PACIFIC.  PHILIPPINE SEA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      070333Z TO 070453Z OCT, ALTERNATE     0328Z TO 0443Z DAILY 08 AND 14 OCT     IN AREAS BOUND BY:     A. 21-29.63N 128-41.38E, 21-37.99N 129-53.83E,        18-29.72N 130-17.60E, 18-21.37N 129-06.56E.     B. 12-45.04N 129-26.03E, 12-55.28N 131-04.99E,        08-14.81N 131-34.22E, 08-04.55N 129-56.77E.  2. CANCEL THIS MSG 140543Z OCT 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>128.689667,21.493833,0 129.897167,21.633167,0 130.293333,18.495333,0 129.109333,18.356167,0 128.689667,21.493833,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>129.433833,12.750667,0 131.083167,12.921333,0 131.570333,8.246833,0 129.946167,8.075833,0 129.433833,12.750667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2860/26</name>
