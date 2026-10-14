@@ -114,26 +114,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2862/26</name>
-      <description>021205Z OCT 26  HYDROPAC 2862/26.  NORTH PACIFIC.  PHILIPPINE SEA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      070333Z TO 070453Z OCT, ALTERNATE     0328Z TO 0443Z DAILY 08 AND 14 OCT     IN AREAS BOUND BY:     A. 21-29.63N 128-41.38E, 21-37.99N 129-53.83E,        18-29.72N 130-17.60E, 18-21.37N 129-06.56E.     B. 12-45.04N 129-26.03E, 12-55.28N 131-04.99E,        08-14.81N 131-34.22E, 08-04.55N 129-56.77E.  2. CANCEL THIS MSG 140543Z OCT 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>128.689667,21.493833,0 129.897167,21.633167,0 130.293333,18.495333,0 129.109333,18.356167,0 128.689667,21.493833,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>129.433833,12.750667,0 131.083167,12.921333,0 131.570333,8.246833,0 129.946167,8.075833,0 129.433833,12.750667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2860/26</name>
       <description>020916Z OCT 26  HYDROPAC 2860/26.  NORTH PACIFIC.  SEA OF OKHOTSK.  KAMCHATKA.  1. MISSILE OPERATIONS 1400Z TO 0900Z      DAILY 05 THRU 15 OCT IN AREA BOUND BY     56-34.00N 154-14.00E, 56-34.00N 156-18.20E,     55-44.00N 155-32.00E, 52-35.00N 155-32.00E,     52-13.10N 158-25.00E, 52-54.30N 159-42.00E,     52-46.00N 160-30.00E, 51-40.00N 160-30.00E,     50-24.90N 158-53.10E, 49-23.50N 157-28.50E,     50-13.60N 156-03.00E, 51-30.10N 158-03.10E,     52-06.00N 154-14.00E.  2. CANCEL HYDROPAC 2845/2</description>
       <Polygon>
