@@ -239,25 +239,5 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
-    <Placemark>
-      <name>HYDROARC 280/26</name>
-      <description>051820Z OCT 26  HYDROARC 280/26.  BARENTS SEA.  WHITE SEA.  RUSSIA.  1. MISSILE OPERATIONS 0400Z TO 1500Z DAILY     10 THRU 13 OCT IN AREAS BOUND BY:     A. 73-48.00N 040-10.00E, 68-33.00N 044-42.00E,        66-59.00N 044-24.00E, 66-54.00N 043-31.00E,        73-33.00N 037-31.00E.     B. 67-42.00N 045-18.00E, 67-07.00N 045-42.00E,        67-07.00N 045-37.00E, 67-22.00N 044-55.00E.  2. CANCEL THIS MSG 131600Z OCT 26.</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>40.166667,73.8,0 44.7,68.55,0 44.4,66.983333,0 43.516667,66.9,0 37.516667,73.55,0 40.166667,73.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>45.3,67.7,0 45.7,67.116667,0 45.616667,67.116667,0 44.916667,67.366667,0 45.3,67.7,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
   </Document>
 </kml>
