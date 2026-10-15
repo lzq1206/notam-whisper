@@ -23,17 +23,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA IV 870/26</name>
-      <description>021815Z SEP 26  NAVAREA IV 870/26.  NORTH ATLANTIC.  FRENCH GUIANA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0111Z TO 0151Z DAILY 15 SEP THRU 15 OCT     IN AREA BOUND BY     05-48.00N 052-54.00W, 05-50.55N 052-26.40W,     05-12.60N 052-40.98W, 05-23.46N 052-53.80W.  2. CANCEL THIS MSG 150251Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-52.9,5.8,0 -52.44,5.8425,0 -52.683,5.21,0 -52.896667,5.391,0 -52.9,5.8,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 724/26</name>
       <description>121112Z OCT 26  NAVAREA XII 724/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     191334Z TO 191528Z OCT, ALTERNATE     1334Z TO 1528Z DAILY 20 THRU 25 OCT     IN AREA BOUND BY     41-28.51N 140-03.17W, 30-20.60N 125-28.93W,     21-13.00N 118-21.00W, 20-52.00N 118-45.00W,     29-01.72N 127-31.33W, 40-11.11N 141-24.84W.  2. CANCEL THIS MSG 251628Z OCT 26.</description>
       <Polygon>
@@ -162,17 +151,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>35.933333,70.116667,0 36.116667,69.458333,0 35.183333,69.483333,0 33.233333,69.541667,0 33.066667,69.683333,0 33.066667,69.733333,0 33.35,69.883333,0 35.033333,70.05,0 35.933333,70.116667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 228/26</name>
-      <description>101300Z SEP 26  HYDROARC 228/26.  ARCTIC.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      0128Z TO 0244Z DAILY 15 SEP THRU 15 OCT     IN AREA BOUND BY     77-06.00N 161-35.00E, 76-42.00N 163-41.00E,     81-06.00N 135-04.00W, 81-42.00N 134-18.00W.  2. CANCEL THIS MSG 150344Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>161.583333,77.1,0 163.683333,76.7,0 -135.066667,81.1,0 -134.3,81.7,0 161.583333,77.1,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
