@@ -74,37 +74,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 710/26</name>
-      <description>072346Z OCT 26  NAVAREA XII 710/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:     A. 080744Z TO 080830Z, 090736Z TO 090822Z,        100729Z TO 100815Z, 110721Z TO 110807Z,        120714Z TO 120800Z, 130706Z TO 130752Z,        140659Z TO 140745Z, 150651Z TO 150737Z AND        160643Z TO 160730Z OCT IN AREA BOUND BY        30-23.00N 119-52.00W, 31-20.00N 120-03.00W,        32-32.00N 120-14.00W, 34-33.00N 120-42.00W,        34-40.00N 120-38.00W, 34-38.00N 120-27.00W, </description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-119.866667,30.383333,0 -120.05,31.333333,0 -120.233333,32.533333,0 -120.7,34.55,0 -120.633333,34.666667,0 -120.45,34.633333,0 -120.15,32.5,0 -119.8,30.683333,0 -119.816667,30.4,0 -119.866667,30.383333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-119.933333,30.35,0 -119.516667,30.333333,0 -118.816667,29.783333,0 -118.75,29.416667,0 -119.266667,28.916667,0 -119.683333,28.933333,0 -120.383333,29.5,0 -120.45,29.866667,0 -119.933333,30.35,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 392/25(16)</name>
-      <description>242359Z JUN 25  NAVAREA XII 392/25(16).  NORTH PACIFIC.  M/V MORNING MIDAS SANK IN 45-16.88N 179-14.13W.  VESSELS IN VICINITY REQUESTED TO NAVIGATE WITH  CAUTION AND REPORT PRESENCE OF OIL SHEENS OR  DEBRIS TO USCG SECTOR WESTERN ALASKA AND US ARCTIC,  PHONE: 907 428 4100, E-MAIL: SOUTHWESTERNAK@USCG.MIL.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-179.2355,45.281333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>NAVAREA XII 93/23(19)</name>
       <description>282248Z FEB 23  NAVAREA XII 93/23(19).  NORTH PACIFIC.  HAWAII.  1. INTERMITTENT MISSILE FIRING OPERATIONS CONDUCTED     BY THE PACIFIC MISSILE RANGE FACILITY (PMRF),     BARKING SANDS, KAUAI, HAWAII, IN WHISKEY     188 (W-188) OPERATING AREA. OPERATIONS ARE     CONDUCTED PERIODICALLY THROUGHOUT EACH WEEK     IN AREA BOUND BY     22-00.0N 159-51.0W, 22-00.0N 160-00.0W,     22-04.0N 160-06.0W, 21-59.5N 160-21.0W,     22-05.0N 161-35.0W, 22-45.0N 161-25.0W,     22-56.0N 161-49.0W, 23-34.0N 161-18.</description>
       <Polygon>
@@ -141,6 +110,48 @@
           </outerBoundaryIs>
         </Polygon>
       </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 3006/26</name>
+      <description>150331Z OCT 26  HYDROPAC 3006/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 0500Z TO 0845Z      DAILY 21 OCT THRU 03 NOV:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 178-00.00E, 39-15.00S 178-03.00E,        39-45.00S 177-54.00E, 39-45.00S 177-36.00E,        39-15.00S 177-42.00E, 39-12.00S 177-48.00E.     B. SPACE DEBRIS IN AREA BOUND BY        43-30.00S 175-30.00E, 43-30.00S 177-30.00E,        46-30.00S 176-30.00E, 46-30.00S 174-30.00E.  2. CANCEL THIS MSG 030945Z NOV </description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>178.0,-39.2,0 178.05,-39.25,0 177.9,-39.75,0 177.6,-39.75,0 177.7,-39.25,0 177.8,-39.2,0 178.0,-39.2,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>175.5,-43.5,0 177.5,-43.5,0 176.5,-46.5,0 174.5,-46.5,0 175.5,-43.5,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 3005/26</name>
+      <description>150312Z OCT 26  HYDROPAC 3005/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0500Z TO 0845Z DAILY 21 OCT THRU 03 NOV     IN AREA BOUND BY     53-30.00S 172-00.00E, 53-30.00S 173-30.00E,     56-30.00S 172-30.00E, 56-30.00S 171-00.00E.  2. CANCEL THIS MSG 030945Z NOV 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>172.0,-53.5,0 173.5,-53.5,0 172.5,-56.5,0 171.0,-56.5,0 172.0,-53.5,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>HYDROPAC 3004/26</name>
+      <description>140029Z OCT 26  HYDROPAC 3004/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     210001Z TO 210439Z, 212346Z TO 220424Z,     222332Z TO 230410Z, 232317Z TO 240355Z,     242303Z TO 250341Z, 252249Z TO 260327Z      AND 262234Z TO 270312Z OCT      IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL THIS MSG 270412Z OCT 26.</description>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2998/26</name>
@@ -180,39 +191,6 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-136.3,-27.483333,0 -133.216667,-26.95,0 -129.133333,-43.333333,0 -121.983333,-59.416667,0 -127.4,-59.95,0 -133.083333,-43.816667,0 -136.3,-27.483333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2860/26</name>
-      <description>020916Z OCT 26  HYDROPAC 2860/26.  NORTH PACIFIC.  SEA OF OKHOTSK.  KAMCHATKA.  1. MISSILE OPERATIONS 1400Z TO 0900Z      DAILY 05 THRU 15 OCT IN AREA BOUND BY     56-34.00N 154-14.00E, 56-34.00N 156-18.20E,     55-44.00N 155-32.00E, 52-35.00N 155-32.00E,     52-13.10N 158-25.00E, 52-54.30N 159-42.00E,     52-46.00N 160-30.00E, 51-40.00N 160-30.00E,     50-24.90N 158-53.10E, 49-23.50N 157-28.50E,     50-13.60N 156-03.00E, 51-30.10N 158-03.10E,     52-06.00N 154-14.00E.  2. CANCEL HYDROPAC 2845/2</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>154.233333,56.566667,0 156.303333,56.566667,0 155.533333,55.733333,0 155.533333,52.583333,0 158.416667,52.218333,0 159.7,52.905,0 160.5,52.766667,0 160.5,51.666667,0 158.885,50.415,0 157.475,49.391667,0 156.05,50.226667,0 158.051667,51.501667,0 154.233333,52.1,0 154.233333,56.566667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 1650/25(16)</name>
-      <description>242359Z JUN 25  HYDROPAC 1650/25(16).  NORTH PACIFIC.  DNC 25.  M/V MORNING MIDAS SANK IN 45-16.88N 179-14.13W.  VESSELS IN VICINITY REQUESTED TO NAVIGATE WITH  CAUTION AND REPORT PRESENCE OF OIL SHEENS OR  DEBRIS TO USCG SECTOR WESTERN ALASKA AND US ARCTIC,  PHONE: 907 428 4100, E-MAIL: SOUTHWESTERNAK@USCG.MIL.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-179.2355,45.281333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROARC 296/26</name>
-      <description>131551Z OCT 26  HYDROARC 296/26.  BARENTS SEA.  RUSSIA.  1. MISSILE OPERATIONS 0400Z TO 1500Z DAILY     15 AND 16 OCT IN AREA BOUND BY     70-07.00N 035-56.00E, 69-27.50N 036-07.00E,     69-29.00N 035-11.00E, 69-32.50N 033-14.00E,     69-41.00N 033-04.00E, 69-44.00N 033-04.00E,     69-53.00N 033-21.00E, 70-03.00N 035-02.00E.  2. CANCEL HYDROARC 288/26.  3. CANCEL THIS MSG 161600Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>35.933333,70.116667,0 36.116667,69.458333,0 35.183333,69.483333,0 33.233333,69.541667,0 33.066667,69.683333,0 33.066667,69.733333,0 33.35,69.883333,0 35.033333,70.05,0 35.933333,70.116667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
