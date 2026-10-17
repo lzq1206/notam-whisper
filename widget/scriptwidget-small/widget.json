@@ -2,8 +2,8 @@
   "entry": "main.jsx",
   "formatVersion": 2,
   "id": "com.rainywhisper.china-rocket-map.small",
-  "name": "中国火箭地图 - 小号 338×338",
-  "version": "1.0.2",
+  "name": "中国火箭地图 - 小号 507×507（3×）",
+  "version": "1.1.0",
   "runtimeVersion": "1.0",
   "supportedFamilies": [
     "systemSmall"

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Render widget/index.html to widget/china-square.png using local repo data."""
+"""Render the China rocket widget's 1024px preview and 3x iPhone images.
+
+Inputs: widget/render.html plus local launch, NOTAM, MSI and KML data in repo root.
+Outputs: widget/china-square.png and 3x small/medium/large JPEG variants plus manifest.
+"""
 from __future__ import annotations
 
 import json
@@ -9,13 +13,18 @@ from datetime import datetime, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+from PIL import Image
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "widget" / "china-square.png"
-SIZE = 1024
-SMALL_OUTPUT = ROOT / "widget" / "china-widget-small.png"
-LARGE_OUTPUT = ROOT / "widget" / "china-widget-large.png"
+PREVIEW = ROOT / "widget" / "china-square.png"
+SMALL = ROOT / "widget" / "china-widget-small.jpg"
+MEDIUM = ROOT / "widget" / "china-widget-medium.jpg"
+LARGE = ROOT / "widget" / "china-widget-large.jpg"
+PREVIEW_SIZE = (1024, 1024)
+SMALL_SIZE = (507, 507)       # 169 x 169 pt at 3x
+MEDIUM_SIZE = (1080, 507)     # 360 x 169 pt at 3x
+LARGE_SIZE = (1080, 1128)     # 360 x 376 pt at 3x
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -26,61 +35,79 @@ class QuietHandler(SimpleHTTPRequestHandler):
         pass
 
 
+def save_jpeg(image: Image.Image, path: Path) -> None:
+    image.convert("RGB").save(path, format="JPEG", quality=86, optimize=True, progressive=True, subsampling=0)
+
+
+def render_page(browser, url: str, viewport: tuple[int, int], output: Path) -> Image.Image:
+    page = browser.new_page(viewport={"width": viewport[0], "height": viewport[1]}, device_scale_factor=1)
+    page.goto(url, wait_until="domcontentloaded", timeout=60000)
+    page.wait_for_function("window.widgetReady === true", timeout=90000)
+    page.wait_for_timeout(2500)
+    page.wait_for_function("document.querySelectorAll('.leaflet-tile-loaded').length >= 4", timeout=60000)
+    page.screenshot(path=str(output), type="png", animations="disabled")
+    page.close()
+    return Image.open(output).convert("RGB")
+
+
 def main() -> None:
+    resampling = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
     server = ThreadingHTTPServer(("127.0.0.1", 0), QuietHandler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
-    url = f"http://127.0.0.1:{server.server_port}/widget/render.html"
+    origin = f"http://127.0.0.1:{server.server_port}/widget/render.html"
     browser_path = os.environ.get("CHROME_BIN")
+    scratch_square = ROOT / "widget" / ".widget-square-render.png"
+    scratch_medium = ROOT / "widget" / ".widget-medium-render.png"
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, executable_path=browser_path or None, args=["--no-sandbox"])
-            page = browser.new_page(viewport={"width": SIZE, "height": SIZE}, device_scale_factor=1)
-            page.goto(url, wait_until="domcontentloaded", timeout=60000)
-            page.wait_for_function("window.widgetReady === true", timeout=90000)
-            page.wait_for_timeout(5000)  # Allow imagery tiles to finish painting.
-            page.wait_for_function("document.querySelectorAll('.leaflet-tile-loaded').length >= 4", timeout=60000)
-            page.screenshot(path=str(OUTPUT), type="png", animations="disabled")
-            page.close()
+            square = render_page(browser, origin, PREVIEW_SIZE, scratch_square)
+            square.save(PREVIEW, format="PNG", optimize=True)
+            small_image = square.resize(SMALL_SIZE, resampling)
+            save_jpeg(small_image, SMALL)
+
+            # The panorama keeps the same 78E–148E span as the China frame; its
+            # north edge is Urumqi (~43.8N), with the south edge fitted to 360:169.
+            medium_image = render_page(browser, origin + "?size=medium", MEDIUM_SIZE, scratch_medium)
+            save_jpeg(medium_image, MEDIUM)
+
+            # Preserve the full square map in the tall WidgetKit family by
+            # letterboxing top/bottom instead of cropping the map content.
+            large_map = square.resize((1080, 1080), resampling)
+            large_canvas = Image.new("RGB", LARGE_SIZE, "#07141e")
+            large_canvas.paste(large_map, (0, 24))
+            save_jpeg(large_canvas, LARGE)
             browser.close()
     finally:
         server.shutdown()
         server.server_close()
+        scratch_square.unlink(missing_ok=True)
+        scratch_medium.unlink(missing_ok=True)
 
-    if not OUTPUT.exists() or OUTPUT.stat().st_size < 20_000:
-        raise RuntimeError(f"Screenshot missing or unexpectedly small: {OUTPUT}")
-    from PIL import Image
-    with Image.open(OUTPUT) as image:
-        if image.size != (SIZE, SIZE):
-            raise RuntimeError(f"Expected {SIZE}x{SIZE} PNG, got {image.size}")
-        source = image.convert("RGB")
-        resampling = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
-        source.resize((338, 338), resampling).save(SMALL_OUTPUT, format="PNG", optimize=True)
-        # iPhone large widget is about 360x376 pt; render at @2x. Preserve the
-        # complete square map and letterbox the slight height difference.
-        large_map = source.resize((720, 720), resampling)
-        large_canvas = Image.new("RGB", (720, 752), "#07141e")
-        large_canvas.paste(large_map, (0, 16))
-        large_canvas.save(LARGE_OUTPUT, format="PNG", optimize=True)
-    with Image.open(SMALL_OUTPUT) as image:
-        if image.size != (338, 338):
-            raise RuntimeError(f"Expected 338x338 small widget PNG, got {image.size}")
-    with Image.open(LARGE_OUTPUT) as image:
-        if image.size != (720, 752):
-            raise RuntimeError(f"Expected 720x752 large widget PNG, got {image.size}")
+    expected = {PREVIEW: PREVIEW_SIZE, SMALL: SMALL_SIZE, MEDIUM: MEDIUM_SIZE, LARGE: LARGE_SIZE}
+    for path, size in expected.items():
+        if not path.exists() or path.stat().st_size < 10_000:
+            raise RuntimeError(f"Screenshot missing or unexpectedly small: {path}")
+        with Image.open(path) as image:
+            if image.size != size:
+                raise RuntimeError(f"Expected {size} image at {path}, got {image.size}")
+
     manifest = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "image": "china-square.png",
-        "width": SIZE,
-        "height": SIZE,
+        "image": PREVIEW.name,
+        "width": PREVIEW_SIZE[0],
+        "height": PREVIEW_SIZE[1],
         "widget_images": {
-            "small": {"image": SMALL_OUTPUT.name, "width": 338, "height": 338},
-            "large": {"image": LARGE_OUTPUT.name, "width": 720, "height": 752},
+            "small": {"image": SMALL.name, "width": SMALL_SIZE[0], "height": SMALL_SIZE[1], "scale": 3},
+            "medium": {"image": MEDIUM.name, "width": MEDIUM_SIZE[0], "height": MEDIUM_SIZE[1], "scale": 3, "north_edge_lat": 43.8},
+            "large": {"image": LARGE.name, "width": LARGE_SIZE[0], "height": LARGE_SIZE[1], "scale": 3},
         },
     }
     (ROOT / "widget" / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Generated {OUTPUT.relative_to(ROOT)} ({OUTPUT.stat().st_size} bytes)")
-    print(f"Widget PNGs: {SMALL_OUTPUT.stat().st_size} bytes small, {LARGE_OUTPUT.stat().st_size} bytes large")
+    print(f"Generated {PREVIEW.relative_to(ROOT)} ({PREVIEW.stat().st_size} bytes)")
+    for path in (SMALL, MEDIUM, LARGE):
+        print(f"Generated {path.name}: {Image.open(path).size}, {path.stat().st_size} bytes")
 
 
 if __name__ == "__main__":

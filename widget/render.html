@@ -9,11 +9,7 @@
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #07141e; font-family: system-ui, -apple-system, sans-serif; }
-    #map { position: relative; width: min(100vw, 100vh); height: min(100vw, 100vh); overflow: hidden; }
-    /* Esri World Imagery requires visible attribution in published maps. Keep it
-       deliberately compact; unlike the generated timestamp it is not optional. */
-    .leaflet-control-attribution { font-size: 7px !important; line-height: 1.1 !important; background: rgba(0,0,0,.55) !important; color: #eee !important; max-width: 76%; }
-    .leaflet-control-attribution a { color: #d8e8ff !important; }
+    #map { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
     .rocket-marker { display:flex; align-items:center; justify-content:center; width:46px;height:46px;border:3px solid white;border-radius:50%; box-shadow:0 1px 8px #111; font-size:27px; }
     .twilight-glow { filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 3px #fff); }
   </style>
@@ -26,14 +22,18 @@
   <script src="suncalc.js"></script>
   <script>
     (() => {
-      const map = L.map('map', { zoomControl:false, attributionControl:true, preferCanvas:true }).setView([31.5, 116], 4);
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 18,
-        attribution: 'Source: Esri, Vantor, Earthstar Geographics, and the GIS User Community'
+      const params = new URLSearchParams(location.search);
+      const isMedium = params.get('size') === 'medium';
+      const map = L.map('map', { zoomControl:false, attributionControl:false, preferCanvas:true }).setView([31.5, 116], 4);
+      // NASA GIBS Blue Marble (MODIS): public-domain global imagery without
+      // a mandatory on-image tile attribution overlay.
+      L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg', {
+        minZoom: 0, maxZoom: 8, maxNativeZoom: 8
       }).addTo(map);
 
-      // Fixed square frame, centered on China with surrounding seas and Japan.
-      map.fitBounds([[4, 78], [55, 148]], { animate:false, padding:[0,0] });
+      // The medium panorama keeps the same east-west span and clips its north
+      // edge at Urumqi (~44°N); the other variants use the square China view.
+      map.fitBounds(isMedium ? [[18.5, 78], [43.8, 148]] : [[4, 78], [55, 148]], { animate:false, padding:[0,0] });
 
       const ready = { launches:false, notams:false, msi:false, notamCsv:false, msiCsv:false };
       const allWarnings=[];

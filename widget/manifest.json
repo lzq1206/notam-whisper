@@ -1,18 +1,27 @@
 {
-  "generated_at": "2026-10-17T02:44:50+00:00",
+  "generated_at": "2026-10-17T03:04:32+00:00",
   "image": "china-square.png",
   "width": 1024,
   "height": 1024,
   "widget_images": {
     "small": {
-      "image": "china-widget-small.png",
-      "width": 338,
-      "height": 338
+      "image": "china-widget-small.jpg",
+      "width": 507,
+      "height": 507,
+      "scale": 3
+    },
+    "medium": {
+      "image": "china-widget-medium.jpg",
+      "width": 1080,
+      "height": 507,
+      "scale": 3,
+      "north_edge_lat": 43.8
     },
     "large": {
-      "image": "china-widget-large.png",
-      "width": 720,
-      "height": 752
+      "image": "china-widget-large.jpg",
+      "width": 1080,
+      "height": 1128,
+      "scale": 3
     }
   }
 }

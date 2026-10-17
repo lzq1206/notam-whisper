@@ -37,5 +37,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[Auto] Refresh iPhone rocket map widget image'
-          file_pattern: 'widget/china-square.png widget/china-widget-small.png widget/china-widget-large.png widget/manifest.json'
+          file_pattern: 'widget/china-square.png widget/china-widget-small.jpg widget/china-widget-medium.jpg widget/china-widget-large.jpg widget/manifest.json'
           branch: main
