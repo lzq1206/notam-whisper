@@ -10,16 +10,16 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #07141e; font-family: system-ui, -apple-system, sans-serif; }
     #map { position: relative; width: min(100vw, 100vh); height: min(100vw, 100vh); overflow: hidden; }
-    .leaflet-control-attribution { font-size: 8px !important; line-height: 1.1 !important; background: rgba(0,0,0,.55) !important; color: #eee !important; }
+    /* Esri World Imagery requires visible attribution in published maps. Keep it
+       deliberately compact; unlike the generated timestamp it is not optional. */
+    .leaflet-control-attribution { font-size: 7px !important; line-height: 1.1 !important; background: rgba(0,0,0,.55) !important; color: #eee !important; max-width: 76%; }
     .leaflet-control-attribution a { color: #d8e8ff !important; }
     .rocket-marker { display:flex; align-items:center; justify-content:center; width:46px;height:46px;border:3px solid white;border-radius:50%; box-shadow:0 1px 8px #111; font-size:27px; }
     .twilight-glow { filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 3px #fff); }
-    .generated-at { position:absolute; z-index:1000; right:12px; bottom:20px; color:#fff; padding:3px 6px; border-radius:4px; background:rgba(0,0,0,.55); font-size:9px; pointer-events:none; }
   </style>
 </head>
 <body>
   <main id="map" aria-label="中国及周边火箭发射和海空警告地图">
-    <div class="generated-at" id="generatedAt">更新中…</div>
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
@@ -29,7 +29,7 @@
       const map = L.map('map', { zoomControl:false, attributionControl:true, preferCanvas:true }).setView([31.5, 116], 4);
       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 18,
-        attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics'
+        attribution: 'Source: Esri, Vantor, Earthstar Geographics, and the GIS User Community'
       }).addTo(map);
 
       // Fixed square frame, centered on China with surrounding seas and Japan.
@@ -49,7 +49,6 @@
         timeline=getTimelineBounds(allWarnings,visibleLaunchTimes);
         drawLaunches(launchRecords);
         styleWarningLayers();
-        document.getElementById('generatedAt').textContent = '生成 ' + new Date().toISOString().replace('T',' ').slice(0,16) + ' UTC';
         window.widgetReady = true;
       };
 

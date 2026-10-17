@@ -12,22 +12,25 @@
     main { width:min(100vw,100vh); }
     img { display:block; width:100%; aspect-ratio:1; object-fit:cover; }
     footer { padding:5px 8px; color:#c7d2dc; font-size:12px; }
-    footer a { color:#9cc7ff; margin-left:8px; }
+    footer a { display:inline-block; color:#9cc7ff; margin:8px 12px 0 0; }
   </style>
 </head>
 <body>
   <main>
     <img id="mapImage" alt="中国及周边火箭与航行警告地图">
-    <footer>服务端每 3 小时更新；小组件实际刷新时间由 iOS 调度。<span id="updated"></span><a href="./china-rocket-map.swt">下载 ScriptWidget 组件</a></footer>
+    <footer>
+      图片服务端每 3 小时更新；小组件实际刷新时间由 iOS 调度。<br>
+      ScriptWidget 导入包（请按主屏幕组件尺寸选择）：<br>
+      <a href="./china-rocket-map-small.swt">下载小号 338×338（169×169 pt，@2x）</a>
+      <a href="./china-rocket-map-large.swt">下载大号 720×752（360×376 pt，@2x）</a>
+      <div>底图来源署名需保留在图片中（Esri World Imagery 使用要求）。</div>
+    </footer>
   </main>
   <script>
     const raw='https://raw.githubusercontent.com/lzq1206/notam-whisper/main/widget/';
     const cacheSlice=Math.floor(Date.now()/10000);
     const imageUrl=raw+'china-square.png?v='+cacheSlice;
     document.getElementById('mapImage').src=imageUrl;
-    fetch(raw+'manifest.json?v='+cacheSlice,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(meta=>{
-      if(meta?.generated_at) document.getElementById('updated').textContent=' · 图像生成于 '+meta.generated_at;
-    }).catch(()=>{});
   </script>
 </body>
 </html>
