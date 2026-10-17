@@ -24,7 +24,7 @@ LARGE = ROOT / "widget" / "china-widget-large.jpg"
 PREVIEW_SIZE = (1024, 1024)
 SMALL_SIZE = (507, 507)       # 169 x 169 pt at 3x
 MEDIUM_SIZE = (1080, 507)     # 360 x 169 pt at 3x
-LARGE_SIZE = (1092, 1146)     # 364 x 382 pt at 3x
+LARGE_SIZE = (1092, 1260)     # 1092px wide; height extended ~10% to remove letterbox bars
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -72,11 +72,12 @@ def main() -> None:
             medium_image = render_page(browser, origin + "?size=medium", MEDIUM_SIZE, scratch_medium)
             save_jpeg(medium_image, MEDIUM)
 
-            # Preserve the full square map in the tall WidgetKit family by
-            # letterboxing top/bottom instead of cropping the map content.
-            large_map = square.resize((1092, 1092), resampling)
-            large_canvas = Image.new("RGB", LARGE_SIZE, "#07141e")
-            large_canvas.paste(large_map, (0, 27))
+            # Fill the expanded portrait image without adding black bars.
+            # Center-crop the square map to the target aspect ratio, then scale.
+            crop_width = round(square.height * LARGE_SIZE[0] / LARGE_SIZE[1])
+            left = (square.width - crop_width) // 2
+            large_map = square.crop((left, 0, left + crop_width, square.height))
+            large_canvas = large_map.resize(LARGE_SIZE, resampling)
             save_jpeg(large_canvas, LARGE)
             browser.close()
     finally:
