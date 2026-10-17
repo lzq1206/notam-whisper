@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>中国及周边火箭动态小组件</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #07141e; font-family: system-ui, -apple-system, sans-serif; }
+    #map { position: relative; width: min(100vw, 100vh); height: min(100vw, 100vh); overflow: hidden; }
+    .leaflet-control-attribution { font-size: 8px !important; line-height: 1.1 !important; background: rgba(0,0,0,.55) !important; color: #eee !important; }
+    .leaflet-control-attribution a { color: #d8e8ff !important; }
+    .rocket-marker { display:flex; align-items:center; justify-content:center; width:46px;height:46px;border:3px solid white;border-radius:50%; background:#7039bd; box-shadow:0 1px 8px #111; font-size:27px; }
+    .rocket-marker.past { background:#315fd5; }
+    .map-title { position:absolute; z-index:1000; top:14px; left:14px; padding:7px 10px; border-radius:8px; color:white; background:rgba(8,20,35,.72); font-size:14px; letter-spacing:.02em; pointer-events:none; }
+    .generated-at { position:absolute; z-index:1000; right:12px; bottom:20px; color:#fff; padding:3px 6px; border-radius:4px; background:rgba(0,0,0,.55); font-size:9px; pointer-events:none; }
+  </style>
+</head>
+<body>
+  <main id="map" aria-label="中国及周边火箭发射和海空警告地图">
+    <div class="map-title">中国及周边 · 火箭与航行警告</div>
+    <div class="generated-at" id="generatedAt">更新中…</div>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
+  <script>
+    (() => {
+      const map = L.map('map', { zoomControl:false, attributionControl:true, preferCanvas:true }).setView([31.5, 116], 4);
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 18,
+        attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics'
+      }).addTo(map);
+
+      // Fixed square frame, centered on China with surrounding seas and Japan.
+      map.fitBounds([[4, 78], [55, 148]], { animate:false, padding:[0,0] });
+
+      const ready = { launches:false, notams:false, msi:false };
+      const failSoft = (kind, err) => { console.warn(kind, err || 'unavailable'); ready[kind] = true; finishIfReady(); };
+      const finishIfReady = () => {
+        if (!Object.values(ready).every(Boolean)) return;
+        document.getElementById('generatedAt').textContent = '生成 ' + new Date().toISOString().replace('T',' ').slice(0,16) + ' UTC';
+        window.widgetReady = true;
+      };
+
+      function parseCsv(text) {
+        const rows=[]; let row=[], field='', quoted=false;
+        for (let i=0;i<text.length;i++) {
+          const c=text[i];
+          if (quoted) { if (c==='"' && text[i+1]==='"') { field+='"'; i++; } else if (c==='"') quoted=false; else field+=c; }
+          else if (c==='"') quoted=true;
+          else if (c===',') { row.push(field); field=''; }
+          else if (c==='\n') { row.push(field.replace(/\r$/, '')); rows.push(row); row=[]; field=''; }
+          else field+=c;
+        }
+        if (field || row.length) { row.push(field.replace(/\r$/, '')); rows.push(row); }
+        if (!rows.length) return [];
+        const headers=rows.shift();
+        return rows.filter(r=>r.some(Boolean)).map(r=>Object.fromEntries(headers.map((h,i)=>[h,r[i]||''])));
+      }
+
+      function drawLaunches(launches) {
+        for (const launch of launches) {
+          const pad=launch.pad || {};
+          const location=pad.location || {};
+          const lat=Number(launch.widgetLat ?? pad.latitude ?? pad.lat ?? location.latitude ?? location.lat ?? launch.Latitude);
+          const lon=Number(launch.widgetLon ?? pad.longitude ?? pad.lon ?? location.longitude ?? location.lon ?? launch.Longitude);
+          if (!Number.isFinite(lat) || !Number.isFinite(lon) || lat<4 || lat>55 || lon<78 || lon>148) continue;
+          const time=launch.net || launch.window_start || launch.win_open || launch['Launch Date and Time (UTC)'] || '';
+          const past=Date.parse(time) < Date.now();
+          const icon=L.divIcon({ className:'', html:`<div class="rocket-marker ${past?'past':''}">🚀</div>`, iconSize:[46,46], iconAnchor:[23,23] });
+          L.marker([lat,lon],{icon,interactive:false}).addTo(map);
+        }
+      }
+      async function loadLaunches() {
+        try {
+          const params=new URLSearchParams({limit:'100',mode:'normal',ordering:'window_start',window_end__gte:new Date().toISOString()});
+          const response=await fetch('https://ll.thespacedevs.com/2.3.0/launches/?'+params,{cache:'no-store'});
+          if (!response.ok) throw Error(`Space Devs HTTP ${response.status}`);
+          const data=await response.json();
+          drawLaunches(Array.isArray(data.results)?data.results:[]);
+        } catch (error) {
+          console.warn('Space Devs launches unavailable; using local schedule',error);
+          try {
+            const response=await fetch('../upcoming_launches.csv?widget='+Date.now(),{cache:'no-store'});
+            if(!response.ok) throw Error(response.status);
+            drawLaunches(parseCsv(await response.text()));
+          } catch (fallbackError) { console.warn('Local launch schedule unavailable',fallbackError); }
+        } finally { ready.launches=true; finishIfReady(); }
+      }
+      loadLaunches();
+
+      for (const [kind,path] of [['notams','../notams.kml'],['msi','../msi.kml']]) {
+        const layer=omnivore.kml(path + '?widget=' + Date.now());
+        layer.on('ready',()=>{ layer.addTo(map); ready[kind]=true; finishIfReady(); });
+        layer.on('error',e=>failSoft(kind,e));
+      }
+
+      // Keep stable output dimensions even when this page is opened on a desktop.
+      window.addEventListener('load',()=>setTimeout(()=>map.invalidateSize({animate:false}),100));
+    })();
+  </script>
+</body>
+</html>

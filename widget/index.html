@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>中国及周边火箭地图小组件</title>
+  <style>
+    * { box-sizing:border-box; }
+    html,body { margin:0; min-height:100%; background:#07141e; color:#fff; font-family:system-ui,-apple-system,sans-serif; }
+    body { display:flex; align-items:flex-start; justify-content:flex-start; }
+    main { width:min(100vw,100vh); }
+    img { display:block; width:100%; aspect-ratio:1; object-fit:cover; }
+    footer { padding:5px 8px; color:#c7d2dc; font-size:12px; }
+  </style>
+</head>
+<body>
+  <main>
+    <img id="mapImage" alt="中国及周边火箭与航行警告地图">
+    <footer>服务端每 3 小时更新；小组件实际刷新时间由 iOS 调度。<span id="updated"></span></footer>
+  </main>
+  <script>
+    const raw='https://raw.githubusercontent.com/lzq1206/notam-whisper/main/widget/';
+    const cacheSlice=Math.floor(Date.now()/10000);
+    const imageUrl=raw+'china-square.png?v='+cacheSlice;
+    document.getElementById('mapImage').src=imageUrl;
+    fetch(raw+'manifest.json?v='+cacheSlice,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(meta=>{
+      if(meta?.generated_at) document.getElementById('updated').textContent=' · 图像生成于 '+meta.generated_at;
+    }).catch(()=>{});
+  </script>
+</body>
+</html>

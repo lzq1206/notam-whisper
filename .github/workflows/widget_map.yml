@@ -1,0 +1,41 @@
+name: Generate iPhone Rocket Map Widget
+
+on:
+  schedule:
+    - cron: '17 */3 * * *'
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'widget/index.html'
+      - 'widget/render.html'
+      - 'scripts/generate_widget_image.py'
+      - '.github/workflows/widget_map.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install renderer
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright pillow
+          python -m playwright install --with-deps chromium
+      - name: Generate square map image
+        run: python scripts/generate_widget_image.py
+      - name: Publish updated image and manifest
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: '[Auto] Refresh iPhone rocket map widget image'
+          file_pattern: 'widget/china-square.png widget/manifest.json'
+          branch: main
