@@ -216,26 +216,6 @@
       </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>NAVAREA XII 702/26</name>
-      <description>271924Z SEP 26  NAVAREA XII 702/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      A. 102300Z TO 110325Z OCT, ALTERNATE         2300Z TO 0325Z DAILY 11 THRU 16 OCT         IN AREA BOUND BY        29-48.00N 117-39.00W, 34-28.00N 120-18.00W,        34-40.00N 120-36.00W, 34-39.00N 120-39.00W,        34-30.00N 120-39.00W, 29-35.00N 118-12.00W,        29-52.00N 117-54.00W.     B. 102300Z TO 110343Z OCT, ALTERNATE         2300Z TO 0343Z DAILY 11 THRU 16 OCT         IN ARE</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -120.3,34.466667,0 -120.6,34.666667,0 -120.65,34.65,0 -120.65,34.5,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.65,29.8,0 -117.9,29.866667,0 -118.2,29.583333,0 -118.133333,29.4,0 -118.033333,29.25,0 -117.983333,29.033333,0 -117.316667,28.2,0 -117.316667,28.833333,0 -117.266667,29.6,0 -117.65,29.8,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 2882/26</name>
       <description>030046Z OCT 26  HYDROPAC 2882/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0047Z TO 0525Z DAILY 11 THRU 17 OCT     IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL THIS MSG 170625Z OCT 26.</description>
       <Polygon>
