@@ -142,6 +142,32 @@ def test_parse_spacedevs_results_maps_previous_launches():
     assert launches[0]["Success"] == "S"
 
 
+def test_spacedevs_rizhao_pad_wins_over_haiyang_parent_spaceport():
+    launch_sites = _load_launch_sites()
+    site_by_abbr = {site["abbr"].lower(): site for site in launch_sites if site["abbr"]}
+    payload = {
+        "results": [
+            {
+                "net": "2026-10-21T03:35:00Z",
+                "name": "Ceres-1S | Unknown Payload",
+                "rocket": {"configuration": {"full_name": "Ceres-1S"}},
+                "pad": {
+                    "name": "Rizhao offshore launch location",
+                    "latitude": "35.391667",
+                    "longitude": "119.598667",
+                    "location": {"name": "Haiyang Oriental Spaceport"},
+                },
+            }
+        ]
+    }
+
+    launches = _parse_spacedevs_results(payload, launch_sites, site_by_abbr)
+    assert len(launches) == 1
+    assert launches[0]["Launch Site (Abbrv.)"] == "RSLA"
+    assert launches[0]["Latitude"] == 35.391667
+    assert launches[0]["Longitude"] == 119.598667
+
+
 def test_spacedevs_history_fetches_multiple_pages_with_delay():
     def result(net, name):
         return {

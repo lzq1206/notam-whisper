@@ -2545,6 +2545,7 @@
       'wenchang-space-launch-site': 'WSLC',
       'wenchang-satellite-launch-center': 'WSLC',
       'haiyang-sea-launch': 'YSLA',
+      'rizhao-offshore-launch-location': 'RSLA',
       'oriental-spaceport-haiyang': 'YSLA',
       'yangjiang-sea-launch': 'SSLA',
       'rizhao-sea-launch': 'RSLA',
@@ -2580,6 +2581,7 @@
       'wenchang-space-launch-site': { lat: 19.615, lon: 110.951 },
       'wenchang-satellite-launch-center': { lat: 19.615, lon: 110.951 },
       'haiyang-sea-launch': { lat: 36.641494, lon: 121.201445 },
+      'rizhao-offshore-launch-location': { lat: 35.358220, lon: 119.645866 },
       'oriental-spaceport-haiyang': { lat: 36.641494, lon: 121.201445 },
       'yangjiang-sea-launch': { lat: 21.283339, lon: 112.000012 },
       'rizhao-sea-launch': { lat: 35.358220, lon: 119.645866 },
@@ -2602,6 +2604,12 @@
       'imam-khomeini-space-center': { lat: 35.235, lon: 53.921 },
       'starbase': { lat: 25.997, lon: -97.156 },
       'boca-chica': { lat: 25.997, lon: -97.156 },
+    };
+
+    // Resolve a specific offshore pad ahead of its broader parent spaceport.
+    const RLL_LOC_NAME_TO_SITE_ABBR = {
+      'rizhao offshore launch location': 'RSLA',
+      'rizhao sea launch': 'RSLA',
     };
 
     const launchStatusEl = document.getElementById('launchStatus');
@@ -2980,7 +2988,8 @@
       const siteOnly = !!options.siteOnly;
       const slug = (typeof padLoc === 'string' ? '' : (padLoc.slug || '')).toLowerCase();
       const name = (typeof padLoc === 'string' ? padLoc : (padLoc.name || '')).toLowerCase();
-      const mappedAbbr = RLL_LOC_TO_SITE_ABBR[slug];
+      const nameAliasAbbr = RLL_LOC_NAME_TO_SITE_ABBR[name.trim()];
+      const mappedAbbr = RLL_LOC_TO_SITE_ABBR[slug] || nameAliasAbbr;
       if (mappedAbbr && launchSites[mappedAbbr]) {
         return { lat: launchSites[mappedAbbr].lat, lon: launchSites[mappedAbbr].lon };
       }
@@ -3031,6 +3040,8 @@
           return { lat: parseFloat(lat), lon: parseFloat(lon) };
         }
       }
+      const padSiteCoordinates = pad.name ? coordsForRllLoc(pad.name, { siteOnly: true }) : null;
+      if (padSiteCoordinates) return padSiteCoordinates;
       return coordsForRllLoc(location);
     }
 

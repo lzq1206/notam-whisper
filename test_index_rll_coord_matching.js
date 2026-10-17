@@ -12,6 +12,11 @@ if (!/'wenchang-space-launch-site':\s*'WSLC'/.test(html)) {
   throw new Error('Wenchang slug should map to WSLC');
 }
 
+if (!/'rizhao-offshore-launch-location':\s*'RSLA'/.test(html) ||
+    !/'rizhao offshore launch location':\s*'RSLA'/.test(html)) {
+  throw new Error('Rizhao offshore pad metadata should map to the distinct RSLA site');
+}
+
 if (!/'wenchang-satellite-launch-center':\s*'WSLC'/.test(html) ||
     !/'taiyuan-satellite-launch-center':\s*'TSLC'/.test(html)) {
   throw new Error('current RocketLaunch.Live satellite-center slugs should map to launch sites');
@@ -21,8 +26,8 @@ if (!/'jiuquan-satellite-launch-center':\s*'JSLC'/.test(html)) {
   throw new Error('Jiuquan slug should map to JSLC');
 }
 
-if (!/const mappedAbbr = RLL_LOC_TO_SITE_ABBR\[slug\];/.test(html)) {
-  throw new Error('coordsForRllLoc should resolve mappedAbbr from slug');
+if (!/const mappedAbbr = RLL_LOC_TO_SITE_ABBR\[slug\]\s*\|\|\s*nameAliasAbbr;/.test(html)) {
+  throw new Error('coordsForRllLoc should resolve explicit pad-name aliases as well as slugs');
 }
 
 if (!/mappedAbbr && launchSites\[mappedAbbr\]/.test(html)) {
@@ -56,6 +61,10 @@ if (!/if\s*\(\s*normalizedName && launchSitesByName\[normalizedName\]\s*\)/.test
 
 if (!/function launchLocationObject\(launch\)/.test(html) || !/function launchCoordinates\(launch\)/.test(html)) {
   throw new Error('Upcoming launch loop should normalize current and legacy RLL location schemas');
+}
+
+if (!/const padSiteCoordinates = pad\.name \? coordsForRllLoc\(pad\.name, \{ siteOnly: true \}\) : null;[\s\S]*?if \(padSiteCoordinates\) return padSiteCoordinates;/.test(html)) {
+  throw new Error('launchCoordinates should prefer a specific Rizhao pad over its Haiyang parent spaceport');
 }
 
 if (!/const loc = launchLocationObject\(l\)/.test(html) || !/const coords = launchCoordinates\(l\)/.test(html)) {

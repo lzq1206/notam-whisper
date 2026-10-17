@@ -172,17 +172,22 @@ def _parse_spacedevs_results(payload, launch_sites, site_by_abbr):
 
         pad = item.get("pad") if isinstance(item.get("pad"), dict) else {}
         loc = pad.get("location") if isinstance(pad.get("location"), dict) else {}
-        location_raw = " / ".join(x for x in [pad.get("name"), loc.get("name")] if x)
+        pad_name = (pad.get("name") or "").strip()
+        parent_location = (loc.get("name") or "").strip()
+        location_raw = " / ".join(x for x in [pad_name, parent_location] if x)
+        # Space Devs separates a specific offshore pad from its parent
+        # spaceport. Resolve the pad first: Rizhao is distinct from Haiyang.
+        site_resolution = _resolve_site(pad_name, launch_sites, site_by_abbr)
+        if not site_resolution[2]:
+            site_resolution = _resolve_site(parent_location or location_raw, launch_sites, site_by_abbr)
         lat = pad.get("latitude")
         lon = pad.get("longitude")
-        abbr = ""
         try:
             lat = float(lat)
             lon = float(lon)
         except (TypeError, ValueError):
-            lat, lon, abbr = _resolve_site(location_raw, launch_sites, site_by_abbr)
-        else:
-            _, _, abbr = _resolve_site(location_raw, launch_sites, site_by_abbr)
+            lat, lon, _ = site_resolution
+        abbr = site_resolution[2]
 
         status = item.get("status") if isinstance(item.get("status"), dict) else {}
         status_text = (status.get("abbrev") or status.get("name") or "").lower()
