@@ -3,10 +3,17 @@
   "formatVersion": 2,
   "id": "com.rainywhisper.china-rocket-map",
   "name": "中国火箭地图",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "runtimeVersion": "1.0",
-  "supportedFamilies": ["systemSmall"],
-  "permissions": ["network"],
-  "networkDomains": ["rocket.rainywhisper.com"],
+  "supportedFamilies": [
+    "systemSmall",
+    "systemLarge"
+  ],
+  "permissions": [
+    "network"
+  ],
+  "networkDomains": [
+    "rocket.rainywhisper.com"
+  ],
   "plugins": []
 }

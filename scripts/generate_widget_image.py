@@ -14,6 +14,8 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "widget" / "china-square.png"
 SIZE = 1024
+SMALL_OUTPUT = ROOT / "widget" / "china-widget-small.png"
+LARGE_OUTPUT = ROOT / "widget" / "china-widget-large.png"
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -51,14 +53,34 @@ def main() -> None:
     with Image.open(OUTPUT) as image:
         if image.size != (SIZE, SIZE):
             raise RuntimeError(f"Expected {SIZE}x{SIZE} PNG, got {image.size}")
+        source = image.convert("RGB")
+        resampling = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
+        source.resize((338, 338), resampling).save(SMALL_OUTPUT, format="PNG", optimize=True)
+        # iPhone large widget is about 360x376 pt; render at @2x. Preserve the
+        # complete square map and letterbox the slight height difference.
+        large_map = source.resize((720, 720), resampling)
+        large_canvas = Image.new("RGB", (720, 752), "#07141e")
+        large_canvas.paste(large_map, (0, 16))
+        large_canvas.save(LARGE_OUTPUT, format="PNG", optimize=True)
+    with Image.open(SMALL_OUTPUT) as image:
+        if image.size != (338, 338):
+            raise RuntimeError(f"Expected 338x338 small widget PNG, got {image.size}")
+    with Image.open(LARGE_OUTPUT) as image:
+        if image.size != (720, 752):
+            raise RuntimeError(f"Expected 720x752 large widget PNG, got {image.size}")
     manifest = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "image": "china-square.png",
         "width": SIZE,
         "height": SIZE,
+        "widget_images": {
+            "small": {"image": SMALL_OUTPUT.name, "width": 338, "height": 338},
+            "large": {"image": LARGE_OUTPUT.name, "width": 720, "height": 752},
+        },
     }
     (ROOT / "widget" / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Generated {OUTPUT.relative_to(ROOT)} ({OUTPUT.stat().st_size} bytes)")
+    print(f"Widget PNGs: {SMALL_OUTPUT.stat().st_size} bytes small, {LARGE_OUTPUT.stat().st_size} bytes large")
 
 
 if __name__ == "__main__":
