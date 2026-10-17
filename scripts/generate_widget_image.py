@@ -24,7 +24,7 @@ LARGE = ROOT / "widget" / "china-widget-large.jpg"
 PREVIEW_SIZE = (1024, 1024)
 SMALL_SIZE = (507, 507)       # 169 x 169 pt at 3x
 MEDIUM_SIZE = (1080, 507)     # 360 x 169 pt at 3x
-LARGE_SIZE = (1080, 1128)     # 360 x 376 pt at 3x
+LARGE_SIZE = (1092, 1146)     # 364 x 382 pt at 3x
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -74,9 +74,9 @@ def main() -> None:
 
             # Preserve the full square map in the tall WidgetKit family by
             # letterboxing top/bottom instead of cropping the map content.
-            large_map = square.resize((1080, 1080), resampling)
+            large_map = square.resize((1092, 1092), resampling)
             large_canvas = Image.new("RGB", LARGE_SIZE, "#07141e")
-            large_canvas.paste(large_map, (0, 24))
+            large_canvas.paste(large_map, (0, 27))
             save_jpeg(large_canvas, LARGE)
             browser.close()
     finally:

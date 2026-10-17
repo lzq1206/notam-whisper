@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-17T03:19:56+00:00",
+  "generated_at": "2026-10-17T03:30:26+00:00",
   "image": "china-square.png",
   "width": 1024,
   "height": 1024,
@@ -19,8 +19,8 @@
     },
     "large": {
       "image": "china-widget-large.jpg",
-      "width": 1080,
-      "height": 1128,
+      "width": 1092,
+      "height": 1146,
       "scale": 3
     }
   }

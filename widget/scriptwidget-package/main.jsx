@@ -11,7 +11,7 @@ $render(
     <image
       url={imageUrl}
       frame="max"
-      ratio={isLarge ? 360 / 376 : 1}
+      ratio={isLarge ? 364 / 382 : 1}
       mode="fill"
       accentedRenderingMode="fullColor"
     />

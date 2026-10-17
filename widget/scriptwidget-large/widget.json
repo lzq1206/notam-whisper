@@ -2,8 +2,8 @@
   "entry": "main.jsx",
   "formatVersion": 2,
   "id": "com.rainywhisper.china-rocket-map.large",
-  "name": "中国火箭地图 - 大号 1080×1128（3×）",
-  "version": "1.1.0",
+  "name": "中国火箭地图 - 大号 1092×1146（3×）",
+  "version": "1.1.1",
   "runtimeVersion": "1.0",
   "supportedFamilies": [
     "systemLarge"
