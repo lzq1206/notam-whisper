@@ -39,11 +39,14 @@
       const allWarnings=[];
       let launchRecords=[];
       let layersByKind={};
+      const windowStart=Date.now();
+      const windowEnd=windowStart+7*86400000;
       let timeline={minTs:Date.now(),maxTs:Date.now()+86400000};
       const failSoft = (kind, err) => { console.warn(kind, err || 'unavailable'); ready[kind] = true; finishIfReady(); };
       const finishIfReady = () => {
         if (!Object.values(ready).every(Boolean)) return;
-        timeline=getTimelineBounds(allWarnings,launchRecords.map(x=>parseWidgetDate(x.net||x.window_start||x.win_open||x['Launch Date and Time (UTC)']||'')).filter(Number.isFinite));
+        const visibleLaunchTimes=launchRecords.map(x=>parseWidgetDate(x.net||x.window_start||x.win_open||x['Launch Date and Time (UTC)']||'')).filter(ts=>Number.isFinite(ts)&&ts>=windowStart&&ts<=windowEnd);
+        timeline=getTimelineBounds(allWarnings,visibleLaunchTimes);
         drawLaunches(launchRecords);
         styleWarningLayers();
         document.getElementById('generatedAt').textContent = '生成 ' + new Date().toISOString().replace('T',' ').slice(0,16) + ' UTC';
@@ -51,9 +54,8 @@
       };
 
       function getTimelineBounds(rows,extraTimes=[]) {
-        const now=Date.now();
         const times=rows.map(r=>Date.parse(r.from_utc)).filter(Number.isFinite).concat(extraTimes);
-        return {minTs:now,maxTs:Math.max(now+86400000,...times)};
+        return {minTs:windowStart,maxTs:Math.max(windowStart+86400000,...times)};
       }
       function colorByTime(ts) {
         if(!Number.isFinite(ts)||timeline.maxTs<=timeline.minTs) return '#d33';
@@ -69,6 +71,10 @@
         return Date.UTC(Number(m[1]),months[m[2]],Number(m[3]),Number(m[4]),Number(m[5]));
       }
       function isMaritime(row) { return row.country==='Maritime'||row.fir==='MSI'; }
+      function overlapsNextSevenDays(row) {
+        const from=Date.parse(row.from_utc),to=Date.parse(row.to_utc);
+        return Number.isFinite(from)&&from<=windowEnd&&(!Number.isFinite(to)||to>=windowStart);
+      }
       function twilightGlow(row) {
         const from=Date.parse(row.from_utc),to=Date.parse(row.to_utc);
         if(!Number.isFinite(from)||!Number.isFinite(Number(row.lat))||(Number.isFinite(to)&&(to-from)>12*3600000)||!window.SunCalc) return false;
@@ -107,6 +113,7 @@
           if (!Number.isFinite(lat) || !Number.isFinite(lon) || lat<4 || lat>55 || lon<78 || lon>148) continue;
           const time=launch.net || launch.window_start || launch.win_open || launch['Launch Date and Time (UTC)'] || '';
           const ts=parseWidgetDate(time),past=Number.isFinite(ts)&&ts<Date.now();
+          if(!Number.isFinite(ts)||ts<windowStart||ts>windowEnd) continue;
           const color=past?'#22c55e':colorByTime(ts);
           const glow=!past&&launchTwilight(ts,lat,lon);
           const icon=L.divIcon({ className:'', html:`<div class="rocket-marker${glow?' twilight-glow':''}" style="background:${color}">🚀</div>`, iconSize:[46,46], iconAnchor:[23,23] });
@@ -143,7 +150,8 @@
           const visit=(group)=>group.eachLayer(child=>{
             if(child.eachLayer) visit(child);
             const name=String(child.feature?.properties?.name||'').toUpperCase();
-            const row=byName.get(name); if(!row||typeof child.setStyle!=='function') return;
+            const row=byName.get(name); if(typeof child.setStyle!=='function') return;
+            if(!row||!overlapsNextSevenDays(row)) { child.setStyle({opacity:0,fillOpacity:0,weight:0,interactive:false}); return; }
             const color=isMaritime(row)?'#ff9900':colorByTime(Date.parse(row.from_utc));
             const glow=twilightGlow(row);
             child.setStyle({color,fillColor:color,fillOpacity:0.2,weight:glow?4:2,opacity:1});
@@ -153,7 +161,7 @@
         }
       }
       for (const [kind,path] of [['notams','../notams.kml'],['msi','../msi.kml']]) {
-        loadWarningCsv(kind).then(rows=>{ allWarnings.push(...rows); ready[kind==='msi'?'msiCsv':'notamCsv']=true; finishIfReady(); });
+        loadWarningCsv(kind).then(rows=>{ allWarnings.push(...rows.filter(overlapsNextSevenDays)); ready[kind==='msi'?'msiCsv':'notamCsv']=true; finishIfReady(); });
         const layer=omnivore.kml(path + '?widget=' + Date.now());
         layersByKind[kind]=layer;
         layer.on('ready',()=>{ layer.addTo(map); ready[kind]=true; finishIfReady(); });

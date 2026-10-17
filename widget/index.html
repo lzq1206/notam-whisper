@@ -12,12 +12,13 @@
     main { width:min(100vw,100vh); }
     img { display:block; width:100%; aspect-ratio:1; object-fit:cover; }
     footer { padding:5px 8px; color:#c7d2dc; font-size:12px; }
+    footer a { color:#9cc7ff; margin-left:8px; }
   </style>
 </head>
 <body>
   <main>
     <img id="mapImage" alt="中国及周边火箭与航行警告地图">
-    <footer>服务端每 3 小时更新；小组件实际刷新时间由 iOS 调度。<span id="updated"></span></footer>
+    <footer>服务端每 3 小时更新；小组件实际刷新时间由 iOS 调度。<span id="updated"></span><a href="./china-rocket-map.swt">下载 ScriptWidget 组件</a></footer>
   </main>
   <script>
     const raw='https://raw.githubusercontent.com/lzq1206/notam-whisper/main/widget/';
