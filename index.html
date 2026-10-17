@@ -3031,12 +3031,12 @@
       const pad = launch?.pad || {};
       const location = launchLocationObject(launch);
       const directPairs = [
-        [location.latitude, location.longitude],
-        [location.lat, location.lon],
         [pad.latitude, pad.longitude],
         [pad.lat, pad.lon],
         [launch?.latitude, launch?.longitude],
-        [launch?.lat, launch?.lon]
+        [launch?.lat, launch?.lon],
+        [location.latitude, location.longitude],
+        [location.lat, location.lon]
       ];
       for (const [lat, lon] of directPairs) {
         if (isFinite(parseFloat(lat)) && isFinite(parseFloat(lon))) {
