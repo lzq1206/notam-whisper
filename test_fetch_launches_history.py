@@ -168,6 +168,60 @@ def test_spacedevs_rizhao_pad_wins_over_haiyang_parent_spaceport():
     assert launches[0]["Longitude"] == 119.598667
 
 
+def test_save_to_csv_fresh_rizhao_site_overwrites_stale_haiyang_abbreviation():
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, "past_launches.csv")
+        stale = {
+            "Launch Date and Time (UTC)": "2026 JAN 15 2010",
+            "Launch Site (Abbrv.)": "YSLA",
+            "Latitude": "35.391667",
+            "Longitude": "119.598667",
+            "Launch Vehicle": "Ceres-1S",
+            "Official Payload Name": "Tianqi 37-40",
+            "Success": "S",
+            "Launch Site (Full)": "Rizhao offshore launch location / Haiyang Oriental Spaceport",
+        }
+        with open(path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=stale.keys())
+            writer.writeheader()
+            writer.writerow(stale)
+
+        fresh = dict(stale, **{"Launch Site (Abbrv.)": "RSLA"})
+        save_to_csv([fresh], path)
+
+        rows = _read_rows(path)
+        assert len(rows) == 1
+        assert rows[0]["Launch Site (Abbrv.)"] == "RSLA"
+        assert rows[0]["Latitude"] == "35.391667"
+        assert rows[0]["Official Payload Name"] == "Tianqi 37-40"
+
+
+def test_save_to_csv_keeps_old_nonempty_fields_when_fresh_source_omits_them():
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, "past_launches.csv")
+        stale = {
+            "Launch Date and Time (UTC)": "2026 JAN 15 2010",
+            "Launch Site (Abbrv.)": "YSLA",
+            "Latitude": "35.391667",
+            "Longitude": "119.598667",
+            "Launch Vehicle": "Ceres-1S",
+            "Official Payload Name": "Tianqi 37-40",
+            "Success": "S",
+            "Launch Site (Full)": "old location label",
+        }
+        with open(path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=stale.keys())
+            writer.writeheader()
+            writer.writerow(stale)
+
+        fresh = dict(stale, **{"Launch Site (Abbrv.)": "RSLA", "Launch Site (Full)": ""})
+        save_to_csv([fresh], path)
+
+        rows = _read_rows(path)
+        assert rows[0]["Launch Site (Abbrv.)"] == "RSLA"
+        assert rows[0]["Launch Site (Full)"] == "old location label"
+
+
 def test_spacedevs_history_fetches_multiple_pages_with_delay():
     def result(net, name):
         return {

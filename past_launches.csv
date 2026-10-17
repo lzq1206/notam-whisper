@@ -255,7 +255,7 @@ Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,Launch Vehicl
 2026 JAN 17 0439,VSFB,34.632,-120.611,Falcon 9 Block 5,NROL-105,S,"Space Launch Complex 4E / Vandenberg SFB, CA, USA"
 2026 JAN 17 0408,JSLC,40.969117,100.343333,Ceres-2,Demo Flight,F,"Launch Area 95A / Jiuquan Satellite Launch Center, People's Republic of China"
 2026 JAN 16 1655,XSLC,28.245504,102.026768,Long March 3B/E,Shijian 32,F,"Launch Complex 2 (LC-2) / Xichang Satellite Launch Center, People's Republic of China"
-2026 JAN 15 2010,YSLA,35.391667,119.598667,Ceres-1S,Tianqi 37-40,S,Rizhao offshore launch location / Haiyang Oriental Spaceport
+2026 JAN 15 2010,RSLA,35.391667,119.598667,Ceres-1S,Tianqi 37-40,S,Rizhao offshore launch location / Haiyang Oriental Spaceport
 2026 JAN 15 0401,JSLC,40.960482,100.298059,Long March 2C,AlSat 3A,S,"Launch Area 94 (SLS-2 / 603) / Jiuquan Satellite Launch Center, People's Republic of China"
 2026 JAN 14 1808,CCSFS,28.56194122,-80.57735736,Falcon 9 Block 5,Starlink Group 6-98,S,"Space Launch Complex 40 / Cape Canaveral SFS, FL, USA"
 2026 JAN 13 1525,WSLC,19.597275,110.930753,Long March 8A,SatNet LEO Group 18,S,"Commercial LC-1 / Wenchang Space Launch Site, People's Republic of China"
@@ -494,7 +494,7 @@ Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,Launch Vehicl
 2025 MAY 21 0405,JSLC,40.8182,100.22514,Kinetica 1,6 satellites,S,"Launch Area 130 / Jiuquan Satellite Launch Center, People's Republic of China"
 2025 MAY 21 0319,CCSFS,28.56194122,-80.57735736,Falcon 9 Block 5,Starlink Group 12-15,S,"Space Launch Complex 40 / Cape Canaveral SFS, FL, USA"
 2025 MAY 20 1150,WSLC,19.618452,110.955356,Long March 7A,ChinaSat 3B,S,"201 / Wenchang Space Launch Site, People's Republic of China"
-2025 MAY 19 0738,YSLA,35.391667,119.598667,Ceres-1S,Tianqi 16-18 & 20,S,Rizhao offshore launch location / Haiyang Oriental Spaceport
+2025 MAY 19 0738,RSLA,35.391667,119.598667,Ceres-1S,Tianqi 16-18 & 20,S,Rizhao offshore launch location / Haiyang Oriental Spaceport
 2025 MAY 18 0029,SDSC,13.733,80.235,PSLV XL,PSLV-XL | EOS-09 (RISAT-1B),F,"Satish Dhawan Space Centre First Launch Pad / Satish Dhawan Space Centre, India"
 2025 MAY 17 0817,LC-1,-39.262833,177.864469,Electron,The Sea God Sees (iQPS Launch 2),S,"Rocket Lab Launch Complex 1A / Rocket Lab Launch Complex 1, Mahia Peninsula, New Zealand"
 2025 MAY 17 0412,JSLC,40.91491,100.245488,Zhuque-2E,6 satellites,S,"Launch Area 96A / Jiuquan Satellite Launch Center, People's Republic of China"
@@ -597,3 +597,5 @@ Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,Launch Vehicl
 2025 JAN 20 1011,JSLC,40.969117,100.343333,Ceres-1,5 satellites,S,"Launch Area 95A / Jiuquan Satellite Launch Center, People's Republic of China"
 2025 JAN 17 0407,JSLC,40.960482,100.298059,Long March 2D,PRSC-EO1,S,"Launch Area 94 (SLS-2 / 603) / Jiuquan Satellite Launch Center, People's Republic of China"
 2025 JAN 16 2237,Starbase,25.9962,-97.154423,Starship V2,Starship | Flight 7,F,"Orbital Launch Pad 1 / SpaceX Starbase, TX, USA"
+2024 DEC 19 1018,RSLA,35.391667,119.598667,Ceres-1S,Tianqi 33-36,S,Rizhao offshore launch location / Haiyang Oriental Spaceport
+2024 MAY 29 0812,RSLA,35.391667,119.598667,Ceres-1S,Tianqi 25-28,S,Rizhao offshore launch location / Haiyang Oriental Spaceport

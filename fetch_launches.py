@@ -396,15 +396,25 @@ def save_to_csv(launches, filename):
             reader = csv.DictReader(f)
             existing_data = list(reader)
     
-    # Merge and Deduplicate (based on Date + Vehicle + Payload)
-    combined = existing_data + launches
+    # Merge and deduplicate by Date + Vehicle + Payload. Existing rows are
+    # loaded first, but fresh source data must be authoritative for fields it
+    # provides (notably pad/site identity); otherwise a corrected site can
+    # never replace a stale abbreviation in the CSV.
     unique = {}
-    for item in combined:
-        # Create a unique key
-        k = f"{item.get('Launch Date and Time (UTC)')}|{item.get('Launch Vehicle')}|{item.get('Official Payload Name')}"
-        if k not in unique:
-            unique[k] = item
-    
+    for item in existing_data:
+        key = f"{item.get('Launch Date and Time (UTC)')}|{item.get('Launch Vehicle')}|{item.get('Official Payload Name')}"
+        unique[key] = dict(item)
+
+    for item in launches:
+        key = f"{item.get('Launch Date and Time (UTC)')}|{item.get('Launch Vehicle')}|{item.get('Official Payload Name')}"
+        merged = dict(unique.get(key, {}))
+        # Preserve old metadata when the current API omits it, but let every
+        # non-empty fresh value correct stale data.
+        for field, value in item.items():
+            if value not in (None, ""):
+                merged[field] = value
+        unique[key] = merged
+
     # Sort by date (descending)
     final_list = sorted(unique.values(), key=_launch_sort_key, reverse=True)
 
