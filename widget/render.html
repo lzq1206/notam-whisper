@@ -12,19 +12,18 @@
     #map { position: relative; width: min(100vw, 100vh); height: min(100vw, 100vh); overflow: hidden; }
     .leaflet-control-attribution { font-size: 8px !important; line-height: 1.1 !important; background: rgba(0,0,0,.55) !important; color: #eee !important; }
     .leaflet-control-attribution a { color: #d8e8ff !important; }
-    .rocket-marker { display:flex; align-items:center; justify-content:center; width:46px;height:46px;border:3px solid white;border-radius:50%; background:#7039bd; box-shadow:0 1px 8px #111; font-size:27px; }
-    .rocket-marker.past { background:#315fd5; }
-    .map-title { position:absolute; z-index:1000; top:14px; left:14px; padding:7px 10px; border-radius:8px; color:white; background:rgba(8,20,35,.72); font-size:14px; letter-spacing:.02em; pointer-events:none; }
+    .rocket-marker { display:flex; align-items:center; justify-content:center; width:46px;height:46px;border:3px solid white;border-radius:50%; box-shadow:0 1px 8px #111; font-size:27px; }
+    .twilight-glow { filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 3px #fff); }
     .generated-at { position:absolute; z-index:1000; right:12px; bottom:20px; color:#fff; padding:3px 6px; border-radius:4px; background:rgba(0,0,0,.55); font-size:9px; pointer-events:none; }
   </style>
 </head>
 <body>
   <main id="map" aria-label="中国及周边火箭发射和海空警告地图">
-    <div class="map-title">中国及周边 · 火箭与航行警告</div>
     <div class="generated-at" id="generatedAt">更新中…</div>
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
+  <script src="suncalc.js"></script>
   <script>
     (() => {
       const map = L.map('map', { zoomControl:false, attributionControl:true, preferCanvas:true }).setView([31.5, 116], 4);
@@ -36,13 +35,52 @@
       // Fixed square frame, centered on China with surrounding seas and Japan.
       map.fitBounds([[4, 78], [55, 148]], { animate:false, padding:[0,0] });
 
-      const ready = { launches:false, notams:false, msi:false };
+      const ready = { launches:false, notams:false, msi:false, notamCsv:false, msiCsv:false };
+      const allWarnings=[];
+      let launchRecords=[];
+      let layersByKind={};
+      let timeline={minTs:Date.now(),maxTs:Date.now()+86400000};
       const failSoft = (kind, err) => { console.warn(kind, err || 'unavailable'); ready[kind] = true; finishIfReady(); };
       const finishIfReady = () => {
         if (!Object.values(ready).every(Boolean)) return;
+        timeline=getTimelineBounds(allWarnings,launchRecords.map(x=>parseWidgetDate(x.net||x.window_start||x.win_open||x['Launch Date and Time (UTC)']||'')).filter(Number.isFinite));
+        drawLaunches(launchRecords);
+        styleWarningLayers();
         document.getElementById('generatedAt').textContent = '生成 ' + new Date().toISOString().replace('T',' ').slice(0,16) + ' UTC';
         window.widgetReady = true;
       };
+
+      function getTimelineBounds(rows,extraTimes=[]) {
+        const now=Date.now();
+        const times=rows.map(r=>Date.parse(r.from_utc)).filter(Number.isFinite).concat(extraTimes);
+        return {minTs:now,maxTs:Math.max(now+86400000,...times)};
+      }
+      function colorByTime(ts) {
+        if(!Number.isFinite(ts)||timeline.maxTs<=timeline.minTs) return '#d33';
+        const t=Math.max(0,Math.min(1,(ts-timeline.minTs)/(timeline.maxTs-timeline.minTs)));
+        return `rgb(${Math.round(255*(1-t)+43*t)},${Math.round(43*(1-t)+91*t)},${Math.round(43*(1-t)+255*t)})`;
+      }
+      function parseWidgetDate(value) {
+        if(!value) return NaN;
+        const direct=Date.parse(value); if(Number.isFinite(direct)) return direct;
+        const m=String(value).trim().toUpperCase().match(/^(\d{4})\s+([A-Z]{3})\s+(\d{1,2})\s+(\d{2})(\d{2})$/);
+        if(!m) return NaN;
+        const months={JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
+        return Date.UTC(Number(m[1]),months[m[2]],Number(m[3]),Number(m[4]),Number(m[5]));
+      }
+      function isMaritime(row) { return row.country==='Maritime'||row.fir==='MSI'; }
+      function twilightGlow(row) {
+        const from=Date.parse(row.from_utc),to=Date.parse(row.to_utc);
+        if(!Number.isFinite(from)||!Number.isFinite(Number(row.lat))||(Number.isFinite(to)&&(to-from)>12*3600000)||!window.SunCalc) return false;
+        const midpoint=new Date(Number.isFinite(to)?(from+to)/2:from);
+        const times=SunCalc.getTimes(midpoint,Number(row.lat),Number(row.lon)||0);
+        return (midpoint>=times.sunset&&midpoint<=times.night)||(midpoint>=times.nightEnd&&midpoint<=times.sunrise);
+      }
+      function launchTwilight(ts,lat,lon) {
+        if(!Number.isFinite(ts)||!Number.isFinite(lat)||!Number.isFinite(lon)||!window.SunCalc) return false;
+        const date=new Date(ts),times=SunCalc.getTimes(date,lat,lon);
+        return (date>=times.sunset&&date<=times.night)||(date>=times.nightEnd&&date<=times.sunrise);
+      }
 
       function parseCsv(text) {
         const rows=[]; let row=[], field='', quoted=false;
@@ -68,8 +106,10 @@
           const lon=Number(launch.widgetLon ?? pad.longitude ?? pad.lon ?? location.longitude ?? location.lon ?? launch.Longitude);
           if (!Number.isFinite(lat) || !Number.isFinite(lon) || lat<4 || lat>55 || lon<78 || lon>148) continue;
           const time=launch.net || launch.window_start || launch.win_open || launch['Launch Date and Time (UTC)'] || '';
-          const past=Date.parse(time) < Date.now();
-          const icon=L.divIcon({ className:'', html:`<div class="rocket-marker ${past?'past':''}">🚀</div>`, iconSize:[46,46], iconAnchor:[23,23] });
+          const ts=parseWidgetDate(time),past=Number.isFinite(ts)&&ts<Date.now();
+          const color=past?'#22c55e':colorByTime(ts);
+          const glow=!past&&launchTwilight(ts,lat,lon);
+          const icon=L.divIcon({ className:'', html:`<div class="rocket-marker${glow?' twilight-glow':''}" style="background:${color}">🚀</div>`, iconSize:[46,46], iconAnchor:[23,23] });
           L.marker([lat,lon],{icon,interactive:false}).addTo(map);
         }
       }
@@ -79,20 +119,43 @@
           const response=await fetch('https://ll.thespacedevs.com/2.3.0/launches/?'+params,{cache:'no-store'});
           if (!response.ok) throw Error(`Space Devs HTTP ${response.status}`);
           const data=await response.json();
-          drawLaunches(Array.isArray(data.results)?data.results:[]);
+          launchRecords=Array.isArray(data.results)?data.results:[];
         } catch (error) {
           console.warn('Space Devs launches unavailable; using local schedule',error);
           try {
             const response=await fetch('../upcoming_launches.csv?widget='+Date.now(),{cache:'no-store'});
             if(!response.ok) throw Error(response.status);
-            drawLaunches(parseCsv(await response.text()));
+            launchRecords=parseCsv(await response.text());
           } catch (fallbackError) { console.warn('Local launch schedule unavailable',fallbackError); }
         } finally { ready.launches=true; finishIfReady(); }
       }
       loadLaunches();
 
+      async function loadWarningCsv(kind) {
+        const path=kind==='msi'?'../msi.csv':'../notams.csv';
+        try { const response=await fetch(path+'?widget='+Date.now(),{cache:'no-store'}); if(!response.ok) throw Error(response.status); return parseCsv(await response.text()); }
+        catch(e) { console.warn(kind+' CSV unavailable',e); return []; }
+      }
+      function styleWarningLayers() {
+        for(const kind of ['notams','msi']) {
+          const layer=layersByKind[kind]; if(!layer) continue;
+          const byName=new Map(allWarnings.filter(r=>kind==='msi'?isMaritime(r):!isMaritime(r)).map(r=>[String(r.notam_id||'').toUpperCase(),r]));
+          const visit=(group)=>group.eachLayer(child=>{
+            if(child.eachLayer) visit(child);
+            const name=String(child.feature?.properties?.name||'').toUpperCase();
+            const row=byName.get(name); if(!row||typeof child.setStyle!=='function') return;
+            const color=isMaritime(row)?'#ff9900':colorByTime(Date.parse(row.from_utc));
+            const glow=twilightGlow(row);
+            child.setStyle({color,fillColor:color,fillOpacity:0.2,weight:glow?4:2,opacity:1});
+            if(glow&&child._path) child._path.classList.add('twilight-glow');
+          });
+          visit(layer);
+        }
+      }
       for (const [kind,path] of [['notams','../notams.kml'],['msi','../msi.kml']]) {
+        loadWarningCsv(kind).then(rows=>{ allWarnings.push(...rows); ready[kind==='msi'?'msiCsv':'notamCsv']=true; finishIfReady(); });
         const layer=omnivore.kml(path + '?widget=' + Date.now());
+        layersByKind[kind]=layer;
         layer.on('ready',()=>{ layer.addTo(map); ready[kind]=true; finishIfReady(); });
         layer.on('error',e=>failSoft(kind,e));
       }
