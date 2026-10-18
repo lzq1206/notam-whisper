@@ -2537,6 +2537,7 @@
     const LOCAL_UPCOMING_LAUNCHES_URL = './upcoming_launches.csv';
     const RLL_UPCOMING_URL = 'https://fdo.rocketlaunch.live/json/launches/next/5';
     const SPACEDEVS_UPCOMING_URL = 'https://ll.thespacedevs.com/2.3.0/launches/';
+    const UPCOMING_LAUNCHES_CACHE_URL = './upcoming_launches.json';
 
     // Location slug (from RocketLaunch.Live) → launch_sites.csv abbreviation
     // Prefer launch_sites.csv coordinates when possible to keep map positions consistent.
@@ -3107,6 +3108,31 @@
         : [];
     }
 
+    async function fetchUpcomingLaunchFeed(range) {
+      try {
+        const version = Math.floor(Date.now() / (3 * 60 * 60 * 1000));
+        const cacheUrl = `${UPCOMING_LAUNCHES_CACHE_URL}?v=${version}`;
+        const response = await fetchWithTimeout(cacheUrl, { cache: 'no-store' }, 5000);
+        if (!response.ok) throw new Error(`Static launch snapshot returned HTTP ${response.status}`);
+        const snapshot = await response.json();
+        const coverageEnd = Date.parse(snapshot.window_end || '');
+        if (!Array.isArray(snapshot.results) || !Number.isFinite(coverageEnd) || range.end > coverageEnd) {
+          throw new Error('Static launch snapshot does not cover the selected date range');
+        }
+        const launches = snapshot.results.map(launch => ({
+          ...launch,
+          isSpaceDevsRecord: true,
+          sourceLabel: 'Data by The Space Devs',
+          spaceDevsUrl: safeLaunchHttpUrl(launch.url)
+        }));
+        return { launches: filterUpcomingToRange(launches, range), fromSnapshot: true };
+      } catch (snapshotError) {
+        console.warn('[launches] Static snapshot unavailable; trying live feed:', snapshotError);
+        const launches = filterUpcomingToRange(await fetchSpaceDevsUpcomingLaunches(range), range);
+        return { launches, fromSnapshot: false };
+      }
+    }
+
     function safeLaunchHttpUrl(value) {
       if (!value) return '';
       try {
@@ -3179,11 +3205,10 @@
         const range = upcomingLaunchDateRange(nowMs);
         // Start the launch query before the optional site lookup so network
         // latency overlaps instead of adding up on a cold page load.
-        const primaryFeedPromise = fetchSpaceDevsUpcomingLaunches(range)
-          .then(items => filterUpcomingToRange(items, range))
+        const primaryFeedPromise = fetchUpcomingLaunchFeed(range)
           .catch(error => {
             console.warn('[Space Devs] Failed to fetch launch metadata:', error);
-            return [];
+            return { launches: [], fromSnapshot: false };
           });
 
         // 1. Load launch sites from GitHub (purple background markers)
@@ -3229,12 +3254,13 @@
         // 3. Use the already-running bounded primary query. Fallback feeds
         // are fetched in parallel only if the primary has no usable results.
         upcomingLaunches = [];
-        const spaceDevsUpcoming = await primaryFeedPromise;
+        const primaryFeed = await primaryFeedPromise;
+        const spaceDevsUpcoming = primaryFeed.launches;
 
         const primarySpaceDevsList = filterFutureLaunches(spaceDevsUpcoming, nowMs)
           .filter(hasConcreteLaunchWindow);
         let enrichedList = primarySpaceDevsList;
-        if (!primarySpaceDevsList.length) {
+        if (!primarySpaceDevsList.length && !primaryFeed.fromSnapshot) {
           const [localResult, rllResult] = await Promise.allSettled([
             fetchWithTimeout(LOCAL_UPCOMING_LAUNCHES_URL, { cache: 'no-store' }, 6000)
               .then(async response => {
