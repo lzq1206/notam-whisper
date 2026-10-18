@@ -457,6 +457,7 @@
         status_csv_fallback: 'CSV不可用，已回退显示 notams.kml',
         status_all_failed: '所有数据源均加载失败',
         launch_loading: '加载火箭数据…',
+        launch_upcoming_ready: '已加载 {count} 条所选时间范围内的未来发射',
         launch_unknown_mission: '未知任务',
         launch_unknown_vehicle: '未知',
         launch_success: '✅ 成功',
@@ -538,6 +539,7 @@
         status_csv_fallback: 'CSV unavailable, showing notams.kml fallback',
         status_all_failed: 'All data sources failed to load',
         launch_loading: 'Loading launch data…',
+        launch_upcoming_ready: 'Loaded {count} upcoming launch(es) in the selected time range',
         launch_unknown_mission: 'Unknown mission',
         launch_unknown_vehicle: 'Unknown',
         launch_success: '✅ Success',
@@ -2470,11 +2472,15 @@
       renderRows(filtered);
     }
 
-    applyBtn.addEventListener('click', applyFilter);
+    applyBtn.addEventListener('click', () => {
+      applyFilter();
+      loadLaunchData({ skipHistory: true });
+    });
     resetBtn.addEventListener('click', () => {
       startEl.value = '';
       endEl.value = '';
       renderRows(dataRows);
+      loadLaunchData({ skipHistory: true });
     });
     downloadKmlBtn.addEventListener('click', downloadCurrentKml);
 
@@ -3048,18 +3054,47 @@
       return coordsForRllLoc(location);
     }
 
-    function spaceDevsUpcomingUrl(nowMs = Date.now()) {
+    const UPCOMING_DEFAULT_DAYS = 7;
+
+    function upcomingLaunchDateRange(nowMs = Date.now()) {
+      const selected = getNotamLaunchDateRange();
+      const start = Number.isFinite(selected.start) ? Math.max(nowMs, selected.start) : nowMs;
+      const defaultEnd = nowMs + UPCOMING_DEFAULT_DAYS * 86400000;
+      const end = Number.isFinite(selected.end) ? selected.end : defaultEnd;
+      return { start, end };
+    }
+
+    function filterUpcomingToRange(launches, range) {
+      if (!Array.isArray(launches) || range.end < range.start) return [];
+      return launches.filter(launch => {
+        const timestamp = launchTimestamp(launch);
+        return Number.isFinite(timestamp) && timestamp >= range.start && timestamp <= range.end;
+      });
+    }
+
+    async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        return await fetch(url, { ...options, signal: controller.signal });
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    function spaceDevsUpcomingUrl(range = upcomingLaunchDateRange()) {
       const params = new URLSearchParams({
-        limit: '100',
+        limit: '50',
         mode: 'normal',
         ordering: 'window_start',
-        window_end__gte: new Date(nowMs).toISOString()
+        window_end__gte: new Date(range.start).toISOString(),
+        window_start__lte: new Date(range.end).toISOString()
       });
       return `${SPACEDEVS_UPCOMING_URL}?${params.toString()}`;
     }
 
-    async function fetchSpaceDevsUpcomingLaunches(nowMs = Date.now()) {
-      const response = await fetch(spaceDevsUpcomingUrl(nowMs), { cache: 'no-store' });
+    async function fetchSpaceDevsUpcomingLaunches(range = upcomingLaunchDateRange()) {
+      const response = await fetchWithTimeout(spaceDevsUpcomingUrl(range), { cache: 'no-store' }, 8000);
       if (!response.ok) throw new Error(`Launch Library 2 returned HTTP ${response.status}`);
       const data = await response.json();
       return Array.isArray(data.results)
@@ -3131,32 +3166,47 @@
         </div>`;
     }
 
-    async function loadLaunchData() {
+    async function loadLaunchData(options = {}) {
+      const skipHistory = !!options.skipHistory;
       launchStatusEl.textContent = t('launch_loading');
       try {
         if (upcomingLaunchExpiryTimer !== null) {
           clearTimeout(upcomingLaunchExpiryTimer);
           upcomingLaunchExpiryTimer = null;
         }
+        const now = new Date();
+        const nowMs = now.getTime();
+        const range = upcomingLaunchDateRange(nowMs);
+        // Start the launch query before the optional site lookup so network
+        // latency overlaps instead of adding up on a cold page load.
+        const primaryFeedPromise = fetchSpaceDevsUpcomingLaunches(range)
+          .then(items => filterUpcomingToRange(items, range))
+          .catch(error => {
+            console.warn('[Space Devs] Failed to fetch launch metadata:', error);
+            return [];
+          });
+
         // 1. Load launch sites from GitHub (purple background markers)
-        const sitesResp = await fetch(LAUNCH_SITES_URL, { cache: 'no-store' });
-        const sitesText = await sitesResp.text();
-        const sitesRows = parseCsv(sitesText);
-        sitesRows.forEach(row => {
-          const abbrev = (row['abbreviation'] || '').trim();
-          const lat = parseFloat(row['latitude']);
-          const lon = parseFloat(row['longitude']);
-          const name = (row['name'] || '').trim();
-          if (abbrev && isFinite(lat) && isFinite(lon)) {
-            launchSites[abbrev] = { lat, lon, name: name || abbrev };
-          }
-          const normalizedName = normalizeLocationKey(name);
-          if (normalizedName && isFinite(lat) && isFinite(lon)) {
-            if (!launchSitesByName[normalizedName]) {
+        try {
+          const sitesResp = await fetchWithTimeout(LAUNCH_SITES_URL, { cache: 'no-store' }, 5000);
+          if (!sitesResp.ok) throw new Error(`Launch sites returned HTTP ${sitesResp.status}`);
+          const sitesRows = parseCsv(await sitesResp.text());
+          sitesRows.forEach(row => {
+            const abbrev = (row['abbreviation'] || '').trim();
+            const lat = parseFloat(row['latitude']);
+            const lon = parseFloat(row['longitude']);
+            const name = (row['name'] || '').trim();
+            if (abbrev && isFinite(lat) && isFinite(lon)) {
+              launchSites[abbrev] = { lat, lon, name: name || abbrev };
+            }
+            const normalizedName = normalizeLocationKey(name);
+            if (normalizedName && isFinite(lat) && isFinite(lon) && !launchSitesByName[normalizedName]) {
               launchSitesByName[normalizedName] = { lat, lon };
             }
-          }
-        });
+          });
+        } catch (sitesErr) {
+          console.warn('[launches] Launch-site lookup unavailable; continuing with inline coordinates:', sitesErr);
+        }
         console.log(`[launches] Loaded ${Object.keys(launchSites).length} launch sites`);
 
         launchLayerGroup.clearLayers();
@@ -3176,79 +3226,58 @@
           m.addTo(launchLayerGroup);
         });
 
-        // 3. Fetch upcoming launches. Launch Library 2 is primary; the
-        // RocketLaunch.Live/local layer is retained only as a failure fallback.
-        const now = new Date();
-        try {
-          upcomingLaunches = [];
-          let localUpcoming = [];
-          try {
-            const localResp = await fetch(LOCAL_UPCOMING_LAUNCHES_URL, { cache: 'no-store' });
-            const localRows = parseCsv(await localResp.text());
-            localUpcoming = localRows.map(row => {
-              const d = parseLaunchDate(row['Launch Date and Time (UTC)']);
-              const lat = parseFloat(row['Latitude']);
-              const lon = parseFloat(row['Longitude']);
-              if (!d || !isFinite(d.getTime()) || !isFinite(lat) || !isFinite(lon)) return null;
-              const siteAbbr = (row['Launch Site (Abbrv.)'] || '').trim();
-              const siteName = (row['Launch Site (Full)'] || siteAbbr || '').trim();
-              return {
-                name: row['Official Payload Name'] || t('launch_unknown_mission'),
-                vehicle: { name: row['Launch Vehicle'] || t('launch_unknown_vehicle') },
-                pad: {
-                  name: (row['Launch Pad'] || '').trim(),
-                  location: {
-                    name: siteName,
-                    slug: (row['Location Slug'] || '').trim(),
-                    latitude: lat,
-                    longitude: lon
-                  }
-                },
-                win_open: d.toISOString(),
-                launch_description: row['Description'] || '',
-                slug: `local-${siteAbbr || 'launch'}-${d.toISOString().replace(/[:.]/g, '-')}`,
-                url: (row['Details URL'] || '').trim(),
-                sourceLabel: 'Data by local schedule'
-              };
-            }).filter(Boolean);
-          } catch (localErr) {
-            console.warn('[local launches] Failed to load upcoming launches:', localErr);
-          }
+        // 3. Use the already-running bounded primary query. Fallback feeds
+        // are fetched in parallel only if the primary has no usable results.
+        upcomingLaunches = [];
+        const spaceDevsUpcoming = await primaryFeedPromise;
 
-          const nowMs = now.getTime();
-          let remoteUpcoming = [];
-          try {
-            const rllResp = await fetch(RLL_UPCOMING_URL, { cache: 'no-store' });
-            const rllData = await rllResp.json();
-            remoteUpcoming = rllData.result || [];
-          } catch (rllErr) {
-            console.warn('[RLL] Failed to fetch upcoming launches:', rllErr);
-          }
-
-          let spaceDevsUpcoming = [];
-          try {
-            spaceDevsUpcoming = await fetchSpaceDevsUpcomingLaunches(nowMs);
-          } catch (spaceDevsErr) {
-            console.warn('[Space Devs] Failed to fetch launch metadata:', spaceDevsErr);
-          }
-
+        const primarySpaceDevsList = filterFutureLaunches(spaceDevsUpcoming, nowMs)
+          .filter(hasConcreteLaunchWindow);
+        let enrichedList = primarySpaceDevsList;
+        if (!primarySpaceDevsList.length) {
+          const [localResult, rllResult] = await Promise.allSettled([
+            fetchWithTimeout(LOCAL_UPCOMING_LAUNCHES_URL, { cache: 'no-store' }, 6000)
+              .then(async response => {
+                if (!response.ok) throw new Error(`Local upcoming feed returned HTTP ${response.status}`);
+                const rows = parseCsv(await response.text());
+                return rows.map(row => {
+                  const d = parseLaunchDate(row['Launch Date and Time (UTC)']);
+                  const lat = parseFloat(row['Latitude']);
+                  const lon = parseFloat(row['Longitude']);
+                  if (!d || !isFinite(d.getTime()) || !isFinite(lat) || !isFinite(lon)) return null;
+                  const siteAbbr = (row['Launch Site (Abbrv.)'] || '').trim();
+                  const siteName = (row['Launch Site (Full)'] || siteAbbr || '').trim();
+                  return {
+                    name: row['Official Payload Name'] || t('launch_unknown_mission'),
+                    vehicle: { name: row['Launch Vehicle'] || t('launch_unknown_vehicle') },
+                    pad: { name: (row['Launch Pad'] || '').trim(), location: {
+                      name: siteName, slug: (row['Location Slug'] || '').trim(), latitude: lat, longitude: lon
+                    } },
+                    win_open: d.toISOString(), launch_description: row['Description'] || '',
+                    slug: `local-${siteAbbr || 'launch'}-${d.toISOString().replace(/[:.]/g, '-')}`,
+                    url: (row['Details URL'] || '').trim(), sourceLabel: 'Data by local schedule'
+                  };
+                }).filter(Boolean);
+              }),
+            fetchWithTimeout(RLL_UPCOMING_URL, { cache: 'no-store' }, 6000)
+              .then(async response => {
+                if (!response.ok) throw new Error(`RocketLaunch.Live returned HTTP ${response.status}`);
+                const data = await response.json();
+                return data.result || [];
+              })
+          ]);
+          const localUpcoming = localResult.status === 'fulfilled' ? localResult.value : [];
+          const remoteUpcoming = rllResult.status === 'fulfilled' ? rllResult.value : [];
+          if (localResult.status === 'rejected') console.warn('[local launches] Failed to load upcoming launches:', localResult.reason);
+          if (rllResult.status === 'rejected') console.warn('[RLL] Failed to fetch upcoming launches:', rllResult.reason);
           const fallbackList = mergeUpcomingLaunches(
-            filterFutureLaunches(localUpcoming, nowMs),
-            filterFutureLaunches(remoteUpcoming, nowMs)
+            filterUpcomingToRange(filterFutureLaunches(localUpcoming, nowMs), range),
+            filterUpcomingToRange(filterFutureLaunches(remoteUpcoming, nowMs), range)
           );
-          const fallbackEnrichedList = filterFutureLaunches(
-            enrichUpcomingLaunchesWithSpaceDevs(fallbackList, spaceDevsUpcoming),
-            nowMs
+          enrichedList = filterUpcomingToRange(
+            filterFutureLaunches(enrichUpcomingLaunchesWithSpaceDevs(fallbackList, spaceDevsUpcoming), nowMs), range
           );
-          const primarySpaceDevsList = filterFutureLaunches(spaceDevsUpcoming, nowMs)
-            .filter(hasConcreteLaunchWindow);
-          // The primary feed is intentionally strict: every displayed record
-          // has the API's explicit start/end window and a scheduled NET time.
-          // If that request is unavailable, use the pre-existing RLL/local
-          // fallback so the launch layer remains useful offline.
-          const enrichedList = primarySpaceDevsList.length
-            ? primarySpaceDevsList
-            : fallbackEnrichedList;
+        }
 
           const upcomingTimes = enrichedList.map(launchTimestamp).filter(Number.isFinite);
           const { minTs: minLaunchTs, maxTs: maxLaunchTs } = getTimelineBounds(filteredDataRows, upcomingTimes);
@@ -3323,19 +3352,21 @@
             upcomingLaunches.push(launchRecord);
           });
           syncUpcomingLaunchLayerToNotamRange();
-        } catch (rllErr) {
-          console.warn('[RLL] Failed to fetch upcoming launches:', rllErr);
+          launchStatusEl.textContent = t('launch_upcoming_ready', { count: upcomingLaunches.length });
         }
 
         scheduleUpcomingLaunchExpiry();
 
-        // 4. Load historical CSV (all data)
+        // 4. Load historical CSV (all data); don't make this block a prerequisite
+        // for rendering the near-term upcoming-launch layer after a date-range edit.
+        if (!skipHistory) {
         let pastCount = 0;
         const pastDates = [];
         const historyItems = [];
         pastLaunches = [];
         try {
-          const logResp = await fetch(LAUNCH_LOG_URL, { cache: 'no-store' });
+          const logResp = await fetchWithTimeout(LAUNCH_LOG_URL, { cache: 'no-store' }, 12000);
+          if (!logResp.ok) throw new Error(`Launch history returned HTTP ${logResp.status}`);
           const logText = await logResp.text();
           const logRows = parseCsv(logText);
 
@@ -3405,6 +3436,7 @@
         updateLaunchSummary();
 
         renderRows(filteredDataRows);
+        }
       } catch (err) {
         console.error('[launches] Error:', err);
         launchStatusEl.textContent = t('launch_load_failed');
