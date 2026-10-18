@@ -7,6 +7,7 @@
 - 中号 ScriptWidget 包（360×169 pt，@3x，1080×507 px）：`https://rocket.rainywhisper.com/widget/china-rocket-map-medium.swt`
 - 大号 ScriptWidget 包（显示框 364×382 pt；图片 1092×1146 px，3×）：`https://rocket.rainywhisper.com/widget/china-rocket-map-large.swt`
 - 三个包分别固定支持 `systemSmall` / `systemMedium` / `systemLarge`，按 iPhone 上准备添加的尺寸导入。
+- 组件图片优先从 `lzq1206.github.io/notam-whisper` 加载，连接失败时回退到 `rocket.rainywhisper.com`。
 - 中号图采用 360×169 pt 比例，东西向区域跨度与方图一致，北缘到乌鲁木齐约 43.8°N。
 - 小组件图每 3 小时由服务端重绘；iOS 实际刷新时点由系统调度。
 - 底图采用 NASA GIBS Blue Marble Shaded Relief and Bathymetry（MODIS）；不在图片内叠加时间或署名，来源在安装网页披露。
