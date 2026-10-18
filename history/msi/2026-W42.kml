@@ -215,16 +215,5 @@
         </Polygon>
       </MultiGeometry>
     </Placemark>
-    <Placemark>
-      <name>HYDROPAC 2882/26</name>
-      <description>030046Z OCT 26  HYDROPAC 2882/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     0047Z TO 0525Z DAILY 11 THRU 17 OCT     IN AREA BOUND BY     27-59.00S 122-44.00W, 27-09.00S 120-43.00W,     38-21.00S 115-04.00W, 49-09.00S 107-22.00W,     59-09.00S 095-34.00W, 59-58.00S 099-05.00W,     44-34.00S 114-13.00W.  2. CANCEL THIS MSG 170625Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-122.733333,-27.983333,0 -120.716667,-27.15,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -122.733333,-27.983333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
   </Document>
 </kml>
