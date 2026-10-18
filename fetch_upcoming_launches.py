@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Snapshot refresh cadence is configured in .github/workflows/update_upcoming_launches.yml.
 """Fetch a bounded upcoming-launch snapshot for the static website."""
 import json
 import os
