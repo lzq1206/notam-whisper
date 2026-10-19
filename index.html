@@ -397,6 +397,11 @@
     }
 
     @media (max-width: 600px) {
+      .panel {
+        transform: scale(0.9);
+        transform-origin: top left;
+      }
+
       .view-toggle {
         bottom: 62px;
         right: 8px;
@@ -407,6 +412,27 @@
 
       .date-range {
         gap: 6px;
+      }
+
+      .launch-popup {
+        max-width: calc(100vw - 32px) !important;
+      }
+
+      .launch-popup .leaflet-popup-content {
+        width: clamp(190px, 62vw, 250px) !important;
+        max-width: calc(100vw - 76px) !important;
+        margin: 10px 12px;
+        font-size: 10px !important;
+        line-height: 1.35;
+      }
+
+      .launch-popup .leaflet-popup-content img {
+        max-height: 125px !important;
+      }
+
+      .launch-popup .leaflet-popup-content small,
+      .launch-popup .leaflet-popup-content a {
+        font-size: 9px !important;
       }
     }
   </style>
@@ -714,7 +740,6 @@
       setTimeout(() => map.invalidateSize(false), 100);
     }
     map.attributionControl.setPrefix(false);
-    L.control.zoom({ position: 'topright' }).addTo(map);
     const widgetBaseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
       attribution: t('tile_attribution')
@@ -3586,7 +3611,7 @@
                 ${safeRllUrl ? `<a href="${escapeHtml(safeRllUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:11px;">${t('launch_details_link')}</a><br/>` : ''}
                 <small style="color:#888;">${escapeHtml(sourceLabel)}${imageUrl ? ` · ${escapeHtml(imageCredit || 'The Space Devs image')}` : ''}</small>
               `;
-            }, { maxWidth: 340 });
+            }, { maxWidth: 340, className: 'launch-popup' });
             lMarker.on('click', () => selectLaunchForSolarOverlay(launchRecord));
             lMarker.addTo(launchLayerGroup);
             upcomingLaunches.push(launchRecord);
