@@ -6,8 +6,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NOTAM / MSI / Rocket Launch Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
-  <link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <script>
+    if (!new URLSearchParams(location.search).has('widget') && !new URLSearchParams(location.search).has('selectBounds')) {
+      const cesiumScript = document.createElement('script');
+      cesiumScript.src = 'https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js';
+      document.head.appendChild(cesiumScript);
+      const cesiumStyles = document.createElement('link');
+      cesiumStyles.rel = 'stylesheet';
+      cesiumStyles.href = 'https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css';
+      document.head.appendChild(cesiumStyles);
+    }
+  </script>
   <script>
     // SunCalc 1.9.0 (inlined to avoid CDN/CORB issues)
     !function(){"use strict";var w=Math.PI,i=Math.sin,c=Math.cos,o=Math.tan,a=Math.asin,d=Math.atan2,s=Math.acos,p=w/180,e=864e5,n=2440588,r=2451545;function m(t){return new Date((t+.5-n)*e)}function D(t){return t.valueOf()/e-.5+n-r}var u=23.4397*p;function f(t,n){return d(i(t)*c(u)-o(n)*i(u),c(t))}function P(t,n){return a(i(n)*c(u)+c(n)*i(u)*i(t))}function l(t,n,e){return d(i(t),c(t)*i(n)-o(e)*c(n))}function h(t,n,e){return a(i(n)*i(e)+c(n)*c(e)*c(t))}function M(t,n){return p*(280.16+360.9856235*t)-n}function y(t){return p*(357.5291+.98560028*t)}function b(t){return t+p*(1.9148*i(t)+.02*i(2*t)+3e-4*i(3*t))+102.9372*p+w}function g(t){t=b(y(t));return{dec:P(t,0),ra:f(t,0)}}var H={getPosition:function(t,n,e){var a=p*-e,e=p*n,n=D(t),t=g(n),a=M(n,a)-t.ra;return{azimuth:l(a,e,t.dec),altitude:h(a,e,t.dec)}}},T=H.times=[[-.833,"sunrise","sunset"],[-.3,"sunriseEnd","sunsetStart"],[-6,"dawn","dusk"],[-12,"nauticalDawn","nauticalDusk"],[-18,"nightEnd","night"],[6,"goldenHourEnd","goldenHour"]];H.addTime=function(t,n,e){T.push([t,n,e])};function E(t,n,e){return 9e-4+(t+n)/(2*w)+e}function I(t,n,e){return r+t+.0053*i(n)-.0069*i(2*e)}function k(t,n,e,a,r,u,o){return I(E((e=e,a=a,s((i(t)-i(e)*i(a))/(c(e)*c(a)))),n,r),u,o)}function v(t){var n=p*(134.963+13.064993*t),e=p*(93.272+13.22935*t),t=p*(218.316+13.176396*t)+6.289*p*i(n),e=5.128*p*i(e),n=385001-20905*c(n);return{ra:f(t,e),dec:P(t,e),dist:n}}function q(t,n){return new Date(t.valueOf()+n*e/24)}H.getTimes=function(t,n,e,a){for(var r,u,o=p*-e,i=p*n,c=(a=a=a||0,-2.076*Math.sqrt(a)/60),t=D(t),d=Math.round(t-9e-4-o/(2*w)),t=E(0,o,d),s=y(t),f=b(s),l=P(f,0),h=I(t,s,f),M={solarNoon:m(h),nadir:m(h-.5)},g=0,v=T.length;g<v;g+=1)u=k(((r=T[g])[0]+c)*p,o,i,l,d,s,f),M[r[1]]=m(h-(u-h)),M[r[2]]=m(u);return M},H.getMoonPosition=function(t,n,e){var a=p*-e,r=p*n,u=D(t),e=v(u),n=M(u,a)-e.ra,t=h(n,r,e.dec),u=d(i(n),o(r)*c(e.dec)-i(e.dec)*c(n));return t+=((a=t)<0&&(a=0),2967e-7/Math.tan(a+.00312536/(a+.08901179))),{azimuth:l(n,r,e.dec),altitude:t,distance:e.dist,parallacticAngle:u}},H.getMoonIllumination=function(t){var n=D(t||new Date),e=g(n),t=v(n),n=s(i(e.dec)*i(t.dec)+c(e.dec)*c(t.dec)*c(e.ra-t.ra)),n=d(149598e3*i(n),t.dist-149598e3*c(n)),t=d(c(e.dec)*i(e.ra-t.ra),i(e.dec)*c(t.dec)-c(e.dec)*i(t.dec)*c(e.ra-t.ra));return{fraction:(1+c(n))/2,phase:.5+.5*n*(t<0?-1:1)/Math.PI,angle:t}},H.getMoonTimes=function(t,n,e,a){var r=new Date(t);a?r.setUTCHours(0,0,0,0):r.setHours(0,0,0,0);for(var u,o,i,c,d,s,f,l,h,M,g,v=.133*p,w=H.getMoonPosition(r,n,e).altitude-v,m=1;m<=24&&(l=H.getMoonPosition(q(r,m),n,e).altitude-v,f=((c=(w+(u=H.getMoonPosition(q(r,m+1),n,e).altitude-v))/2-l)*(s=-(d=(u-w)/2)/(2*c))+d)*s+l,(h=0)<=(l=d*d-4*c*l)&&(M=s-(g=Math.sqrt(l)/(2*Math.abs(c))),g=s+g,Math.abs(M)<=1&&h++,Math.abs(g)<=1&&h++,M<-1&&(M=g)),1===h?w<0?o=m+M:i=m+M:2===h&&(o=m+(f<0?g:M),i=m+(f<0?M:g)),!o||!i);m+=2)w=u;a={};return o&&(a.rise=q(r,o)),i&&(a.set=q(r,i)),o||i||(a[0<f?"alwaysUp":"alwaysDown"]=!0),a},"object"==typeof exports&&"undefined"!=typeof module?module.exports=H:"function"==typeof define&&define.amd?define(H):window.SunCalc=H}();
@@ -310,6 +319,83 @@
       display: none !important;
     }
 
+    html.widget-mode,
+    html.widget-mode body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    html.widget-mode #map {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    html.widget-mode #mainPanel,
+    html.widget-mode #viewToggle,
+    html.widget-mode .leaflet-control-zoom,
+    html.widget-mode .leaflet-control-attribution {
+      display: none !important;
+    }
+
+    #widgetSelectSurface,
+    #widgetSelectControls {
+      display: none;
+    }
+
+    html.widget-select-mode #widgetSelectSurface {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 1500;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    #widgetSelectionBox {
+      display: none;
+      position: absolute;
+      border: 2px solid #ffd166;
+      background: rgba(255, 209, 102, .16);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, .7);
+    }
+
+    html.widget-select-mode #widgetSelectControls {
+      display: flex;
+      position: fixed;
+      z-index: 1501;
+      top: 10px;
+      left: 10px;
+      max-width: calc(100vw - 20px);
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 209, 102, .4);
+      border-radius: 12px;
+      background: rgba(8, 18, 31, .9);
+      color: #fff;
+      font: 13px/1.4 system-ui, sans-serif;
+      pointer-events: none;
+    }
+
+    #widgetSelectControls button {
+      flex: 0 0 auto;
+      border: 1px solid rgba(255, 209, 102, .6);
+      border-radius: 8px;
+      padding: 7px 9px;
+      background: #192e42;
+      color: #fff;
+      font: inherit;
+      pointer-events: auto;
+    }
+
+    #widgetSelectionText {
+      color: #ffd166;
+      font-size: 11px;
+    }
+
     @media (max-width: 600px) {
       .view-toggle {
         bottom: 62px;
@@ -381,7 +467,7 @@
         <div class="launch-history-list" id="launchHistoryList"></div>
       </details>
       <div class="panel-footer-link" style="border-top:0; padding-top:0; margin-top:8px;">
-        <a href="https://rocket.rainywhisper.com/widget/" aria-label="将网页导入到 iOS 小组件">将网页导入到 iOS 小组件</a>
+        <a href="https://rocket.rainywhisper.com/widget/" aria-label="将网页导入到安卓 / iOS 桌面">将网页导入到安卓 / iOS 桌面</a>
       </div>
       <div class="panel-footer-link">
         <a href="https://hub.rainywhisper.com/" target="_blank" rel="noopener noreferrer" aria-label="更多有趣的自制工具网站（新窗口打开）">更多有趣的自制工具网站</a>
@@ -391,6 +477,12 @@
 
   <div id="map"></div>
   <div id="mapCesium"></div>
+  <div id="widgetSelectSurface" aria-label="拖动框选火箭地图范围"><div id="widgetSelectionBox"></div></div>
+  <div id="widgetSelectControls">
+    <span id="widgetSelectInstructions">拖动地图框选范围</span>
+    <span id="widgetSelectionText"></span>
+    <button id="widgetUseSelection" type="button">使用此范围</button>
+  </div>
 
   <div class="view-toggle" id="viewToggle">
     <span id="viewToggleIcon">🌍</span>
@@ -400,6 +492,37 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
   <script>
+    const widgetQuery = new URLSearchParams(location.search);
+    const WIDGET_MODE = widgetQuery.get('widget') === '1';
+    const WIDGET_SELECT_MODE = widgetQuery.get('selectBounds') === '1';
+    const WIDGET_REGION = widgetQuery.get('region') === 'us' ? 'us' : widgetQuery.get('region') === 'custom' ? 'custom' : 'china';
+    const WIDGET_ASPECT = widgetQuery.get('aspect') === 'wide' ? 'wide' : 'square';
+    const WIDGET_PRESET_BOUNDS = {
+      china: {
+        // Kashgar → Urumqi → South China Sea and the eastern launch areas.
+        square: { south: 2, west: 72, north: 45, east: 128 },
+        wide: { south: 2, west: 72, north: 45, east: 128 }
+      },
+      us: {
+        // Continental U.S. launch sites and the adjacent Pacific / Atlantic NOTAM corridors.
+        square: { south: 20, west: -129, north: 49, east: -65 },
+        wide: { south: 20, west: -129, north: 49, east: -65 }
+      }
+    };
+    const WIDGET_CUSTOM_RAW_BOUNDS = ['south', 'west', 'north', 'east'].map(key => widgetQuery.get(key));
+    const WIDGET_CUSTOM_BOUNDS = WIDGET_CUSTOM_RAW_BOUNDS.map(value => value === null || value.trim() === '' ? NaN : Number(value));
+    const WIDGET_HAS_VALID_CUSTOM_BOUNDS = WIDGET_CUSTOM_RAW_BOUNDS.every(value => value !== null && value.trim() !== '') &&
+      WIDGET_CUSTOM_BOUNDS.every(Number.isFinite) &&
+      WIDGET_CUSTOM_BOUNDS[0] >= -90 && WIDGET_CUSTOM_BOUNDS[0] < WIDGET_CUSTOM_BOUNDS[2] && WIDGET_CUSTOM_BOUNDS[2] <= 90 &&
+      WIDGET_CUSTOM_BOUNDS[1] >= -180 && WIDGET_CUSTOM_BOUNDS[1] < WIDGET_CUSTOM_BOUNDS[3] && WIDGET_CUSTOM_BOUNDS[3] <= 180;
+    const WIDGET_INITIAL_BOUNDS = WIDGET_REGION === 'custom' && WIDGET_HAS_VALID_CUSTOM_BOUNDS
+      ? { south: WIDGET_CUSTOM_BOUNDS[0], west: WIDGET_CUSTOM_BOUNDS[1], north: WIDGET_CUSTOM_BOUNDS[2], east: WIDGET_CUSTOM_BOUNDS[3] }
+      : WIDGET_PRESET_BOUNDS[WIDGET_REGION === 'us' ? 'us' : 'china'][WIDGET_ASPECT];
+    window.WidgetWhisperReady = false;
+    window.WidgetWhisperSelection = null;
+    if (WIDGET_MODE || WIDGET_SELECT_MODE) document.documentElement.classList.add('widget-mode');
+    if (WIDGET_SELECT_MODE) document.documentElement.classList.add('widget-select-mode');
+
     const deviceLanguage = ((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
     const locale = /^zh\b/.test(deviceLanguage) ? 'zh' : 'en';
     const I18N = {
@@ -578,16 +701,99 @@
     document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
     document.title = t('page_title');
 
-    const map = L.map('map', { 
+    const map = L.map('map', {
       zoomControl: false, 
+      zoomSnap: (WIDGET_MODE || WIDGET_SELECT_MODE) ? 0.1 : 1,
       worldCopyJump: true // 解决跨越经度180度标识消失的问题
     }).setView([34.5, 108.5], 4);
+    if (WIDGET_MODE || WIDGET_SELECT_MODE) {
+      map.fitBounds(
+        [[WIDGET_INITIAL_BOUNDS.south, WIDGET_INITIAL_BOUNDS.west], [WIDGET_INITIAL_BOUNDS.north, WIDGET_INITIAL_BOUNDS.east]],
+        { padding: [0, 0], animate: false }
+      );
+      setTimeout(() => map.invalidateSize(false), 100);
+    }
     map.attributionControl.setPrefix(false);
     L.control.zoom({ position: 'topright' }).addTo(map);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    const widgetBaseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
       attribution: t('tile_attribution')
     }).addTo(map);
+
+    if (WIDGET_SELECT_MODE) {
+      const surface = document.getElementById('widgetSelectSurface');
+      const selectionBox = document.getElementById('widgetSelectionBox');
+      const selectionText = document.getElementById('widgetSelectionText');
+      const useSelectionButton = document.getElementById('widgetUseSelection');
+      let dragStart = null;
+      let currentRect = null;
+      const aspectRatio = WIDGET_ASPECT === 'wide' ? 2 : 1;
+
+      function normalizeSelection(start, end, rect) {
+        let width = Math.abs(end.x - start.x);
+        let height = Math.abs(end.y - start.y);
+        if (width < 12 || height < 12) return null;
+        if (width / height > aspectRatio) height = width / aspectRatio;
+        else width = height * aspectRatio;
+        const scale = Math.min(1, (rect.width - 4) / width, (rect.height - 4) / height);
+        width *= scale;
+        height *= scale;
+        const left = Math.max(0, Math.min(rect.width - width, start.x < end.x ? start.x : start.x - width));
+        const top = Math.max(0, Math.min(rect.height - height, start.y < end.y ? start.y : start.y - height));
+        return { left, top, width, height };
+      }
+
+      surface.addEventListener('pointerdown', event => {
+        if (event.target === useSelectionButton) return;
+        event.preventDefault();
+        surface.setPointerCapture(event.pointerId);
+        const bounds = surface.getBoundingClientRect();
+        dragStart = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+        currentRect = null;
+      });
+      surface.addEventListener('pointermove', event => {
+        if (!dragStart) return;
+        event.preventDefault();
+        const bounds = surface.getBoundingClientRect();
+        const end = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+        currentRect = normalizeSelection(dragStart, end, bounds);
+        if (!currentRect) return;
+        selectionBox.style.display = 'block';
+        selectionBox.style.left = `${currentRect.left}px`;
+        selectionBox.style.top = `${currentRect.top}px`;
+        selectionBox.style.width = `${currentRect.width}px`;
+        selectionBox.style.height = `${currentRect.height}px`;
+        const topLeft = map.containerPointToLatLng(L.point(currentRect.left, currentRect.top));
+        const bottomRight = map.containerPointToLatLng(L.point(currentRect.left + currentRect.width, currentRect.top + currentRect.height));
+        window.WidgetWhisperSelection = {
+          south: Math.min(bottomRight.lat, topLeft.lat),
+          west: Math.min(bottomRight.lng, topLeft.lng),
+          north: Math.max(bottomRight.lat, topLeft.lat),
+          east: Math.max(bottomRight.lng, topLeft.lng)
+        };
+        selectionText.textContent = `${window.WidgetWhisperSelection.south.toFixed(1)}°, ${window.WidgetWhisperSelection.west.toFixed(1)}° — ${window.WidgetWhisperSelection.north.toFixed(1)}°, ${window.WidgetWhisperSelection.east.toFixed(1)}°`;
+      });
+      const endSelection = event => {
+        if (!dragStart) return;
+        event.preventDefault();
+        dragStart = null;
+      };
+      surface.addEventListener('pointerup', endSelection);
+      surface.addEventListener('pointercancel', endSelection);
+      useSelectionButton.addEventListener('click', () => {
+        const bounds = window.WidgetWhisperSelection;
+        if (!bounds) {
+          selectionText.textContent = '请先拖动地图框选一个区域';
+          return;
+        }
+        const bridge = window.AndroidWidgetBridge;
+        if (bridge && typeof bridge.onBoundsSelected === 'function') {
+          bridge.onBoundsSelected(bounds.south, bounds.west, bounds.north, bounds.east);
+        } else {
+          selectionText.textContent = '请在 WidgetWhisper 应用内完成此操作';
+        }
+      });
+    }
 
     const statusEl = document.getElementById('status');
     const panel = document.getElementById('mainPanel');
@@ -1954,10 +2160,12 @@
 
       if (layers.length) {
         group.addTo(map);
-        try {
-          const bounds = primaryBounds.isValid() ? primaryBounds : group.getBounds();
-          map.fitBounds(bounds, { padding: [20, 20] });
-        } catch (e) { }
+        if (!WIDGET_MODE && !WIDGET_SELECT_MODE) {
+          try {
+            const bounds = primaryBounds.isValid() ? primaryBounds : group.getBounds();
+            map.fitBounds(bounds, { padding: [20, 20] });
+          } catch (e) { }
+        }
       }
       if (selectedNotamSolarState && selectedNotamSolarState.midpoint) {
         renderSolarOverlay2D(selectedNotamSolarState.midpoint);
@@ -2520,7 +2728,9 @@
 
     async function loadKmlFallback() {
       const layer = omnivore.kml('./notams.kml').on('ready', function () {
-        try { map.fitBounds(layer.getBounds(), { padding: [20, 20] }); } catch (e) { }
+        if (!WIDGET_MODE && !WIDGET_SELECT_MODE) {
+          try { map.fitBounds(layer.getBounds(), { padding: [20, 20] }); } catch (e) { }
+        }
         setStatus(t('status_csv_fallback'));
       }).on('error', function (e) {
         console.error(e);
@@ -2745,14 +2955,18 @@
     }
 
     function buildUpcomingLaunchIcon(launch, color) {
+      const iconSize = WIDGET_MODE ? 18 : 28;
+      const markerSize = WIDGET_MODE ? 14 : 24;
+      const rocketSize = WIDGET_MODE ? 9 : 14;
+      const borderSize = WIDGET_MODE ? 1.4 : 2;
       const launchGlowStyle = launch?.isLaunchGlow
-        ? 'box-shadow: 0 0 15px 4px #fff;'
-        : 'border: 2px solid #fff;';
+        ? `box-shadow: 0 0 ${WIDGET_MODE ? 7 : 15}px ${WIDGET_MODE ? 2 : 4}px #fff;`
+        : `border: ${borderSize}px solid #fff;`;
       return L.divIcon({
-        html: `<div style="background:${color}; width:24px; height:24px; border-radius:50%; ${launchGlowStyle} display:flex; align-items:center; justify-content:center; font-size:14px;">🚀</div>`,
+        html: `<div style="background:${color}; width:${markerSize}px; height:${markerSize}px; border-radius:50%; ${launchGlowStyle} display:flex; align-items:center; justify-content:center; font-size:${rocketSize}px;">🚀</div>`,
         className: 'launch-upcoming-icon',
-        iconSize: [28, 28],
-        iconAnchor: [14, 14]
+        iconSize: [iconSize, iconSize],
+        iconAnchor: [iconSize / 2, iconSize / 2]
       });
     }
 
@@ -3497,13 +3711,33 @@
     pastLaunchToggle.checked = false;
     syncLaunchLayers();
 
-    loadLaunchData();
-
     async function init() {
       const ok = await loadBothCsvs();
       if (!ok) await loadKmlFallback();
     }
-    init();
+    const widgetDataPromise = init();
+    const widgetLaunchPromise = loadLaunchData({ skipHistory: WIDGET_MODE || WIDGET_SELECT_MODE });
+    if (WIDGET_MODE) {
+      Promise.all([widgetDataPromise, widgetLaunchPromise]).then(() => {
+        let widgetReadySettled = false;
+        const finishWidgetMap = () => {
+          if (widgetReadySettled) return;
+          widgetReadySettled = true;
+          widgetBaseLayer.off('load', finishWidgetMap);
+          setTimeout(() => { window.WidgetWhisperReady = true; }, 700);
+        };
+        widgetBaseLayer.once('load', finishWidgetMap);
+        map.invalidateSize(false);
+        map.fitBounds(
+          [[WIDGET_INITIAL_BOUNDS.south, WIDGET_INITIAL_BOUNDS.west], [WIDGET_INITIAL_BOUNDS.north, WIDGET_INITIAL_BOUNDS.east]],
+          { padding: [0, 0], animate: false }
+        );
+        setTimeout(() => {
+          map.invalidateSize(false);
+          finishWidgetMap();
+        }, 5000);
+      });
+    }
     function getISOWeek(ts) {
         const d = new Date(ts);
         d.setHours(0,0,0,0);
@@ -3553,7 +3787,6 @@
         }
     }
 
-    init();
   </script>
 </body>
 
