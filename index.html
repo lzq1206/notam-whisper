@@ -340,62 +340,6 @@
       display: none !important;
     }
 
-    #widgetSelectSurface,
-    #widgetSelectControls {
-      display: none;
-    }
-
-    html.widget-select-mode #widgetSelectSurface {
-      display: block;
-      position: fixed;
-      inset: 0;
-      z-index: 1500;
-      cursor: crosshair;
-      touch-action: none;
-    }
-
-    #widgetSelectionBox {
-      display: none;
-      position: absolute;
-      border: 2px solid #ffd166;
-      background: rgba(255, 209, 102, .16);
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, .7);
-    }
-
-    html.widget-select-mode #widgetSelectControls {
-      display: flex;
-      position: fixed;
-      z-index: 1501;
-      top: 10px;
-      left: 10px;
-      max-width: calc(100vw - 20px);
-      align-items: center;
-      gap: 8px;
-      padding: 10px 12px;
-      border: 1px solid rgba(255, 209, 102, .4);
-      border-radius: 12px;
-      background: rgba(8, 18, 31, .9);
-      color: #fff;
-      font: 13px/1.4 system-ui, sans-serif;
-      pointer-events: none;
-    }
-
-    #widgetSelectControls button {
-      flex: 0 0 auto;
-      border: 1px solid rgba(255, 209, 102, .6);
-      border-radius: 8px;
-      padding: 7px 9px;
-      background: #192e42;
-      color: #fff;
-      font: inherit;
-      pointer-events: auto;
-    }
-
-    #widgetSelectionText {
-      color: #ffd166;
-      font-size: 11px;
-    }
-
     @media (max-width: 600px) {
       .panel {
         transform: scale(0.9);
@@ -503,13 +447,6 @@
 
   <div id="map"></div>
   <div id="mapCesium"></div>
-  <div id="widgetSelectSurface" aria-label="拖动框选火箭地图范围"><div id="widgetSelectionBox"></div></div>
-  <div id="widgetSelectControls">
-    <span id="widgetSelectInstructions">拖动地图框选范围</span>
-    <span id="widgetSelectionText"></span>
-    <button id="widgetUseSelection" type="button">使用此范围</button>
-  </div>
-
   <div class="view-toggle" id="viewToggle">
     <span id="viewToggleIcon">🌍</span>
     <span id="viewToggleText">3D Globe Mode</span>
@@ -521,6 +458,7 @@
     const widgetQuery = new URLSearchParams(location.search);
     const WIDGET_MODE = widgetQuery.get('widget') === '1';
     const WIDGET_SELECT_MODE = widgetQuery.get('selectBounds') === '1';
+    const HIGH_RESOLUTION_MAP = WIDGET_MODE || WIDGET_SELECT_MODE || widgetQuery.get('retina') === '1';
     const WIDGET_REGION = widgetQuery.get('region') === 'us' ? 'us' : widgetQuery.get('region') === 'custom' ? 'custom' : 'china';
     const WIDGET_ASPECT = widgetQuery.get('aspect') === 'wide' ? 'wide' : 'square';
     const WIDGET_PRESET_BOUNDS = {
@@ -545,9 +483,7 @@
       ? { south: WIDGET_CUSTOM_BOUNDS[0], west: WIDGET_CUSTOM_BOUNDS[1], north: WIDGET_CUSTOM_BOUNDS[2], east: WIDGET_CUSTOM_BOUNDS[3] }
       : WIDGET_PRESET_BOUNDS[WIDGET_REGION === 'us' ? 'us' : 'china'][WIDGET_ASPECT];
     window.WidgetWhisperReady = false;
-    window.WidgetWhisperSelection = null;
     if (WIDGET_MODE || WIDGET_SELECT_MODE) document.documentElement.classList.add('widget-mode');
-    if (WIDGET_SELECT_MODE) document.documentElement.classList.add('widget-select-mode');
 
     const deviceLanguage = ((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
     const locale = /^zh\b/.test(deviceLanguage) ? 'zh' : 'en';
@@ -742,82 +678,20 @@
     map.attributionControl.setPrefix(false);
     const widgetBaseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
+      detectRetina: HIGH_RESOLUTION_MAP,
       attribution: t('tile_attribution')
     }).addTo(map);
 
     if (WIDGET_SELECT_MODE) {
-      const surface = document.getElementById('widgetSelectSurface');
-      const selectionBox = document.getElementById('widgetSelectionBox');
-      const selectionText = document.getElementById('widgetSelectionText');
-      const useSelectionButton = document.getElementById('widgetUseSelection');
-      let dragStart = null;
-      let currentRect = null;
-      const aspectRatio = WIDGET_ASPECT === 'wide' ? 2 : 1;
-
-      function normalizeSelection(start, end, rect) {
-        let width = Math.abs(end.x - start.x);
-        let height = Math.abs(end.y - start.y);
-        if (width < 12 || height < 12) return null;
-        if (width / height > aspectRatio) height = width / aspectRatio;
-        else width = height * aspectRatio;
-        const scale = Math.min(1, (rect.width - 4) / width, (rect.height - 4) / height);
-        width *= scale;
-        height *= scale;
-        const left = Math.max(0, Math.min(rect.width - width, start.x < end.x ? start.x : start.x - width));
-        const top = Math.max(0, Math.min(rect.height - height, start.y < end.y ? start.y : start.y - height));
-        return { left, top, width, height };
-      }
-
-      surface.addEventListener('pointerdown', event => {
-        if (event.target === useSelectionButton) return;
-        event.preventDefault();
-        surface.setPointerCapture(event.pointerId);
-        const bounds = surface.getBoundingClientRect();
-        dragStart = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
-        currentRect = null;
-      });
-      surface.addEventListener('pointermove', event => {
-        if (!dragStart) return;
-        event.preventDefault();
-        const bounds = surface.getBoundingClientRect();
-        const end = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
-        currentRect = normalizeSelection(dragStart, end, bounds);
-        if (!currentRect) return;
-        selectionBox.style.display = 'block';
-        selectionBox.style.left = `${currentRect.left}px`;
-        selectionBox.style.top = `${currentRect.top}px`;
-        selectionBox.style.width = `${currentRect.width}px`;
-        selectionBox.style.height = `${currentRect.height}px`;
-        const topLeft = map.containerPointToLatLng(L.point(currentRect.left, currentRect.top));
-        const bottomRight = map.containerPointToLatLng(L.point(currentRect.left + currentRect.width, currentRect.top + currentRect.height));
-        window.WidgetWhisperSelection = {
-          south: Math.min(bottomRight.lat, topLeft.lat),
-          west: Math.min(bottomRight.lng, topLeft.lng),
-          north: Math.max(bottomRight.lat, topLeft.lat),
-          east: Math.max(bottomRight.lng, topLeft.lng)
+      window.WidgetWhisperGetBounds = () => {
+        const bounds = map.getBounds();
+        return {
+          south: bounds.getSouth(),
+          west: bounds.getWest(),
+          north: bounds.getNorth(),
+          east: bounds.getEast()
         };
-        selectionText.textContent = `${window.WidgetWhisperSelection.south.toFixed(1)}°, ${window.WidgetWhisperSelection.west.toFixed(1)}° — ${window.WidgetWhisperSelection.north.toFixed(1)}°, ${window.WidgetWhisperSelection.east.toFixed(1)}°`;
-      });
-      const endSelection = event => {
-        if (!dragStart) return;
-        event.preventDefault();
-        dragStart = null;
       };
-      surface.addEventListener('pointerup', endSelection);
-      surface.addEventListener('pointercancel', endSelection);
-      useSelectionButton.addEventListener('click', () => {
-        const bounds = window.WidgetWhisperSelection;
-        if (!bounds) {
-          selectionText.textContent = '请先拖动地图框选一个区域';
-          return;
-        }
-        const bridge = window.AndroidWidgetBridge;
-        if (bridge && typeof bridge.onBoundsSelected === 'function') {
-          bridge.onBoundsSelected(bounds.south, bounds.west, bounds.north, bounds.east);
-        } else {
-          selectionText.textContent = '请在 WidgetWhisper 应用内完成此操作';
-        }
-      });
     }
 
     const statusEl = document.getElementById('status');
@@ -3742,26 +3616,40 @@
     }
     const widgetDataPromise = init();
     const widgetLaunchPromise = loadLaunchData({ skipHistory: WIDGET_MODE || WIDGET_SELECT_MODE });
-    if (WIDGET_MODE) {
-      Promise.all([widgetDataPromise, widgetLaunchPromise]).then(() => {
-        let widgetReadySettled = false;
-        const finishWidgetMap = () => {
-          if (widgetReadySettled) return;
-          widgetReadySettled = true;
-          widgetBaseLayer.off('load', finishWidgetMap);
-          setTimeout(() => { window.WidgetWhisperReady = true; }, 700);
-        };
-        widgetBaseLayer.once('load', finishWidgetMap);
+    if (WIDGET_MODE && !WIDGET_SELECT_MODE) {
+      let widgetTilesLoaded = false;
+      let widgetReadySettled = false;
+      let widgetDataSettled = false;
+      let widgetLaunchSettled = false;
+      const markWidgetReady = () => {
+        if (widgetReadySettled) return;
+        widgetReadySettled = true;
         map.invalidateSize(false);
         map.fitBounds(
           [[WIDGET_INITIAL_BOUNDS.south, WIDGET_INITIAL_BOUNDS.west], [WIDGET_INITIAL_BOUNDS.north, WIDGET_INITIAL_BOUNDS.east]],
           { padding: [0, 0], animate: false }
         );
-        setTimeout(() => {
-          map.invalidateSize(false);
-          finishWidgetMap();
-        }, 5000);
+        setTimeout(() => { window.WidgetWhisperReady = true; }, 800);
+      };
+      const maybeMarkWidgetReady = () => {
+        if (!widgetTilesLoaded) return;
+        if (widgetDataSettled && widgetLaunchSettled) markWidgetReady();
+      };
+      widgetBaseLayer.once('load', () => {
+        widgetTilesLoaded = true;
+        maybeMarkWidgetReady();
       });
+      widgetDataPromise.then(() => { widgetDataSettled = true; maybeMarkWidgetReady(); }, () => { widgetDataSettled = true; maybeMarkWidgetReady(); });
+      widgetLaunchPromise.then(() => { widgetLaunchSettled = true; maybeMarkWidgetReady(); }, () => { widgetLaunchSettled = true; maybeMarkWidgetReady(); });
+      map.invalidateSize(false);
+      map.fitBounds(
+        [[WIDGET_INITIAL_BOUNDS.south, WIDGET_INITIAL_BOUNDS.west], [WIDGET_INITIAL_BOUNDS.north, WIDGET_INITIAL_BOUNDS.east]],
+        { padding: [0, 0], animate: false }
+      );
+      setTimeout(() => {
+        if (!widgetTilesLoaded) widgetTilesLoaded = true;
+        markWidgetReady();
+      }, 18000);
     }
     function getISOWeek(ts) {
         const d = new Date(ts);
