@@ -2779,25 +2779,12 @@
       const delay = Math.min(Math.max(nextTs - nowMs + 1000, 1000), 2147483647);
       upcomingLaunchExpiryTimer = setTimeout(() => {
         upcomingLaunchExpiryTimer = null;
-        const currentNowMs = Date.now();
-        const active = upcomingLaunches.filter(launch => {
-          const expiryTs = Number.isFinite(Number(launch.expiryTs)) ? Number(launch.expiryTs) : Number(launch.ts);
-          return !Number.isFinite(expiryTs) || expiryTs > currentNowMs;
-        });
-
-        if (active.length !== upcomingLaunches.length) {
-          const activeSet = new Set(active);
-          upcomingLaunches.forEach(launch => {
-            if (!activeSet.has(launch) && launch.marker) {
-              launchLayerGroup.removeLayer(launch.marker);
-            }
-          });
-          upcomingLaunches = active;
-          syncUpcomingLaunchLayerToNotamRange();
-          updateUpcomingLaunchColors();
-          updateLaunchSummary();
-          if (is3D) renderOnGlobe(filteredDataRows);
-        }
+        // Keep a just-launched mission visible for the selected date range.
+        // Expiry of its scheduled window is not a visibility filter; the date
+        // controls below remain the source of truth for 2D/3D/KML views.
+        updateUpcomingLaunchColors();
+        updateLaunchSummary();
+        if (is3D) renderOnGlobe(filteredDataRows);
         scheduleUpcomingLaunchExpiry();
       }, delay);
     }
@@ -2954,7 +2941,9 @@
     }
 
     function filterFutureLaunches(launches, nowMs = Date.now()) {
-      return (launches || []).filter(launch => launchWindowIsActiveOrFuture(launch, nowMs));
+      // Retain elapsed launches from the selected date interval. The date
+      // filter—not the scheduled instant/window end—controls marker visibility.
+      return Array.isArray(launches) ? launches : [];
     }
 
     function hasConcreteLaunchWindow(launch) {
@@ -3172,7 +3161,11 @@
 
     function upcomingLaunchDateRange(nowMs = Date.now()) {
       const selected = getNotamLaunchDateRange();
-      const start = Number.isFinite(selected.start) ? Math.max(nowMs, selected.start) : nowMs;
+      const todayStart = new Date(nowMs);
+      todayStart.setUTCHours(0, 0, 0, 0);
+      // Query from the selected UTC date boundary (or today's boundary) so
+      // a launch earlier today remains eligible after liftoff.
+      const start = Number.isFinite(selected.start) ? selected.start : todayStart.getTime();
       const defaultEnd = nowMs + UPCOMING_DEFAULT_DAYS * 86400000;
       const end = Number.isFinite(selected.end) ? selected.end : defaultEnd;
       return { start, end };
