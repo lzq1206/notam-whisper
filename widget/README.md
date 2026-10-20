@@ -1,11 +1,11 @@
 # 中国及周边火箭动态小组件
 
-- 网页安装教程：`https://rocket.rainywhisper.com/widget/`
+- 网页安装教程：`https://lzq1206.github.io/notam-whisper/widget/`
 - 小组件点击目标：`https://rocket.rainywhisper.com/`
-- 网页地图预览图：`https://rocket.rainywhisper.com/widget/china-square.png`
-- 小号 ScriptWidget 包（169×169 pt，@3x，507×507 px）：`https://rocket.rainywhisper.com/widget/china-rocket-map-small.swt`
-- 中号 ScriptWidget 包（360×169 pt，@3x，1080×507 px）：`https://rocket.rainywhisper.com/widget/china-rocket-map-medium.swt`
-- 大号 ScriptWidget 包（显示框 364×382 pt；图片 1092×1146 px，3×）：`https://rocket.rainywhisper.com/widget/china-rocket-map-large.swt`
+- 网页地图预览图：`https://lzq1206.github.io/notam-whisper/widget/china-square.png`
+- 小号 ScriptWidget 包（169×169 pt，@3x，507×507 px）：`https://lzq1206.github.io/notam-whisper/widget/china-rocket-map-small.swt`
+- 中号 ScriptWidget 包（360×169 pt，@3x，1080×507 px）：`https://lzq1206.github.io/notam-whisper/widget/china-rocket-map-medium.swt`
+- 大号 ScriptWidget 包（显示框 364×382 pt；图片 1092×1146 px，3×）：`https://lzq1206.github.io/notam-whisper/widget/china-rocket-map-large.swt`
 - 三个包分别固定支持 `systemSmall` / `systemMedium` / `systemLarge`，按 iPhone 上准备添加的尺寸导入。
 - 组件图片优先从 `lzq1206.github.io/notam-whisper` 加载，连接失败时回退到 `rocket.rainywhisper.com`。
 - 两个图片源都连接失败时，组件会继续显示本机上次成功下载的图片；首次加载还没有缓存时，暂时无法离线显示。
