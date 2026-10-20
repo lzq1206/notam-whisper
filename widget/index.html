@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>将火箭地图导入 iOS 小组件</title>
+  <title>将火箭地图导入安卓 / iOS 桌面</title>
   <style>
     * { box-sizing:border-box; }
     html,body { margin:0; min-height:100%; background:#07141e; color:#fff; font-family:system-ui,-apple-system,sans-serif; }
@@ -19,11 +19,34 @@
     .downloads a { display:block; padding:10px 12px; border-radius:8px; color:#c8e1ff; background:#142b3b; text-decoration:none; }
     .preview { display:block; width:min(100%,600px); height:auto; margin-top:18px; border-radius:8px; }
     .note { color:#9fb3c4; font-size:12px; }
+    .section { margin-top:22px; padding:14px; border:1px solid rgba(180,205,228,.16); border-radius:12px; background:#0c1b29; }
+    .section h2 { margin-top:0; }
+    .download { display:inline-block; margin:8px 0; padding:11px 16px; border-radius:9px; color:#fff; background:#235c82; text-decoration:none; font-weight:650; }
+    .platform { color:#9fc8ea; font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
+    .preview { border:1px solid rgba(180,205,228,.18); background:#030817; }
   </style>
 </head>
 <body>
   <main>
-    <h1>将火箭地图导入到 iOS 小组件</h1>
+    <h1>将火箭预报地图导入安卓 / iOS 桌面</h1>
+    <p>选择适合设备的方式，把火箭预报地图放到手机桌面。</p>
+    <section class="section" id="android">
+      <div class="platform">ANDROID · HubWhisper</div>
+      <h2>安卓：HubWhisper 火箭地图</h2>
+      <p>HubWhisper 集成 CosmosWhisper 星盘和 RocketWhisper 火箭地图。火箭小组件显示服务器生成的中国区域地图，不需要在手机上截屏；服务器地图每两小时更新，小组件会定时请求新图，系统可能延迟执行。</p>
+      <a class="download" href="./HubWhisper-Android.apk?v=1.0.0" download>下载 HubWhisper 安卓安装包（APK）</a>
+      <ol>
+        <li>下载并安装 APK；如果系统询问，允许浏览器或文件管理器安装此来源的应用。</li>
+        <li>打开 <b>HubWhisper</b>，在顶部切换到 <b>RocketWhisper</b>。首次启动如询问定位，可按需允许；火箭地图本身显示中国区域。</li>
+        <li>在“桌面尺寸”中选择 4×4、2×2 或横向 4×2，再点“添加到桌面”，并在系统弹窗中确认添加。</li>
+        <li>也可以长按主屏幕空白处，打开“小组件”，找到 HubWhisper 的 RocketWhisper 中国地图组件，选择对应尺寸后添加；桌面空间不足时可拖到后续屏幕。</li>
+        <li>地图图片每两小时更新一次。可在应用的 RocketWhisper 页面点“刷新”立即请求新图；建议将 HubWhisper 的电池用量设为“无限制”或“不受限制”，减少系统延迟。</li>
+      </ol>
+      <p class="note">火箭地图支持 4×4、2×2、4×2 三种组件比例，按比例裁切且不会拉伸；点击组件可打开 <a href="https://rocket.rainywhisper.com/">RocketWhisper 网站</a>。Android 版尚未经过实体设备测试。</p>
+      <img class="preview" src="./widgetwhisper-rocket-preview.png" alt="HubWhisper RocketWhisper 火箭地图桌面组件效果图">
+    </section>
+
+    <h2>iOS：ScriptWidget</h2>
     <p>地图图片由服务端每 3 小时更新一次。为避免频繁请求，请在小组件设置中把 <b>Frequency</b> 设为 <b>3 Hours</b>；组件图片链接也按 3 小时切换。iOS 负责实际刷新调度，可能稍有延迟。请按准备添加的小组件尺寸下载对应 ScriptWidget 组件包。</p>
     <h2>安装步骤</h2>
     <ol>
