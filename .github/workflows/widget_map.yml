@@ -2,7 +2,7 @@ name: Generate iPhone Rocket Map Widget
 
 on:
   schedule:
-    - cron: '0 */2 * * *'
+    - cron: '13 */2 * * *'
   workflow_dispatch:
   push:
     branches: [ main ]
