@@ -25,6 +25,9 @@
       const params = new URLSearchParams(location.search);
       const isMedium = params.get('size') === 'medium';
       const map = L.map('map', { zoomControl:false, attributionControl:false, preferCanvas:true }).setView([31.5, 116], 4);
+      // Keep warning-layer stacking deterministic across all widget renders.
+      map.createPane('msiPane').style.zIndex = '410';
+      map.createPane('notamPane').style.zIndex = '420';
       // NASA GIBS Blue Marble (MODIS): public-domain global imagery without
       // a mandatory on-image tile attribution overlay.
       L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg', {
@@ -161,7 +164,8 @@
       }
       for (const [kind,path] of [['notams','../notams.kml'],['msi','../msi.kml']]) {
         loadWarningCsv(kind).then(rows=>{ allWarnings.push(...rows.filter(overlapsNextSevenDays)); ready[kind==='msi'?'msiCsv':'notamCsv']=true; finishIfReady(); });
-        const layer=omnivore.kml(path + '?widget=' + Date.now());
+        const pane=kind==='msi'?'msiPane':'notamPane';
+        const layer=omnivore.kml(path + '?widget=' + Date.now(), null, L.geoJson(null,{pane}));
         layersByKind[kind]=layer;
         layer.on('ready',()=>{ layer.addTo(map); ready[kind]=true; finishIfReady(); });
         layer.on('error',e=>failSoft(kind,e));
