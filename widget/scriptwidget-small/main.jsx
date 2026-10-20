@@ -1,5 +1,5 @@
 // 中国火箭地图 - small 组件
-// 先显示上次缓存；首次离线时显示包内地图。远程更新最多每 3 小时尝试一次。
+// 显示持久缓存；远程更新最多每 3 小时尝试一次，不在 SWT 内嵌图片。
 const primaryBase = "https://lzq1206.github.io/notam-whisper/widget/";
 const fallbackBase = "https://rocket.rainywhisper.com/widget/";
 const imageFile = "china-widget-small.jpg";
@@ -29,11 +29,13 @@ if (lastAttemptBucket !== bucket) {
   if (freshImage && $storage.setString(cacheKey, freshImage)) imageBase64 = freshImage;
 }
 
-const imageElement = imageBase64
-  ? <image url={`data:image/jpeg;base64,${imageBase64}`} frame="max" ratio={1.0} mode="fill" accentedRenderingMode="fullColor" />
-  : <image name={imageFile} frame="max" ratio={1.0} mode="fill" accentedRenderingMode="fullColor" />;
+const imageUrl = imageBase64
+  ? `data:image/jpeg;base64,${imageBase64}`
+  : "";
 $render(
   <zstack frame="max" background="#07141e" linkurl="https://rocket.rainywhisper.com/">
-    {imageElement}
+    {imageUrl
+      ? <image url={imageUrl} frame="max" ratio={1.0} mode="fill" accentedRenderingMode="fullColor" />
+      : <text font="caption" color="#9fb3c4">地图暂不可用</text>}
   </zstack>
 );
