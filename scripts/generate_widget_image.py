@@ -36,7 +36,9 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 
 def save_jpeg(image: Image.Image, path: Path) -> None:
-    image.convert("RGB").save(path, format="JPEG", quality=86, optimize=True, progressive=True, subsampling=0)
+    # Keep each widget JPEG small enough to persist as ScriptWidget's base64
+    # storage value (256 KiB limit), with margin for image-to-image variation.
+    image.convert("RGB").save(path, format="JPEG", quality=68, optimize=True, progressive=True, subsampling=2)
 
 
 def render_page(browser, url: str, viewport: tuple[int, int], output: Path) -> Image.Image:
@@ -93,6 +95,8 @@ def main() -> None:
         with Image.open(path) as image:
             if image.size != size:
                 raise RuntimeError(f"Expected {size} image at {path}, got {image.size}")
+        if path.stat().st_size >= 180_000:
+            raise RuntimeError(f"Widget JPEG must stay below the persistent-cache budget: {path} ({path.stat().st_size} bytes)")
 
     manifest = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),

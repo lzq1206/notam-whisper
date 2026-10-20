@@ -3,13 +3,14 @@
   "formatVersion": 2,
   "id": "com.rainywhisper.china-rocket-map.large",
   "name": "中国火箭地图 - 大号 1092×1146",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "runtimeVersion": "1.0",
   "supportedFamilies": [
     "systemLarge"
   ],
   "permissions": [
-    "network"
+    "network",
+    "storage"
   ],
   "networkDomains": [
     "lzq1206.github.io",

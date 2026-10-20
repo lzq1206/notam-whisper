@@ -3,13 +3,14 @@
   "formatVersion": 2,
   "id": "com.rainywhisper.china-rocket-map.small",
   "name": "中国火箭地图 - 小号 507×507（3×）",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "runtimeVersion": "1.0",
   "supportedFamilies": [
     "systemSmall"
   ],
   "permissions": [
-    "network"
+    "network",
+    "storage"
   ],
   "networkDomains": [
     "lzq1206.github.io",

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>将火箭地图导入安卓 / iOS 桌面</title>
+  <title>将火箭地图导入 iOS 小组件</title>
   <style>
     * { box-sizing:border-box; }
     html,body { margin:0; min-height:100%; background:#07141e; color:#fff; font-family:system-ui,-apple-system,sans-serif; }
@@ -19,55 +19,29 @@
     .downloads a { display:block; padding:10px 12px; border-radius:8px; color:#c8e1ff; background:#142b3b; text-decoration:none; }
     .preview { display:block; width:min(100%,600px); height:auto; margin-top:18px; border-radius:8px; }
     .note { color:#9fb3c4; font-size:12px; }
-    .section { margin-top:22px; padding:14px; border:1px solid rgba(180,205,228,.16); border-radius:12px; background:#0c1b29; }
-    .section h2 { margin-top:0; }
-    .download { display:inline-block; margin:8px 0; padding:11px 16px; border-radius:9px; color:#fff; background:#235c82; text-decoration:none; font-weight:650; }
-    .platform { color:#9fc8ea; font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
-    .preview { border:1px solid rgba(180,205,228,.18); background:#030817; }
   </style>
 </head>
 <body>
   <main>
-    <h1>将火箭预报地图导入安卓 / iOS 桌面</h1>
-    <p>选择适合设备的方式，把 NOTAM、MSI 和火箭预报地图放到手机桌面。</p>
-
-    <section class="section" id="android">
-      <div class="platform">ANDROID · HubWhisper</div>
-      <h2>安卓：HubWhisper 火箭地图</h2>
-      <p>HubWhisper 集成 CosmosWhisper 星盘和 RocketWhisper 火箭地图。火箭小组件显示服务器生成的中国区域地图，不需要在手机上截屏；服务器地图每两小时更新，小组件会定时请求新图，系统可能延迟执行。</p>
-      <a class="download" href="./HubWhisper-Android.apk?v=1.0.0" download>下载 HubWhisper 安卓安装包（APK）</a>
-      <ol>
-        <li>下载并安装 APK；如果系统询问，允许浏览器或文件管理器安装此来源的应用。</li>
-        <li>打开 <b>HubWhisper</b>，在顶部切换到 <b>RocketWhisper</b>。首次启动如询问定位，可按需允许；火箭地图本身显示中国区域。</li>
-        <li>在“桌面尺寸”中选择 4×4、2×2 或横向 4×2，再点“添加到桌面”，并在系统弹窗中确认添加。</li>
-        <li>也可以长按主屏幕空白处，打开“小组件”，找到 HubWhisper 的 RocketWhisper 中国地图组件，选择对应尺寸后添加；桌面空间不足时可拖到后续屏幕。</li>
-        <li>地图图片每两小时更新一次。可在应用的 RocketWhisper 页面点“刷新”立即请求新图；建议将 HubWhisper 的电池用量设为“无限制”或“不受限制”，减少系统延迟。</li>
-      </ol>
-      <p class="note">火箭地图支持 4×4、2×2、4×2 三种组件比例，按比例裁切且不会拉伸；点击组件可打开 <a href="https://rocket.rainywhisper.com/">RocketWhisper 网站</a>。Android 版尚未经过实体设备测试。</p>
-      <img class="preview" src="./widgetwhisper-rocket-preview.png" alt="HubWhisper RocketWhisper 火箭地图桌面组件效果图">
-    </section>
-
-    <section class="section" id="ios">
-      <div class="platform">IOS · ScriptWidget</div>
-      <h2>iOS：ScriptWidget</h2>
-      <p>地图图片由服务端每 3 小时更新一次。请在小组件设置中把 <b>Frequency</b> 设为 <b>3 Hours</b>；iOS 负责实际刷新调度，可能稍有延迟。按准备添加的小组件尺寸下载对应组件包。</p>
-      <ol>
-        <li>在 iPhone App Store 搜索并安装 <b>ScriptWidget</b>。</li>
-        <li>按想添加的组件大小，点击下方对应的“小号 / 中号 / 大号”下载链接。</li>
-        <li>下载完成后，在 Safari 的下载列表中点开 `.swt` 文件，选择“用 ScriptWidget 打开”或从分享菜单导入。</li>
-        <li>等待 ScriptWidget 完成导入并加载地图图片。</li>
-        <li>长按主屏幕空白处，点左上角“＋”，搜索 ScriptWidget，选择与刚才导入包相同的尺寸并添加小组件。</li>
-        <li>长按小组件，选择“编辑小组件”：选取对应的火箭地图，并将 <b>Frequency</b> 设为 <b>3 Hours</b>（3 小时）。实际时间仍由 iOS 调度，可能延后。</li>
-      </ol>
-      <h2>选择组件尺寸并下载</h2>
-      <div class="downloads">
-        <a href="./china-rocket-map-small.swt">下载小号：169×169 pt（507×507 px，3×）</a>
-        <a href="./china-rocket-map-medium.swt">下载中号：360×169 pt（1080×507 px，3×）</a>
-        <a href="./china-rocket-map-large.swt">下载大号：显示框 364×382 pt；图片 1092×1146 px（3×）</a>
-      </div>
-      <p class="note">组件图片优先从 GitHub Pages 加载，无法连接时自动回退到 rocket.rainywhisper.com。中号图保持同一东西向范围，北缘裁至乌鲁木齐纬度。NASA GIBS Blue Marble（MODIS）作为底图。</p>
-      <img id="mapImage" class="preview" alt="中国及周边火箭与航行警告地图预览">
-    </section>
+    <h1>将火箭地图导入到 iOS 小组件</h1>
+    <p>地图图片由服务端每 3 小时更新一次。为避免频繁请求，请在小组件设置中把 <b>Frequency</b> 设为 <b>3 Hours</b>；组件图片链接也按 3 小时切换。iOS 负责实际刷新调度，可能稍有延迟。请按准备添加的小组件尺寸下载对应 ScriptWidget 组件包。</p>
+    <h2>安装步骤</h2>
+    <ol>
+      <li>在 iPhone App Store 搜索并安装 <b>ScriptWidget</b>。</li>
+      <li>按想添加的组件大小，点击下方对应的“小号 / 中号 / 大号”下载链接。</li>
+      <li>下载完成后，在 Safari 的下载列表中点开 `.swt` 文件，选择“用 ScriptWidget 打开”或从分享菜单导入。</li>
+      <li>等待 ScriptWidget 完成导入并加载地图图片。</li>
+      <li>长按主屏幕空白处，点左上角“＋”，搜索 ScriptWidget，选择与刚才导入包相同的尺寸并添加小组件。</li>
+      <li>长按小组件，选择“编辑小组件”：在脚本/组件选项中选取对应的小号、中号或大号火箭地图，并将 <b>Frequency</b> 选择为 <b>3 Hours</b>（3 小时）。这样组件按低频节奏更新；实际时间仍由 iOS 调度，可能延后。</li>
+    </ol>
+    <h2>选择组件尺寸并下载</h2>
+    <div class="downloads">
+      <a href="./china-rocket-map-small.swt">下载小号：169×169 pt（507×507 px，3×）</a>
+      <a href="./china-rocket-map-medium.swt">下载中号：360×169 pt（1080×507 px，3×）</a>
+      <a href="./china-rocket-map-large.swt">下载大号：显示框 364×382 pt；图片 1092×1146 px（3×）</a>
+    </div>
+    <p class="note">组件图片优先从 GitHub Pages 加载，无法连接时自动回退到 rocket.rainywhisper.com；两处都失败时继续显示组件本机保存的上次成功图片。首次导入且尚无缓存时，若两个源都不可用，地图可能暂时无法显示。导入时需允许组件使用网络和存储权限。三种组件包各自固定匹配一种尺寸。中号图保持同一东西向范围，北缘裁至乌鲁木齐纬度。NASA GIBS Blue Marble（MODIS）作为底图；NASA 建议在网页说明中注明影像来源。图片生成时间不叠加在图上。</p>
+    <img id="mapImage" class="preview" alt="中国及周边火箭与航行警告地图预览">
   </main>
   <script>
     const raw='https://raw.githubusercontent.com/lzq1206/notam-whisper/main/widget/';

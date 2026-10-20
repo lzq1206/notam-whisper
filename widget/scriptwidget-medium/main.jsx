@@ -1,20 +1,32 @@
-// 中国火箭地图 - 中号 1080×507（3×）
-// 先检查 GitHub Pages 主源；不可用时回退到 rocket.rainywhisper.com。
-const cacheBucket = Math.floor(Date.now() / (3 * 60 * 60 * 1000));
+// 中国火箭地图 - medium 组件
+// 持久缓存最近一次成功的 JPEG；主源/备源都失败时继续显示缓存。
 const primaryBase = "https://lzq1206.github.io/notam-whisper/widget/";
 const fallbackBase = "https://rocket.rainywhisper.com/widget/";
 const imageFile = "china-widget-medium.jpg";
-let imageBase = fallbackBase;
-try {
-  const probe = await Promise.race([
-    fetch(`${primaryBase}manifest.json?v=${cacheBucket}`),
-    new Promise(resolve => setTimeout(() => resolve(""), 1500))
-  ]);
-  if (typeof probe === "string" && probe.includes("widget_images")) imageBase = primaryBase;
-} catch (_error) {
-  imageBase = fallbackBase;
+const cacheKey = "last-good-image-v1";
+const cachedBase64 = $storage.getString(cacheKey);
+let imageBase64 = "";
+
+async function tryDownload(base) {
+  try {
+    const result = await Promise.race([
+      fetch(`${base}${imageFile}?v=${Math.floor(Date.now() / (3 * 60 * 60 * 1000))}`, { responseType: "base64", timeoutInterval: 1.5 }),
+      new Promise(resolve => setTimeout(() => resolve(""), 1800))
+    ]);
+    // JPEG magic bytes in base64 are /9j/; reject error pages and oversized values.
+    if (typeof result === "string" && result.startsWith("/9j/") && result.length <= 250000) return result;
+  } catch (_error) {}
+  return "";
 }
-const imageUrl = `${imageBase}${imageFile}?v=${cacheBucket}`;
+
+imageBase64 = await tryDownload(primaryBase);
+if (!imageBase64) imageBase64 = await tryDownload(fallbackBase);
+if (imageBase64) $storage.setString(cacheKey, imageBase64);
+else imageBase64 = cachedBase64;
+
+const imageUrl = imageBase64
+  ? `data:image/jpeg;base64,${imageBase64}`
+  : `${fallbackBase}${imageFile}`;
 $render(
   <zstack frame="max" background="#07141e" linkurl="https://rocket.rainywhisper.com/">
     <image url={imageUrl} frame="max" ratio={2.1301775147928996} mode="fill" accentedRenderingMode="fullColor" />
