@@ -3,14 +3,13 @@
   "formatVersion": 2,
   "id": "com.rainywhisper.china-rocket-map.medium",
   "name": "中国火箭地图 - 中号 1080×507（3×）",
-  "version": "1.3.2",
+  "version": "1.1.1",
   "runtimeVersion": "1.0",
   "supportedFamilies": [
     "systemMedium"
   ],
   "permissions": [
-    "network",
-    "storage"
+    "network"
   ],
   "networkDomains": [
     "lzq1206.github.io",
