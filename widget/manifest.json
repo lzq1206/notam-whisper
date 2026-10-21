@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21T16:56:03+00:00",
+  "generated_at": "2026-10-21T17:04:33+00:00",
   "image": "china-square.png",
   "width": 1024,
   "height": 1024,
@@ -22,6 +22,30 @@
       "width": 1092,
       "height": 1146,
       "scale": 3
+    }
+  },
+  "us_widget_images": {
+    "region": "contiguous United States (Lower 48; excludes Alaska, Hawaii, and territories)",
+    "small": {
+      "image": "us-widget-small.jpg",
+      "width": 507,
+      "height": 507,
+      "scale": 3,
+      "package": "us-rocket-map-small.swt"
+    },
+    "medium": {
+      "image": "us-widget-medium.jpg",
+      "width": 1080,
+      "height": 507,
+      "scale": 3,
+      "package": "us-rocket-map-medium.swt"
+    },
+    "large": {
+      "image": "us-widget-large.jpg",
+      "width": 1092,
+      "height": 1146,
+      "scale": 3,
+      "package": "us-rocket-map-large.swt"
     }
   }
 }
