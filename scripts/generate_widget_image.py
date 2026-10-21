@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Render the China rocket widget's 1024px preview and 3x iPhone images.
+"""Render China and US Lower 48 rocket widget images and ScriptWidget packages.
 
-Inputs: widget/render.html plus local launch, NOTAM, MSI and KML data in repo root.
-Outputs: widget/china-square.png and 3x small/medium/large JPEG variants plus manifest.
+Inputs: widget/render.html, widget scripts, and local launch/NOTAM/MSI/KML data.
+Outputs: China assets plus US 3x small/medium/large JPEGs and .swt packages.
 """
 from __future__ import annotations
 
 import json
 import os
 import threading
+import zipfile
 from datetime import datetime, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -21,10 +22,21 @@ PREVIEW = ROOT / "widget" / "china-square.png"
 SMALL = ROOT / "widget" / "china-widget-small.jpg"
 MEDIUM = ROOT / "widget" / "china-widget-medium.jpg"
 LARGE = ROOT / "widget" / "china-widget-large.jpg"
+US_SMALL = ROOT / "widget" / "us-widget-small.jpg"
+US_MEDIUM = ROOT / "widget" / "us-widget-medium.jpg"
+US_LARGE = ROOT / "widget" / "us-widget-large.jpg"
+US_PACKAGES = {
+    "small": ROOT / "widget" / "us-rocket-map-small.swt",
+    "medium": ROOT / "widget" / "us-rocket-map-medium.swt",
+    "large": ROOT / "widget" / "us-rocket-map-large.swt",
+}
 PREVIEW_SIZE = (1024, 1024)
 SMALL_SIZE = (507, 507)       # 169 x 169 pt at 3x
 MEDIUM_SIZE = (1080, 507)     # 360 x 169 pt at 3x
 LARGE_SIZE = (1092, 1146)     # 364 x 382 pt at 3x, original large-widget proportion
+US_SMALL_SIZE = (507, 507)
+US_MEDIUM_SIZE = (1080, 507)
+US_LARGE_SIZE = (1092, 1146)
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -50,6 +62,13 @@ def render_page(browser, url: str, viewport: tuple[int, int], output: Path) -> I
     return Image.open(output).convert("RGB")
 
 
+def make_scriptwidget_package(size: str, output: Path) -> None:
+    source = ROOT / "widget" / f"scriptwidget-us-{size}"
+    with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as package:
+        package.write(source / "widget.json", "widget.json")
+        package.write(source / "main.jsx", "main.jsx")
+
+
 def main() -> None:
     resampling = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
     server = ThreadingHTTPServer(("127.0.0.1", 0), QuietHandler)
@@ -59,6 +78,9 @@ def main() -> None:
     browser_path = os.environ.get("CHROME_BIN")
     scratch_square = ROOT / "widget" / ".widget-square-render.png"
     scratch_medium = ROOT / "widget" / ".widget-medium-render.png"
+    scratch_us_small = ROOT / "widget" / ".widget-us-small-render.png"
+    scratch_us_medium = ROOT / "widget" / ".widget-us-medium-render.png"
+    scratch_us_large = ROOT / "widget" / ".widget-us-large-render.png"
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, executable_path=browser_path or None, args=["--no-sandbox"])
@@ -79,14 +101,32 @@ def main() -> None:
             large_map = square.crop((left, 0, left + crop_width, square.height))
             large_canvas = large_map.resize(LARGE_SIZE, resampling)
             save_jpeg(large_canvas, LARGE)
+
+            # US images render each family directly so all Lower 48 states fit
+            # within the specific widget aspect ratio, rather than cropping a
+            # square image and potentially losing either coast.
+            us_small = render_page(browser, origin + "?region=us&size=small", US_SMALL_SIZE, scratch_us_small)
+            save_jpeg(us_small, US_SMALL)
+            us_medium = render_page(browser, origin + "?region=us&size=medium", US_MEDIUM_SIZE, scratch_us_medium)
+            save_jpeg(us_medium, US_MEDIUM)
+            us_large = render_page(browser, origin + "?region=us&size=large", US_LARGE_SIZE, scratch_us_large)
+            save_jpeg(us_large, US_LARGE)
+            for size, output in US_PACKAGES.items():
+                make_scriptwidget_package(size, output)
             browser.close()
     finally:
         server.shutdown()
         server.server_close()
         scratch_square.unlink(missing_ok=True)
         scratch_medium.unlink(missing_ok=True)
+        scratch_us_small.unlink(missing_ok=True)
+        scratch_us_medium.unlink(missing_ok=True)
+        scratch_us_large.unlink(missing_ok=True)
 
-    expected = {PREVIEW: PREVIEW_SIZE, SMALL: SMALL_SIZE, MEDIUM: MEDIUM_SIZE, LARGE: LARGE_SIZE}
+    expected = {
+        PREVIEW: PREVIEW_SIZE, SMALL: SMALL_SIZE, MEDIUM: MEDIUM_SIZE, LARGE: LARGE_SIZE,
+        US_SMALL: US_SMALL_SIZE, US_MEDIUM: US_MEDIUM_SIZE, US_LARGE: US_LARGE_SIZE,
+    }
     for path, size in expected.items():
         if not path.exists() or path.stat().st_size < 10_000:
             raise RuntimeError(f"Screenshot missing or unexpectedly small: {path}")
@@ -104,11 +144,24 @@ def main() -> None:
             "medium": {"image": MEDIUM.name, "width": MEDIUM_SIZE[0], "height": MEDIUM_SIZE[1], "scale": 3, "north_edge_lat": 43.8},
             "large": {"image": LARGE.name, "width": LARGE_SIZE[0], "height": LARGE_SIZE[1], "scale": 3},
         },
+        "us_widget_images": {
+            "region": "contiguous United States (Lower 48; excludes Alaska, Hawaii, and territories)",
+            "small": {"image": US_SMALL.name, "width": US_SMALL_SIZE[0], "height": US_SMALL_SIZE[1], "scale": 3, "package": US_PACKAGES["small"].name},
+            "medium": {"image": US_MEDIUM.name, "width": US_MEDIUM_SIZE[0], "height": US_MEDIUM_SIZE[1], "scale": 3, "package": US_PACKAGES["medium"].name},
+            "large": {"image": US_LARGE.name, "width": US_LARGE_SIZE[0], "height": US_LARGE_SIZE[1], "scale": 3, "package": US_PACKAGES["large"].name},
+        },
     }
     (ROOT / "widget" / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Generated {PREVIEW.relative_to(ROOT)} ({PREVIEW.stat().st_size} bytes)")
-    for path in (SMALL, MEDIUM, LARGE):
+    for path in (SMALL, MEDIUM, LARGE, US_SMALL, US_MEDIUM, US_LARGE):
         print(f"Generated {path.name}: {Image.open(path).size}, {path.stat().st_size} bytes")
+    for path in US_PACKAGES.values():
+        if not path.exists() or path.stat().st_size < 500:
+            raise RuntimeError(f"ScriptWidget package missing or unexpectedly small: {path}")
+        with zipfile.ZipFile(path) as package:
+            if set(package.namelist()) != {"widget.json", "main.jsx"}:
+                raise RuntimeError(f"Unexpected ScriptWidget package contents at {path}: {package.namelist()}")
+        print(f"Generated {path.name}: {path.stat().st_size} bytes")
 
 
 if __name__ == "__main__":
