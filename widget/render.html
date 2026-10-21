@@ -157,7 +157,7 @@
             const color=isMaritime(row)?'#ff9900':colorByTime(Date.parse(row.from_utc));
             const glow=twilightGlow(row);
             child.setStyle({color,fillColor:color,fillOpacity:0.2,weight:glow?4:2,opacity:1});
-            if(glow&&child._path) child._path.classList.add('twilight-glow');
+            if(child._path) child._path.classList.toggle('twilight-glow',glow);
           });
           visit(layer);
         }
@@ -165,7 +165,8 @@
       for (const [kind,path] of [['notams','../notams.kml'],['msi','../msi.kml']]) {
         loadWarningCsv(kind).then(rows=>{ allWarnings.push(...rows.filter(overlapsNextSevenDays)); ready[kind==='msi'?'msiCsv':'notamCsv']=true; finishIfReady(); });
         const pane=kind==='msi'?'msiPane':'notamPane';
-        const layer=omnivore.kml(path + '?widget=' + Date.now(), null, L.geoJson(null,{pane}));
+        const warningRenderer=L.svg({pane});
+        const layer=omnivore.kml(path + '?widget=' + Date.now(), null, L.geoJson(null,{pane,renderer:warningRenderer}));
         layersByKind[kind]=layer;
         layer.on('ready',()=>{ layer.addTo(map); ready[kind]=true; finishIfReady(); });
         layer.on('error',e=>failSoft(kind,e));
