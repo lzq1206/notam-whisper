@@ -293,5 +293,17 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
+    <Placemark>
+      <name>W3590/26</name>
+      <description>W3590/26 NOTAMN   Q)SCIZ/QXXXX/IV/NBO/W/000/999/4448S11206W258  A)SCIZ B)2610280618 C)2611030930  D)28OCT 0618-1056 29OCT 0604-1042 30OCT 0549-1027 310CT 0535-1013  01NOV 0520-0958 02NOV 0506-0944 03NOV 0452-0930  E)ZONE...D... IN WATERS PACIFIC OCEAN DUE TO SPACE VEHICLE RE-ENTRY  AND SPLASHDOWN ACTIVITY. THE AFECCTED AREA IS BOUNDED BY NXT GEO  COORD:  300000S/1215300W  300000S/1200000W  284300S/1200000W  382100S/1150400W  490900S/1072200W  590900S/0953400W  595800S/0990500W  443400S/1141300W </description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-121.883333,-30.0,0 -120.0,-30.0,0 -120.0,-28.716667,0 -115.066667,-38.35,0 -107.366667,-49.15,0 -95.566667,-59.15,0 -99.083333,-59.966667,0 -114.216667,-44.566667,0 -121.883333,-30.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
   </Document>
 </kml>
