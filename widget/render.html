@@ -24,7 +24,10 @@
     (() => {
       const params = new URLSearchParams(location.search);
       const isMedium = params.get('size') === 'medium';
-      const map = L.map('map', { zoomControl:false, attributionControl:false, preferCanvas:true }).setView([31.5, 116], 4);
+      const isUnitedStates = params.get('region') === 'us';
+      const regionBounds = isUnitedStates ? [[24, -125], [50, -66]] : (isMedium ? [[18.5, 78], [43.8, 148]] : [[4, 78], [55, 148]]);
+      const map = L.map('map', { zoomControl:false, attributionControl:false, preferCanvas:true }).setView(isUnitedStates ? [39, -96] : [31.5, 116], 4);
+      document.title = isUnitedStates ? '美国本土火箭动态小组件' : '中国及周边火箭动态小组件';
       // Keep warning-layer stacking deterministic across all widget renders.
       map.createPane('msiPane').style.zIndex = '410';
       map.createPane('notamPane').style.zIndex = '420';
@@ -34,9 +37,10 @@
         minZoom: 0, maxZoom: 8, maxNativeZoom: 8
       }).addTo(map);
 
-      // The medium panorama keeps the same east-west span and clips its north
-      // edge at Urumqi (~44°N); the other variants use the square China view.
-      map.fitBounds(isMedium ? [[18.5, 78], [43.8, 148]] : [[4, 78], [55, 148]], { animate:false, padding:[0,0] });
+      // China preserves its established square/panorama framing. The US set
+      // fits the contiguous 48 states (excluding Alaska, Hawaii, and territories)
+      // into each output aspect ratio without clipping the coasts.
+      map.fitBounds(regionBounds, { animate:false, padding:[0,0] });
 
       const ready = { launches:false, notams:false, msi:false, notamCsv:false, msiCsv:false };
       const allWarnings=[];
@@ -112,7 +116,8 @@
           const location=pad.location || {};
           const lat=Number(launch.widgetLat ?? pad.latitude ?? pad.lat ?? location.latitude ?? location.lat ?? launch.Latitude);
           const lon=Number(launch.widgetLon ?? pad.longitude ?? pad.lon ?? location.longitude ?? location.lon ?? launch.Longitude);
-          if (!Number.isFinite(lat) || !Number.isFinite(lon) || lat<4 || lat>55 || lon<78 || lon>148) continue;
+          const [[south, west], [north, east]] = regionBounds;
+          if (!Number.isFinite(lat) || !Number.isFinite(lon) || lat<south || lat>north || lon<west || lon>east) continue;
           const time=launch.net || launch.window_start || launch.win_open || launch['Launch Date and Time (UTC)'] || '';
           const ts=parseWidgetDate(time),past=Number.isFinite(ts)&&ts<Date.now();
           if(!Number.isFinite(ts)||ts<windowStart||ts>windowEnd) continue;
