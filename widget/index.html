@@ -67,6 +67,15 @@
       </div>
       <p class="note">组件图片只从 GitHub Pages 加载；源站或网络线路不可用时，组件可能暂时无法显示。中号图保持同一东西向范围，北缘裁至乌鲁木齐纬度。NASA GIBS Blue Marble（MODIS）作为底图。</p>
       <img id="mapImage" class="preview" alt="中国及周边火箭与航行警告地图预览">
+
+      <h2>美国本土：ScriptWidget 火箭地图</h2>
+      <p>新增美国本土 48 州地图（不含阿拉斯加、夏威夷及属地），小、中、大号分别按对应组件比例生成；显示未来火箭、NOTAM 与 MSI。图片由服务端每 3 小时重绘，组件仅从 GitHub Pages 加载。</p>
+      <div class="downloads">
+        <a href="./us-rocket-map-small.swt">下载美国小号：169×169 pt（507×507 px，3×）</a>
+        <a href="./us-rocket-map-medium.swt">下载美国中号：360×169 pt（1080×507 px，3×）</a>
+        <a href="./us-rocket-map-large.swt">下载美国大号：364×382 pt（1092×1146 px，3×）</a>
+      </div>
+      <img id="usMapImage" class="preview" alt="美国本土火箭与航行警告地图预览">
     </section>
   </main>
   <script>
@@ -74,6 +83,7 @@
     const cacheSlice=Math.floor(Date.now()/10000);
     const imageUrl=raw+'china-square.png?v='+cacheSlice;
     document.getElementById('mapImage').src=imageUrl;
+    document.getElementById('usMapImage').src='https://lzq1206.github.io/notam-whisper/widget/us-widget-medium.jpg?v='+cacheSlice;
   </script>
 </body>
 </html>
