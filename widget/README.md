@@ -11,3 +11,11 @@
 - 中号图采用 360×169 pt 比例，东西向区域跨度与方图一致，北缘到乌鲁木齐约 43.8°N。
 - 小组件图每 3 小时由服务端重绘；iOS 实际刷新时点由系统调度。
 - 底图采用 NASA GIBS Blue Marble Shaded Relief and Bathymetry（MODIS）；不在图片内叠加时间或署名，来源在安装网页披露。
+
+## 美国本土 Widget（新增）
+
+- 覆盖美国本土相连的 48 州，不含阿拉斯加、夏威夷及属地。
+- 美国小号图：`https://lzq1206.github.io/notam-whisper/widget/us-widget-small.jpg`；ScriptWidget：`https://lzq1206.github.io/notam-whisper/widget/us-rocket-map-small.swt`
+- 美国中号图：`https://lzq1206.github.io/notam-whisper/widget/us-widget-medium.jpg`；ScriptWidget：`https://lzq1206.github.io/notam-whisper/widget/us-rocket-map-medium.swt`
+- 美国大号图：`https://lzq1206.github.io/notam-whisper/widget/us-widget-large.jpg`；ScriptWidget：`https://lzq1206.github.io/notam-whisper/widget/us-rocket-map-large.swt`
+- 三种尺寸分别按对应比例直接生成；图片与组件包只使用 GitHub Pages 域名。
