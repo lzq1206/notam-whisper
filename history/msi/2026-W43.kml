@@ -134,17 +134,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 3023/26</name>
-      <description>180317Z OCT 26  HYDROPAC 3023/26  NORTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     210200Z TO 210800Z OCT IN AREA BOUND BY     08-15.10N 162-28.82E, 05-58.72N 165-17.00E,     05-33.74N 164-56.38E, 07-50.00N 162-08.24E.  2. CANCEL THIS MSG 210900Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>162.480333,8.251667,0 165.283333,5.978667,0 164.939667,5.562333,0 162.137333,7.833333,0 162.480333,8.251667,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROPAC 3006/26</name>
       <description>150331Z OCT 26  HYDROPAC 3006/26.  SOUTH PACIFIC.  NEW ZEALAND.  1. HAZARDOUS OPERATIONS 0500Z TO 0845Z      DAILY 21 OCT THRU 03 NOV:     A. ROCKET LAUNCHING IN AREA BOUND BY        39-12.00S 178-00.00E, 39-15.00S 178-03.00E,        39-45.00S 177-54.00E, 39-45.00S 177-36.00E,        39-15.00S 177-42.00E, 39-12.00S 177-48.00E.     B. SPACE DEBRIS IN AREA BOUND BY        43-30.00S 175-30.00E, 43-30.00S 177-30.00E,        46-30.00S 176-30.00E, 46-30.00S 174-30.00E.  2. CANCEL THIS MSG 030945Z NOV </description>
       <MultiGeometry>
