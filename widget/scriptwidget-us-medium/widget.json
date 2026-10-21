@@ -1,0 +1,12 @@
+{
+  "entry": "main.jsx",
+  "formatVersion": 2,
+  "id": "com.rainywhisper.us-rocket-map.medium",
+  "name": "美国火箭地图 - 中号 1080×507（3×）",
+  "version": "1.0.0",
+  "runtimeVersion": "1.0",
+  "supportedFamilies": ["systemMedium"],
+  "permissions": ["network"],
+  "networkDomains": ["lzq1206.github.io"],
+  "plugins": []
+}
