@@ -24,11 +24,13 @@ const parseDescriptionDateBlock = extractFunctionBlock(html, 'function parseDesc
 const parseLaunchTimestampValueBlock = extractFunctionBlock(html, 'function parseLaunchTimestampValue(');
 const timestampBlock = extractFunctionBlock(html, 'function launchTimestamp(');
 const orderBlock = extractFunctionBlock(html, 'function orderUpcomingLaunchesFor2D(');
-if (!parseDescriptionDateBlock || !parseLaunchTimestampValueBlock || !timestampBlock || !orderBlock) throw new Error('2D launch ordering helpers are missing');
+const offsetBlock = extractFunctionBlock(html, 'function launchMarkerOffsets(');
+if (!parseDescriptionDateBlock || !parseLaunchTimestampValueBlock || !timestampBlock || !orderBlock || !offsetBlock) throw new Error('2D launch ordering/fan-out helpers are missing');
 global.eval(parseDescriptionDateBlock);
 global.eval(parseLaunchTimestampValueBlock);
 global.eval(timestampBlock);
 global.eval(orderBlock);
+global.eval(offsetBlock);
 
 const records = [
   { name: 'nearest', win_open: '2026-09-20T01:47:00Z' },
@@ -49,4 +51,14 @@ if (!/zIndexOffset:\s*2000\s*\+\s*idx/.test(html)) {
   throw new Error('2D upcoming markers must assign an explicit stack rank');
 }
 
-console.log('2D upcoming launch overlap-order regression test passed.');
+const offsets = launchMarkerOffsets(3);
+if (offsets.length !== 3 || new Set(offsets.map(offset => offset.join(','))).size !== 3) {
+  throw new Error(`co-located launches must receive distinct screen offsets: ${JSON.stringify(offsets)}`);
+}
+if (!/const\s+upcomingOffsets\s*=\s*launchMarkerOffsetMap\(orderedList\)/.test(html) ||
+    !/markerOffset/.test(html) ||
+    !/pixelOffset\s*,?\s*eyeOffset/.test(html)) {
+  throw new Error('2D/3D co-located launch fan-out is not wired into marker rendering');
+}
+
+console.log('2D/3D upcoming launch overlap-order regression test passed.');

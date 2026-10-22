@@ -315,6 +315,20 @@
     .glow-path {
       stroke-opacity: 1;
     }
+    .launch-label {
+      background: rgba(7, 20, 30, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-size: 10px;
+      line-height: 1.2;
+      max-width: 220px;
+      padding: 2px 4px;
+      white-space: nowrap;
+    }
+    .launch-label.leaflet-tooltip-left:before { border-left-color: rgba(255, 255, 255, 0.55); }
+    .launch-label.leaflet-tooltip-right:before { border-right-color: rgba(255, 255, 255, 0.55); }
     .cesium-widget-credits {
       display: none !important;
     }
@@ -1215,6 +1229,43 @@
       });
     }
 
+    function launchMarkerOffsets(count) {
+      if (count <= 1) return [[0, 0]];
+      const radius = 38;
+      return Array.from({ length: count }, (_, index) => {
+        const angle = -Math.PI / 2 + (index * 2 * Math.PI / count);
+        return [Math.round(Math.cos(angle) * radius), Math.round(Math.sin(angle) * radius)];
+      });
+    }
+
+    function launchCoordinateKey(launch) {
+      let lat = Number(launch?.lat);
+      let lon = Number(launch?.lon);
+      if ((!Number.isFinite(lat) || !Number.isFinite(lon)) && typeof launchCoordinates === 'function') {
+        const coordinates = launchCoordinates(launch);
+        lat = Number(coordinates?.lat);
+        lon = Number(coordinates?.lon);
+      }
+      return Number.isFinite(lat) && Number.isFinite(lon)
+        ? `${lat.toFixed(6)},${lon.toFixed(6)}`
+        : '';
+    }
+
+    function launchMarkerOffsetMap(launches) {
+      const groups = new Map();
+      (Array.isArray(launches) ? launches : []).forEach(launch => {
+        const key = launchCoordinateKey(launch);
+        if (!key) return;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(launch);
+      });
+      const offsets = new Map();
+      groups.forEach(group => {
+        launchMarkerOffsets(group.length).forEach((offset, index) => offsets.set(group[index], offset));
+      });
+      return offsets;
+    }
+
     function buildCesiumUpcomingLaunchIcon(launch, iconColor) {
       const safeColor = String(iconColor || 'yellow').replace(/[^#(),.%a-zA-Z0-9 -]/g, '');
       const glowMarkup = launch?.isLaunchGlow ? `
@@ -1278,22 +1329,29 @@
             });
           }
 
-          // 1b. Render Upcoming Launches (Dynamic)
-          upcomingLaunchesForNotamRange().forEach(launch => {
+          // 1b. Render Upcoming Launches (Dynamic). Co-located launches are
+          // offset only on screen so each record remains clickable without
+          // changing its real pad coordinates or NOTAM matching position.
+          const visibleUpcomingLaunches = upcomingLaunchesForNotamRange();
+          const upcomingOffsets = launchMarkerOffsetMap(visibleUpcomingLaunches);
+          visibleUpcomingLaunches.forEach(launch => {
             if (!launch.lat || !launch.lon) return;
             const iconColor = launch.color || 'yellow';
+            const offset = upcomingOffsets.get(launch) || [0, 0];
+            const pixelOffset = new Cesium.Cartesian2(offset[0], offset[1]);
             const rocketEntity = addCesiumEntity({
               position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
               billboard: {
                 image: buildCesiumUpcomingLaunchIcon(launch, iconColor),
                 verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32,
+                pixelOffset,
                 eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
               label: {
                 text: t('cesium_upcoming_prefix') + (launch.mission || ''), font: 'bold 10pt sans-serif',
                 fillColor: Cesium.Color.fromCssColorString(iconColor), outlineColor: Cesium.Color.BLACK, outlineWidth: 2,
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
+                verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(offset[0], offset[1] + 16),
                 eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
               description: `${buildLaunchImageMarkup(launch, launch.mission || t('launch_image_alt'))}${buildLaunchOrbitDetailsLink(launch)}<b>${escapeHtml(launch.mission || t('launch_unknown_mission'))}</b><br/>${launch.vehicle ? `${t('kml_vehicle')}: ${escapeHtml(launch.vehicle)}<br/>` : ''}${t('launch_time_label')}: ${escapeHtml(launch.dateStr)}${launch.windowStr ? `<br/>${t('launch_window_label')}: ${escapeHtml(launch.windowStr)}` : ''}`
@@ -3132,11 +3190,12 @@
       const launchGlowStyle = launch?.isLaunchGlow
         ? `box-shadow: 0 0 ${WIDGET_MODE ? 7 : 15}px ${WIDGET_MODE ? 2 : 4}px #fff;`
         : `border: ${borderSize}px solid #fff;`;
+      const offset = Array.isArray(launch?.markerOffset) ? launch.markerOffset : [0, 0];
       return L.divIcon({
         html: `<div style="background:${color}; width:${markerSize}px; height:${markerSize}px; border-radius:50%; ${launchGlowStyle} display:flex; align-items:center; justify-content:center; font-size:${rocketSize}px;">🚀</div>`,
         className: 'launch-upcoming-icon',
         iconSize: [iconSize, iconSize],
-        iconAnchor: [iconSize / 2, iconSize / 2]
+        iconAnchor: [iconSize / 2 - offset[0], iconSize / 2 - offset[1]]
       });
     }
 
@@ -3714,6 +3773,7 @@
           const { minTs: minLaunchTs, maxTs: maxLaunchTs } = getTimelineBounds(filteredDataRows, upcomingTimes);
 
           const orderedList = orderUpcomingLaunchesFor2D(enrichedList);
+          const upcomingOffsets = launchMarkerOffsetMap(orderedList);
           orderedList.forEach((l, idx) => {
             const loc = launchLocationObject(l);
             const coords = launchCoordinates(l);
@@ -3743,9 +3803,10 @@
             const color = launchColor(t0, now, minLaunchTs, maxLaunchTs);
             const isLaunchGlow = t0 ? isRocketCloudVisible(t0.toISOString(), t0.toISOString(), lat, lon) : false;
 
+            const markerOffset = upcomingOffsets.get(l) || [0, 0];
             const launchRecord = {
               lat, lon, mission: missionName, vehicle: vehicleName, providerName, dateStr, color, ts: t0 ? t0.getTime() : null,
-              isLaunchGlow,
+              markerOffset, isLaunchGlow,
               windowStartTs, windowEndTs,
               expiryTs: Number.isFinite(windowEndTs) ? windowEndTs : t0Ts,
               location: `${locName}${padName ? ' / ' + padName : ''}`,
@@ -3759,6 +3820,16 @@
             const lIcon = buildUpcomingLaunchIcon(launchRecord, color);
             const lMarker = L.marker([lat, lon], { icon: lIcon, zIndexOffset: 2000 + idx });
             launchRecord.marker = lMarker;
+            if (markerOffset[0] || markerOffset[1]) {
+              const labelDirection = markerOffset[0] < 0 ? 'left' : 'right';
+              const labelOffset = markerOffset[0] < 0 ? [-14, 0] : [14, 0];
+              lMarker.bindTooltip(missionName, {
+                permanent: true,
+                direction: labelDirection,
+                offset: labelOffset,
+                className: 'launch-label'
+              });
+            }
             lMarker.bindPopup(() => {
               const relatedWarnings = relatedWarningRowsForLaunch(launchRecord, filteredDataRows);
               const warningIds = [...new Set(relatedWarnings.map(row => row.notam_id || row.id).filter(Boolean))];

@@ -54,7 +54,7 @@ if (!resetVisible.includes('time-tbd') || resetVisible.length !== launches.lengt
 if (!/syncUpcomingLaunchLayerToNotamRange\(\);/.test(html)) {
   throw new Error('rendering must synchronize the 2D upcoming-launch layer with the NOTAM range');
 }
-if (!/upcomingLaunchesForNotamRange\(\)\.forEach\(launch =>/.test(html)) {
+if (!/const\s+visibleUpcomingLaunches\s*=\s*upcomingLaunchesForNotamRange\(\);[\s\S]*?visibleUpcomingLaunches\.forEach\(launch =>/.test(html)) {
   throw new Error('Cesium upcoming launches must use the NOTAM date-range subset');
 }
 if (!/const\s+launchRows\s*=\s*launchToggle\.checked\s*\?\s*upcomingLaunchesForNotamRange\(\)\s*:\s*\[\]/.test(html)) {
