@@ -720,12 +720,18 @@
     msiPane.style.zIndex = 430;
     const notamPane = map.createPane('notamPane');
     notamPane.style.zIndex = 440;
+    const launchDirectionPane = map.createPane('launchDirectionPane');
+    launchDirectionPane.style.zIndex = 450;
+    launchDirectionPane.style.pointerEvents = 'none';
     const solarOverlayLayer2D = L.layerGroup().addTo(map);
+    const launchDirectionLayer2D = L.layerGroup().addTo(map);
 
     let is3D = false;
     let cesiumViewer = null;
     let cesiumSolarCurveEntities = [];
     let selectedNotamSolarState = null;
+    let selectedLaunchDirection = null;
+    let cesiumLaunchDirectionEntities = [];
     const CESIUM_ION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzY2ZlZjYxZi1kOGM1LTRhN2MtOGRhNi1mMDBkMWEwNjZlYTkiLCJpZCI6NDA4NzUzLCJpYXQiOjE3NzQ0MDkwMTl9.StFh8-TIWbpATRQHRmTiHtxHGeRWFSc6SNsUcESHmhc';
 
     async function setCesiumBaseImagery() {
@@ -1079,6 +1085,9 @@
         lat,
         lon
       };
+      selectedLaunchDirection = null;
+      renderLaunchDirection2D();
+      renderLaunchDirection3D();
       applySelectedNotamSolarOverlay();
     }
 
@@ -1099,10 +1108,14 @@
       const selection = launchSolarSelection(launch);
       if (!selection) return;
       selectedNotamSolarState = selection;
+      selectedLaunchDirection = launch;
+      renderLaunchDirection2D();
+      renderLaunchDirection3D();
       applySelectedNotamSolarOverlay();
     }
 
     map.on('moveend zoomend resize', () => {
+      if (!is3D) renderLaunchDirection2D();
       if (!is3D && selectedNotamSolarState && selectedNotamSolarState.midpoint) {
         renderSolarOverlay2D(selectedNotamSolarState.midpoint);
       }
@@ -1132,6 +1145,9 @@
       cesiumViewer.selectedEntityChanged.addEventListener(entity => {
         if (!entity || !entity.__notamSolarSelection) return;
         selectedNotamSolarState = entity.__notamSolarSelection;
+        selectedLaunchDirection = entity.__launchDirectionRecord || null;
+        renderLaunchDirection2D();
+        renderLaunchDirection3D();
         applySelectedNotamSolarOverlay();
       });
       // Quality settings
@@ -1156,6 +1172,7 @@
         cesiumDiv.style.display = 'none';
         viewToggleIcon.textContent = '🌍';
         viewToggleText.textContent = t('view_3d');
+        renderLaunchDirection2D();
       }
     };
 
@@ -1202,6 +1219,7 @@
       try {
         if (!cesiumViewer || !rows) return;
         cesiumViewer.entities.removeAll();
+        cesiumLaunchDirectionEntities = [];
 
         // 1. Render Launch Sites (🚀) - STATIC
         if (launchToggle.checked) {
@@ -1245,7 +1263,7 @@
           upcomingLaunchesForNotamRange().forEach(launch => {
             if (!launch.lat || !launch.lon) return;
             const iconColor = launch.color || 'yellow';
-            addCesiumEntity({
+            const rocketEntity = addCesiumEntity({
               position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
               billboard: {
                 image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="${iconColor}" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>`))),
@@ -1261,6 +1279,7 @@
               },
               description: `${buildLaunchImageMarkup(launch, launch.mission || t('launch_image_alt'))}<b>${escapeHtml(launch.mission || t('launch_unknown_mission'))}</b><br/>${launch.vehicle ? `${t('kml_vehicle')}: ${escapeHtml(launch.vehicle)}<br/>` : ''}${t('launch_time_label')}: ${escapeHtml(launch.dateStr)}${launch.windowStr ? `<br/>${t('launch_window_label')}: ${escapeHtml(launch.windowStr)}` : ''}`
             }, launchSolarSelection(launch));
+            rocketEntity.__launchDirectionRecord = launch;
           });
         }
 
@@ -1406,6 +1425,7 @@
         if (selectedNotamSolarState && selectedNotamSolarState.midpoint) {
           renderSolarOverlay3D(selectedNotamSolarState.midpoint);
         }
+        renderLaunchDirection3D();
       } catch (cesiumErr) {
         console.error('[Cesium] Render Error:', cesiumErr);
         setStatus(t('status_3d_error', { message: cesiumErr.message }));
@@ -1920,6 +1940,94 @@
       return (rows || []).filter(row => related.has(row));
     }
 
+    // Sample a great-circle arc before handing it to Leaflet/Cesium. A straight
+    // lat/lon segment is not a straight path on Earth and bends incorrectly
+    // when a different 2D map projection is used.
+    function launchWarningArc(launch, warning) {
+      const lat1 = Number.parseFloat(launch.lat) * Math.PI / 180;
+      const lon1 = Number.parseFloat(launch.lon) * Math.PI / 180;
+      const lat2 = Number.parseFloat(warning.lat) * Math.PI / 180;
+      const lon2 = Number.parseFloat(warning.lon) * Math.PI / 180;
+      if (![lat1, lon1, lat2, lon2].every(Number.isFinite)) return [];
+      const vector = (lat, lon) => [Math.cos(lat) * Math.cos(lon), Math.cos(lat) * Math.sin(lon), Math.sin(lat)];
+      const start = vector(lat1, lon1), end = vector(lat2, lon2);
+      const angle = Math.acos(Math.max(-1, Math.min(1, start.reduce((sum, value, i) => sum + value * end[i], 0))));
+      if (angle < 0.0005 || angle > Math.PI - 0.0005) return [];
+      const steps = Math.min(160, Math.max(8, Math.ceil(angle * 6371 / 30)));
+      const sinAngle = Math.sin(angle);
+      const points = [];
+      for (let i = 0; i <= steps; i++) {
+        const fraction = i / steps;
+        const a = Math.sin((1 - fraction) * angle) / sinAngle;
+        const b = Math.sin(fraction * angle) / sinAngle;
+        const x = a * start[0] + b * end[0];
+        const y = a * start[1] + b * end[1];
+        const z = a * start[2] + b * end[2];
+        const lat = Math.atan2(z, Math.hypot(x, y)) * 180 / Math.PI;
+        let lon = Math.atan2(y, x) * 180 / Math.PI;
+        if (points.length) lon += 360 * Math.round((points[points.length - 1][1] - lon) / 360);
+        points.push([lat, lon]);
+      }
+      return points;
+    }
+
+    function selectedLaunchWarningArcs() {
+      const launch = selectedLaunchDirection;
+      if (!launch || !launchToggle.checked || !upcomingLaunchesForNotamRange().includes(launch)) return [];
+      return relatedWarningRowsForLaunch(launch, filteredDataRows)
+        .filter(row => !isMsiOrMaritime(row))
+        .map(row => ({ row, points: launchWarningArc(launch, row) }))
+        .filter(item => item.points.length >= 2);
+    }
+
+    function renderLaunchDirection2D() {
+      launchDirectionLayer2D.clearLayers();
+      if (is3D) return;
+      selectedLaunchWarningArcs().forEach(({ points }) => {
+        // Split at the date line so no false line crosses the whole map.
+        const segments = splitDatelineCoordinates(points, false, true);
+        segments.forEach((segment, index) => {
+          if (segment.length < 2) return;
+          L.polyline(segment, {
+            pane: 'launchDirectionPane', color: '#67e8f9', weight: 3,
+            opacity: 0.95, dashArray: '9 6', interactive: false
+          }).addTo(launchDirectionLayer2D);
+          if (index !== segments.length - 1) return;
+          const tip = map.latLngToLayerPoint(segment[segment.length - 1]);
+          const previous = map.latLngToLayerPoint(segment[segment.length - 2]);
+          const dx = tip.x - previous.x, dy = tip.y - previous.y;
+          const length = Math.hypot(dx, dy);
+          if (length < 1) return;
+          const ux = dx / length, uy = dy / length;
+          const left = L.point(tip.x - ux * 12 - uy * 5, tip.y - uy * 12 + ux * 5);
+          const right = L.point(tip.x - ux * 12 + uy * 5, tip.y - uy * 12 - ux * 5);
+          L.polygon([
+            map.layerPointToLatLng(tip), map.layerPointToLatLng(left), map.layerPointToLatLng(right)
+          ], {
+            pane: 'launchDirectionPane', color: '#67e8f9', weight: 1,
+            fillColor: '#67e8f9', fillOpacity: 0.95, interactive: false
+          }).addTo(launchDirectionLayer2D);
+        });
+      });
+    }
+
+    function renderLaunchDirection3D() {
+      if (!cesiumViewer) return;
+      cesiumLaunchDirectionEntities.forEach(entity => cesiumViewer.entities.remove(entity));
+      cesiumLaunchDirectionEntities = [];
+      if (!is3D) return;
+      selectedLaunchWarningArcs().forEach(({ points }) => {
+        const degreesHeights = points.flatMap(([lat, lon]) => [lon, lat, 1500]);
+        cesiumLaunchDirectionEntities.push(cesiumViewer.entities.add({
+          polyline: {
+            positions: Cesium.Cartesian3.fromDegreesArrayHeights(degreesHeights),
+            width: 4,
+            material: new Cesium.PolylineArrowMaterialProperty(Cesium.Color.CYAN)
+          }
+        }));
+      });
+    }
+
     function relatedLaunchesForRows(rows, launches) {
       const launchList = launches === undefined
         ? (typeof upcomingLaunchesForNotamRange === 'function' ? upcomingLaunchesForNotamRange() : upcomingLaunches)
@@ -1981,6 +2089,7 @@
     function renderRows(rows) {
       filteredDataRows = rows;
       syncUpcomingLaunchLayerToNotamRange();
+      renderLaunchDirection2D();
       updateUpcomingLaunchColors();
       updateLaunchSummary();
       if (is3D) {
@@ -3654,6 +3763,7 @@
         map.removeLayer(pastLaunchLayerGroup);
       }
       if (is3D) renderOnGlobe(filteredDataRows);
+      else renderLaunchDirection2D();
     }
 
     launchToggle.onchange = syncLaunchLayers;
