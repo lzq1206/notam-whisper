@@ -1296,7 +1296,7 @@
                 verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
                 eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
-              description: `${buildLaunchImageMarkup(launch, launch.mission || t('launch_image_alt'))}<b>${escapeHtml(launch.mission || t('launch_unknown_mission'))}</b><br/>${launch.vehicle ? `${t('kml_vehicle')}: ${escapeHtml(launch.vehicle)}<br/>` : ''}${t('launch_time_label')}: ${escapeHtml(launch.dateStr)}${launch.windowStr ? `<br/>${t('launch_window_label')}: ${escapeHtml(launch.windowStr)}` : ''}`
+              description: `${buildLaunchImageMarkup(launch, launch.mission || t('launch_image_alt'))}${buildLaunchOrbitDetailsLink(launch)}<b>${escapeHtml(launch.mission || t('launch_unknown_mission'))}</b><br/>${launch.vehicle ? `${t('kml_vehicle')}: ${escapeHtml(launch.vehicle)}<br/>` : ''}${t('launch_time_label')}: ${escapeHtml(launch.dateStr)}${launch.windowStr ? `<br/>${t('launch_window_label')}: ${escapeHtml(launch.windowStr)}` : ''}`
             }, launchSolarSelection(launch));
             rocketEntity.__launchDirectionRecord = launch;
           });
@@ -3590,6 +3590,13 @@
         </div>`;
     }
 
+    const LONG_MARCH_6A_ORBIT_DETAILS_URL = 'https://exoplanet5.github.io/CZ-6A/';
+
+    function buildLaunchOrbitDetailsLink(launch) {
+      if (String(launch?.mission || '') !== 'Long March 6A | Unknown Payload') return '';
+      return `<div style="margin-top:6px;font-size:11px;"><a href="${LONG_MARCH_6A_ORBIT_DETAILS_URL}" target="_blank" rel="noopener noreferrer">火箭具体轨道详情与各地轨迹预测请参考 Mickey 网站</a></div>`;
+    }
+
     async function loadLaunchData(options = {}) {
       const skipHistory = !!options.skipHistory;
       launchStatusEl.textContent = t('launch_loading');
@@ -3766,6 +3773,7 @@
                 ${t('launch_site_label')}: ${escapeHtml(locName)}${padName ? ' / ' + escapeHtml(padName) : ''}<br/>
                 ${t('launch_time_label')}: ${escapeHtml(dateStr)}<br/>
                 ${windowStr ? `${t('launch_window_label')}: ${escapeHtml(windowStr)}<br/>` : ''}
+                ${buildLaunchOrbitDetailsLink(launchRecord)}
                 ${warningStatus}
                 ${desc ? '<hr/><div style="max-width:320px;max-height:120px;overflow:auto;font-size:11px;white-space:pre-wrap;">' + escapeHtml(desc) + '</div>' : ''}
                 ${safeRllUrl ? `<a href="${escapeHtml(safeRllUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:11px;">${t('launch_details_link')}</a><br/>` : ''}
