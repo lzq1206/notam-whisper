@@ -54,7 +54,7 @@
       const failSoft = (kind, err) => { console.warn(kind, err || 'unavailable'); ready[kind] = true; finishIfReady(); };
       const finishIfReady = () => {
         if (!Object.values(ready).every(Boolean)) return;
-        const visibleLaunchTimes=launchRecords.map(x=>parseWidgetDate(x.net||x.window_start||x.win_open||x['Launch Date and Time (UTC)']||'')).filter(ts=>Number.isFinite(ts)&&ts>=windowStart&&ts<=windowEnd);
+        const visibleLaunchTimes=launchRecords.filter(hasConcreteWidgetLaunchTime).map(x=>parseWidgetDate(x.net||x.window_start||x.win_open||x['Launch Date and Time (UTC)']||'')).filter(ts=>Number.isFinite(ts)&&ts>=windowStart&&ts<=windowEnd);
         timeline=getTimelineBounds(allWarnings,visibleLaunchTimes);
         drawLaunches(launchRecords);
         styleWarningLayers();
@@ -77,6 +77,22 @@
         if(!m) return NaN;
         const months={JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
         return Date.UTC(Number(m[1]),months[m[2]],Number(m[3]),Number(m[4]),Number(m[5]));
+      }
+      function hasConcreteWidgetLaunchTime(launch) {
+        const rawPrecision=launch?.net_precision;
+        const precision=typeof rawPrecision==='object'
+          ? (rawPrecision.name||rawPrecision.abbrev||'')
+          : rawPrecision;
+        const precisionKey=String(precision||'').trim().toLowerCase();
+        if (precisionKey) return ['second','minute','hour','sec','min','hr','s','m','h'].includes(precisionKey);
+
+        const value=launch?.net||launch?.window_start||launch?.win_open||launch?.['Launch Date and Time (UTC)']||'';
+        const text=String(value).trim().toUpperCase();
+        const hasExplicitTime=/T\d{2}:\d{2}(?::\d{2})?/.test(text)||/^\d{4}\s+[A-Z]{3}\s+\d{1,2}\s+\d{4,6}$/.test(text);
+        if (!hasExplicitTime) return false;
+        const start=parseWidgetDate(launch?.window_start||launch?.window_open||launch?.win_open||value);
+        const end=parseWidgetDate(launch?.window_end||launch?.window_close||launch?.win_close||value);
+        return !Number.isFinite(start)||!Number.isFinite(end)||end-start<24*3600000;
       }
       function isMaritime(row) { return row.country==='Maritime'||row.fir==='MSI'; }
       function overlapsNextSevenDays(row) {
@@ -128,6 +144,7 @@
       function drawLaunches(launches) {
         const visible=[];
         for (const launch of launches) {
+          if (!hasConcreteWidgetLaunchTime(launch)) continue;
           const pad=launch.pad || {};
           const location=pad.location || {};
           const lat=Number(launch.widgetLat ?? pad.latitude ?? pad.lat ?? location.latitude ?? location.lat ?? launch.Latitude);
@@ -197,7 +214,11 @@
               launchRecords=parseCsv(await response.text());
             } catch (fallbackError) { console.warn('Local launch schedule unavailable',fallbackError); }
           }
-        } finally { ready.launches=true; finishIfReady(); }
+        } finally {
+          launchRecords=launchRecords.filter(hasConcreteWidgetLaunchTime);
+          ready.launches=true;
+          finishIfReady();
+        }
       }
       loadLaunches();
 

@@ -12,6 +12,9 @@ assert "permanent:true" in render
 assert "if(!isUnitedStates)" in render
 assert "../upcoming_launches.json?widget=" in render
 assert "../upcoming_launches.csv?widget=" in render
+assert "function hasConcreteWidgetLaunchTime" in render
+assert "net_precision" in render
+assert "launchRecords=launchRecords.filter(hasConcreteWidgetLaunchTime)" in render
 assert "Starlink Group 15-15" not in render  # source data remains dynamic
 assert "make_scriptwidget_package" not in generator
 assert 'ZipFile(output, "w"' not in generator
