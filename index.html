@@ -1777,6 +1777,73 @@
       return start <= end ? launchTime >= start && launchTime <= end : launchTime >= start || launchTime <= end;
     }
 
+    function warningRectanglePointsToLaunch(row, launch) {
+      // Only infer a single downrange aviation warning when its short hazard
+      // window and elongated rectangular axis both identify the same launch.
+      if (isMsiOrMaritime(row) || String(row.qcode || '').toUpperCase() !== 'QRDCA') return false;
+      const fromTs = Date.parse(row.from_utc);
+      const toTs = Date.parse(row.to_utc);
+      const startTs = Number(launch.windowStartTs);
+      const endTs = Number(launch.windowEndTs);
+      const minute = 60 * 1000;
+      if (![fromTs, toTs, startTs, endTs].every(Number.isFinite) ||
+          toTs <= fromTs || endTs <= startTs ||
+          toTs - fromTs > 90 * minute || endTs - startTs > 90 * minute ||
+          Math.abs(fromTs - startTs) > 2 * minute || Math.abs(toTs - endTs) > 2 * minute) return false;
+
+      let corners;
+      try { corners = JSON.parse(row.polygon || ''); } catch (error) { return false; }
+      if (!Array.isArray(corners)) return false;
+      if (corners.length === 5 && JSON.stringify(corners[0]) === JSON.stringify(corners[4])) corners = corners.slice(0, 4);
+      if (corners.length !== 4 || !corners.every(point =>
+        Array.isArray(point) && point.length >= 2 && point.slice(0, 2).every(Number.isFinite))) return false;
+
+      const centerLat = corners.reduce((sum, point) => sum + point[0], 0) / 4;
+      const centerLon = corners.reduce((sum, point) => sum + point[1], 0) / 4;
+      const kmPerDegree = 111.195;
+      const longitudeScale = Math.cos(centerLat * Math.PI / 180);
+      if (longitudeScale < 0.2) return false;
+      const toLocal = point => [
+        (point[1] - centerLon) * kmPerDegree * longitudeScale,
+        (point[0] - centerLat) * kmPerDegree,
+      ];
+      const points = corners.map(toLocal);
+      const edges = points.map((point, index) => [
+        points[(index + 1) % 4][0] - point[0],
+        points[(index + 1) % 4][1] - point[1],
+      ]);
+      const lengths = edges.map(edge => Math.hypot(...edge));
+      if (lengths.some(length => length < 5)) return false;
+      const dot = (first, second) => first[0] * second[0] + first[1] * second[1];
+      for (let index = 0; index < 4; index++) {
+        const next = (index + 1) % 4;
+        if (Math.abs(dot(edges[index], edges[next]) / (lengths[index] * lengths[next])) > 0.25) return false;
+      }
+      const pairA = (lengths[0] + lengths[2]) / 2;
+      const pairB = (lengths[1] + lengths[3]) / 2;
+      const longIndex = pairA >= pairB ? 0 : 1;
+      const longLength = Math.max(pairA, pairB);
+      const shortLength = Math.min(pairA, pairB);
+      if (longLength / shortLength < 1.5 || longLength > 150 || shortLength > 100 ||
+          Math.max(lengths[0], lengths[2]) / Math.min(lengths[0], lengths[2]) > 1.3 ||
+          Math.max(lengths[1], lengths[3]) / Math.min(lengths[1], lengths[3]) > 1.3) return false;
+
+      const axis = [
+        edges[longIndex][0] - edges[longIndex + 2][0],
+        edges[longIndex][1] - edges[longIndex + 2][1],
+      ];
+      const axisLength = Math.hypot(...axis);
+      const launchLat = Number.parseFloat(launch.lat);
+      const launchLon = Number.parseFloat(launch.lon);
+      if (![launchLat, launchLon].every(Number.isFinite) || axisLength < 1) return false;
+      const launchPoint = toLocal([launchLat, launchLon]);
+      const distanceKm = Math.hypot(...launchPoint);
+      const alongAxisKm = Math.abs(dot(launchPoint, axis) / axisLength);
+      const crossTrackKm = Math.abs(launchPoint[0] * axis[1] - launchPoint[1] * axis[0]) / axisLength;
+      return distanceKm <= 600 && alongAxisKm > longLength / 2 &&
+        crossTrackKm <= Math.min(50, Math.max(15, distanceKm * 0.05));
+    }
+
     function launchCorridorPairMatches(launch, first, second) {
       // Two contemporaneous exclusion-area centres often form the downrange
       // corridor.  The launch site can sit just beyond its first point, so use
@@ -1833,7 +1900,8 @@
           Number.isFinite(rowLat) && Number.isFinite(rowLon);
       });
       const related = new Set(timeMatched.filter(row =>
-        launchDistanceKm(Number.parseFloat(row.lat), Number.parseFloat(row.lon), launchLat, launchLon) <= 120
+        launchDistanceKm(Number.parseFloat(row.lat), Number.parseFloat(row.lon), launchLat, launchLon) <= 120 ||
+        warningRectanglePointsToLaunch(row, launch)
       ));
 
       // A pair supplies directional evidence.  Mark both members, which keeps
