@@ -179,17 +179,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>HYDROPAC 2951/26</name>
-      <description>090000Z OCT 26  HYDROPAC 2951/26.  SOUTH PACIFIC.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     160130Z TO 160608Z, 170121Z TO 170559Z,     180112Z TO 180550Z, 190103Z TO 190541Z,     200054Z TO 200532Z, 210045Z TO 210523Z      AND 220036Z TO 220514Z OCT     IN AREA BOUND BY     27-29.00S 136-18.00W, 26-57.00S 133-13.00W,     43-20.00S 129-08.00W, 59-25.00S 121-59.00W,     59-57.00S 127-24.00W, 43-49.00S 133-05.00W.  2. CANCEL THIS MSG 220614Z OCT 26.</description>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <coordinates>-136.3,-27.483333,0 -133.216667,-26.95,0 -129.133333,-43.333333,0 -121.983333,-59.416667,0 -127.4,-59.95,0 -133.083333,-43.816667,0 -136.3,-27.483333,0</coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
       <name>HYDROARC 307/26</name>
       <description>201952Z OCT 26  HYDROARC 307/26.  BARENTS SEA.  RUSSIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING      252100Z TO 312100Z OCT IN AREAS BOUND BY:     A. 68-55.20N 051-20.35E, 68-40.47N 050-49.44E,        68-20.05N 049-23.23E, 68-02.05N 047-54.41E,        67-59.17N 047-04.45E, 68-14.22N 047-31.29E,        68-36.41N 048-56.04E, 68-53.30N 050-29.28E.     B. 67-29.00N 045-02.00E, 67-33.00N 045-19.00E,        67-26.00N 045-30.00E, 67-22.00N 045-13.00E.  2. CANCEL THIS MSG 312200Z OCT 26.</description>
       <MultiGeometry>
@@ -250,33 +239,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>HYDROPAC 3026/26</name>
-      <description>190032Z OCT 26  HYDROPAC 3026/26.  SOUTH CHINA SEA.  SULU SEA.  PHILIPPINES.  1. HAZARDOUS OPERATIONS, SPACE DEBRIS     220100Z TO 220700Z OCT IN AREAS BOUND BY:     A. 12-25.80N 116-36.60E, 13-16.80N 115-54.60E,        13-37.80N 116-21.60E, 12-46.20N 117-03.00E.     B. 07-08.40N 120-43.80E, 08-00.00N 120-03.60E,        08-20.40N 120-30.00E, 07-28.20N 121-10.20E.     C. 07-08.40N 120-37.20E, 08-00.00N 119-57.00E,        08-26.40N 120-32.40E, 07-34.80N 121-12.60E.  2. CANCEL THIS MSG 220800Z OCT </description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>116.61,12.43,0 115.91,13.28,0 116.36,13.63,0 117.05,12.77,0 116.61,12.43,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>120.73,7.14,0 120.06,8.0,0 120.5,8.34,0 121.17,7.47,0 120.73,7.14,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>120.62,7.14,0 119.95,8.0,0 120.54,8.44,0 121.21,7.58,0 120.62,7.14,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
     <Placemark>
       <name>HYDROPAC 2998/26</name>
