@@ -12,6 +12,8 @@
     #map { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
     .rocket-marker { display:flex; align-items:center; justify-content:center; width:46px;height:46px;border:3px solid white;border-radius:50%; box-shadow:0 1px 8px #111; font-size:27px; }
     .twilight-glow { filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 3px #fff); }
+    .launch-label { background:rgba(7,20,30,.86); border:1px solid rgba(255,255,255,.55); border-radius:4px; box-shadow:0 1px 4px rgba(0,0,0,.6); color:#fff; font-size:10px; line-height:1.2; max-width:150px; padding:2px 4px; white-space:nowrap; }
+    .launch-label.leaflet-tooltip-right:before { border-right-color:rgba(255,255,255,.55); }
   </style>
 </head>
 <body>
@@ -110,7 +112,21 @@
         return rows.filter(r=>r.some(Boolean)).map(r=>Object.fromEntries(headers.map((h,i)=>[h,r[i]||''])));
       }
 
+      function launchDisplayName(launch) {
+        const raw=String(launch.name||launch.mission||launch['Official Payload Name']||launch.vehicle||'').trim();
+        const separator=raw.indexOf('|');
+        return isUnitedStates && separator >= 0 ? raw.slice(separator+1).trim() : raw;
+      }
+      function launchMarkerOffsets(count) {
+        if (count <= 1) return [[0,0]];
+        const radius=38;
+        return Array.from({length:count},(_,index)=>{
+          const angle=-Math.PI/2+(index*2*Math.PI/count);
+          return [Math.cos(angle)*radius,Math.sin(angle)*radius];
+        });
+      }
       function drawLaunches(launches) {
+        const visible=[];
         for (const launch of launches) {
           const pad=launch.pad || {};
           const location=pad.location || {};
@@ -123,9 +139,40 @@
           if(!Number.isFinite(ts)||ts<windowStart||ts>windowEnd) continue;
           const color=past?'#22c55e':colorByTime(ts);
           const glow=!past&&launchTwilight(ts,lat,lon);
-          const icon=L.divIcon({ className:'', html:`<div class="rocket-marker${glow?' twilight-glow':''}" style="background:${color}">🚀</div>`, iconSize:[46,46], iconAnchor:[23,23] });
-          L.marker([lat,lon],{icon,interactive:false}).addTo(map);
+          visible.push({launch,lat,lon,color,glow});
         }
+        const groups=new Map();
+        visible.forEach(item=>{
+          const key=`${item.lat.toFixed(6)},${item.lon.toFixed(6)}`;
+          if(!groups.has(key)) groups.set(key,[]);
+          groups.get(key).push(item);
+        });
+        const addLaunchMarker=(item,markerLatLng,offset)=>{
+          if(isUnitedStates && (offset[0] || offset[1])) {
+            L.polyline([[item.lat,item.lon],markerLatLng],{color:'#fff',weight:1,opacity:.75,dashArray:'2,2',interactive:false}).addTo(map);
+          }
+          const icon=L.divIcon({ className:'', html:`<div class="rocket-marker${item.glow?' twilight-glow':''}" style="background:${item.color}">🚀</div>`, iconSize:[46,46], iconAnchor:[23,23] });
+          const marker=L.marker(markerLatLng,{icon,interactive:false}).addTo(map);
+          if(isUnitedStates) {
+            const labelDirection=offset[0] < 0 ? 'bottom' : 'right';
+            const labelOffset=offset[0] < 0 ? [0,14] : [14,0];
+            marker.bindTooltip(launchDisplayName(item.launch),{permanent:true,direction:labelDirection,offset:labelOffset,className:'launch-label'});
+          }
+        };
+        if(!isUnitedStates) {
+          visible.forEach(item=>addLaunchMarker(item,[item.lat,item.lon],[0,0]));
+          return;
+        }
+        groups.forEach(group=>{
+          const anchor=map.latLngToLayerPoint([group[0].lat,group[0].lon]);
+          const offsets=launchMarkerOffsets(group.length);
+          group.forEach((item,index)=>{
+            const offset=offsets[index];
+            const markerPoint=anchor.add(L.point(offset[0],offset[1]));
+            const markerLatLng=map.layerPointToLatLng(markerPoint);
+            addLaunchMarker(item,markerLatLng,offset);
+          });
+        });
       }
       async function loadLaunches() {
         try {
@@ -137,10 +184,19 @@
         } catch (error) {
           console.warn('Space Devs launches unavailable; using local schedule',error);
           try {
-            const response=await fetch('../upcoming_launches.csv?widget='+Date.now(),{cache:'no-store'});
+            const response=await fetch('../upcoming_launches.json?widget='+Date.now(),{cache:'no-store'});
             if(!response.ok) throw Error(response.status);
-            launchRecords=parseCsv(await response.text());
-          } catch (fallbackError) { console.warn('Local launch schedule unavailable',fallbackError); }
+            const snapshot=await response.json();
+            if(!Array.isArray(snapshot.results)) throw Error('upcoming launch snapshot has no results');
+            launchRecords=snapshot.results;
+          } catch (snapshotError) {
+            console.warn('Local launch snapshot unavailable; using CSV fallback',snapshotError);
+            try {
+              const response=await fetch('../upcoming_launches.csv?widget='+Date.now(),{cache:'no-store'});
+              if(!response.ok) throw Error(response.status);
+              launchRecords=parseCsv(await response.text());
+            } catch (fallbackError) { console.warn('Local launch schedule unavailable',fallbackError); }
+          }
         } finally { ready.launches=true; finishIfReady(); }
       }
       loadLaunches();
