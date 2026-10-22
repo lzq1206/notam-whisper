@@ -1764,8 +1764,23 @@
       const toTs = Date.parse(row.to_utc);
       const launchTs = Number(launch.ts);
       const TIME_TOLERANCE_MS = 30 * 60 * 1000;
-      return [fromTs, toTs, launchTs].every(Number.isFinite) &&
-        launchTs >= fromTs - TIME_TOLERANCE_MS && launchTs <= toTs + TIME_TOLERANCE_MS;
+      if (![fromTs, toTs, launchTs].every(Number.isFinite)) return false;
+      if (launchTs >= fromTs - TIME_TOLERANCE_MS && launchTs <= toTs + TIME_TOLERANCE_MS) return true;
+
+      // A rocket-debris warning can be issued one UTC day before/after a
+      // launch feed is corrected. Do not relax the ordinary time rule for
+      // generic warnings: require the warning itself to name both the
+      // launch provider and the rocket-debris activity, then let the paired
+      // downrange geometry below provide the spatial confirmation.
+      const raw = String(row.raw || '').toUpperCase();
+      const provider = String(launchProviderName(launch)).toUpperCase();
+      const explicitlyNamed = /ROCKET\s+LAB/.test(provider) &&
+        /ROCKET\s+LAB/.test(raw) && /ROCKET\s+DEBRIS\s+RETURN/.test(raw);
+      if (!explicitlyNamed) return false;
+      const warningDuration = toTs - fromTs;
+      const warningMidpoint = (fromTs + toTs) / 2;
+      return warningDuration > 0 && warningDuration <= 6 * 60 * 60 * 1000 &&
+        Math.abs(warningMidpoint - launchTs) <= 36 * 60 * 60 * 1000;
     }
 
     function warningScheduleAllowsLaunch(row, launch) {
@@ -1943,11 +1958,11 @@
     // Sample a great-circle arc before handing it to Leaflet/Cesium. A straight
     // lat/lon segment is not a straight path on Earth and bends incorrectly
     // when a different 2D map projection is used.
-    function launchWarningArc(launch, warning) {
-      const lat1 = Number.parseFloat(launch.lat) * Math.PI / 180;
-      const lon1 = Number.parseFloat(launch.lon) * Math.PI / 180;
-      const lat2 = Number.parseFloat(warning.lat) * Math.PI / 180;
-      const lon2 = Number.parseFloat(warning.lon) * Math.PI / 180;
+    function launchWarningArcBetween(startPoint, endPoint) {
+      const lat1 = Number.parseFloat(startPoint.lat) * Math.PI / 180;
+      const lon1 = Number.parseFloat(startPoint.lon) * Math.PI / 180;
+      const lat2 = Number.parseFloat(endPoint.lat) * Math.PI / 180;
+      const lon2 = Number.parseFloat(endPoint.lon) * Math.PI / 180;
       if (![lat1, lon1, lat2, lon2].every(Number.isFinite)) return [];
       const vector = (lat, lon) => [Math.cos(lat) * Math.cos(lon), Math.cos(lat) * Math.sin(lon), Math.sin(lat)];
       const start = vector(lat1, lon1), end = vector(lat2, lon2);
@@ -1971,19 +1986,38 @@
       return points;
     }
 
-    function selectedLaunchWarningArcs() {
+    function launchWarningArc(launch, warning) {
+      return launchWarningArcBetween(launch, warning);
+    }
+
+    function selectedLaunchWarningSegments() {
       const launch = selectedLaunchDirection;
       if (!launch || !launchToggle.checked || !upcomingLaunchesForNotamRange().includes(launch)) return [];
-      return relatedWarningRowsForLaunch(launch, filteredDataRows)
+      const warnings = relatedWarningRowsForLaunch(launch, filteredDataRows)
         .filter(row => !isMsiOrMaritime(row))
-        .map(row => ({ row, points: launchWarningArc(launch, row) }))
-        .filter(item => item.points.length >= 2);
+        .map((row, index) => ({
+          row,
+          index,
+          distanceKm: launchDistanceKm(
+            Number.parseFloat(row.lat), Number.parseFloat(row.lon),
+            Number.parseFloat(launch.lat), Number.parseFloat(launch.lon)
+          )
+        }))
+        .filter(item => Number.isFinite(item.distanceKm))
+        .sort((first, second) => first.distanceKm - second.distanceKm || first.index - second.index);
+      let previousPoint = launch;
+      return warnings.map(({ row, distanceKm }) => {
+        const points = launchWarningArcBetween(previousPoint, row);
+        const segment = { row, distanceKm, from: previousPoint, to: row, points };
+        previousPoint = row;
+        return segment;
+      }).filter(item => item.points.length >= 2);
     }
 
     function renderLaunchDirection2D() {
       launchDirectionLayer2D.clearLayers();
       if (is3D) return;
-      selectedLaunchWarningArcs().forEach(({ points }) => {
+      selectedLaunchWarningSegments().forEach(({ points }) => {
         // Split at the date line so no false line crosses the whole map.
         const segments = splitDatelineCoordinates(points, false, true);
         segments.forEach((segment, index) => {
@@ -2016,7 +2050,7 @@
       cesiumLaunchDirectionEntities.forEach(entity => cesiumViewer.entities.remove(entity));
       cesiumLaunchDirectionEntities = [];
       if (!is3D) return;
-      selectedLaunchWarningArcs().forEach(({ points }) => {
+      selectedLaunchWarningSegments().forEach(({ points }) => {
         const degreesHeights = points.flatMap(([lat, lon]) => [lon, lat, 1500]);
         cesiumLaunchDirectionEntities.push(cesiumViewer.entities.add({
           polyline: {
@@ -3089,6 +3123,14 @@
       return d && Number.isFinite(d.getTime()) ? d.getTime() : null;
     }
 
+    function launchProviderName(launch) {
+      return launch?.providerName
+        || launch?.launchServiceProvider
+        || launch?.launch_service_provider?.name
+        || launch?.agency?.name
+        || '';
+    }
+
     function launchWindowStartTimestamp(launch) {
       if (!launch) return null;
       const d = parseLaunchTimestampValue(launch.window_start)
@@ -3600,6 +3642,7 @@
 
             const missionName = l.name || t('launch_unknown_mission');
             const vehicleName = launchVehicleName(l);
+            const providerName = launchProviderName(l);
             const locName = loc?.name || '';
             const padName = l.pad?.name || '';
             const t0Ts = launchTimestamp(l);
@@ -3621,7 +3664,7 @@
             const isLaunchGlow = t0 ? isRocketCloudVisible(t0.toISOString(), t0.toISOString(), lat, lon) : false;
 
             const launchRecord = {
-              lat, lon, mission: missionName, vehicle: vehicleName, dateStr, color, ts: t0 ? t0.getTime() : null,
+              lat, lon, mission: missionName, vehicle: vehicleName, providerName, dateStr, color, ts: t0 ? t0.getTime() : null,
               isLaunchGlow,
               windowStartTs, windowEndTs,
               expiryTs: Number.isFinite(windowEndTs) ? windowEndTs : t0Ts,
