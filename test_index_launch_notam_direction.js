@@ -47,28 +47,35 @@ const signatures = [
   'function launchDistanceKm(',
   'function launchProviderName(',
   'function warningTimeMatchesLaunch(',
+  'function launchWarningIsNearPad(',
+  'function warningWindowMatchesLaunchSchedule(',
+  'function warningNearLaunchPadMatches(',
   'function warningScheduleAllowsLaunch(',
   'function warningRectanglePointsToLaunch(',
   'function launchCorridorPairMatches(',
   'function relatedWarningRowsForLaunch(',
   'function launchWarningArcBetween(',
   'function selectedLaunchWarningSegments(',
+  'function buildCesiumUpcomingLaunchIcon(',
 ];
 const blocks = signatures.map(signature => {
   const block = extractFunctionBlock(html, signature);
   if (!block) throw new Error(`${signature} not found`);
   return block;
 });
+const launchWarningConstant = html.match(/const LOCAL_LAUNCH_WARNING_DISTANCE_KM\s*=\s*120;/)?.[0];
+if (!launchWarningConstant) throw new Error('LOCAL_LAUNCH_WARNING_DISTANCE_KM constant not found');
 
 global.isMsiOrMaritime = row => row && row.country === 'Maritime';
+global.btoa = value => Buffer.from(value, 'binary').toString('base64');
 global.selectedLaunchDirection = null;
 global.launchToggle = { checked: true };
 global.filteredDataRows = [];
 global.upcomingLaunchesForNotamRange = () => [global.selectedLaunchDirection];
-for (const block of blocks) global.eval(block);
+global.eval([launchWarningConstant, ...blocks].join('\n'));
 
-const rows = parseCsv(notams).filter(row => ['B5163/26', 'B5164/26'].includes(row.notam_id));
-if (rows.length !== 2) throw new Error(`Expected B5163/26 and B5164/26 in notams.csv, got ${rows.length}`);
+const rows = parseCsv(notams).filter(row => ['B5162/26', 'B5163/26', 'B5164/26'].includes(row.notam_id));
+if (rows.length !== 3) throw new Error(`Expected B5162/26, B5163/26 and B5164/26 in notams.csv, got ${rows.length}`);
 
 // The published launch snapshot is one UTC day stale (22 Oct 07:00Z), while
 // the explicit Rocket Lab debris-return warnings are valid on 23 Oct.
@@ -76,6 +83,8 @@ const launch = {
   mission: "Electron | We're Not Hawking Around (3x HawkEye 360)",
   providerName: 'Rocket Lab',
   ts: Date.parse('2026-10-22T07:00:00Z'),
+  windowStartTs: Date.parse('2026-10-22T07:00:00Z'),
+  windowEndTs: Date.parse('2026-10-22T07:00:00Z'),
   lat: -39.262833,
   lon: 177.864469,
 };
@@ -83,8 +92,11 @@ global.selectedLaunchDirection = launch;
 global.filteredDataRows = rows;
 
 const related = relatedWarningRowsForLaunch(launch, rows);
-if (related.length !== 2 || related.map(row => row.notam_id).sort().join(',') !== 'B5163/26,B5164/26') {
-  throw new Error(`Explicit Rocket Lab debris chain did not match both warnings: ${related.map(row => row.notam_id).join(',')}`);
+if (related.length !== 3 || related.map(row => row.notam_id).sort().join(',') !== 'B5162/26,B5163/26,B5164/26') {
+  throw new Error(`Rocket Lab launch should match the local launch warning plus debris chain: ${related.map(row => row.notam_id).join(',')}`);
+}
+if (!warningNearLaunchPadMatches(rows.find(row => row.notam_id === 'B5162/26'), launch)) {
+  throw new Error('B5162/26 should match as an explicit near-pad Rocket Lab launch warning');
 }
 
 const segments = selectedLaunchWarningSegments();
@@ -96,10 +108,24 @@ if (segments[1].from !== rows.find(row => row.notam_id === 'B5163/26') || segmen
   throw new Error('Farther warning must be targeted from the previous warning, not from the launch pad');
 }
 if (segments.some(segment => segment.points.length < 2)) throw new Error('Sequential great-circle segments must contain sampled points');
+if (segments.some(segment => segment.row.notam_id === 'B5162/26')) {
+  throw new Error('Near-pad B5162/26 must be displayed as related but excluded from direction segments');
+}
+
+const glowSvg = Buffer.from(buildCesiumUpcomingLaunchIcon({ isLaunchGlow: true }, '#ff0000').split(',')[1], 'base64').toString('utf8');
+const plainSvg = Buffer.from(buildCesiumUpcomingLaunchIcon({ isLaunchGlow: false }, '#ff0000').split(',')[1], 'base64').toString('utf8');
+if (!glowSvg.includes('feGaussianBlur') || !glowSvg.includes('stroke="#fff"')) {
+  throw new Error('3D upcoming-launch glow icon must contain a visible white halo');
+}
+if (plainSvg.includes('feGaussianBlur')) throw new Error('Non-glow 3D launch icon must not contain the halo filter');
 
 const wrongProvider = { ...launch, providerName: 'SpaceX' };
 if (relatedWarningRowsForLaunch(wrongProvider, rows).length !== 0) {
   throw new Error('Explicit Rocket Lab activity must not match a different launch provider');
+}
+const remoteRocketLab = { ...launch, lat: -35, lon: 150 };
+if (relatedWarningRowsForLaunch(remoteRocketLab, rows).length !== 0) {
+  throw new Error('A local Rocket Lab warning must not match a remote launch site');
 }
 
 console.log('test_index_launch_notam_direction.js passed');

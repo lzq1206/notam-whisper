@@ -27,6 +27,9 @@ const signatures = [
   'function launchDistanceKm(',
   'function launchProviderName(',
   'function warningTimeMatchesLaunch(',
+  'function launchWarningIsNearPad(',
+  'function warningWindowMatchesLaunchSchedule(',
+  'function warningNearLaunchPadMatches(',
   'function warningScheduleAllowsLaunch(',
   'function warningRectanglePointsToLaunch(',
   'function launchCorridorPairMatches(',
@@ -40,6 +43,8 @@ const blocks = signatures.map(signature => {
   if (!block) throw new Error(`${signature} not found`);
   return block;
 });
+const launchWarningConstant = html.match(/const LOCAL_LAUNCH_WARNING_DISTANCE_KM\s*=\s*120;/)?.[0];
+if (!launchWarningConstant) throw new Error('LOCAL_LAUNCH_WARNING_DISTANCE_KM constant not found');
 
 global.isMsiOrMaritime = row => row && row.country === 'Maritime';
 global.formatUtcWithLocal = value => `${value} / Local`;
@@ -49,7 +54,7 @@ global.t = (key, vars = {}) => {
   if (key === 'related_launch') return 'Related launch';
   return key;
 };
-for (const block of blocks) global.eval(block);
+global.eval([launchWarningConstant, ...blocks].join('\n'));
 
 const polygon = JSON.stringify([[28.1, -80.1], [28.2, -80.2], [28.3, -80.1]]);
 const ids = ['FDC 6/5192', 'FDC 6/5190', 'FDC 6/5189', 'FDC 6/5187', 'FDC 6/5186', 'FDC 6/5185'];

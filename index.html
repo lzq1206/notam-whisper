@@ -1215,6 +1215,25 @@
       });
     }
 
+    function buildCesiumUpcomingLaunchIcon(launch, iconColor) {
+      const safeColor = String(iconColor || 'yellow').replace(/[^#(),.%a-zA-Z0-9 -]/g, '');
+      const glowMarkup = launch?.isLaunchGlow ? `
+        <defs>
+          <filter id="launch-icon-glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="3.5" />
+          </filter>
+        </defs>
+        <circle cx="24" cy="24" r="20" fill="none" stroke="#fff" stroke-width="7" opacity="0.95" filter="url(#launch-icon-glow)" />
+        <circle cx="24" cy="24" r="19" fill="none" stroke="#fff" stroke-width="3" opacity="0.9" />
+      ` : '';
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+        ${glowMarkup}
+        <circle cx="24" cy="24" r="17" fill="${safeColor}" stroke="#fff" stroke-width="2" />
+        <text x="24" y="31" font-size="20" text-anchor="middle">🚀</text>
+      </svg>`;
+      return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+    }
+
     function renderOnGlobe(rows) {
       try {
         if (!cesiumViewer || !rows) return;
@@ -1266,7 +1285,7 @@
             const rocketEntity = addCesiumEntity({
               position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
               billboard: {
-                image: 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="18" fill="${iconColor}" stroke="white" stroke-width="2"/><text x="20" y="28" font-size="20" text-anchor="middle">🚀</text></svg>`))),
+                image: buildCesiumUpcomingLaunchIcon(launch, iconColor),
                 verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32,
                 eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
@@ -1783,6 +1802,59 @@
         Math.abs(warningMidpoint - launchTs) <= 36 * 60 * 60 * 1000;
     }
 
+    const LOCAL_LAUNCH_WARNING_DISTANCE_KM = 120;
+
+    function launchWarningIsNearPad(row, launch) {
+      const rowLat = Number.parseFloat(row && row.lat);
+      const rowLon = Number.parseFloat(row && row.lon);
+      const launchLat = Number.parseFloat(launch && launch.lat);
+      const launchLon = Number.parseFloat(launch && launch.lon);
+      return [rowLat, rowLon, launchLat, launchLon].every(Number.isFinite) &&
+        launchDistanceKm(rowLat, rowLon, launchLat, launchLon) <= LOCAL_LAUNCH_WARNING_DISTANCE_KM;
+    }
+
+    function warningWindowMatchesLaunchSchedule(row, launch) {
+      const fromTs = Date.parse(row.from_utc);
+      const toTs = Date.parse(row.to_utc);
+      if (![fromTs, toTs].every(Number.isFinite) || toTs <= fromTs) return false;
+      const tolerance = 30 * 60 * 1000;
+      const windowStartTs = Number(launch.windowStartTs);
+      const windowEndTs = Number(launch.windowEndTs);
+      if (Number.isFinite(windowStartTs) && Number.isFinite(windowEndTs) && windowEndTs >= windowStartTs &&
+          fromTs <= windowEndTs + tolerance && toTs >= windowStartTs - tolerance) return true;
+      const launchTs = Number(launch.ts);
+      return Number.isFinite(launchTs) && launchTs >= fromTs - tolerance && launchTs <= toTs + tolerance;
+    }
+
+    function warningNearLaunchPadMatches(row, launch) {
+      // Local launch-safety notices are useful associations even when their
+      // outline is not a four-corner downrange rectangle. Keep this fallback
+      // narrow: aviation only, near the pad, explicit Rocket Lab activity,
+      // and a short warning whose time is either in the launch window or
+      // within the same bounded one-day feed-correction tolerance used above.
+      if (isMsiOrMaritime(row) || !launchWarningIsNearPad(row, launch)) return false;
+      const raw = String(row.raw || '').toUpperCase();
+      const provider = String(launchProviderName(launch)).toUpperCase();
+      if (!/ROCKET\s+LAB/.test(provider) || !/ROCKET\s+LAB/.test(raw) ||
+          !/ROCKET\s+LAUNCH/.test(raw)) return false;
+      const fromTs = Date.parse(row.from_utc);
+      const toTs = Date.parse(row.to_utc);
+      const duration = toTs - fromTs;
+      if (![fromTs, toTs].every(Number.isFinite) || duration <= 0 || duration > 6 * 60 * 60 * 1000) return false;
+      if (warningWindowMatchesLaunchSchedule(row, launch)) return true;
+
+      const warningMidpoint = (fromTs + toTs) / 2;
+      const windowStartTs = Number(launch.windowStartTs);
+      const windowEndTs = Number(launch.windowEndTs);
+      const launchTs = Number(launch.ts);
+      const references = [];
+      if (Number.isFinite(windowStartTs) && Number.isFinite(windowEndTs) && windowEndTs >= windowStartTs) {
+        references.push((windowStartTs + windowEndTs) / 2);
+      }
+      if (Number.isFinite(launchTs)) references.push(launchTs);
+      return references.some(reference => Math.abs(warningMidpoint - reference) <= 36 * 60 * 60 * 1000);
+    }
+
     function warningScheduleAllowsLaunch(row, launch) {
       const raw = String(row.raw || '').toUpperCase();
       const scheduleMatch = raw.match(/\bD\)\s*(.*?)(?=\s+E\)|$)/s);
@@ -1931,7 +2003,8 @@
       const timeMatched = (rows || []).filter(row => {
         const rowLat = Number.parseFloat(row.lat);
         const rowLon = Number.parseFloat(row.lon);
-        return warningTimeMatchesLaunch(row, launch) && warningScheduleAllowsLaunch(row, launch) &&
+        return (warningTimeMatchesLaunch(row, launch) || warningNearLaunchPadMatches(row, launch)) &&
+          warningScheduleAllowsLaunch(row, launch) &&
           Number.isFinite(rowLat) && Number.isFinite(rowLon);
       });
       const related = new Set(timeMatched.filter(row =>
@@ -1994,7 +2067,7 @@
       const launch = selectedLaunchDirection;
       if (!launch || !launchToggle.checked || !upcomingLaunchesForNotamRange().includes(launch)) return [];
       const warnings = relatedWarningRowsForLaunch(launch, filteredDataRows)
-        .filter(row => !isMsiOrMaritime(row))
+        .filter(row => !isMsiOrMaritime(row) && !launchWarningIsNearPad(row, launch))
         .map((row, index) => ({
           row,
           index,
