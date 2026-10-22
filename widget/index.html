@@ -24,6 +24,10 @@
     .download { display:inline-block; margin:8px 0; padding:11px 16px; border-radius:9px; color:#fff; background:#235c82; text-decoration:none; font-weight:650; }
     .platform { color:#9fc8ea; font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
     .preview { border:1px solid rgba(180,205,228,.18); background:#030817; }
+    h3 { color:#c8e1ff; font-size:15px; margin:16px 0 6px; }
+    .calendar-subsection { margin-top:14px; padding-top:10px; border-top:1px solid rgba(180,205,228,.14); }
+    .calendar-url { display:block; padding:9px 10px; overflow-wrap:anywhere; word-break:break-all; color:#d9ecff; background:#06111b; border:1px solid rgba(180,205,228,.18); border-radius:7px; font-size:12px; line-height:1.5; }
+    .calendar-warning { color:#ffd99a; }
   </style>
 </head>
 <body>
@@ -76,6 +80,41 @@
         <a href="./us-rocket-map-large.swt">下载美国大号：364×382 pt（1092×1146 px，3×）</a>
       </div>
       <img id="usMapImage" class="preview" alt="美国本土火箭与航行警告地图预览">
+    </section>
+
+    <section class="section" id="calendar-subscription">
+      <div class="platform">CALENDAR · SUBSCRIPTION</div>
+      <h2>将火箭发射订阅到手机日历</h2>
+      <p>下面使用的是“订阅日历”方式。日历应用会定期读取更新，不需要反复下载文件。</p>
+      <p><b>订阅地址（请复制，不要直接点击打开）：</b></p>
+      <code class="calendar-url">https://ll.thespacedevs.com/launches/latest/feed.ics</code>
+      <p class="calendar-warning"><b>重要提示：</b>不要直接点开上面的 ICS 地址，也不要把它当作一次性文件导入。直接打开通常只会下载或显示一个静态文件，后续不会自动同步。请按照下面的“通过 URL 添加订阅日历”步骤操作。</p>
+
+      <div class="calendar-subsection">
+        <h3>安卓：通过 Google Calendar 网页订阅</h3>
+        <ol>
+          <li>在 Chrome 中打开 <a href="https://calendar.google.com/" target="_blank" rel="noopener noreferrer">Google Calendar 网页版</a>，登录要在手机上使用的 Google 账号。</li>
+          <li>如果在手机上操作，请打开 Chrome 菜单并启用“桌面版网站”，因为 Google Calendar 安卓 App 通常没有直接粘贴 ICS 地址的订阅入口。</li>
+          <li>在左侧找到“其他日历”，点击“＋”，选择“通过 URL 添加”。</li>
+          <li>把上面的订阅地址复制并粘贴到 URL 输入框，然后点击“添加日历”；不要选择“导入”本地 `.ics` 文件。</li>
+          <li>打开 Android 的 Google Calendar App，确认该 Google 账号的日历同步已开启，并在日历列表中勾选新订阅的火箭日历。</li>
+        </ol>
+        <p class="note">如果使用其他安卓日历应用，请寻找“添加订阅日历 / 通过 URL 订阅 / CalDAV 或网络日历”等入口，同样粘贴 URL；不要选择一次性导入。</p>
+      </div>
+
+      <div class="calendar-subsection">
+        <h3>iOS：在系统日历中添加订阅</h3>
+        <ol>
+          <li>打开“设置”。较新的 iOS 进入“App”→“日历”→“日历账户”；较旧的 iOS 可直接进入“日历”→“账户”。</li>
+          <li>点击“添加账户”→“其他”→“添加已订阅的日历”。</li>
+          <li>将上面的订阅地址粘贴到“服务器”或“订阅 URL”输入框，点击“下一步”。</li>
+          <li>确认服务器地址和日历名称后点击“存储”。</li>
+          <li>打开系统“日历”App，在“日历”列表中勾选该订阅日历；它会按 iOS 的后台刷新计划更新。</li>
+        </ol>
+        <p class="note">iOS 这里必须选择“添加已订阅的日历”，不是打开下载的 `.ics` 文件，也不是“导入日历”。不同系统版本的菜单名称可能略有差异。</p>
+      </div>
+
+      <p class="note">该日历由 The Space Devs / Launch Library 2 提供，属于只读订阅；发射时间调整和新增任务会随源站及手机日历的刷新周期更新，可能存在延迟。日历中的 UTC 时间会由系统按设备时区显示。</p>
     </section>
   </main>
   <script>
