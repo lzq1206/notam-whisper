@@ -35,6 +35,8 @@ const signatures = [
   'function launchCorridorPairMatches(',
   'function relatedLaunchesForRows(',
   'function relatedWarningRowsForLaunch(',
+  'function warningRowsMatch(',
+  'function relatedLaunchesForWarningRows(',
   'function notamDisplayTitle(',
   'function buildNotamPopup(',
 ];

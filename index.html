@@ -1099,7 +1099,8 @@
         lat,
         lon
       };
-      selectedLaunchDirection = null;
+      const relatedLaunches = relatedLaunchesForWarningRows([row], filteredDataRows);
+      selectedLaunchDirection = relatedLaunches[0] || null;
       renderLaunchDirection2D();
       renderLaunchDirection3D();
       applySelectedNotamSolarOverlay();
@@ -1159,7 +1160,7 @@
       cesiumViewer.selectedEntityChanged.addEventListener(entity => {
         if (!entity || !entity.__notamSolarSelection) return;
         selectedNotamSolarState = entity.__notamSolarSelection;
-        selectedLaunchDirection = entity.__launchDirectionRecord || null;
+        selectedLaunchDirection = entity.__launchDirectionRecord || selectedNotamSolarState.launchDirection || null;
         renderLaunchDirection2D();
         renderLaunchDirection3D();
         applySelectedNotamSolarOverlay();
@@ -1382,11 +1383,13 @@
           const warningHeight = isMaritime ? 100 : 140;
           const radiusNm = parseFloat(r.radius_nm || '0');
           const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
+          const directionLaunches = isMaritime ? [] : relatedLaunchesForWarningRows([r], rows);
           const solarSelection = isMaritime ? null : {
             id: r.id || r.notam_id || '',
             midpoint: getNotamMidpointDate(r.from_utc, r.to_utc),
             lat,
-            lon
+            lon,
+            launchDirection: directionLaunches[0] || null
           };
 
           // Render Label (Now for all, including MSI)
@@ -2212,13 +2215,42 @@
       return related.sort((a, b) => Number(a.ts) - Number(b.ts));
     }
 
+    function warningRowsMatch(first, second) {
+      if (first === second) return true;
+      const firstKey = String(first?.id || first?.notam_id || '').trim().toUpperCase();
+      const secondKey = String(second?.id || second?.notam_id || '').trim().toUpperCase();
+      return Boolean(firstKey && secondKey && firstKey === secondKey);
+    }
+
+    function relatedLaunchesForWarningRows(targetRows, rows, launches) {
+      const targets = (Array.isArray(targetRows) ? targetRows : [targetRows]).filter(Boolean);
+      const candidateRows = Array.isArray(rows) && rows.length ? rows : targets;
+      const launchList = launches === undefined
+        ? (typeof upcomingLaunchesForNotamRange === 'function' ? upcomingLaunchesForNotamRange() : upcomingLaunches)
+        : launches;
+      const related = [];
+      const seen = new Set();
+      (launchList || []).forEach(launch => {
+        const launchTs = Number(launch.ts);
+        if (!Number.isFinite(launchTs)) return;
+        const warningRows = relatedWarningRowsForLaunch(launch, candidateRows);
+        if (!targets.some(target => warningRows.some(candidate => warningRowsMatch(candidate, target)))) return;
+        const key = `${launch.mission || ''}:${launchTs}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          related.push(launch);
+        }
+      });
+      return related.sort((a, b) => Number(a.ts) - Number(b.ts));
+    }
+
     function notamDisplayTitle(row, rows) {
       const isMaritime = isMsiOrMaritime(row);
       const overlapping = isMaritime ? [row] : overlappingNotamRows(row, rows);
       const warningTitle = overlapping.length > 1
         ? t('overlapping_notams', { count: overlapping.length })
         : (row.notam_id || (isMaritime ? t('maritime_warning') : 'NOTAM'));
-      const related = relatedLaunchesForRows(overlapping);
+      const related = relatedLaunchesForWarningRows(overlapping, rows);
       return related.length
         ? `${related.map(launch => launch.mission).filter(Boolean).join(' / ')} · ${warningTitle}`
         : warningTitle;
@@ -2227,14 +2259,16 @@
     function buildNotamPopup(row, rows) {
       const isMaritime = isMsiOrMaritime(row);
       const overlapping = isMaritime ? [row] : overlappingNotamRows(row, rows);
-      const related = relatedLaunchesForRows(overlapping);
+      const related = relatedLaunchesForWarningRows(overlapping, rows);
       const title = notamDisplayTitle(row, rows);
       const cards = overlapping.map((r, index) => {
         const open = overlapping.length === 1 || index === 0 ? ' open' : '';
         const summary = escapeHtml(r.notam_id || t('unnamed'));
+        const cardRelated = relatedLaunchesForWarningRows([r], rows);
         return `
           <details${open} style="margin:5px 0;border-top:1px solid #ddd;padding-top:4px;">
             <summary style="cursor:pointer;font-weight:600;">${summary}</summary>
+            ${cardRelated.length ? `<div style="margin:4px 0;color:#b91c1c;"><b>🚀 ${t('related_launch')}:</b> ${cardRelated.map(launch => escapeHtml(launch.mission || '')).join(' / ')}</div>` : ''}
             ${t('fir_label')}: ${escapeHtml(r.fir || '')}<br/>
             ${t('from_label')}: ${escapeHtml(formatUtcWithLocal(r.from_utc))}<br/>
             ${t('to_label')}: ${escapeHtml(formatUtcWithLocal(r.to_utc))}<br/>

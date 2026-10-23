@@ -54,6 +54,8 @@ const signatures = [
   'function warningRectanglePointsToLaunch(',
   'function launchCorridorPairMatches(',
   'function relatedWarningRowsForLaunch(',
+  'function warningRowsMatch(',
+  'function relatedLaunchesForWarningRows(',
   'function launchWarningArcBetween(',
   'function selectedLaunchWarningSegments(',
   'function buildCesiumUpcomingLaunchIcon(',
@@ -95,6 +97,12 @@ const related = relatedWarningRowsForLaunch(launch, rows);
 if (related.length !== 3 || related.map(row => row.notam_id).sort().join(',') !== 'B5162/26,B5163/26,B5164/26') {
   throw new Error(`Rocket Lab launch should match the local launch warning plus debris chain: ${related.map(row => row.notam_id).join(',')}`);
 }
+const b5163RelatedLaunches = relatedLaunchesForWarningRows(
+  [rows.find(row => row.notam_id === 'B5163/26')], rows, [launch]
+);
+if (b5163RelatedLaunches.length !== 1 || b5163RelatedLaunches[0] !== launch) {
+  throw new Error('A direction-eligible NOTAM must be able to identify its related launch from the full warning set');
+}
 if (!warningNearLaunchPadMatches(rows.find(row => row.notam_id === 'B5162/26'), launch)) {
   throw new Error('B5162/26 should match as an explicit near-pad Rocket Lab launch warning');
 }
@@ -118,6 +126,19 @@ if (!glowSvg.includes('feGaussianBlur') || !glowSvg.includes('stroke="#fff"')) {
   throw new Error('3D upcoming-launch glow icon must contain a visible white halo');
 }
 if (plainSvg.includes('feGaussianBlur')) throw new Error('Non-glow 3D launch icon must not contain the halo filter');
+
+if (!/function selectNotamForSolarOverlay\([\s\S]*?relatedLaunchesForWarningRows\(\[row\], filteredDataRows\)/.test(html)) {
+  throw new Error('2D NOTAM selection must resolve its related launch for direction rendering');
+}
+if (!/selectedLaunchDirection = entity\.__launchDirectionRecord \|\| selectedNotamSolarState\.launchDirection \|\| null/.test(html)) {
+  throw new Error('3D NOTAM selection must carry its related launch direction record');
+}
+if (!/function buildNotamPopup\([\s\S]*?cardRelated = relatedLaunchesForWarningRows\(\[r\], rows\)/.test(html)) {
+  throw new Error('NOTAM detail cards must show their related launch');
+}
+if (!/launchDirection: directionLaunches\[0\] \|\| null/.test(html)) {
+  throw new Error('3D NOTAM entities must carry the related launch direction record');
+}
 
 const wrongProvider = { ...launch, providerName: 'SpaceX' };
 if (relatedWarningRowsForLaunch(wrongProvider, rows).length !== 0) {
