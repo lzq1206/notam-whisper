@@ -21,6 +21,9 @@ function extractFunctionBlock(src, signature) {
 }
 
 const signatures = [
+  'function parseCoordinate(',
+  'function parseNotamPolygons(',
+  'function extractRowCoordinatesList(',
   'function escapeHtml(',
   'function notamGeometryKey(',
   'function overlappingNotamRows(',
@@ -33,6 +36,9 @@ const signatures = [
   'function warningScheduleAllowsLaunch(',
   'function warningRectanglePointsToLaunch(',
   'function launchCorridorPairMatches(',
+  'function warningRegionCenters(',
+  'function warningExplicitLaunchFamilyMatches(',
+  'function warningMultiRegionCorridorMatches(',
   'function relatedLaunchesForRows(',
   'function relatedWarningRowsForLaunch(',
   'function warningRowsMatch(',

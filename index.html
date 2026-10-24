@@ -1311,18 +1311,22 @@
 
           // 1c. Render Past Launches only when the dedicated toggle is enabled.
           if (pastLaunchToggle.checked) {
-            pastLaunches.filter(launch => isPastLaunchInSelectedRange(launch.ts)).forEach(launch => {
+            const visiblePastLaunches = pastLaunches.filter(launch => isPastLaunchInSelectedRange(launch.ts));
+            const pastOffsets = launchMarkerOffsetMap(visiblePastLaunches);
+            visiblePastLaunches.forEach(launch => {
+              const offset = pastOffsets.get(launch) || [0, 0];
               addCesiumEntity({
                 position: Cesium.Cartesian3.fromDegrees(launch.lon, launch.lat),
                 billboard: {
                   image: buildCesiumUpcomingLaunchIcon(launch, '#22c55e'),
                   verticalOrigin: Cesium.VerticalOrigin.CENTER, width: 32, height: 32,
+                  pixelOffset: new Cesium.Cartesian2(offset[0], offset[1]),
                   eyeOffset: new Cesium.Cartesian3(0, 0, 500)
                 },
                 label: {
                   text: t('cesium_past_prefix') + (launch.payload || launch.vehicle), font: '10pt sans-serif',
                   fillColor: Cesium.Color.LIME, style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                  verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(0, 16),
+                  verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(offset[0], offset[1] + 16),
                   eyeOffset: new Cesium.Cartesian3(0, 0, 500)
                 },
                 description: `<b>🚀 ${launch.vehicle}</b><br/>${t('cesium_payload_label')}: ${launch.payload}<br/>${t('cesium_time_label')}: ${launch.dateStr}<br/>${t('cesium_result_label')}: ${launch.success}`
@@ -2056,6 +2060,63 @@
       return crossTrackKm <= allowedCrossTrackKm && beyondEndpointKm <= 1300;
     }
 
+    function warningRegionCenters(row) {
+      if (!row || isMsiOrMaritime(row) || typeof extractRowCoordinatesList !== 'function') return [];
+      const regions = extractRowCoordinatesList(row);
+      return (Array.isArray(regions) ? regions : []).map((points, regionIndex) => {
+        const validPoints = (Array.isArray(points) ? points : [])
+          .filter(point => Array.isArray(point) && point.length >= 2 &&
+            Number.isFinite(Number(point[0])) && Number.isFinite(Number(point[1])));
+        if (validPoints.length < 3) return null;
+        const lat = validPoints.reduce((sum, point) => sum + Number(point[0]), 0) / validPoints.length;
+        const lonRadians = validPoints.reduce((sum, point) => sum + Math.cos(Number(point[1]) * Math.PI / 180), 0);
+        const sinLon = validPoints.reduce((sum, point) => sum + Math.sin(Number(point[1]) * Math.PI / 180), 0);
+        const lon = Math.abs(lonRadians) + Math.abs(sinLon) > 1e-9
+          ? Math.atan2(sinLon, lonRadians) * 180 / Math.PI
+          : Number(validPoints[0][1]);
+        return { lat, lon, regionIndex };
+      }).filter(Boolean);
+    }
+
+    function warningExplicitLaunchFamilyMatches(row, launch) {
+      const raw = String(row?.raw || '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+      if (!/\bROCKET\s+LAUNCH\b/.test(raw)) return false;
+      const launchText = [launch?.vehicle, launch?.mission, launch?.name]
+        .filter(Boolean).join(' ').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+      if (!launchText) return false;
+      const families = ['GSLV', 'PSLV', 'LVM', 'FALCON', 'ELECTRON', 'LONG MARCH', 'ARIANE',
+        'VULCAN', 'STARSHIP', 'SOYUZ', 'ATLAS', 'CERES', 'KUAIZHOU', 'H3'];
+      return families.some(family => {
+        const familyPattern = family.split(' ').map(part => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\s+');
+        const familyRegex = new RegExp(`(?:^|\\s)${familyPattern}(?:\\s|$)`);
+        return familyRegex.test(raw) && familyRegex.test(launchText);
+      });
+    }
+
+    function warningMultiRegionCorridorMatches(row, launch) {
+      if (!warningExplicitLaunchFamilyMatches(row, launch)) return false;
+      const regions = warningRegionCenters(row);
+      if (regions.length < 2) return false;
+      for (let firstIndex = 0; firstIndex < regions.length; firstIndex++) {
+        for (let secondIndex = firstIndex + 1; secondIndex < regions.length; secondIndex++) {
+          const first = { lat: regions[firstIndex].lat, lon: regions[firstIndex].lon };
+          const second = { lat: regions[secondIndex].lat, lon: regions[secondIndex].lon };
+          if (launchCorridorPairMatches(launch, first, second)) return true;
+        }
+      }
+      return false;
+    }
+
+    function launchWarningDirectionTargets(row, launch) {
+      if (!warningMultiRegionCorridorMatches(row, launch)) return [row];
+      return warningRegionCenters(row).map(region => ({
+        ...row,
+        lat: region.lat,
+        lon: region.lon,
+        regionIndex: region.regionIndex
+      }));
+    }
+
     function relatedWarningRowsForLaunch(launch, rows) {
       const launchLat = Number.parseFloat(launch.lat);
       const launchLon = Number.parseFloat(launch.lon);
@@ -2070,7 +2131,8 @@
       });
       const related = new Set(timeMatched.filter(row =>
         launchDistanceKm(Number.parseFloat(row.lat), Number.parseFloat(row.lon), launchLat, launchLon) <= 120 ||
-        warningRectanglePointsToLaunch(row, launch)
+        warningRectanglePointsToLaunch(row, launch) ||
+        warningMultiRegionCorridorMatches(row, launch)
       ));
 
       // A pair supplies directional evidence.  Mark both members, which keeps
@@ -2129,6 +2191,7 @@
       if (!launch || !launchToggle.checked || !upcomingLaunchesForNotamRange().includes(launch)) return [];
       const warnings = relatedWarningRowsForLaunch(launch, filteredDataRows)
         .filter(row => !isMsiOrMaritime(row) && !launchWarningIsNearPad(row, launch))
+        .flatMap(row => launchWarningDirectionTargets(row, launch))
         .map((row, index) => ({
           row,
           index,
@@ -3172,7 +3235,36 @@
       return timestamp >= start && timestamp <= end;
     }
 
+    function updatePastLaunchMarkerOffsets() {
+      const visiblePastLaunches = pastLaunches.filter(launch => isPastLaunchInSelectedRange(launch.ts));
+      const offsets = launchMarkerOffsetMap(visiblePastLaunches);
+      pastLaunches.forEach(launch => {
+        if (!launch.marker) return;
+        const offset = offsets.get(launch) || [0, 0];
+        launch.markerOffset = offset;
+        launch.marker.setIcon(buildUpcomingLaunchIcon(launch, '#22c55e'));
+        const missionLabel = launch.mission || launch.payload || launch.vehicle || t('launch_unknown_mission');
+        if (offset[0] || offset[1]) {
+          const labelDirection = offset[0] < 0 ? 'left' : 'right';
+          const labelOffset = offset[0] < 0 ? [-14, 0] : [14, 0];
+          if (launch.marker.getTooltip()) {
+            launch.marker.setTooltipContent(missionLabel);
+          } else {
+            launch.marker.bindTooltip(missionLabel, {
+              permanent: true,
+              direction: labelDirection,
+              offset: labelOffset,
+              className: 'launch-label'
+            });
+          }
+        } else if (launch.marker.getTooltip()) {
+          launch.marker.unbindTooltip();
+        }
+      });
+    }
+
     function rebuildPastLaunchLayer() {
+      updatePastLaunchMarkerOffsets();
       pastLaunchLayerGroup.clearLayers();
       pastLaunchMarkerRecords.forEach(record => {
         if (isPastLaunchInSelectedRange(record.ts)) record.marker.addTo(pastLaunchLayerGroup);
@@ -3946,6 +4038,7 @@
               ${t('launch_result_label')}: ${successText}
             `);
             marker.on('click', () => selectLaunchForSolarOverlay(historicalLaunch));
+            historicalLaunch.marker = marker;
             pastLaunchMarkerRecords.push({ marker, ts: d.getTime() });
             pastLaunches.push(historicalLaunch);
           });

@@ -46,6 +46,14 @@ assertContains(
   /pastLaunches\.push\(historicalLaunch\)/,
   'historical launch records must retain the solar/glow fields'
 );
+assertContains(
+  /function updatePastLaunchMarkerOffsets\(\)[\s\S]*?const visiblePastLaunches = pastLaunches\.filter\(launch => isPastLaunchInSelectedRange\(launch\.ts\)\)[\s\S]*?const offsets = launchMarkerOffsetMap\(visiblePastLaunches\)/,
+  'historical 2D markers must use visible-date fan-out offsets'
+);
+assertContains(
+  /function updatePastLaunchMarkerOffsets\(\)[\s\S]*?launch\.marker\.setIcon\(buildUpcomingLaunchIcon\(launch, '#22c55e'\)\)/,
+  'historical 2D fan-out must reuse the glow-aware icon builder'
+);
 
 const renderOnGlobe = extractFunctionBlock(html, 'function renderOnGlobe(');
 if (!renderOnGlobe) throw new Error('renderOnGlobe function is missing');
@@ -54,8 +62,14 @@ const upcomingBlockStart = renderOnGlobe.indexOf('// 1b. Render Upcoming Launche
 const pastBlock = pastBlockStart >= 0 && upcomingBlockStart > pastBlockStart
   ? renderOnGlobe.slice(pastBlockStart, upcomingBlockStart)
   : '';
+if (!/const pastOffsets = launchMarkerOffsetMap\(visiblePastLaunches\)/.test(pastBlock)) {
+  throw new Error('historical 3D markers must use visible-date fan-out offsets');
+}
 if (!/buildCesiumUpcomingLaunchIcon\(launch, '#22c55e'\)/.test(pastBlock)) {
   throw new Error('historical 3D markers must reuse the glow-capable upcoming SVG builder');
+}
+if (!/pixelOffset:\s*new Cesium\.Cartesian2\(offset\[0\], offset\[1\]\)/.test(pastBlock)) {
+  throw new Error('historical 3D billboards must apply the fan-out pixel offset');
 }
 if (!/addCesiumEntity\([\s\S]*?\},\s*launchSolarSelection\(launch\)\)/.test(pastBlock)) {
   throw new Error('historical 3D markers must carry launch solar selection payloads');

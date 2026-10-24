@@ -44,6 +44,9 @@ function parseCsv(text) {
 }
 
 const signatures = [
+  'function parseCoordinate(',
+  'function parseNotamPolygons(',
+  'function extractRowCoordinatesList(',
   'function launchDistanceKm(',
   'function launchProviderName(',
   'function warningTimeMatchesLaunch(',
@@ -53,6 +56,9 @@ const signatures = [
   'function warningScheduleAllowsLaunch(',
   'function warningRectanglePointsToLaunch(',
   'function launchCorridorPairMatches(',
+  'function warningRegionCenters(',
+  'function warningExplicitLaunchFamilyMatches(',
+  'function warningMultiRegionCorridorMatches(',
   'function relatedWarningRowsForLaunch(',
   'function warningRowsMatch(',
   'function relatedLaunchesForWarningRows(',
