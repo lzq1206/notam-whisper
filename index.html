@@ -1952,7 +1952,23 @@
     function warningRectanglePointsToLaunch(row, launch) {
       // Only infer a single downrange aviation warning when its short hazard
       // window and elongated rectangular axis both identify the same launch.
-      if (isMsiOrMaritime(row) || String(row.qcode || '').toUpperCase() !== 'QRDCA') return false;
+      // QWMLW fall-area notices use a separate, deliberately narrow gate:
+      // B5826/26 is an aviation debris-fall rectangle for Chinese aerospace
+      // activity, but it is well beyond the ordinary local/QRDCA distance.
+      if (isMsiOrMaritime(row)) return false;
+      const qcode = String(row.qcode || '').toUpperCase();
+      const raw = String(row.raw || '').toUpperCase();
+      const launchText = launch?.vehicle
+        ? String(launch.vehicle).toUpperCase()
+        : [launch?.mission, launch?.name].filter(Boolean).join(' ').toUpperCase();
+      const provider = String(launchProviderName(launch)).toUpperCase();
+      const isChineseLongMarchFallArea = qcode === 'QWMLW' &&
+        /AEROSPACE\s+FLT\s+ACT/.test(raw) &&
+        /FALL\s+AREA\s+OF\s+UNBURNED\s+DEBRIS/.test(raw) &&
+        /(?:CONDUCTED\s+BY\s+CHINA|CHINA\s+AEROSPACE)/.test(raw) &&
+        /LONG\s+MARCH/.test(launchText) &&
+        /(?:CHINA\s+AEROSPACE|CASC)/.test(provider);
+      if (qcode !== 'QRDCA' && !isChineseLongMarchFallArea) return false;
       const fromTs = Date.parse(row.from_utc);
       const toTs = Date.parse(row.to_utc);
       const startTs = Number(launch.windowStartTs);
@@ -2012,8 +2028,12 @@
       const distanceKm = Math.hypot(...launchPoint);
       const alongAxisKm = Math.abs(dot(launchPoint, axis) / axisLength);
       const crossTrackKm = Math.abs(launchPoint[0] * axis[1] - launchPoint[1] * axis[0]) / axisLength;
-      return distanceKm <= 600 && alongAxisKm > longLength / 2 &&
-        crossTrackKm <= Math.min(50, Math.max(15, distanceKm * 0.05));
+      const maxCenterDistanceKm = isChineseLongMarchFallArea ? 1800 : 600;
+      const maxCrossTrackKm = isChineseLongMarchFallArea
+        ? Math.min(75, Math.max(25, distanceKm * 0.05))
+        : Math.min(50, Math.max(15, distanceKm * 0.05));
+      return distanceKm <= maxCenterDistanceKm && alongAxisKm > longLength / 2 &&
+        crossTrackKm <= maxCrossTrackKm;
     }
 
     function launchCorridorPairMatches(launch, first, second) {
