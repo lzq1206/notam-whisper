@@ -1962,12 +1962,18 @@
         ? String(launch.vehicle).toUpperCase()
         : [launch?.mission, launch?.name].filter(Boolean).join(' ').toUpperCase();
       const provider = String(launchProviderName(launch)).toUpperCase();
+      const isChineseLongMarchProvider = /LONG\s+MARCH/.test(launchText) &&
+        /(?:CHINA\s+AEROSPACE|CASC)/.test(provider);
       const isChineseLongMarchFallArea = qcode === 'QWMLW' &&
         /AEROSPACE\s+FLT\s+ACT/.test(raw) &&
         /FALL\s+AREA\s+OF\s+UNBURNED\s+DEBRIS/.test(raw) &&
         /(?:CONDUCTED\s+BY\s+CHINA|CHINA\s+AEROSPACE)/.test(raw) &&
-        /LONG\s+MARCH/.test(launchText) &&
-        /(?:CHINA\s+AEROSPACE|CASC)/.test(provider);
+        isChineseLongMarchProvider;
+      // A Chinese Long March QRDCA is also allowed to use the maneuver-aware
+      // long-range branch: A5624/26 is nearly square, so it has no unique
+      // “long edge” even though one edge aligns with the downrange bearing.
+      const isFlexibleLongRange = isChineseLongMarchProvider &&
+        (qcode === 'QRDCA' || isChineseLongMarchFallArea);
       if (qcode !== 'QRDCA' && !isChineseLongMarchFallArea) return false;
       const fromTs = Date.parse(row.from_utc);
       const toTs = Date.parse(row.to_utc);
@@ -2012,28 +2018,48 @@
       const longIndex = pairA >= pairB ? 0 : 1;
       const longLength = Math.max(pairA, pairB);
       const shortLength = Math.min(pairA, pairB);
-      if (longLength / shortLength < 1.5 || longLength > 150 || shortLength > 100 ||
+      const minimumAspectRatio = isFlexibleLongRange ? 1 : 1.5;
+      if (longLength / shortLength < minimumAspectRatio || longLength > 150 || shortLength > 100 ||
           Math.max(lengths[0], lengths[2]) / Math.min(lengths[0], lengths[2]) > 1.3 ||
           Math.max(lengths[1], lengths[3]) / Math.min(lengths[1], lengths[3]) > 1.3) return false;
 
-      const axis = [
-        edges[longIndex][0] - edges[longIndex + 2][0],
-        edges[longIndex][1] - edges[longIndex + 2][1],
-      ];
-      const axisLength = Math.hypot(...axis);
       const launchLat = Number.parseFloat(launch.lat);
       const launchLon = Number.parseFloat(launch.lon);
-      if (![launchLat, launchLon].every(Number.isFinite) || axisLength < 1) return false;
+      if (![launchLat, launchLon].every(Number.isFinite)) return false;
       const launchPoint = toLocal([launchLat, launchLon]);
       const distanceKm = Math.hypot(...launchPoint);
-      const alongAxisKm = Math.abs(dot(launchPoint, axis) / axisLength);
-      const crossTrackKm = Math.abs(launchPoint[0] * axis[1] - launchPoint[1] * axis[0]) / axisLength;
-      const maxCenterDistanceKm = isChineseLongMarchFallArea ? 1800 : 600;
-      const maxCrossTrackKm = isChineseLongMarchFallArea
-        ? Math.min(75, Math.max(25, distanceKm * 0.05))
-        : Math.min(50, Math.max(15, distanceKm * 0.05));
-      return distanceKm <= maxCenterDistanceKm && alongAxisKm > longLength / 2 &&
-        crossTrackKm <= maxCrossTrackKm;
+      const candidateIndexes = isFlexibleLongRange && longLength / shortLength < 1.5
+        ? [0, 1, 2, 3]
+        : [longIndex, longIndex + 2];
+      const axisCandidates = candidateIndexes.map(index => {
+        const axis = edges[index];
+        const axisLength = Math.hypot(...axis);
+        return {
+          axis,
+          axisLength,
+          alongAxisKm: axisLength >= 1 ? Math.abs(dot(launchPoint, axis) / axisLength) : 0,
+          crossTrackKm: axisLength >= 1
+            ? Math.abs(launchPoint[0] * axis[1] - launchPoint[1] * axis[0]) / axisLength
+            : Infinity,
+        };
+      }).filter(candidate => candidate.axisLength >= 1);
+      if (!axisCandidates.length) return false;
+      const bestAxis = axisCandidates.reduce((best, candidate) =>
+        candidate.crossTrackKm < best.crossTrackKm ? candidate : best
+      );
+
+      // Allow a bounded maneuver envelope that grows with downrange distance:
+      // a fixed cross-track cutoff is too strict for a vehicle that turns after
+      // launch, while the cap prevents time-only or cross-ocean matches.
+      const maxCenterDistanceKm = isFlexibleLongRange ? 1800 : 600;
+      const maneuverAngleDeg = Math.min(isFlexibleLongRange ? 10 : 6,
+        Math.max(3, 2 + distanceKm / 400));
+      const maneuverCrossTrackKm = distanceKm * Math.tan(maneuverAngleDeg * Math.PI / 180);
+      const maxCrossTrackKm = Math.min(isFlexibleLongRange ? 180 : 60,
+        Math.max(15, maneuverCrossTrackKm));
+      return distanceKm <= maxCenterDistanceKm &&
+        bestAxis.alongAxisKm > longLength / 2 &&
+        bestAxis.crossTrackKm <= maxCrossTrackKm;
     }
 
     function launchCorridorPairMatches(launch, first, second) {

@@ -125,11 +125,16 @@ const longMarch2c = {
   lat: 28.247059,
   lon: 102.029008,
 };
-if (warningRectanglePointsToLaunch(a5624, longMarch2c)) {
-  throw new Error('A5624/26 must not be inferred as a Long March 2C match from time alone');
+if (!warningRectanglePointsToLaunch(a5624, longMarch2c)) {
+  throw new Error('A5624/26 should pass the maneuver-aware Long March 2C rectangle gate');
 }
-if (relatedWarningRowsForLaunch(longMarch2c, [a5624]).length !== 0) {
-  throw new Error('A5624/26 should remain unassociated without validated downrange geometry');
+const a5624Related = relatedWarningRowsForLaunch(longMarch2c, [a5624]);
+if (a5624Related.length !== 1 || a5624Related[0] !== a5624) {
+  throw new Error(`A5624/26 should be associated once at row level, got ${a5624Related.length}`);
+}
+const a5624Targets = launchWarningDirectionTargets(a5624, longMarch2c);
+if (a5624Targets.length !== 1 || a5624Targets[0] !== a5624) {
+  throw new Error('A5624/26 should remain direction-eligible after maneuver-aware matching');
 }
 if (relatedWarningRowsForLaunch(longMarch12, [a5624]).length !== 0) {
   throw new Error('A5624/26 must not cross-match the Long March 12 launch');
