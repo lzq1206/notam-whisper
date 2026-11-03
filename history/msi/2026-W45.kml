@@ -3,6 +3,33 @@
   <Document>
     <name>Maritime Warnings</name>
     <Placemark>
+      <name>NAVAREA XII 758/26</name>
+      <description>260304Z OCT 26  NAVAREA XII 758/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 020156Z TO 020619Z NOV, ALTERNATE        030142Z TO 030605Z, 040128Z TO 040551Z,        050114Z TO 050537Z, 060100Z TO 060523Z,        070046Z TO 070509Z, AND         080032Z TO 080455Z NOV IN AREA BOUND BY        32-05.00N 119-08.00W, 32-30.00N 119-18.00W,        33-15.00N 119-38.00W, 34-12.00N 120-06.00W,        34-31.00N 120-18.00W, 34-40.00N 120-38.00W,        34-36.00N 120-39</description>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-119.133333,32.083333,0 -119.3,32.5,0 -119.633333,33.25,0 -120.1,34.2,0 -120.3,34.516667,0 -120.633333,34.666667,0 -120.65,34.6,0 -120.616667,34.45,0 -120.566667,34.316667,0 -119.15,32.083333,0 -119.133333,32.083333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-118.25,30.766667,0 -118.783333,31.383333,0 -118.516667,30.433333,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0 -118.25,30.766667,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-117.983333,29.033333,0 -118.033333,29.25,0 -118.133333,29.4,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0 -117.266667,29.6,0 -117.316667,28.833333,0 -117.316667,28.25,0 -117.35,28.266667,0 -117.816667,28.833333,0 -117.983333,29.033333,0</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
       <name>HYDROLANT 237/26(54)</name>
       <description>031744Z FEB 26  HYDROLANT 237/26(54).  AEGEAN SEA.  DNC 09.  1. MISSILE OPERATIONS 0530Z TO SUNSET DAILY EVERY     WEDNESDAY THRU SATURDAY UNTIL 14 JUN AND     16 SEB THRU 31 DEC IN AREAS:     A. BOUND BY        35-36.00N 024-07.00E, 36-18.00N 024-07.00E,        36-18.00N 025-59.00E, 36-25.00N 026-12.00E,        36-16.00N 026-40.00E, 35-36.00N 026-41.00E,        35-31.00N 024-11.00E.     B. WITHIN ONE MILE OF 35-32.00N 024-13.00E.     C. WITHIN ONE MILE OF 35-36.33N 024-10.00E.  2. CANCEL THIS M</description>
       <MultiGeometry>
@@ -110,33 +137,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>NAVAREA XII 758/26</name>
-      <description>260304Z OCT 26  NAVAREA XII 758/26.  NORTH PACIFIC.  CALIFORNIA.  1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING:      A. 020156Z TO 020619Z NOV, ALTERNATE        030142Z TO 030605Z, 040128Z TO 040551Z,        050114Z TO 050537Z, 060100Z TO 060523Z,        070046Z TO 070509Z, AND         080032Z TO 080455Z NOV IN AREA BOUND BY        32-05.00N 119-08.00W, 32-30.00N 119-18.00W,        33-15.00N 119-38.00W, 34-12.00N 120-06.00W,        34-31.00N 120-18.00W, 34-40.00N 120-38.00W,        34-36.00N 120-39</description>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-119.133333,32.083333,0 -119.3,32.5,0 -119.633333,33.25,0 -120.1,34.2,0 -120.3,34.516667,0 -120.633333,34.666667,0 -120.65,34.6,0 -120.616667,34.45,0 -120.566667,34.316667,0 -119.15,32.083333,0 -119.133333,32.083333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-118.25,30.766667,0 -118.783333,31.383333,0 -118.516667,30.433333,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0 -118.25,30.766667,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>-117.983333,29.033333,0 -118.033333,29.25,0 -118.133333,29.4,0 -118.2,29.583333,0 -117.9,29.866667,0 -117.65,29.8,0 -117.266667,29.6,0 -117.316667,28.833333,0 -117.316667,28.25,0 -117.35,28.266667,0 -117.816667,28.833333,0 -117.983333,29.033333,0</coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
     </Placemark>
   </Document>
 </kml>
