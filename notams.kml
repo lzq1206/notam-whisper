@@ -102,6 +102,114 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>A5720/26</name>
+      <description>A5720/26 NOTAMN  Q)ZXXX/QRDCA/IV/BO/W/000/999/3854N10938E013  A)ZBPE ZLHW B)2611050223 C)2611050245   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N390000E1095100-N385000E1094800-N384800E1092600-N385800E1092700-   N390600E1093300,VERTICAL LIMITS:SFC-UNL.CIVIL ACFT ARE FORBIDDEN   TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 04 NOV 2026 04:07  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>109.85,39.0,0 109.8,38.833333,0 109.433333,38.8,0 109.45,38.966667,0 109.55,39.1,0 109.85,39.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5721/26</name>
+      <description>A5721/26 NOTAMN  Q)ZXXX/QRDCA/IV/BO/W/000/999/3854N10938E013  A)ZBPE ZLHW B)2611050830 C)2611050852   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N390000E1095100-N385000E1094800-N384800E1092600-N385800E1092700-   N390600E1093300,VERTICAL LIMITS:SFC-UNL.CIVIL ACFT ARE FORBIDDEN   TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 04 NOV 2026 04:08  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>109.85,39.0,0 109.8,38.833333,0 109.433333,38.8,0 109.45,38.966667,0 109.55,39.1,0 109.85,39.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5722/26</name>
+      <description>A5722/26 NOTAMN  Q)ZXXX/QRDCA/IV/BO/W/000/999/3909N10835E019  A)ZBPE ZLHW B)2611050224 C)2611050246   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N392000E1081500-N391100E1090000-N385800E1085600-N390600E1081100,  VERTICAL LIMITS:SFC-UNL.CIVIL ACFT ARE FORBIDDEN TO FLY INTO THE   AREA.  F)SFC G)UNL    CREATED: 04 NOV 2026 04:09  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>108.25,39.333333,0 109.0,39.183333,0 108.933333,38.966667,0 108.183333,39.1,0 108.25,39.333333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5723/26</name>
+      <description>A5723/26 NOTAMN  Q)ZXXX/QRDCA/IV/BO/W/000/999/3909N10835E019  A)ZBPE ZLHW B)2611050831 C)2611050853   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N392000E1081500-N391100E1090000-N385800E1085600-N390600E1081100,  VERTICAL LIMITS:SFC-UNL.CIVIL ACFT ARE FORBIDDEN TO FLY INTO THE   AREA.  F)SFC G)UNL    CREATED: 04 NOV 2026 04:09  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>108.25,39.333333,0 109.0,39.183333,0 108.933333,38.966667,0 108.183333,39.1,0 108.25,39.333333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5724/26</name>
+      <description>A5724/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/4002N10301E040  A)ZLHW B)2611050225 C)2611050248   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N401900E1021500-N400500E1035300-N394600E1034800-N400000E1021000,  VERTICAL LIMITS:SFC-UNL.CIVIL ACFT ARE FORBIDDEN TO FLY INTO THE   AREA.  F)SFC G)UNL    CREATED: 04 NOV 2026 04:10  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>102.25,40.316667,0 103.883333,40.083333,0 103.8,39.766667,0 102.166667,40.0,0 102.25,40.316667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5725/26</name>
+      <description>A5725/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/4002N10301E040  A)ZLHW B)2611050832 C)2611050855   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N401900E1021500-N400500E1035300-N394600E1034800-N400000E1021000,  VERTICAL LIMITS:SFC-UNL.CIVIL ACFT ARE FORBIDDEN TO FLY INTO THE   AREA.  F)SFC G)UNL    CREATED: 04 NOV 2026 04:10  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>102.25,40.316667,0 103.883333,40.083333,0 103.8,39.766667,0 102.166667,40.0,0 102.25,40.316667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5726/26</name>
+      <description>A5726/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/4039N09736E039  A)ZLHW B)2611050226 C)2611050249   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N405400E0964800-N404400E0982700-N402500E0982400-N403500E0964500,  VERTICAL LIMITS:SFC-UNL.CIVIL ACFT ARE FORBIDDEN TO FLY INTO THE   AREA.  F)SFC G)UNL    CREATED: 04 NOV 2026 04:13  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>96.8,40.9,0 98.45,40.733333,0 98.4,40.416667,0 96.75,40.583333,0 96.8,40.9,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5727/26</name>
+      <description>A5727/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/4039N09736E039  A)ZLHW B)2611050833 C)2611050856   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N405400E0964800-N404400E0982700-N402500E0982400-N403500E0964500,  VERTICAL LIMITS:SFC-UNL.CIVIL ACFT ARE FORBIDDEN TO FLY INTO THE   AREA.  F)SFC G)UNL    CREATED: 04 NOV 2026 04:13  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>96.8,40.9,0 98.45,40.733333,0 98.4,40.416667,0 96.75,40.583333,0 96.8,40.9,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A5728/26</name>
+      <description>A5728/26 NOTAMN  Q)ZLHW/QRDCA/IV/BO/W/000/999/3533N09852E013  A)ZLHW B)2611111132 C)2611111205   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED   BY:N354600E0984800-N354300E0990100-N352100E0985600-N352300E0984200,  VERTICAL LIMITS:SFC-UNL.CIVIL ACFT ARE FORBIDDEN TO FLY INTO THE   AREA.  F)SFC G)UNL    CREATED: 04 NOV 2026 04:47  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>98.8,35.766667,0 99.016667,35.716667,0 98.933333,35.35,0 98.7,35.383333,0 98.8,35.766667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B5829/26</name>
       <description>B5829/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1245N11610E038  A) RPHI B) 2611201100 C) 2611231400  D) 1100-1400  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  130200N 1153700E -  132100N 1160400E -  122800N 1164300E -   121000N 1161600E -  130200N 1153700E  (200NM WEST OF BUSUANGA AP).  F) SFC G) UNL    CREATED: 30 OCT 2026 10:40  SOURCE: EUECYIYN</description>
       <styleUrl>#polyStyle</styleUrl>
