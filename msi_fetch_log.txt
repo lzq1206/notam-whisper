@@ -25369,3 +25369,43 @@ AttributeError: module 'datetime' has no attribute 'UTC'
 2026-11-06T06:58:29.102553 -   HTTP 503
 2026-11-06T06:58:31.251566 -   HTTP 503
 2026-11-06T06:58:35.441668 -   HTTP 503
+2026-11-06T15:58:34.437635 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-11-06T15:58:34.945981 -   HTTP 503
+2026-11-06T15:58:37.089290 -   HTTP 503
+2026-11-06T15:58:41.226414 -   HTTP 503
+2026-11-06T15:58:46.232213 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-11-06T15:58:46.588521 -   HTTP 503
+2026-11-06T15:58:59.006309 -   HTTP 503
+2026-11-06T15:59:03.430318 -   HTTP 503
+2026-11-06T15:59:08.436122 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-11-06T15:59:08.790419 -   HTTP 503
+2026-11-06T15:59:11.423075 -   HTTP 503
+2026-11-06T15:59:16.329357 -   HTTP 503
+2026-11-06T15:59:21.335113 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-11-06T15:59:21.790203 -   HTTP 503
+2026-11-06T15:59:28.987147 -   HTTP 503
+2026-11-06T15:59:33.561816 -   HTTP 503
+2026-11-06T15:59:38.567578 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-11-06T15:59:38.981675 -   HTTP 503
+2026-11-06T15:59:41.181223 -   HTTP 503
+2026-11-06T15:59:45.478884 -   HTTP 503
+2026-11-06T15:59:50.484626 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-11-06T15:59:50.742175 -   HTTP 503
+2026-11-06T15:59:53.025045 -   HTTP 503
+2026-11-06T16:00:07.311576 -   HTTP 503
+2026-11-06T16:00:12.317389 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-11-06T16:00:12.680145 -   HTTP 503
+2026-11-06T16:00:14.933418 -   HTTP 503
+2026-11-06T16:00:19.383564 -   HTTP 503
+2026-11-06T16:00:24.389347 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-11-06T16:00:24.679737 -   HTTP 503
+2026-11-06T16:00:26.938646 -   HTTP 503
+2026-11-06T16:00:41.155175 -   HTTP 503
+2026-11-06T16:00:46.160979 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-11-06T16:00:46.469606 -   HTTP 503
+2026-11-06T16:00:48.723331 -   HTTP 503
+2026-11-06T16:00:52.923913 -   HTTP 503
+2026-11-06T16:00:57.929697 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-11-06T16:01:03.477995 -   HTTP 503
+2026-11-06T16:01:16.324527 -   HTTP 503
+2026-11-06T16:01:20.605906 -   HTTP 503
