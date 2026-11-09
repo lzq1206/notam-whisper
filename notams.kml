@@ -102,6 +102,18 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>A5824/26</name>
+      <description>A5824/26 NOTAMN  Q)ZSHA/QRDCA/IV/BO/W/000/999/3621N12215E034  A)ZSHA B)2611121944 C)2611122029   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N362200E1213400-N364400E1214400-N361800E1225700-N355900E1224600,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 09 NOV 2026 02:34  SOURCE: ZBBBYNYX</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>121.566667,36.366667,0 121.733333,36.733333,0 122.95,36.3,0 122.766667,35.983333,0 121.566667,36.366667,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B5829/26</name>
       <description>B5829/26 NOTAMN  Q) RPHI/QWMLW/IV/BO /W /000/999/1245N11610E038  A) RPHI B) 2611201100 C) 2611231400  D) 1100-1400  E) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.  EST FALL AREA OF UNBURNED DEBRIS WI:  130200N 1153700E -  132100N 1160400E -  122800N 1164300E -   121000N 1161600E -  130200N 1153700E  (200NM WEST OF BUSUANGA AP).  F) SFC G) UNL    CREATED: 30 OCT 2026 10:40  SOURCE: EUECYIYN</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -205,6 +217,18 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-121.883333,-30.0,0 -122.733333,-27.983333,0 -120.716667,-27.15,0 -120.0,-28.716667,0 -120.0,-30.0,0 -121.883333,-30.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A1441/26</name>
+      <description>A1441/26 NOTAMN  Q) NTTT/QRDCA/IV/BO/W/000/999/2455S13229W967  A) NTTT  B) 2611140812 C) 2611191137  D) 14 0812-1137, 15 0812-1137, 16 0812-1137,   17 0812-1137, 18 0812-1137, 19 0812-1137  E) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX  STARSHIP FLT-15 IN TAHITI FIR WITHIN AN AREA BOUNDED BY  FOLLOWING POINTS:   1923S 14849W, 2458S 13310W, 2658S 12436W, 2751S 12122W,  2737S 12000W, 2911S 12000W, 2806S 12506W, 2554S 13359W,  1951S 14900W, 1923S 14849W   THIS ACTIVITY ALSO IMPACTS </description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-148.816667,-19.383333,0 -133.166667,-24.966667,0 -124.6,-26.966667,0 -121.366667,-27.85,0 -120.0,-27.616667,0 -120.0,-29.183333,0 -125.1,-28.1,0 -133.983333,-25.9,0 -149.0,-19.85,0 -148.816667,-19.383333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
