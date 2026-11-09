@@ -1,6 +1,8 @@
 Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,Launch Vehicle,Official Payload Name,Success,Launch Site (Full)
 2026 NOV 08 2024,WSLC,19.59755,110.936481,Long March 12,SatNet LEO Group TBD?,,"Commercial LC-2 / Wenchang Space Launch Site, People's Republic of China"
+2026 NOV 08 2024,WSLC,19.59755,110.936481,Long March 12,SatNet LEO Group 29,S,"Commercial LC-2 / Wenchang Space Launch Site, People's Republic of China"
 2026 NOV 07 1330,Plesetsk,62.9273,40.45,Soyuz 2.1b Fregat-M,Soyuz 2.1b/Fregat | Glonass-K1? (Kosmos 2621?),S,"43/3 (43L) / Plesetsk Cosmodrome, Russian Federation"
+2026 NOV 07 1322,Plesetsk,62.9273,40.45,Soyuz 2.1b Fregat-M,Soyuz 2.1b/Fregat | Glonass-K1? (Kosmos 2621?),S,"43/3 (43L) / Plesetsk Cosmodrome, Russian Federation"
 2026 NOV 07 0048,VSFB,34.632,-120.611,Falcon 9 Block 5,USSF-432,S,"Space Launch Complex 4E / Vandenberg SFB, CA, USA"
 2026 NOV 06 2337,JSLC,40.969117,100.343333,Ceres-2,4 satellites,S,"Launch Area 95A / Jiuquan Satellite Launch Center, People's Republic of China"
 2026 NOV 05 1558,XSLC,28.247059,102.029008,Long March 2C,Yaogan 51-07 to 09,S,"Launch Complex 3 (LC-3/LA-1) / Xichang Satellite Launch Center, People's Republic of China"
