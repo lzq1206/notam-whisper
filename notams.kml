@@ -234,6 +234,18 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>A6439/26</name>
+      <description>A6439/26 NOTAMN  Q) LPPO/QWMLW/IV/BO /W /000/999/2844N03232W139  A) LPPO B) 2611231012 C) 2612031539  D) DAILY 1012-1539  E) ROCKET LAUNCH ARIANE 6 VA271 WILL TAKE PLACE AREA BOUNDED BY:  303500N 0310100W - 300200N 0302400W - 265100N 0335700W - 272200N   0343500W - 303500N 0310100W.  F) SFC G) UNL    CREATED: 10 NOV 2026 13:47  SOURCE: EUECYIYN</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-31.016667,30.583333,0 -30.4,30.033333,0 -33.95,26.85,0 -34.583333,27.366667,0 -31.016667,30.583333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>B3981/26</name>
       <description>B3981/26 NOTAMN  Q) MMFR/QRDCA/IV/BO/W/000/999/  A) MMFR  B) 2611090317  C) 2611150637  D) 09 0317-0800, 10 0303-0746, 11 0249-0732, 12 0235-0718, 13 0221-0704,     14 0207-0650, 15 0154-0637   E) DANGEROUS AREA FOR REENTRY OF ROCKET SPACEX R-5 STAGE 1      LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:     3138N 11903W     3144N 11850W     2948N 11739W     2936N 11716W     2850N 11719W     2815N 11719W     2814N 11720W     2850N 11749W     2902N 11759W     2915N 11802W     2924N 1180</description>
       <styleUrl>#polyStyle</styleUrl>
