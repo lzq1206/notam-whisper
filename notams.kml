@@ -54,6 +54,126 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>FDC 6/7129</name>
+      <description>FDC 6/7129 AIRSPACE SPACE OPERATIONS TFR. STARBASE, TX, Friday, November 13, 2026 through Friday, November 13, 2026 Local. NOTAM Number : FDC 6/7129 Download shapefiles Issue Date : November 11, 2026 at 1650 UTC Location : STARBASE, Texas Beginning Date and Time : November 13, 2026 at 2230 UTC Ending Date and Time : November 14, 2026 at 0040 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To:</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.116667,26.066667,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/7130</name>
+      <description>FDC 6/7130 AIRSPACE SPACE OPERATIONS TFR. STARBASE, TX, Saturday, November 14, 2026 through Saturday, November 14, 2026 Local. NOTAM Number : FDC 6/7130 Download shapefiles Issue Date : November 11, 2026 at 1650 UTC Location : STARBASE, Texas Beginning Date and Time : November 14, 2026 at 2230 UTC Ending Date and Time : November 15, 2026 at 0040 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.116667,26.066667,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/7131</name>
+      <description>FDC 6/7131 AIRSPACE SPACE OPERATIONS TFR. STARBASE, TX, Saturday, November 14, 2026 through Saturday, November 14, 2026 Local. NOTAM Number : FDC 6/7131 Download shapefiles Issue Date : November 11, 2026 at 1650 UTC Location : STARBASE, Texas Beginning Date and Time : November 14, 2026 at 2053 UTC Ending Date and Time : November 15, 2026 at 0014 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.116667,26.066667,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/7132</name>
+      <description>FDC 6/7132 AIRSPACE SPACE OPERATIONS TFR. STARBASE, TX, Sunday, November 15, 2026 through Sunday, November 15, 2026 Local. NOTAM Number : FDC 6/7132 Download shapefiles Issue Date : November 11, 2026 at 1650 UTC Location : STARBASE, Texas Beginning Date and Time : November 15, 2026 at 2053 UTC Ending Date and Time : November 16, 2026 at 0014 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : HOUSTON (ZHU) ARTCC, 281-230-5560 Jump To:</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-97.166667,25.933333,0 -97.2,26.016667,0 -97.116667,26.066667,0 -96.916667,26.1,0 -96.916667,26.0,0 -97.0,26.0,0 -97.166667,25.933333,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/7114</name>
+      <description>FDC 6/7114 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Sunday, November 15, 2026 Local. NOTAM Number : FDC 6/7114 Download shapefiles Issue Date : November 11, 2026 at 1526 UTC Location : Cape Canaveral, Florida Beginning Date and Time : November 15, 2026 at 1701 UTC Ending Date and Time : November 15, 2026 at 1850 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami (ZMA) ARTCC, 305-716-1588 Jump To: Affected Areas Operat</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-80.705278,28.854444,0 -80.5,29.125,0 -80.455,29.099167,0 -80.408056,29.085,0 -80.362222,29.0675,0 -80.318611,29.046667,0 -80.277222,29.022222,0 -80.238611,28.995,0 -80.2025,28.964722,0 -80.169722,28.931667,0 -80.140556,28.896389,0 -80.114722,28.859167,0 -80.092778,28.82,0 -80.074722,28.779167,0 -80.061111,28.737222,0 -80.051389,28.694167,0 -80.046111,28.650833,0 -80.045,28.606944,0 -80.048333,28.563333,0 -80.056111,28.52,0 -80.067778,28.477778,0 -80.083889,28.436389,0 -80.103889,28.396389,0 -80.1275,28.358056,0 -80.155,28.321667,0 -80.186111,28.2875,0 -80.220278,28.255833,0 -80.257222,28.226944,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.783611,28.633611,0 -80.845556,28.819444,0 -80.787222,28.854444,0 -80.705278,28.854444,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/7113</name>
+      <description>FDC 6/7113 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Sunday, November 15, 2026 Local. NOTAM Number : FDC 6/7113 Download shapefiles Issue Date : November 11, 2026 at 1525 UTC Location : Cape Canaveral, Florida Beginning Date and Time : November 15, 2026 at 1701 UTC Ending Date and Time : November 15, 2026 at 1850 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami (ZMA) ARTCC, 305-716-1588 Jump To: Affected Areas Operat</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-80.705278,28.854444,0 -80.5,29.125,0 -80.455,29.099167,0 -80.408056,29.085,0 -80.362222,29.0675,0 -80.318611,29.046667,0 -80.277222,29.022222,0 -80.238611,28.995,0 -80.2025,28.964722,0 -80.169722,28.931667,0 -80.140556,28.896389,0 -80.114722,28.859167,0 -80.092778,28.82,0 -80.074722,28.779167,0 -80.061111,28.737222,0 -80.051389,28.694167,0 -80.046111,28.650833,0 -80.045,28.606944,0 -80.048333,28.563333,0 -80.056111,28.52,0 -80.067778,28.477778,0 -80.083889,28.436389,0 -80.103889,28.396389,0 -80.1275,28.358056,0 -80.155,28.321667,0 -80.186111,28.2875,0 -80.220278,28.255833,0 -80.257222,28.226944,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.783611,28.633611,0 -80.845556,28.819444,0 -80.787222,28.854444,0 -80.705278,28.854444,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/7112</name>
+      <description>FDC 6/7112 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Saturday, November 14, 2026 Local. NOTAM Number : FDC 6/7112 Download shapefiles Issue Date : November 11, 2026 at 1523 UTC Location : Cape Canaveral, Florida Beginning Date and Time : November 14, 2026 at 1722 UTC Ending Date and Time : November 14, 2026 at 1911 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami (ZMA) ARTCC, 305-716-1588 Jump To: Affected Areas Oper</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-80.705278,28.854444,0 -80.5,29.125,0 -80.455,29.099167,0 -80.408056,29.085,0 -80.362222,29.0675,0 -80.318611,29.046667,0 -80.277222,29.022222,0 -80.238611,28.995,0 -80.2025,28.964722,0 -80.169722,28.931667,0 -80.140556,28.896389,0 -80.114722,28.859167,0 -80.092778,28.82,0 -80.074722,28.779167,0 -80.061111,28.737222,0 -80.051389,28.694167,0 -80.046111,28.650833,0 -80.045,28.606944,0 -80.048333,28.563333,0 -80.056111,28.52,0 -80.067778,28.477778,0 -80.083889,28.436389,0 -80.103889,28.396389,0 -80.1275,28.358056,0 -80.155,28.321667,0 -80.186111,28.2875,0 -80.220278,28.255833,0 -80.257222,28.226944,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.783611,28.633611,0 -80.845556,28.819444,0 -80.787222,28.854444,0 -80.705278,28.854444,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/7111</name>
+      <description>FDC 6/7111 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Saturday, November 14, 2026 Local. NOTAM Number : FDC 6/7111 Download shapefiles Issue Date : November 11, 2026 at 1521 UTC Location : Cape Canaveral, Florida Beginning Date and Time : November 14, 2026 at 1722 UTC Ending Date and Time : November 14, 2026 at 1911 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami (ZMA) ARTCC, 305-716-1588 Jump To: Affected Areas Oper</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-80.705278,28.854444,0 -80.5,29.125,0 -80.455,29.099167,0 -80.408056,29.085,0 -80.362222,29.0675,0 -80.318611,29.046667,0 -80.277222,29.022222,0 -80.238611,28.995,0 -80.2025,28.964722,0 -80.169722,28.931667,0 -80.140556,28.896389,0 -80.114722,28.859167,0 -80.092778,28.82,0 -80.074722,28.779167,0 -80.061111,28.737222,0 -80.051389,28.694167,0 -80.046111,28.650833,0 -80.045,28.606944,0 -80.048333,28.563333,0 -80.056111,28.52,0 -80.067778,28.477778,0 -80.083889,28.436389,0 -80.103889,28.396389,0 -80.1275,28.358056,0 -80.155,28.321667,0 -80.186111,28.2875,0 -80.220278,28.255833,0 -80.257222,28.226944,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.783611,28.633611,0 -80.845556,28.819444,0 -80.787222,28.854444,0 -80.705278,28.854444,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/7110</name>
+      <description>FDC 6/7110 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Friday, November 13, 2026 Local. NOTAM Number : FDC 6/7110 Download shapefiles Issue Date : November 11, 2026 at 1519 UTC Location : Cape Canaveral, Florida Beginning Date and Time : November 13, 2026 at 1744 UTC Ending Date and Time : November 13, 2026 at 1932 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami (ZMA) ARTCC, 305-716-1588 Jump To: Affected Areas Operat</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-80.705278,28.854444,0 -80.5,29.125,0 -80.455,29.099167,0 -80.408056,29.085,0 -80.362222,29.0675,0 -80.318611,29.046667,0 -80.277222,29.022222,0 -80.238611,28.995,0 -80.2025,28.964722,0 -80.169722,28.931667,0 -80.140556,28.896389,0 -80.114722,28.859167,0 -80.092778,28.82,0 -80.074722,28.779167,0 -80.061111,28.737222,0 -80.051389,28.694167,0 -80.046111,28.650833,0 -80.045,28.606944,0 -80.048333,28.563333,0 -80.056111,28.52,0 -80.067778,28.477778,0 -80.083889,28.436389,0 -80.103889,28.396389,0 -80.1275,28.358056,0 -80.155,28.321667,0 -80.186111,28.2875,0 -80.220278,28.255833,0 -80.257222,28.226944,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.783611,28.633611,0 -80.845556,28.819444,0 -80.787222,28.854444,0 -80.705278,28.854444,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>FDC 6/7109</name>
+      <description>FDC 6/7109 AIRSPACE SPACE OPERATIONS TFR. Cape Canaveral, FL, Friday, November 13, 2026 Local. NOTAM Number : FDC 6/7109 Download shapefiles Issue Date : November 11, 2026 at 1514 UTC Location : Cape Canaveral, Florida Beginning Date and Time : November 13, 2026 at 1744 UTC Ending Date and Time : November 13, 2026 at 1932 UTC Reason for NOTAM : Space Operations Area Type : Space Operations Replaced NOTAM(s) : N/A Pilots May Contact : Miami (ZMA) ARTCC, 305-716-1588 Jump To: Affected Areas Operat</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-80.705278,28.854444,0 -80.5,29.125,0 -80.455,29.099167,0 -80.408056,29.085,0 -80.362222,29.0675,0 -80.318611,29.046667,0 -80.277222,29.022222,0 -80.238611,28.995,0 -80.2025,28.964722,0 -80.169722,28.931667,0 -80.140556,28.896389,0 -80.114722,28.859167,0 -80.092778,28.82,0 -80.074722,28.779167,0 -80.061111,28.737222,0 -80.051389,28.694167,0 -80.046111,28.650833,0 -80.045,28.606944,0 -80.048333,28.563333,0 -80.056111,28.52,0 -80.067778,28.477778,0 -80.083889,28.436389,0 -80.103889,28.396389,0 -80.1275,28.358056,0 -80.155,28.321667,0 -80.186111,28.2875,0 -80.220278,28.255833,0 -80.257222,28.226944,0 -80.266667,28.225,0 -80.508056,28.416944,0 -80.633056,28.416944,0 -80.695556,28.416944,0 -80.730278,28.5225,0 -80.783611,28.633611,0 -80.845556,28.819444,0 -80.787222,28.854444,0 -80.705278,28.854444,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>A5824/26</name>
       <description>A5824/26 NOTAMN  Q)ZSHA/QRDCA/IV/BO/W/000/999/3621N12215E034  A)ZSHA B)2611121944 C)2611122029   E) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:  N362200E1213400-N364400E1214400-N361800E1225700-N355900E1224600,   BACK TO START.VERTICAL LIMITS:SFC-UNL.  AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.  F)SFC G)UNL    CREATED: 09 NOV 2026 02:34  SOURCE: ZBBBYNYX</description>
       <styleUrl>#polyStyle</styleUrl>
@@ -217,6 +337,30 @@
         <outerBoundaryIs>
           <LinearRing>
             <coordinates>-121.883333,-30.0,0 -122.733333,-27.983333,0 -120.716667,-27.15,0 -120.0,-28.716667,0 -120.0,-30.0,0 -121.883333,-30.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A1764/26</name>
+      <description>A1764/26 NOTAMN  Q) TTZP/QXXXX/IV/NBO/W/000/999/1450N05112W999  A) TTZP  B) 2611132245 C) 2611140220  E) DANGER AREA ACTIVATED WITHIN THE PIARCO FIR DUE TO THE LAUNCH OF  THE 'SPACE X STARSHIP FLIGHT 15' ROCKET. THE PIARCO ACC STRONGLY  CAUTIONS AIRCRAFT NOT TO OPERATE WITHIN THE DANGER AREA BOUNDED BY  COORDINATES: 1142N05709W 1049N05501W 0914N05527W 0939N05700W  1142N05709W  PRIMARY LAUNCH DATE: 261113  BACK-UP DATES: 261114 261115 261116 261117 261118 261119.  F) SFC G) UNL    CREATED: 11 NOV</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-57.15,11.7,0 -55.016667,10.816667,0 -55.45,9.233333,0 -57.0,9.65,0 -57.15,11.7,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>A1765/26</name>
+      <description>A1765/26 NOTAMN  Q) TTZP/QXXXX/IV/NBO/W/000/999/1450N05112W999  A) TTZP  B) 2611132245 C) 2611140220  E) DEBRIS RESPONSE AREAS HAVE BEEN DEFINED WITHIN THE PIARCO FIR DUE  TO THE LAUNCH OF THE 'SPACE X STARSHIP FLIGHT 14' ROCKET.   THE AREA IS BOUNDED BY THE FOLLOWING COORDINATES:   DEBRIS RESPONSE AREA "A": 1449N06453W - 1320N06141W - 1156N06218W -  1231N06326W - 1449N06453W.      DEBRIS RESPONSE AREA "B":  1134N06136W - 1121N06106W - 1019N05701W -  1104N05705W - 1222N05940W  1254N06044W - 1220</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-64.883333,14.816667,0 -61.683333,13.333333,0 -62.3,11.933333,0 -63.433333,12.516667,0 -64.883333,14.816667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
