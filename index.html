@@ -559,6 +559,8 @@
         launch_upcoming_ready: '已加载 {count} 条所选时间范围内的未来发射',
         launch_unknown_mission: '未知任务',
         launch_unknown_vehicle: '未知',
+        launch_vehicle_type: '火箭类型',
+        launch_propellant_label: '燃料',
         launch_success: '✅ 成功',
         launch_failed: '❌ 失败',
         launch_result_unknown: '?',
@@ -641,6 +643,8 @@
         launch_upcoming_ready: 'Loaded {count} upcoming launch(es) in the selected time range',
         launch_unknown_mission: 'Unknown mission',
         launch_unknown_vehicle: 'Unknown',
+        launch_vehicle_type: 'Vehicle type',
+        launch_propellant_label: 'Propellant',
         launch_success: '✅ Success',
         launch_failed: '❌ Failure',
         launch_result_unknown: '?',
@@ -1193,6 +1197,45 @@
 
     let upcomingLaunches = [];
     let pastLaunches = [];
+    let rocketPropellantLookup = new Map();
+    let rocketPropellantCatalogLoadPromise = null;
+
+    function normalizeRocketVehicleKey(vehicleName) {
+      return String(vehicleName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+
+    async function loadRocketPropellantCatalog() {
+      if (rocketPropellantLookup.size) return rocketPropellantLookup;
+      if (!rocketPropellantCatalogLoadPromise) {
+        rocketPropellantCatalogLoadPromise = fetchWithTimeout('./rocket_propellants.json', { cache: 'force-cache' }, 5000)
+          .then(response => {
+            if (!response.ok) throw new Error(`Rocket propellant catalog returned HTTP ${response.status}`);
+            return response.json();
+          })
+          .then(catalog => {
+            const entries = Array.isArray(catalog?.vehicles) ? catalog.vehicles : [];
+            rocketPropellantLookup = new Map(entries.map(entry => [normalizeRocketVehicleKey(entry.vehicle), entry]));
+            const gslvMark3 = rocketPropellantLookup.get(normalizeRocketVehicleKey('Launch Vehicle Mark-3 (GSLV Mk III)'));
+            if (gslvMark3) {
+              ['gslvmkiii', 'gslvmarkiii', 'lvm3'].forEach(alias => rocketPropellantLookup.set(alias, gslvMark3));
+            }
+          })
+          .catch(error => {
+            console.warn('[launches] Rocket propulsion details unavailable:', error);
+            rocketPropellantCatalogLoadPromise = null;
+          });
+      }
+      await rocketPropellantCatalogLoadPromise;
+      return rocketPropellantLookup;
+    }
+
+    function buildRocketPropellantDetailsMarkup(vehicleName) {
+      if (!vehicleName) return '';
+      const info = rocketPropellantLookup.get(normalizeRocketVehicleKey(vehicleName));
+      const type = info?.type || '未知';
+      const fuel = info?.fuel || '推进剂资料暂不可用';
+      return `<div style="font-size:11px;color:#374151;margin:2px 0 4px;">${t('launch_vehicle_type')}: ${escapeHtml(type)}<br/>${t('launch_propellant_label')}: ${escapeHtml(fuel)}</div>`;
+    }
 
     function getNotamLaunchDateRange(startValue, endValue) {
       const startText = startValue === undefined ? startEl.value : startValue;
@@ -1329,7 +1372,7 @@
                   verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(offset[0], offset[1] + 16),
                   eyeOffset: new Cesium.Cartesian3(0, 0, 500)
                 },
-                description: `<b>🚀 ${launch.vehicle}</b><br/>${t('cesium_payload_label')}: ${launch.payload}<br/>${t('cesium_time_label')}: ${launch.dateStr}<br/>${t('cesium_result_label')}: ${launch.success}`
+                description: `<b>🚀 ${launch.vehicle}</b><br/>${buildRocketPropellantDetailsMarkup(launch.vehicle)}${t('cesium_payload_label')}: ${launch.payload}<br/>${t('cesium_time_label')}: ${launch.dateStr}<br/>${t('cesium_result_label')}: ${launch.success}`
               }, launchSolarSelection(launch));
             });
           }
@@ -1359,7 +1402,7 @@
                 verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(offset[0], offset[1] + 16),
                 eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
-              description: `${buildLaunchImageMarkup(launch, launch.mission || t('launch_image_alt'))}${buildLaunchOrbitDetailsLink(launch)}<b>${escapeHtml(launch.mission || t('launch_unknown_mission'))}</b><br/>${launch.vehicle ? `${t('kml_vehicle')}: ${escapeHtml(launch.vehicle)}<br/>` : ''}${t('launch_time_label')}: ${escapeHtml(launch.dateStr)}${launch.windowStr ? `<br/>${t('launch_window_label')}: ${escapeHtml(launch.windowStr)}` : ''}`
+              description: `${buildLaunchImageMarkup(launch, launch.mission || t('launch_image_alt'))}${buildLaunchOrbitDetailsLink(launch)}<b>${escapeHtml(launch.mission || t('launch_unknown_mission'))}</b><br/>${launch.vehicle ? `${t('kml_vehicle')}: ${escapeHtml(launch.vehicle)}<br/>${buildRocketPropellantDetailsMarkup(launch.vehicle)}` : ''}${t('launch_time_label')}: ${escapeHtml(launch.dateStr)}${launch.windowStr ? `<br/>${t('launch_window_label')}: ${escapeHtml(launch.windowStr)}` : ''}`
             }, launchSolarSelection(launch));
             rocketEntity.__launchDirectionRecord = launch;
           });
@@ -3841,6 +3884,7 @@
         const range = upcomingLaunchDateRange(nowMs);
         // Start the launch query before the optional site lookup so network
         // latency overlaps instead of adding up on a cold page load.
+        const propellantCatalogPromise = loadRocketPropellantCatalog();
         const primaryFeedPromise = fetchUpcomingLaunchFeed(range)
           .catch(error => {
             console.warn('[Space Devs] Failed to fetch launch metadata:', error);
@@ -3891,6 +3935,7 @@
         // are fetched in parallel only if the primary has no usable results.
         upcomingLaunches = [];
         const primaryFeed = await primaryFeedPromise;
+        await propellantCatalogPromise;
         const spaceDevsUpcoming = primaryFeed.launches;
 
         const primarySpaceDevsList = filterFutureLaunches(spaceDevsUpcoming, nowMs)
@@ -4013,6 +4058,7 @@
                 <div style="font-size:12px;color:#666;">${t('launch_upcoming')}</div>
                 <b style="color:${escapeHtml(launchRecord.color || color)}">${escapeHtml(missionName)}</b><br/>
                 ${vehicleName ? `${t('kml_vehicle')}: ${escapeHtml(vehicleName)}<br/>` : ''}
+                ${buildRocketPropellantDetailsMarkup(vehicleName)}
                 ${t('launch_site_label')}: ${escapeHtml(locName)}${padName ? ' / ' + escapeHtml(padName) : ''}<br/>
                 ${t('launch_time_label')}: ${escapeHtml(dateStr)}<br/>
                 ${windowStr ? `${t('launch_window_label')}: ${escapeHtml(windowStr)}<br/>` : ''}
@@ -4078,6 +4124,7 @@
             marker.bindPopup(`
               <div style="font-size:12px;color:#666;">${t('launch_past')}</div>
               <b style="color:#16a34a;">🚀 ${vehicle}</b><br/>
+              ${buildRocketPropellantDetailsMarkup(vehicle)}
               ${t('launch_payload_label')}: ${payload}<br/>
               ${t('launch_site_label')}: ${siteName || abbrev}<br/>
               ${t('launch_time_label')}: ${dateStr}<br/>

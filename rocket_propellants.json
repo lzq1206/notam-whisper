@@ -1,0 +1,536 @@
+{
+  "generated_from": [
+    "upcoming_launches.csv",
+    "past_launches.csv",
+    "history/launches/2026-W29.csv",
+    "history/launches/2026-W30.csv",
+    "history/launches/2026-W31.csv",
+    "history/launches/2026-W32.csv",
+    "history/launches/2026-W33.csv",
+    "history/launches/2026-W34.csv",
+    "history/launches/2026-W35.csv",
+    "history/launches/2026-W36.csv",
+    "history/launches/2026-W37.csv",
+    "history/launches/2026-W38.csv",
+    "history/launches/2026-W39.csv",
+    "history/launches/2026-W40.csv",
+    "history/launches/2026-W41.csv",
+    "history/launches/2026-W42.csv",
+    "history/launches/2026-W43.csv",
+    "history/launches/2026-W44.csv"
+  ],
+  "vehicle_count": 84,
+  "type_categories": [
+    "固体推进",
+    "液体推进",
+    "固液组合",
+    "混合推进",
+    "未知"
+  ],
+  "vehicles": [
+    {
+      "vehicle": "Angara 1.2",
+      "type": "液体推进",
+      "fuel": "主级：液氧 + RP-1煤油；上面级视任务构型而异。",
+      "source": "https://www.faa.gov/about/office_org/headquarters_offices/ast/media/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Angara A5/Briz-M",
+      "type": "液体推进",
+      "fuel": "芯级：液氧 + RP-1煤油；Briz-M上面级：四氧化二氮 + 偏二甲肼。",
+      "source": "https://www.faa.gov/about/office_org/headquarters_offices/ast/media/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Ariane 62",
+      "type": "固液组合",
+      "fuel": "芯级/上面级：液氧 + 液氢；2枚P120C固体助推器。",
+      "source": "https://www.esa.int/Enabling_Support/Space_Transportation/Ariane/The_engines_of_Ariane_6"
+    },
+    {
+      "vehicle": "Ariane 64",
+      "type": "固液组合",
+      "fuel": "芯级/上面级：液氧 + 液氢；4枚P120C固体助推器。",
+      "source": "https://www.esa.int/Enabling_Support/Space_Transportation/Ariane/The_engines_of_Ariane_6"
+    },
+    {
+      "vehicle": "Ariane 64 Block 2",
+      "type": "固液组合",
+      "fuel": "芯级/上面级：液氧 + 液氢；4枚升级型P160C固体助推器。",
+      "source": "https://www.avio.com/sites/avio.com/files/attachments/P160C%20FIRES%20UP%20SUCCESSFULLY_24.04.25.pdf"
+    },
+    {
+      "vehicle": "Atlas V 551",
+      "type": "固液组合",
+      "fuel": "芯级：液氧 + RP-1煤油；Centaur上面级：液氧 + 液氢；另有5枚GEM固体助推器。",
+      "source": "https://www.ulalaunch.com/rockets/atlas-v"
+    },
+    {
+      "vehicle": "Ceres-1",
+      "type": "固液组合",
+      "fuel": "第1–3级：固体推进剂（具体配方未公开）；液体上面级：推进剂组合未公开。",
+      "source": "https://www.galactic-energy.cn/index.php/En/List/cid/14"
+    },
+    {
+      "vehicle": "Ceres-1S",
+      "type": "固液组合",
+      "fuel": "第1–3级：固体推进剂（具体配方未公开）；液体上面级：推进剂组合未公开。",
+      "source": "https://www.galactic-energy.cn/index.php/En/List/cid/14"
+    },
+    {
+      "vehicle": "Ceres-2",
+      "type": "固液组合",
+      "fuel": "第1–3级：固体推进剂（具体配方未公开）；液体上面级：推进剂组合未公开。",
+      "source": "https://www.galactic-energy.cn/index.php/En/Show/cid/24/aid/266"
+    },
+    {
+      "vehicle": "Electron",
+      "type": "液体推进",
+      "fuel": "液氧 + RP-1煤油。",
+      "source": "https://www.rocketlabusa.com/launch/electron/"
+    },
+    {
+      "vehicle": "Eris Block 1",
+      "type": "混合推进",
+      "fuel": "主发动机为混合推进（固体燃料 + 液体氧化剂）；公司公开资料未披露具体配方及完整各级推进剂。",
+      "source": "https://www.gspace.com/launch"
+    },
+    {
+      "vehicle": "Falcon 9",
+      "type": "液体推进",
+      "fuel": "液氧 + RP-1煤油（Falcon Heavy为三枚Falcon芯级并联）。",
+      "source": "https://www.spacex.com/assets/media/falcon-users-guide-2025-05-09.pdf"
+    },
+    {
+      "vehicle": "Falcon 9 Block 5",
+      "type": "液体推进",
+      "fuel": "液氧 + RP-1煤油（Falcon Heavy为三枚Falcon芯级并联）。",
+      "source": "https://www.spacex.com/assets/media/falcon-users-guide-2025-05-09.pdf"
+    },
+    {
+      "vehicle": "Falcon Heavy",
+      "type": "液体推进",
+      "fuel": "液氧 + RP-1煤油（Falcon Heavy为三枚Falcon芯级并联）。",
+      "source": "https://www.spacex.com/assets/media/falcon-users-guide-2025-05-09.pdf"
+    },
+    {
+      "vehicle": "Firefly Alpha",
+      "type": "液体推进",
+      "fuel": "液氧 + RP-1煤油。",
+      "source": "https://fireflyspace.com/alpha/"
+    },
+    {
+      "vehicle": "GSLV Mk. II",
+      "type": "固液组合",
+      "fuel": "S139固体芯级；液体助推器/二级使用UH25（偏二甲肼+水合肼）与四氧化二氮；低温上面级使用液氧 + 液氢。",
+      "source": "https://www.isro.gov.in/SpaceOnWheels.html"
+    },
+    {
+      "vehicle": "Gravity-1",
+      "type": "固体推进",
+      "fuel": "各级及助推器均为固体推进剂；公开资料未披露具体配方。",
+      "source": "https://english.www.gov.cn/news/202401/12/content_WS65a075eec6d0868f4e8e2fae.html"
+    },
+    {
+      "vehicle": "H-IIA 202",
+      "type": "固液组合",
+      "fuel": "主级与二级：液氧 + 液氢；SRB-A固体助推器：聚丁二烯复合固体推进剂。",
+      "source": "https://global.jaxa.jp/projects/rockets/h2a/index.html"
+    },
+    {
+      "vehicle": "H3-22",
+      "type": "固液组合",
+      "fuel": "主级：液氧 + 液氢；SRB-3助推器：固体复合推进剂。",
+      "source": "https://www.rocket.jaxa.jp/rocket/h3/le9.html"
+    },
+    {
+      "vehicle": "H3-24",
+      "type": "固液组合",
+      "fuel": "主级：液氧 + 液氢；SRB-3助推器：固体复合推进剂。",
+      "source": "https://www.rocket.jaxa.jp/rocket/h3/le9.html"
+    },
+    {
+      "vehicle": "H3-30",
+      "type": "液体推进",
+      "fuel": "液氧 + 液氢（H3-30为无固体助推器构型）。",
+      "source": "https://www.rocket.jaxa.jp/rocket/h3/le9.html"
+    },
+    {
+      "vehicle": "HANBIT-Nano",
+      "type": "混合推进",
+      "fuel": "第一级：石蜡固体燃料 + 液氧（混合推进）；第二级按任务选石蜡/液氧混合发动机或液态甲烷/液氧发动机。",
+      "source": "https://www.innospc.com/page/sub01_01_2"
+    },
+    {
+      "vehicle": "Hyperbola-1",
+      "type": "固体推进",
+      "fuel": "四级固体推进剂；公开资料未披露各级配方。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6811436/content.html"
+    },
+    {
+      "vehicle": "KSLV-2 Nuri",
+      "type": "液体推进",
+      "fuel": "各级使用液氧 + 煤油。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6771770/content.html"
+    },
+    {
+      "vehicle": "Kii-based Advanced & Instant ROcket System",
+      "type": "固液组合",
+      "fuel": "前三个助推级为固体推进剂；轨道调整上面级为液体推进剂，具体液体配方未公开。",
+      "source": "https://www.isas.jaxa.jp/gallery/feature/isas/isas_20210913.html"
+    },
+    {
+      "vehicle": "Kinetica 1",
+      "type": "固体推进",
+      "fuel": "四级固体推进剂；具体化学配方未公开。",
+      "source": "https://en.cas-space.com/list/40.html"
+    },
+    {
+      "vehicle": "Kinetica 2",
+      "type": "液体推进",
+      "fuel": "液体推进剂；公开资料未披露完整各级推进剂组合。",
+      "source": "https://en.cas-space.com/article/484.html"
+    },
+    {
+      "vehicle": "Kuaizhou 11",
+      "type": "固体推进",
+      "fuel": "固体推进剂；具体配方未公开。",
+      "source": "https://www.cnsa.gov.cn/english/n6465652/n6465653/c10517149/content.html"
+    },
+    {
+      "vehicle": "Kuaizhou 1A",
+      "type": "固液组合",
+      "fuel": "下部三级：固体推进剂；第四级轨道调整级：液体推进剂（具体组合未公开）。",
+      "source": "https://www.cnsa.gov.cn/english/n6465652/n6465653/c10517149/content.html"
+    },
+    {
+      "vehicle": "Launch Vehicle Mark-3 (GSLV Mk III)",
+      "type": "固液组合",
+      "fuel": "S200固体助推器；L110液体级使用偏二甲肼/四氧化二氮；C25低温级使用液氧/液氢。",
+      "source": "https://new1.isro.gov.in/GSLVmk3_CON.html"
+    },
+    {
+      "vehicle": "Long March 10B",
+      "type": "液体推进",
+      "fuel": "一级：液氧 + RP-1煤油；二级：液氧 + 甲烷。",
+      "source": "https://www.space.com/space-exploration/launches-spacecraft/making-history-china-lands-rocket-during-an-orbital-launch-for-1st-time-ever"
+    },
+    {
+      "vehicle": "Long March 11",
+      "type": "固体推进",
+      "fuel": "四级固体推进剂；具体配方未公开。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6771604/content.html"
+    },
+    {
+      "vehicle": "Long March 12",
+      "type": "液体推进",
+      "fuel": "两级液氧 + RP-1煤油。",
+      "source": "https://static.sse.com.cn/stock/disclosure/announcement/c/202512/002174_20251231_1QK0.pdf"
+    },
+    {
+      "vehicle": "Long March 12A",
+      "type": "液体推进",
+      "fuel": "液氧 + 甲烷。",
+      "source": "https://spacecenter.gov.ua/novyny/informacijna-dovidka-shhodo-zapusku-rn-long-march-12a.html?lang=en"
+    },
+    {
+      "vehicle": "Long March 12B",
+      "type": "液体推进",
+      "fuel": "液氧 + RP-1煤油。",
+      "source": "https://static.sse.com.cn/stock/disclosure/announcement/c/202512/002174_20251231_1QK0.pdf"
+    },
+    {
+      "vehicle": "Long March 2C",
+      "type": "液体推进",
+      "fuel": "偏二甲肼（UDMH）+ 四氧化二氮（N₂O₄）；可按任务加装上面级。",
+      "source": "https://www.cnsa.gov.cn/n6758824/n6759008/n6759011/c6794035/content.html"
+    },
+    {
+      "vehicle": "Long March 2C/YZ-1S",
+      "type": "液体推进",
+      "fuel": "长征二号丙芯级：UDMH + N₂O₄；远征一号S上面级：常温自燃液体推进剂（该构型详细配方未在所引资料中披露）。",
+      "source": "https://www.cnsa.gov.cn/n6758824/n6759008/n6759011/c6794035/content.html"
+    },
+    {
+      "vehicle": "Long March 2D",
+      "type": "液体推进",
+      "fuel": "偏二甲肼（UDMH）+ 四氧化二氮（N₂O₄）。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6771770/content.html"
+    },
+    {
+      "vehicle": "Long March 2F/G",
+      "type": "液体推进",
+      "fuel": "偏二甲肼（UDMH）+ 四氧化二氮（N₂O₄）。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6771770/content.html"
+    },
+    {
+      "vehicle": "Long March 3B/E",
+      "type": "液体推进",
+      "fuel": "一、二级及助推器：UDMH + N₂O₄；三级低温级：液氧 + 液氢。",
+      "source": "https://www.cnsa.gov.cn/n6758824/n6759008/n6759011/c6794048/content.html"
+    },
+    {
+      "vehicle": "Long March 3C/E",
+      "type": "液体推进",
+      "fuel": "一、二级及助推器：UDMH + N₂O₄；三级低温级：液氧 + 液氢。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6771770/content.html"
+    },
+    {
+      "vehicle": "Long March 3C/YZ-1",
+      "type": "液体推进",
+      "fuel": "长征三号丙级间：UDMH + N₂O₄（一级/二级及助推器）、液氧 + 液氢（三级）；远征一号上面级具体配方依构型公开资料为准。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6771770/content.html"
+    },
+    {
+      "vehicle": "Long March 4B",
+      "type": "液体推进",
+      "fuel": "三级常温液体推进；公开资料通常列为偏二甲肼（UDMH）+ 四氧化二氮（N₂O₄）。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6771770/content.html"
+    },
+    {
+      "vehicle": "Long March 4C",
+      "type": "液体推进",
+      "fuel": "三级常温液体推进；公开资料通常列为偏二甲肼（UDMH）+ 四氧化二氮（N₂O₄）。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6771770/content.html"
+    },
+    {
+      "vehicle": "Long March 5",
+      "type": "液体推进",
+      "fuel": "芯级：液氧 + 液氢；助推器：液氧 + 煤油。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6771770/content.html"
+    },
+    {
+      "vehicle": "Long March 5B/YZ-2",
+      "type": "液体推进",
+      "fuel": "长征五号B：芯级液氧/液氢、助推器液氧/煤油；远征二号上面级的推进剂组合随任务构型，公开资料未统一披露。",
+      "source": "https://www.cnsa.gov.cn/n6758823/n6758838/c6808806/content.html"
+    },
+    {
+      "vehicle": "Long March 6",
+      "type": "液体推进",
+      "fuel": "液氧 + 煤油。",
+      "source": "https://www.cnsa.gov.cn/n6758824/n6759008/n6759011/c6794254/content.html"
+    },
+    {
+      "vehicle": "Long March 6A",
+      "type": "固液组合",
+      "fuel": "液氧 + 煤油主级/二级；另有固体助推器。",
+      "source": "https://www.cnsa.gov.cn/n6758824/n6759008/n6759011/c6794254/content.html"
+    },
+    {
+      "vehicle": "Long March 6C",
+      "type": "液体推进",
+      "fuel": "液氧 + 煤油。",
+      "source": "https://www.cnsa.gov.cn/n6758824/n6759008/n6759011/c6794254/content.html"
+    },
+    {
+      "vehicle": "Long March 7",
+      "type": "液体推进",
+      "fuel": "芯级、助推器：液氧 + 煤油；如配置低温上面级则为液氧 + 液氢。",
+      "source": "https://www.cnsa.gov.cn/n6758824/n6759008/n6759011/c6794255/content.html"
+    },
+    {
+      "vehicle": "Long March 7A",
+      "type": "液体推进",
+      "fuel": "一、二级及助推器：液氧 + 煤油；三级：液氧 + 液氢。",
+      "source": "https://www.cnsa.gov.cn/n6758824/n6759008/n6759011/c6794255/content.html"
+    },
+    {
+      "vehicle": "Long March 8",
+      "type": "液体推进",
+      "fuel": "一级与助推器：液氧 + 煤油；二级低温级：液氧 + 液氢。",
+      "source": "https://www.cnsa.gov.cn/english/n6465652/n6465653/c6810962/content.html"
+    },
+    {
+      "vehicle": "Long March 8A",
+      "type": "液体推进",
+      "fuel": "一级/助推器：液氧 + 煤油；上部低温级：液氧 + 液氢。",
+      "source": "https://www.cnsa.gov.cn/n6758823/n6758838/c10734600/content.html"
+    },
+    {
+      "vehicle": "Minotaur IV",
+      "type": "固体推进",
+      "fuel": "主体各级均为固体火箭发动机；具体固体配方按所用军用剩余级/上面级而异。",
+      "source": "https://www.northropgrumman.com/what-we-do/space/launch-vehicles/minotaur"
+    },
+    {
+      "vehicle": "New Glenn",
+      "type": "液体推进",
+      "fuel": "一级：液氧 + 液化天然气（LNG，主要成分为甲烷）；二级：液氧 + 液氢。",
+      "source": "https://www.blueorigin.com/engines"
+    },
+    {
+      "vehicle": "New Shepard",
+      "type": "液体推进",
+      "fuel": "液氧 + 液氢。",
+      "source": "https://www.blueorigin.com/engines"
+    },
+    {
+      "vehicle": "PSLV XL",
+      "type": "固液组合",
+      "fuel": "第1、3级及固体助推器：HTPB固体推进剂；第2级：UDMH + N₂O₄；第4级：MMH + MON。XL有6枚、DL有2枚固体助推器。",
+      "source": "https://www.isro.gov.in/ISRO_EN/PSLV_CON.html"
+    },
+    {
+      "vehicle": "PSLV-DL",
+      "type": "固液组合",
+      "fuel": "第1、3级及固体助推器：HTPB固体推进剂；第2级：UDMH + N₂O₄；第4级：MMH + MON。XL有6枚、DL有2枚固体助推器。",
+      "source": "https://www.isro.gov.in/ISRO_EN/PSLV_CON.html"
+    },
+    {
+      "vehicle": "Pallas-1",
+      "type": "液体推进",
+      "fuel": "液氧 + 煤油。",
+      "source": "https://www.galactic-energy.cn/index.php/En/Show/cid/24/aid/276"
+    },
+    {
+      "vehicle": "Pegasus XL",
+      "type": "固体推进",
+      "fuel": "三级固体复合推进剂；公开资料未统一披露各级化学配方。",
+      "source": "https://www.northropgrumman.com/what-we-do/space/launch-vehicles/pegasus"
+    },
+    {
+      "vehicle": "Proton-M Blok DM-03",
+      "type": "液体推进",
+      "fuel": "质子级：偏二甲肼（UDMH）+ 四氧化二氮（N₂O₄）；DM-03上面级：液氧 + 液氢。",
+      "source": "https://www.ilslaunch.com/vehicles/proton-m/"
+    },
+    {
+      "vehicle": "Shavit-2",
+      "type": "固体推进",
+      "fuel": "三级固体推进剂；可选上面级配置按任务而异。",
+      "source": "https://www.iai.co.il/product/shavit/"
+    },
+    {
+      "vehicle": "Smart Dragon 3",
+      "type": "固体推进",
+      "fuel": "四级固体推进剂；具体配方未公开。",
+      "source": "https://english.www.gov.cn/news/202409/24/content_WS66f25e40c6d0868f4e8eb32c.html"
+    },
+    {
+      "vehicle": "Soyuz 2.1a",
+      "type": "液体推进",
+      "fuel": "主箭各级：液氧 + 煤油；如带Fregat上面级：四氧化二氮 + UDMH。",
+      "source": "https://www.faa.gov/sites/faa.gov/files/space/additional_information/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Soyuz 2.1a Fregat-M",
+      "type": "液体推进",
+      "fuel": "主箭各级：液氧 + 煤油；Fregat/Fregat-M上面级：四氧化二氮 + UDMH。",
+      "source": "https://www.faa.gov/sites/faa.gov/files/space/additional_information/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Soyuz 2.1b",
+      "type": "液体推进",
+      "fuel": "主箭各级：液氧 + 煤油；如带Fregat上面级：四氧化二氮 + UDMH。",
+      "source": "https://www.faa.gov/sites/faa.gov/files/space/additional_information/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Soyuz 2.1b Fregat",
+      "type": "液体推进",
+      "fuel": "主箭各级：液氧 + 煤油；Fregat/Fregat-M上面级：四氧化二氮 + UDMH。",
+      "source": "https://www.faa.gov/sites/faa.gov/files/space/additional_information/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Soyuz 2.1b Fregat-M",
+      "type": "液体推进",
+      "fuel": "主箭各级：液氧 + 煤油；Fregat/Fregat-M上面级：四氧化二氮 + UDMH。",
+      "source": "https://www.faa.gov/sites/faa.gov/files/space/additional_information/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Soyuz 2.1b Volga",
+      "type": "液体推进",
+      "fuel": "主箭各级：液氧 + 煤油；Volga上面级：常温自燃液体推进剂（UDMH/N₂O₄组合常见，任务配置需核对）。",
+      "source": "https://www.faa.gov/sites/faa.gov/files/space/additional_information/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Soyuz 2.1v Volga",
+      "type": "液体推进",
+      "fuel": "主级：液氧 + 煤油；Volga上面级：常温自燃液体推进剂（配置详情需按任务核对）。",
+      "source": "https://www.faa.gov/sites/faa.gov/files/space/additional_information/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Soyuz-5",
+      "type": "液体推进",
+      "fuel": "液氧 + RP-1煤油。",
+      "source": "https://www.faa.gov/sites/faa.gov/files/space/additional_information/2018_AST_Compendium.pdf"
+    },
+    {
+      "vehicle": "Space Launch System Block 1",
+      "type": "固液组合",
+      "fuel": "芯级/ICPS上面级：液氧 + 液氢；固体助推器：PBAN复合固体推进剂。",
+      "source": "https://www.nasa.gov/wp-content/uploads/2022/03/sls-reference-guide-2022-v2-508-0.pdf"
+    },
+    {
+      "vehicle": "Spectrum",
+      "type": "液体推进",
+      "fuel": "液氧 + 丙烷。",
+      "source": "https://isaraerospace.com/spectrum"
+    },
+    {
+      "vehicle": "Starship",
+      "type": "液体推进",
+      "fuel": "超重型助推器与飞船级：液氧 + 液态甲烷。",
+      "source": "https://new.spacex.com/vehicles/starship"
+    },
+    {
+      "vehicle": "Starship V2",
+      "type": "液体推进",
+      "fuel": "超重型助推器与飞船级：液氧 + 液态甲烷。",
+      "source": "https://new.spacex.com/vehicles/starship"
+    },
+    {
+      "vehicle": "Starship V3",
+      "type": "液体推进",
+      "fuel": "超重型助推器与飞船级：液氧 + 液态甲烷。",
+      "source": "https://new.spacex.com/vehicles/starship"
+    },
+    {
+      "vehicle": "TBD",
+      "type": "未知",
+      "fuel": "发射型号尚未确定，推进剂信息未知。",
+      "source": "https://www.cnsa.gov.cn/n6758968/n6758973/c6811436/content.html"
+    },
+    {
+      "vehicle": "Tianlong-3",
+      "type": "液体推进",
+      "fuel": "液氧 + RP-1煤油。",
+      "source": "https://www.space.com/space-exploration/launches-spacecraft/china-launches-debut-mission-of-falcon-9-like-rocket-with-no-advance-notice-video"
+    },
+    {
+      "vehicle": "Vega-C",
+      "type": "固液组合",
+      "fuel": "第1–3级：P120C/Zefiro固体推进剂；AVUM+液体上面级：UDMH + N₂O₄。",
+      "source": "https://www.avio.com/sites/avio.com/files/downloads/UM%20Vega%20C%20-%20Iss1%20Rev0.pdf"
+    },
+    {
+      "vehicle": "Vikram-I",
+      "type": "固液组合",
+      "fuel": "前三个Kalam级：固体复合推进剂；第4级Raman轨道调整级：一甲基肼（MMH）+ 四氧化二氮（N₂O₄）。",
+      "source": "https://space.skyrocket.de/doc_lau/vikram-1.htm"
+    },
+    {
+      "vehicle": "Vulcan VC4S",
+      "type": "固液组合",
+      "fuel": "一级：液氧 + LNG（主要成分甲烷）；Centaur V：液氧 + 液氢；GEM 63XL固体助推器。",
+      "source": "https://www.ulalaunch.com/rockets/vulcan-centaur"
+    },
+    {
+      "vehicle": "Zhuque-2E",
+      "type": "液体推进",
+      "fuel": "液氧 + 液态甲烷。",
+      "source": "https://www.landspace.com/news-detail.html?itemid=71"
+    },
+    {
+      "vehicle": "Zhuque-2E Block 2",
+      "type": "液体推进",
+      "fuel": "液氧 + 液态甲烷。",
+      "source": "https://www.landspace.com/news-detail.html?itemid=71"
+    },
+    {
+      "vehicle": "Zhuque-3",
+      "type": "液体推进",
+      "fuel": "液氧 + 液态甲烷。",
+      "source": "https://english.scio.gov.cn/chinavoices/2026-08/19/content_118654353.html"
+    }
+  ]
+}
