@@ -577,6 +577,9 @@
         launch_details_link: '🔗 详情 / 直播',
         launch_related_warnings: '已关联航天警告（{count} 条）',
         launch_no_related_warning: '当前未发现时间和地点均匹配的 NOTAM / MSI',
+        launch_archived_related_notams: '历史留档关联 NOTAM（{count} 条）',
+        launch_no_archived_related_notams: '现有历史 NOTAM 留档中未找到匹配项（留档不完整时不代表当时没有 NOTAM）',
+        launch_archived_notams_loading: '正在读取该次发射日期附近的 NOTAM 留档…',
         launch_past: '历史发射',
         launch_payload_label: '载荷',
         launch_result_label: '结果',
@@ -662,6 +665,9 @@
         launch_details_link: '🔗 Details / Stream',
         launch_related_warnings: 'Related aerospace warnings ({count})',
         launch_no_related_warning: 'No NOTAM / MSI currently matches both the launch time and site',
+        launch_archived_related_notams: 'Related archived NOTAMs ({count})',
+        launch_no_archived_related_notams: 'No match in available archives (an incomplete archive does not prove that no NOTAM existed)',
+        launch_archived_notams_loading: 'Loading NOTAM archives around this launch date…',
         launch_past: 'Past launch',
         launch_payload_label: 'Payload',
         launch_result_label: 'Result',
@@ -1382,7 +1388,7 @@
                   verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(offset[0], offset[1] + 16),
                   eyeOffset: new Cesium.Cartesian3(0, 0, 500)
                 },
-                description: `<b>🚀 ${launch.vehicle}</b><br/>${buildRocketPropellantDetailsMarkup(launch.vehicle)}${t('cesium_payload_label')}: ${launch.payload}<br/>${t('cesium_time_label')}: ${launch.dateStr}<br/>${t('cesium_result_label')}: ${launch.success}`
+                description: `<b>🚀 ${escapeHtml(launch.vehicle)}</b><br/>${buildRocketPropellantDetailsMarkup(launch.vehicle)}${t('cesium_payload_label')}: ${escapeHtml(launch.payload || '')}<br/>${t('cesium_time_label')}: ${escapeHtml(launch.dateStr || '')}<br/>${t('cesium_result_label')}: ${escapeHtml(launch.success || '')}${historicalLaunchNotamMarkup(launch)}`
               }, launchSolarSelection(launch));
             });
           }
@@ -2224,6 +2230,16 @@
       const launchLon = Number.parseFloat(launch.lon);
       if (![launchLat, launchLon].every(Number.isFinite)) return [];
 
+      const launchForWarningGeometry = row => {
+        if (!launch.isHistorical || Number.isFinite(Number(launch.windowStartTs)) ||
+            Number.isFinite(Number(launch.windowEndTs))) return launch;
+        return {
+          ...launch,
+          windowStartTs: Date.parse(row.from_utc),
+          windowEndTs: Date.parse(row.to_utc)
+        };
+      };
+
       const timeMatched = (rows || []).filter(row => {
         const rowLat = Number.parseFloat(row.lat);
         const rowLon = Number.parseFloat(row.lon);
@@ -2233,7 +2249,7 @@
       });
       const related = new Set(timeMatched.filter(row =>
         launchDistanceKm(Number.parseFloat(row.lat), Number.parseFloat(row.lon), launchLat, launchLon) <= 120 ||
-        warningRectanglePointsToLaunch(row, launch) ||
+        warningRectanglePointsToLaunch(row, launchForWarningGeometry(row)) ||
         warningMultiRegionCorridorMatches(row, launch)
       ));
 
@@ -2251,6 +2267,100 @@
         }
       }
       return (rows || []).filter(row => related.has(row));
+    }
+
+    function historicalNotamArchiveWeeksForLaunch(launch) {
+      const ts = Number(launch && launch.ts);
+      if (!Number.isFinite(ts)) return [];
+      return [0, -1, 1].map(offset => getISOWeek(ts + offset * 7 * 86400000));
+    }
+
+    function loadHistoricalNotamArchiveWeek(week) {
+      if (!historicalNotamArchiveWeekPromises.has(week)) {
+        const promise = fetchWithTimeout(`./history/notams/${week}.csv`, { cache: 'force-cache' }, 8000)
+          .then(response => response.ok ? response.text() : '')
+          .then(text => {
+            const rows = text ? parseCsv(text).map(row => ({
+              ...row,
+              type: 'NOTAM',
+              lat: row.lat || row.Latitude,
+              lon: row.lon || row.Longitude,
+              archiveWeek: week
+            })) : [];
+            historicalNotamArchiveRowsByWeek.set(week, rows);
+            return rows;
+          })
+          .catch(error => {
+            console.warn(`[History] NOTAM archive ${week} unavailable:`, error);
+            historicalNotamArchiveRowsByWeek.set(week, []);
+            return [];
+          });
+        historicalNotamArchiveWeekPromises.set(week, promise);
+      }
+      return historicalNotamArchiveWeekPromises.get(week);
+    }
+
+    function historicalNotamRowsForLaunch(launch) {
+      const archivedRows = historicalNotamArchiveWeeksForLaunch(launch)
+        .flatMap(week => historicalNotamArchiveRowsByWeek.get(week) || []);
+      // Archived snapshots take precedence over today's feed so a correction
+      // or expiry in the live feed cannot erase the historical point-in-time
+      // record. Current/already-loaded rows are only a fallback.
+      const candidates = archivedRows.concat((Array.isArray(dataRows) ? dataRows : [])
+        .filter(row => !isMsiOrMaritime(row)));
+      const seen = new Set();
+      return candidates.filter(row => {
+        const id = String(row.notam_id || row.id || '').trim().toUpperCase();
+        const key = id ? `${String(row.country || '').toUpperCase()}:${id}` :
+          `${row.raw || ''}|${row.from_utc || ''}|${row.lat || ''}|${row.lon || ''}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+
+    function historicalRelatedNotamRows(launch) {
+      return relatedWarningRowsForLaunch(launch, historicalNotamRowsForLaunch(launch));
+    }
+
+    function historicalLaunchNotamMarkup(launch) {
+      const weeks = historicalNotamArchiveWeeksForLaunch(launch);
+      if (!weeks.length || weeks.some(week => !historicalNotamArchiveRowsByWeek.has(week))) {
+        return `<div style="margin-top:5px;color:#666;">${t('launch_archived_notams_loading')}</div>`;
+      }
+      const warnings = historicalRelatedNotamRows(launch);
+      const warningIds = [...new Set(warnings.map(row => row.notam_id || row.id).filter(Boolean))];
+      return warningIds.length
+        ? `<div style="margin-top:5px;color:#b91c1c;"><b>${t('launch_archived_related_notams', { count: warningIds.length })}:</b><br/>${warningIds.map(escapeHtml).join(' · ')}</div>`
+        : `<div style="margin-top:5px;color:#666;">${t('launch_no_archived_related_notams')}</div>`;
+    }
+
+    function historicalLaunchPopupMarkup(launch) {
+      return `
+        <div style="font-size:12px;color:#666;">${t('launch_past')}</div>
+        <b style="color:#16a34a;">🚀 ${escapeHtml(launch.vehicle || t('launch_unknown_vehicle'))}</b><br/>
+        ${buildRocketPropellantDetailsMarkup(launch.vehicle)}
+        ${t('launch_payload_label')}: ${escapeHtml(launch.payload || '')}<br/>
+        ${t('launch_site_label')}: ${escapeHtml(launch.siteName || launch.siteAbbr || '')}<br/>
+        ${t('launch_time_label')}: ${escapeHtml(launch.dateStr || '')}<br/>
+        ${t('launch_result_label')}: ${escapeHtml(launch.success || '')}
+        ${historicalLaunchNotamMarkup(launch)}
+      `;
+    }
+
+    function refreshHistoricalLaunchPopupDetails() {
+      pastLaunchMarkerRecords.forEach(record => {
+        if (record.launch && record.marker) record.marker.setPopupContent(historicalLaunchPopupMarkup(record.launch));
+      });
+      if (is3D && pastLaunchToggle.checked && launchToggle.checked) renderOnGlobe(filteredDataRows);
+    }
+
+    async function loadHistoricalNotamsForVisibleLaunches() {
+      const visibleLaunches = visiblePastLaunchesForMap();
+      if (!visibleLaunches.length) return;
+      const weeks = [...new Set(visibleLaunches.flatMap(historicalNotamArchiveWeeksForLaunch))];
+      await Promise.all(weeks.map(loadHistoricalNotamArchiveWeek));
+      refreshHistoricalLaunchPopupDetails();
     }
 
     // Sample a great-circle arc before handing it to Leaflet/Cesium. A straight
@@ -3288,6 +3398,8 @@
     let launchLayerGroup = L.layerGroup().addTo(map);
     let pastLaunchLayerGroup = L.layerGroup();
     let pastLaunchMarkerRecords = [];
+    const historicalNotamArchiveWeekPromises = new Map();
+    const historicalNotamArchiveRowsByWeek = new Map();
     let upcomingLaunchExpiryTimer = null;
     let launchSummaryState = null;
     let launchSites = {}; // abbrev -> {lat, lon, name}
@@ -3499,6 +3611,18 @@
         || launch?.launch_service_provider?.name
         || launch?.agency?.name
         || '';
+    }
+
+    function historicalLaunchProviderName(vehicle) {
+      const name = String(vehicle || '').trim();
+      // The historical CSV has no provider column. Infer only these explicit
+      // vehicle families needed by existing narrow NOTAM rules; leave other
+      // providers unknown instead of guessing from payload/site.
+      if (/^(?:LONG\s+MARCH|CZ\s*[-\u2010-\u2015]?\s*\d)/i.test(name)) {
+        return 'China Aerospace Science and Technology Corporation (CASC)';
+      }
+      if (/^(?:ELECTRON|NEUTRON)\b/i.test(name)) return 'Rocket Lab';
+      return '';
     }
 
     function launchWindowStartTimestamp(launch) {
@@ -4139,21 +4263,18 @@
 
             const historicalLaunch = {
               lat, lon, mission: payload ? `${vehicle} | ${payload}` : vehicle,
-              vehicle, payload, dateStr, success: successText, ts: d.getTime(),
+              vehicle, payload, siteName, siteAbbr: abbrev, dateStr, success: successText, ts: d.getTime(),
+              providerName: historicalLaunchProviderName(vehicle),
+              isHistorical: true,
               isLaunchGlow: isRocketCloudVisible(d.toISOString(), d.toISOString(), lat, lon)
             };
             const pIcon = buildUpcomingLaunchIcon(historicalLaunch, '#22c55e');
             const marker = L.marker([lat, lon], { icon: pIcon, zIndexOffset: 1000 });
-            marker.bindPopup(`
-              <div style="font-size:12px;color:#666;">${t('launch_past')}</div>
-              <b style="color:#16a34a;">🚀 ${vehicle}</b><br/>
-              ${buildRocketPropellantDetailsMarkup(vehicle)}
-              ${t('launch_payload_label')}: ${payload}<br/>
-              ${t('launch_site_label')}: ${siteName || abbrev}<br/>
-              ${t('launch_time_label')}: ${dateStr}<br/>
-              ${t('launch_result_label')}: ${successText}
-            `);
-            marker.on('click', () => selectLaunchForSolarOverlay(historicalLaunch));
+            marker.bindPopup(() => historicalLaunchPopupMarkup(historicalLaunch));
+            marker.on('click', () => {
+              selectLaunchForSolarOverlay(historicalLaunch);
+              void loadHistoricalNotamsForVisibleLaunches();
+            });
             historicalLaunch.marker = marker;
             pastLaunchMarkerRecords.push({ marker, ts: d.getTime(), launch: historicalLaunch });
             pastLaunches.push(historicalLaunch);
@@ -4175,6 +4296,7 @@
           ? `${isoDate(new Date(Math.min(...pastDates)))} – ${isoDate(new Date(Math.max(...pastDates)))}`
           : t('launch_history_empty');
         rebuildPastLaunchLayer();
+        if (launchToggle.checked && pastLaunchToggle.checked) void loadHistoricalNotamsForVisibleLaunches();
         launchSummaryState = {
           past: pastCount,
           sites: Object.keys(launchSites).length,
@@ -4200,6 +4322,7 @@
       }
       if (launchToggle.checked && pastLaunchToggle.checked) {
         map.addLayer(pastLaunchLayerGroup);
+        void loadHistoricalNotamsForVisibleLaunches();
       } else {
         map.removeLayer(pastLaunchLayerGroup);
       }
@@ -4214,6 +4337,7 @@
       pastLaunchStartDateEl.max = pastLaunchEndDateEl.value || '';
       pastLaunchEndDateEl.min = pastLaunchStartDateEl.value || '';
       rebuildPastLaunchLayer();
+      if (launchToggle.checked && pastLaunchToggle.checked) void loadHistoricalNotamsForVisibleLaunches();
       if (is3D) renderOnGlobe(filteredDataRows);
     };
     pastLaunchStartDateEl.onchange = onPastLaunchRangeChange;
