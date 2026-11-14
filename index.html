@@ -444,6 +444,10 @@
           <div style="width:14px; height:14px; border:2.5px solid #fff; box-shadow:0 0 10px #fff; border-radius:50%; background:#888; margin-right:6px;"></div>
           <span style="font-size:11px; color:#FFF;" id="launchGlowHint">外发光轮廓 = 处于天文晨昏光 (若火箭燃料合适可见火箭云)</span>
         </div>
+        <div class="launch-layer-toggle" style="margin-top:4px;">
+          <input type="checkbox" id="glowOnlyLaunchToggle" />
+          <label for="glowOnlyLaunchToggle" style="font-size:12px;" id="glowOnlyLaunchToggleLabel">仅显示处于天文晨昏光的火箭</label>
+        </div>
       </div>
       <div class="small" id="launchStatus"></div>
       <details class="launch-history-details">
@@ -522,6 +526,7 @@
         launch_upcoming_far_legend: '🚀 即将发射 (远)',
         launch_site_legend: '📡 发射场站',
         launch_glow_hint: '外发光轮廓 = 处于天文晨昏光 (若火箭燃料合适可见火箭云)',
+        glow_only_launch_toggle_label: '仅显示处于天文晨昏光的火箭',
         view_3d: '3D 地球模式',
         view_2d: '2D 平面模式',
         status_3d_error: '3D模式渲染异常: {message}',
@@ -606,6 +611,7 @@
         launch_upcoming_far_legend: '🚀 Upcoming (far)',
         launch_site_legend: '📡 Launch sites',
         launch_glow_hint: 'Outer glow = astronomical twilight (rocket plume may be visible if the propellant is suitable)',
+        glow_only_launch_toggle_label: 'Only show launches in astronomical twilight',
         view_3d: '3D Globe Mode',
         view_2d: '2D Map Mode',
         status_3d_error: '3D render error: {message}',
@@ -1261,8 +1267,12 @@
         .filter(launch => isUpcomingLaunchInNotamRange(launch, range));
     }
 
+    function launchPassesGlowOnlyFilter(launch) {
+      return !glowOnlyLaunchToggleEl.checked || launch?.isLaunchGlow === true;
+    }
+
     function syncUpcomingLaunchLayerToNotamRange() {
-      const visible = new Set(upcomingLaunchesForNotamRange());
+      const visible = new Set(upcomingLaunchesForNotamRange().filter(launchPassesGlowOnlyFilter));
       upcomingLaunches.forEach(launch => {
         if (!launch.marker) return;
         if (visible.has(launch)) {
@@ -1354,7 +1364,7 @@
 
           // 1c. Render Past Launches only when the dedicated toggle is enabled.
           if (pastLaunchToggle.checked) {
-            const visiblePastLaunches = pastLaunches.filter(launch => isPastLaunchInSelectedRange(launch.ts));
+            const visiblePastLaunches = visiblePastLaunchesForMap();
             const pastOffsets = launchMarkerOffsetMap(visiblePastLaunches);
             visiblePastLaunches.forEach(launch => {
               const offset = pastOffsets.get(launch) || [0, 0];
@@ -1380,7 +1390,7 @@
           // 1b. Render Upcoming Launches (Dynamic). Co-located launches are
           // offset only on screen so each record remains clickable without
           // changing its real pad coordinates or NOTAM matching position.
-          const visibleUpcomingLaunches = upcomingLaunchesForNotamRange();
+          const visibleUpcomingLaunches = upcomingLaunchesForNotamRange().filter(launchPassesGlowOnlyFilter);
           const upcomingOffsets = launchMarkerOffsetMap(visibleUpcomingLaunches);
           visibleUpcomingLaunches.forEach(launch => {
             if (!launch.lat || !launch.lon) return;
@@ -1587,6 +1597,8 @@
     const launchUpcomingFarLegendEl = document.getElementById('launchUpcomingFarLegend');
     const launchSiteLegendEl = document.getElementById('launchSiteLegend');
     const launchGlowHintEl = document.getElementById('launchGlowHint');
+    const glowOnlyLaunchToggleEl = document.getElementById('glowOnlyLaunchToggle');
+    const glowOnlyLaunchToggleLabelEl = document.getElementById('glowOnlyLaunchToggleLabel');
     const launchHistorySummaryEl = document.getElementById('launchHistorySummary');
     const launchHistoryListEl = document.getElementById('launchHistoryList');
 
@@ -1609,6 +1621,7 @@
       launchUpcomingFarLegendEl.textContent = t('launch_upcoming_far_legend');
       launchSiteLegendEl.textContent = t('launch_site_legend');
       launchGlowHintEl.textContent = t('launch_glow_hint');
+      glowOnlyLaunchToggleLabelEl.textContent = t('glow_only_launch_toggle_label');
       launchHistorySummaryEl.textContent = t('launch_history_summary');
       viewToggleText.textContent = t('view_3d');
     }
@@ -2277,7 +2290,7 @@
 
     function selectedLaunchWarningSegments() {
       const launch = selectedLaunchDirection;
-      if (!launch || !launchToggle.checked || !upcomingLaunchesForNotamRange().includes(launch)) return [];
+      if (!launch || !launchToggle.checked || !launchPassesGlowOnlyFilter(launch) || !upcomingLaunchesForNotamRange().includes(launch)) return [];
       const warnings = relatedWarningRowsForLaunch(launch, filteredDataRows)
         .filter(row => !isMsiOrMaritime(row) && !launchWarningIsNearPad(row, launch))
         .flatMap(row => launchWarningDirectionTargets(row, launch))
@@ -2995,7 +3008,9 @@
 
     function generateCurrentViewKml() {
       const rows = Array.isArray(filteredDataRows) ? filteredDataRows : [];
-      const launchRows = launchToggle.checked ? upcomingLaunchesForNotamRange() : [];
+      const launchRows = launchToggle.checked
+        ? upcomingLaunchesForNotamRange().filter(launchPassesGlowOnlyFilter)
+        : [];
       const placemarks = [];
 
       rows.forEach(r => {
@@ -3324,8 +3339,14 @@
       return timestamp >= start && timestamp <= end;
     }
 
+    function visiblePastLaunchesForMap() {
+      return pastLaunches.filter(launch =>
+        isPastLaunchInSelectedRange(launch.ts) && launchPassesGlowOnlyFilter(launch)
+      );
+    }
+
     function updatePastLaunchMarkerOffsets() {
-      const visiblePastLaunches = pastLaunches.filter(launch => isPastLaunchInSelectedRange(launch.ts));
+      const visiblePastLaunches = visiblePastLaunchesForMap();
       const offsets = launchMarkerOffsetMap(visiblePastLaunches);
       pastLaunches.forEach(launch => {
         if (!launch.marker) return;
@@ -3356,7 +3377,9 @@
       updatePastLaunchMarkerOffsets();
       pastLaunchLayerGroup.clearLayers();
       pastLaunchMarkerRecords.forEach(record => {
-        if (isPastLaunchInSelectedRange(record.ts)) record.marker.addTo(pastLaunchLayerGroup);
+        if (isPastLaunchInSelectedRange(record.ts) && launchPassesGlowOnlyFilter(record.launch)) {
+          record.marker.addTo(pastLaunchLayerGroup);
+        }
       });
     }
 
@@ -4132,7 +4155,7 @@
             `);
             marker.on('click', () => selectLaunchForSolarOverlay(historicalLaunch));
             historicalLaunch.marker = marker;
-            pastLaunchMarkerRecords.push({ marker, ts: d.getTime() });
+            pastLaunchMarkerRecords.push({ marker, ts: d.getTime(), launch: historicalLaunch });
             pastLaunches.push(historicalLaunch);
           });
         } catch (csvErr) {
@@ -4168,6 +4191,8 @@
     }
 
     function syncLaunchLayers() {
+      syncUpcomingLaunchLayerToNotamRange();
+      rebuildPastLaunchLayer();
       if (launchToggle.checked) {
         map.addLayer(launchLayerGroup);
       } else {
@@ -4184,6 +4209,7 @@
 
     launchToggle.onchange = syncLaunchLayers;
     pastLaunchToggle.onchange = syncLaunchLayers;
+    glowOnlyLaunchToggleEl.onchange = syncLaunchLayers;
     const onPastLaunchRangeChange = () => {
       pastLaunchStartDateEl.max = pastLaunchEndDateEl.value || '';
       pastLaunchEndDateEl.min = pastLaunchStartDateEl.value || '';
