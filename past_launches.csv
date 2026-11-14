@@ -1,6 +1,6 @@
 Launch Date and Time (UTC),Launch Site (Abbrv.),Latitude,Longitude,Launch Vehicle,Official Payload Name,Success,Launch Site (Full)
-2026 NOV 14 0530,LC-1,-39.262833,177.864469,Electron,The Mountain God Rises (iQPS Launch 10),,"Rocket Lab Launch Complex 1A / Rocket Lab Launch Complex 1, Mahia Peninsula, New Zealand"
-2026 NOV 14 0116,Vostochny,51.884395,128.333932,Soyuz 2.1b Fregat-M,"Soyuz 2.1b/Fregat-M | MKA Kinosputnik, KOEN and others",,"Cosmodrome Site 1S / Vostochny Cosmodrome, Siberia, Russian Federation"
+2026 NOV 14 0530,LC-1,-39.262833,177.864469,Electron,The Mountain God Rises (iQPS Launch 10),S,"Rocket Lab Launch Complex 1A / Rocket Lab Launch Complex 1, Mahia Peninsula, New Zealand"
+2026 NOV 14 0116,Vostochny,51.884395,128.333932,Soyuz 2.1b Fregat-M,"Soyuz 2.1b/Fregat-M | MKA Kinosputnik, KOEN and others",S,"Cosmodrome Site 1S / Vostochny Cosmodrome, Siberia, Russian Federation"
 2026 NOV 13 2247,Starbase,25.99677,-97.15799,Starship V3,Starship | Starlink Group 31-2 (Starship Flight 15),,"Orbital Launch Pad 2 / SpaceX Starbase, TX, USA"
 2026 NOV 12 0436,VSFB,34.632,-120.611,Falcon 9 Block 5,USSF-627,S,"Space Launch Complex 4E / Vandenberg SFB, CA, USA"
 2026 NOV 11 1141,JSLC,40.960482,100.298059,Long March 2D,CAS Pathfinder-1,S,"Launch Area 94 (SLS-2 / 603) / Jiuquan Satellite Launch Center, People's Republic of China"
