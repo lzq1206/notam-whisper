@@ -1118,7 +1118,7 @@
         lat,
         lon
       };
-      const relatedLaunches = relatedLaunchesForWarningRows([row], filteredDataRows);
+      const relatedLaunches = relatedLaunchesForWarningRows([row], filteredDataRows, undefined, true);
       selectedLaunchDirection = relatedLaunches[0] || null;
       renderLaunchDirection2D();
       renderLaunchDirection3D();
@@ -1134,7 +1134,8 @@
         id: launch.mission || 'upcoming-launch',
         midpoint: new Date(timestamp),
         lat,
-        lon
+        lon,
+        launchDirection: launch
       };
     }
 
@@ -1450,7 +1451,7 @@
           const warningHeight = isMaritime ? 100 : 140;
           const radiusNm = parseFloat(r.radius_nm || '0');
           const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
-          const directionLaunches = isMaritime ? [] : relatedLaunchesForWarningRows([r], rows);
+          const directionLaunches = isMaritime ? [] : relatedLaunchesForWarningRows([r], rows, undefined, true);
           const solarSelection = isMaritime ? null : {
             id: r.id || r.notam_id || '',
             midpoint: getNotamMidpointDate(r.from_utc, r.to_utc),
@@ -2471,10 +2472,20 @@
       return launchWarningArcBetween(launch, warning);
     }
 
+    function selectedLaunchWarningRows(launch) {
+      if (launch?.isHistorical) {
+        if (!launchToggle.checked || !pastLaunchToggle.checked ||
+            !visiblePastLaunchesForMap().includes(launch)) return [];
+        return historicalRelatedNotamRows(launch);
+      }
+      if (!launchToggle.checked || !upcomingLaunchesForNotamRange().includes(launch)) return [];
+      return relatedWarningRowsForLaunch(launch, filteredDataRows);
+    }
+
     function selectedLaunchWarningSegments() {
       const launch = selectedLaunchDirection;
-      if (!launch || !launchToggle.checked || !launchPassesGlowOnlyFilter(launch) || !upcomingLaunchesForNotamRange().includes(launch)) return [];
-      const warnings = relatedWarningRowsForLaunch(launch, filteredDataRows)
+      if (!launch || !launchToggle.checked || !launchPassesGlowOnlyFilter(launch)) return [];
+      const warnings = selectedLaunchWarningRows(launch)
         .filter(row => !isMsiOrMaritime(row) && !launchWarningIsNearPad(row, launch))
         .flatMap(row => launchWarningDirectionTargets(row, launch))
         .map((row, index) => ({
