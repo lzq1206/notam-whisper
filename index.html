@@ -448,6 +448,7 @@
           <input type="checkbox" id="glowOnlyLaunchToggle" />
           <label for="glowOnlyLaunchToggle" style="font-size:12px;" id="glowOnlyLaunchToggleLabel">仅显示处于天文晨昏光的火箭</label>
         </div>
+        <div class="legend-row" style="font-size:11px;"><span class="dot" style="background:#22c55e;"></span><span id="historicalNotamLegend">🟢 历史发射关联 NOTAM</span></div>
       </div>
       <div class="small" id="launchStatus"></div>
       <details class="launch-history-details">
@@ -522,6 +523,7 @@
         past_launch_start_label: '历史开始：',
         past_launch_end_label: '历史结束：',
         launch_past_legend: '🚀 已发射',
+        historical_notam_legend: '🟢 历史发射关联 NOTAM',
         launch_upcoming_near_legend: '🚀 即将发射 (近)',
         launch_upcoming_far_legend: '🚀 即将发射 (远)',
         launch_site_legend: '📡 发射场站',
@@ -610,6 +612,7 @@
         past_launch_start_label: 'History from:',
         past_launch_end_label: 'History to:',
         launch_past_legend: '🚀 Launched',
+        historical_notam_legend: '🟢 NOTAM related to historical launches',
         launch_upcoming_near_legend: '🚀 Upcoming (near)',
         launch_upcoming_far_legend: '🚀 Upcoming (far)',
         launch_site_legend: '📡 Launch sites',
@@ -1441,7 +1444,8 @@
           if (overlapping[0] !== r) return;
           const popup = buildNotamPopup(r, rows);
           const displayId = notamDisplayTitle(r, rows);
-          const colorHex = isMaritime ? '#ff9900' : colorByTime(fromTs, minTs, maxTs);
+          const historicalNotamGroup = overlapping.some(item => item.__historicalLaunchNotam);
+          const colorHex = isMaritime ? '#ff9900' : (historicalNotamGroup ? '#22c55e' : colorByTime(fromTs, minTs, maxTs));
           const color = Cesium.Color.fromCssColorString(colorHex) || Cesium.Color.RED;
           const warningHeight = isMaritime ? 100 : 140;
           const radiusNm = parseFloat(r.radius_nm || '0');
@@ -1599,6 +1603,7 @@
     const pastLaunchStartLabelEl = document.getElementById('pastLaunchStartLabel');
     const pastLaunchEndLabelEl = document.getElementById('pastLaunchEndLabel');
     const launchPastLegendEl = document.getElementById('launchPastLegend');
+    const historicalNotamLegendEl = document.getElementById('historicalNotamLegend');
     const launchUpcomingNearLegendEl = document.getElementById('launchUpcomingNearLegend');
     const launchUpcomingFarLegendEl = document.getElementById('launchUpcomingFarLegend');
     const launchSiteLegendEl = document.getElementById('launchSiteLegend');
@@ -1623,6 +1628,7 @@
       pastLaunchStartLabelEl.textContent = t('past_launch_start_label');
       pastLaunchEndLabelEl.textContent = t('past_launch_end_label');
       launchPastLegendEl.textContent = t('launch_past_legend');
+      historicalNotamLegendEl.textContent = t('historical_notam_legend');
       launchUpcomingNearLegendEl.textContent = t('launch_upcoming_near_legend');
       launchUpcomingFarLegendEl.textContent = t('launch_upcoming_far_legend');
       launchSiteLegendEl.textContent = t('launch_site_legend');
@@ -1857,6 +1863,7 @@
     }
 
     let filteredDataRows = [];
+    let currentDateFilteredRows = [];
 
     function escapeHtml(value) {
       return String(value ?? '')
@@ -2323,6 +2330,72 @@
       return relatedWarningRowsForLaunch(launch, historicalNotamRowsForLaunch(launch));
     }
 
+    function historicalNotamMapIdentity(row) {
+      return [
+        String(row.country || '').trim().toUpperCase(),
+        String(row.notam_id || row.id || '').trim().toUpperCase(),
+        String(row.from_utc || ''),
+        String(row.to_utc || ''),
+        String(row.lat || ''),
+        String(row.lon || ''),
+        String(row.polygon || '')
+      ].join('|');
+    }
+
+    function historicalNotamRowsForVisibleLaunches() {
+      if (!launchToggle.checked || !pastLaunchToggle.checked) return [];
+      const relatedByKey = new Map();
+      visiblePastLaunchesForMap().forEach(launch => {
+        historicalRelatedNotamRows(launch).forEach(row => {
+          if (isMsiOrMaritime(row)) return;
+          const key = historicalNotamMapIdentity(row);
+          const historicalRow = relatedByKey.get(key) || {
+            ...row,
+            __historicalLaunchNotam: true,
+            historicalLaunches: []
+          };
+          const launchKey = `${launch.mission || launch.vehicle || ''}:${Number(launch.ts)}`;
+          if (!historicalRow.historicalLaunches.some(item => item.key === launchKey)) {
+            historicalRow.historicalLaunches.push({
+              key: launchKey,
+              mission: launch.mission || launch.payload || launch.vehicle || ''
+            });
+          }
+          relatedByKey.set(key, historicalRow);
+        });
+      });
+      return [...relatedByKey.values()];
+    }
+
+    function unionHistoricalLaunchNotams(topFilteredRows) {
+      const combined = (Array.isArray(topFilteredRows) ? topFilteredRows : [])
+        .filter(row => !row.__historicalLaunchNotam)
+        .slice();
+      const indexByKey = new Map();
+      combined.forEach((row, index) => indexByKey.set(historicalNotamMapIdentity(row), index));
+
+      historicalNotamRowsForVisibleLaunches().forEach(historicalRow => {
+        const key = historicalNotamMapIdentity(historicalRow);
+        const existingIndex = indexByKey.get(key);
+        if (existingIndex === undefined) {
+          indexByKey.set(key, combined.length);
+          combined.push(historicalRow);
+          return;
+        }
+        const existing = combined[existingIndex];
+        const mergedLaunches = [...(existing.historicalLaunches || [])];
+        historicalRow.historicalLaunches.forEach(launch => {
+          if (!mergedLaunches.some(item => item.key === launch.key)) mergedLaunches.push(launch);
+        });
+        combined[existingIndex] = {
+          ...existing,
+          __historicalLaunchNotam: true,
+          historicalLaunches: mergedLaunches
+        };
+      });
+      return combined;
+    }
+
     function historicalLaunchNotamMarkup(launch) {
       const weeks = historicalNotamArchiveWeeksForLaunch(launch);
       if (!weeks.length || weeks.some(week => !historicalNotamArchiveRowsByWeek.has(week))) {
@@ -2331,7 +2404,7 @@
       const warnings = historicalRelatedNotamRows(launch);
       const warningIds = [...new Set(warnings.map(row => row.notam_id || row.id).filter(Boolean))];
       return warningIds.length
-        ? `<div style="margin-top:5px;color:#b91c1c;"><b>${t('launch_archived_related_notams', { count: warningIds.length })}:</b><br/>${warningIds.map(escapeHtml).join(' · ')}</div>`
+        ? `<div style="margin-top:5px;color:#15803d;"><b>${t('launch_archived_related_notams', { count: warningIds.length })}:</b><br/>${warningIds.map(escapeHtml).join(' · ')}</div>`
         : `<div style="margin-top:5px;color:#666;">${t('launch_no_archived_related_notams')}</div>`;
     }
 
@@ -2352,7 +2425,7 @@
       pastLaunchMarkerRecords.forEach(record => {
         if (record.launch && record.marker) record.marker.setPopupContent(historicalLaunchPopupMarkup(record.launch));
       });
-      if (is3D && pastLaunchToggle.checked && launchToggle.checked) renderOnGlobe(filteredDataRows);
+      renderRows(currentDateFilteredRows);
     }
 
     async function loadHistoricalNotamsForVisibleLaunches() {
@@ -2497,11 +2570,15 @@
       return Boolean(firstKey && secondKey && firstKey === secondKey);
     }
 
-    function relatedLaunchesForWarningRows(targetRows, rows, launches) {
+    function relatedLaunchesForWarningRows(targetRows, rows, launches, includeHistoricalLaunches = false) {
       const targets = (Array.isArray(targetRows) ? targetRows : [targetRows]).filter(Boolean);
       const candidateRows = Array.isArray(rows) && rows.length ? rows : targets;
+      const includesHistoricalArchive = candidateRows.some(row => row && row.__historicalLaunchNotam);
       const launchList = launches === undefined
-        ? (typeof upcomingLaunchesForNotamRange === 'function' ? upcomingLaunchesForNotamRange() : upcomingLaunches)
+        ? [
+            ...(typeof upcomingLaunchesForNotamRange === 'function' ? upcomingLaunchesForNotamRange() : upcomingLaunches),
+            ...(includeHistoricalLaunches && includesHistoricalArchive && launchToggle.checked && pastLaunchToggle.checked ? visiblePastLaunchesForMap() : [])
+          ]
         : launches;
       const related = [];
       const seen = new Set();
@@ -2525,7 +2602,7 @@
       const warningTitle = overlapping.length > 1
         ? t('overlapping_notams', { count: overlapping.length })
         : (row.notam_id || (isMaritime ? t('maritime_warning') : 'NOTAM'));
-      const related = relatedLaunchesForWarningRows(overlapping, rows);
+      const related = relatedLaunchesForWarningRows(overlapping, rows, undefined, true);
       return related.length
         ? `${related.map(launch => launch.mission).filter(Boolean).join(' / ')} · ${warningTitle}`
         : warningTitle;
@@ -2534,16 +2611,17 @@
     function buildNotamPopup(row, rows) {
       const isMaritime = isMsiOrMaritime(row);
       const overlapping = isMaritime ? [row] : overlappingNotamRows(row, rows);
-      const related = relatedLaunchesForWarningRows(overlapping, rows);
+      const related = relatedLaunchesForWarningRows(overlapping, rows, undefined, true);
       const title = notamDisplayTitle(row, rows);
+      const relatedColor = overlapping.some(item => item.__historicalLaunchNotam) ? '#15803d' : '#b91c1c';
       const cards = overlapping.map((r, index) => {
         const open = overlapping.length === 1 || index === 0 ? ' open' : '';
         const summary = escapeHtml(r.notam_id || t('unnamed'));
-        const cardRelated = relatedLaunchesForWarningRows([r], rows);
+        const cardRelated = relatedLaunchesForWarningRows([r], rows, undefined, true);
         return `
           <details${open} style="margin:5px 0;border-top:1px solid #ddd;padding-top:4px;">
             <summary style="cursor:pointer;font-weight:600;">${summary}</summary>
-            ${cardRelated.length ? `<div style="margin:4px 0;color:#b91c1c;"><b>🚀 ${t('related_launch')}:</b> ${cardRelated.map(launch => escapeHtml(launch.mission || '')).join(' / ')}</div>` : ''}
+            ${cardRelated.length ? `<div style="margin:4px 0;color:${r.__historicalLaunchNotam ? '#15803d' : '#b91c1c'};"><b>🚀 ${t('related_launch')}:</b> ${cardRelated.map(launch => escapeHtml(launch.mission || launch.payload || launch.vehicle || '')).join(' / ')}</div>` : ''}
             ${t('fir_label')}: ${escapeHtml(r.fir || '')}<br/>
             ${t('from_label')}: ${escapeHtml(formatUtcWithLocal(r.from_utc))}<br/>
             ${t('to_label')}: ${escapeHtml(formatUtcWithLocal(r.to_utc))}<br/>
@@ -2554,13 +2632,14 @@
       }).join('');
       return `
         <b>${escapeHtml(title)}</b><br/>
-        ${related.length ? `<div style="margin-top:3px;color:#b91c1c;"><b>🚀 ${t('related_launch')}:</b> ${related.map(launch => escapeHtml(launch.mission || '')).join(' / ')}</div>` : ''}
+        ${related.length ? `<div style="margin-top:3px;color:${relatedColor};"><b>🚀 ${t('related_launch')}:</b> ${related.map(launch => escapeHtml(launch.mission || launch.payload || launch.vehicle || '')).join(' / ')}</div>` : ''}
         ${isMaritime ? `<b style="color:#ff9900;">${t('maritime_navwarning')}</b><br/>` : ''}
         <div style="max-width:460px;max-height:320px;overflow:auto;">${cards}</div>
       `;
     }
 
     function renderRows(rows) {
+      rows = unionHistoricalLaunchNotams(rows);
       filteredDataRows = rows;
       syncUpcomingLaunchLayerToNotamRange();
       renderLaunchDirection2D();
@@ -2571,6 +2650,10 @@
       }
 
       clearLayers();
+      if (currentFeatureGroup) {
+        map.removeLayer(currentFeatureGroup);
+        currentFeatureGroup = null;
+      }
       if (!rows.length) {
         setStatus(t('status_no_data'));
         return;
@@ -2589,7 +2672,6 @@
       const launchTimes = upcomingLaunchesForNotamRange().map(l => l.ts).filter(Number.isFinite);
       const { minTs, maxTs } = getTimelineBounds(rows, launchTimes);
 
-      if (currentFeatureGroup) map.removeLayer(currentFeatureGroup);
       const group = L.featureGroup();
       const primaryBounds = L.latLngBounds();
       currentFeatureGroup = group;
@@ -2600,7 +2682,8 @@
         const isMaritime = isMsiOrMaritime(r);
         const overlapping = isMaritime ? [r] : overlappingNotamRows(r, rows);
         if (overlapping[0] !== r) return;
-        const color = isMaritime ? '#ff9900' : colorByTime(Date.parse(r.from_utc), minTs, maxTs);
+        const historicalNotamGroup = overlapping.some(item => item.__historicalLaunchNotam);
+        const color = isMaritime ? '#ff9900' : (historicalNotamGroup ? '#22c55e' : colorByTime(Date.parse(r.from_utc), minTs, maxTs));
 
         let coordinatesList = [];
         if (r.polygon) {
@@ -3140,7 +3223,8 @@
           `${t('kml_raw')}: ${r.raw || ''}`,
         ].join('\n');
         const geometry = buildKmlGeometryForRow(r, lat, lon);
-        placemarks.push(buildKmlPlacemark(title, details, geometry, isMaritime ? '#msiStyle' : '#notamStyle'));
+        const style = isMaritime ? '#msiStyle' : (r.__historicalLaunchNotam ? '#historicalNotamStyle' : '#notamStyle');
+        placemarks.push(buildKmlPlacemark(title, details, geometry, style));
       });
 
       launchRows.forEach(l => {
@@ -3172,6 +3256,11 @@
       <IconStyle><color>ff0099ff</color></IconStyle>
       <LineStyle><color>ff0099ff</color><width>2</width></LineStyle>
       <PolyStyle><color>550099ff</color></PolyStyle>
+    </Style>
+    <Style id="historicalNotamStyle">
+      <IconStyle><color>ff5ec522</color></IconStyle>
+      <LineStyle><color>ff5ec522</color><width>2</width></LineStyle>
+      <PolyStyle><color>555ec522</color></PolyStyle>
     </Style>
     <Style id="launchStyle"><IconStyle><color>ff2b5bff</color></IconStyle></Style>
     ${placemarks.join('\n')}
@@ -3229,7 +3318,8 @@
         if (!isFinite(t)) return true;
         return t >= s && t <= e;
       });
-      renderRows(filtered);
+      currentDateFilteredRows = filtered;
+      renderRows(currentDateFilteredRows);
     }
 
     applyBtn.addEventListener('click', () => {
@@ -3239,7 +3329,8 @@
     resetBtn.addEventListener('click', () => {
       startEl.value = '';
       endEl.value = '';
-      renderRows(dataRows);
+      currentDateFilteredRows = dataRows.slice();
+      renderRows(currentDateFilteredRows);
       loadLaunchData({ skipHistory: true });
     });
     downloadKmlBtn.addEventListener('click', downloadCurrentKml);
@@ -4304,7 +4395,7 @@
         };
         updateLaunchSummary();
 
-        renderRows(filteredDataRows);
+        renderRows(currentDateFilteredRows);
         }
       } catch (err) {
         console.error('[launches] Error:', err);
@@ -4326,8 +4417,7 @@
       } else {
         map.removeLayer(pastLaunchLayerGroup);
       }
-      if (is3D) renderOnGlobe(filteredDataRows);
-      else renderLaunchDirection2D();
+      renderRows(currentDateFilteredRows);
     }
 
     launchToggle.onchange = syncLaunchLayers;
@@ -4338,7 +4428,7 @@
       pastLaunchEndDateEl.min = pastLaunchStartDateEl.value || '';
       rebuildPastLaunchLayer();
       if (launchToggle.checked && pastLaunchToggle.checked) void loadHistoricalNotamsForVisibleLaunches();
-      if (is3D) renderOnGlobe(filteredDataRows);
+      renderRows(currentDateFilteredRows);
     };
     pastLaunchStartDateEl.onchange = onPastLaunchRangeChange;
     pastLaunchEndDateEl.onchange = onPastLaunchRangeChange;
