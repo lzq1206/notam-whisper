@@ -1919,7 +1919,17 @@
       const launchTs = Number(launch.ts);
       const TIME_TOLERANCE_MS = 30 * 60 * 1000;
       if (![fromTs, toTs, launchTs].every(Number.isFinite)) return false;
-      if (launchTs >= fromTs - TIME_TOLERANCE_MS && launchTs <= toTs + TIME_TOLERANCE_MS) return true;
+      if (launchTs >= fromTs - TIME_TOLERANCE_MS && launchTs <= toTs + TIME_TOLERANCE_MS) {
+        const duration = toTs - fromTs;
+        // A long B/C validity period is not itself evidence that a NOTAM is
+        // for this launch. Require both an explicit D) schedule match and a
+        // launch-specific activity/provider/family classification.
+        if (duration > 6 * 60 * 60 * 1000) {
+          return warningScheduleAllowsLaunch(row, launch) &&
+            Boolean(warningLaunchAssociationClass(row, launch));
+        }
+        return true;
+      }
 
       // A rocket-debris warning can be issued one UTC day before/after a
       // launch feed is corrected. Do not relax the ordinary time rule for
@@ -1990,6 +2000,24 @@
       return references.some(reference => Math.abs(warningMidpoint - reference) <= 36 * 60 * 60 * 1000);
     }
 
+    function warningScheduleTimeRanges(row) {
+      const raw = String(row?.raw || '').toUpperCase();
+      const scheduleMatch = raw.match(/\bD\)\s*(.*?)(?=\s+E\)|$)/s);
+      if (!scheduleMatch) return [];
+      const schedule = scheduleMatch[1].replace(/\s+/g, ' ').trim();
+      const ranges = [];
+      const rangePattern = /(?:^|[^0-9])(\d{4})Z?\s*(?:TO|-|\/)\s*(\d{4})Z?(?=$|[^0-9])/g;
+      let match;
+      while ((match = rangePattern.exec(schedule))) {
+        const start = Number(match[1]);
+        const end = Number(match[2]);
+        if (start <= 2359 && end <= 2359 && start % 100 < 60 && end % 100 < 60) {
+          ranges.push({ start, end });
+        }
+      }
+      return ranges;
+    }
+
     function warningScheduleAllowsLaunch(row, launch) {
       const raw = String(row.raw || '').toUpperCase();
       const scheduleMatch = raw.match(/\bD\)\s*(.*?)(?=\s+E\)|$)/s);
@@ -2011,12 +2039,12 @@
         const launchDay = Date.UTC(launchDate.getUTCFullYear(), launchDate.getUTCMonth(), launchDate.getUTCDate());
         if (launchDay < start || launchDay > end) return false;
       }
-      const timeRange = schedule.match(/(\d{4})Z?\s*(?:TO|-)\s*(\d{4})Z?/);
-      if (!timeRange) return true;
-      const start = Number(timeRange[1]);
-      const end = Number(timeRange[2]);
+      const timeRanges = warningScheduleTimeRanges(row);
+      if (!timeRanges.length) return true;
       const launchTime = launchDate.getUTCHours() * 100 + launchDate.getUTCMinutes();
-      return start <= end ? launchTime >= start && launchTime <= end : launchTime >= start || launchTime <= end;
+      return timeRanges.some(({ start, end }) =>
+        start <= end ? launchTime >= start && launchTime <= end : launchTime >= start || launchTime <= end
+      );
     }
 
     function warningRectanglePointsToLaunch(row, launch) {
@@ -2194,19 +2222,72 @@
       }).filter(Boolean);
     }
 
-    function warningExplicitLaunchFamilyMatches(row, launch) {
+    function warningExplicitLaunchFamilyName(row, launch) {
       const raw = String(row?.raw || '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
-      if (!/\bROCKET\s+LAUNCH\b/.test(raw)) return false;
+      if (!/\bROCKET\s+LAUNCH\b|\bWILL\s+BE\s+LAUNCHED\b/.test(raw)) return '';
       const launchText = [launch?.vehicle, launch?.mission, launch?.name]
         .filter(Boolean).join(' ').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
-      if (!launchText) return false;
-      const families = ['GSLV', 'PSLV', 'LVM', 'FALCON', 'ELECTRON', 'LONG MARCH', 'ARIANE',
+      if (!launchText) return '';
+      const families = ['LONG MARCH', 'GSLV', 'PSLV', 'LVM', 'FALCON', 'ELECTRON', 'KSLV', 'ARIANE',
         'VULCAN', 'STARSHIP', 'SOYUZ', 'ATLAS', 'CERES', 'KUAIZHOU', 'H3'];
-      return families.some(family => {
+      return families.find(family => {
         const familyPattern = family.split(' ').map(part => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\s+');
         const familyRegex = new RegExp(`(?:^|\\s)${familyPattern}(?:\\s|$)`);
         return familyRegex.test(raw) && familyRegex.test(launchText);
-      });
+      }) || '';
+    }
+
+    function warningExplicitLaunchFamilyMatches(row, launch) {
+      return Boolean(warningExplicitLaunchFamilyName(row, launch));
+    }
+
+    function warningLaunchAssociationClass(row, launch) {
+      if (!row || !launch || isMsiOrMaritime(row)) return '';
+      const qcode = String(row.qcode || '').toUpperCase();
+      const raw = String(row.raw || '').toUpperCase();
+      const launchText = [launch.vehicle, launch.mission, launch.name].filter(Boolean).join(' ').toUpperCase();
+      const provider = String(launchProviderName(launch)).toUpperCase();
+      const isChineseLongMarch = /LONG\s+MARCH/.test(launchText) && /(?:CHINA\s+AEROSPACE|CASC)/.test(provider);
+      if (qcode === 'QWMLW' && isChineseLongMarch &&
+          /AEROSPACE\s+FLT\s+ACT/.test(raw) &&
+          /FALL\s+AREA\s+OF\s+UNBURNED\s+DEBRIS/.test(raw) &&
+          /(?:CONDUCTED\s+BY\s+CHINA|CHINA\s+AEROSPACE)/.test(raw)) {
+        return 'china-long-march-debris';
+      }
+      if (/ROCKET\s+LAB/.test(provider) && /ROCKET\s+LAB/.test(raw) &&
+          /ROCKET\s+DEBRIS\s+RETURN/.test(raw)) {
+        return 'rocket-lab-debris-return';
+      }
+      const explicitFamily = warningExplicitLaunchFamilyName(row, launch);
+      if (explicitFamily && ['QRDCA', 'QWMLW', 'QXXXX'].includes(qcode)) {
+        return `explicit-launch:${explicitFamily}`;
+      }
+      return '';
+    }
+
+    function warningCorridorPairHasCompatibleEvidence(launch, first, second) {
+      const firstClass = warningLaunchAssociationClass(first, launch);
+      if (!firstClass || firstClass !== warningLaunchAssociationClass(second, launch)) return false;
+
+      const firstFrom = Date.parse(first.from_utc), secondFrom = Date.parse(second.from_utc);
+      const firstTo = Date.parse(first.to_utc), secondTo = Date.parse(second.to_utc);
+      if (![firstFrom, secondFrom, firstTo, secondTo].every(Number.isFinite)) return false;
+      const timingTolerance = 6 * 60 * 60 * 1000;
+      if (Math.abs(firstFrom - secondFrom) > timingTolerance || Math.abs(firstTo - secondTo) > timingTolerance) return false;
+
+      const firstSchedule = warningScheduleTimeRanges(first);
+      const secondSchedule = warningScheduleTimeRanges(second);
+      if (firstSchedule.length !== secondSchedule.length) return false;
+      if (!firstSchedule.length) {
+        // Without D) hours, only a pair of short, near-identical event
+        // windows can serve as shared temporal evidence (e.g. debris return).
+        return firstTo - firstFrom <= timingTolerance && secondTo - secondFrom <= timingTolerance;
+      }
+      if (!warningScheduleAllowsLaunch(first, launch) || !warningScheduleAllowsLaunch(second, launch)) return false;
+      const clockDistance = (a, b) => Math.min(Math.abs(a - b), 1440 - Math.abs(a - b));
+      return firstSchedule.some(a => secondSchedule.some(b =>
+        clockDistance(a.start, b.start) <= 90 && clockDistance(a.end, b.end) <= 90
+      ));
     }
 
     function warningMultiRegionCorridorMatches(row, launch) {
@@ -2256,7 +2337,7 @@
           Number.isFinite(rowLat) && Number.isFinite(rowLon);
       });
       const related = new Set(timeMatched.filter(row =>
-        launchDistanceKm(Number.parseFloat(row.lat), Number.parseFloat(row.lon), launchLat, launchLon) <= 120 ||
+        warningNearLaunchPadMatches(row, launch) ||
         warningRectanglePointsToLaunch(row, launchForWarningGeometry(row)) ||
         warningMultiRegionCorridorMatches(row, launch)
       ));
@@ -2268,7 +2349,8 @@
         for (let secondIndex = firstIndex + 1; secondIndex < timeMatched.length; secondIndex++) {
           const first = timeMatched[firstIndex];
           const second = timeMatched[secondIndex];
-          if (launchCorridorPairMatches(launch, first, second)) {
+          if (warningCorridorPairHasCompatibleEvidence(launch, first, second) &&
+              launchCorridorPairMatches(launch, first, second)) {
             related.add(first);
             related.add(second);
           }
@@ -2341,6 +2423,26 @@
         String(row.lon || ''),
         String(row.polygon || '')
       ].join('|');
+    }
+
+    function launchAssociationCandidateRows(displayRows = []) {
+      // The map date filter is a rendering control, not an association input.
+      // Always evaluate future launches against the loaded source feed, while
+      // retaining tagged weekly archive rows only for visible historical data.
+      const byKey = new Map();
+      const add = row => {
+        if (!row || isMsiOrMaritime(row)) return;
+        const key = historicalNotamMapIdentity(row);
+        const existing = byKey.get(key);
+        if (row.__historicalLaunchNotam) {
+          byKey.set(key, { ...(existing || {}), ...row, __historicalLaunchNotam: true });
+        } else if (!existing) {
+          byKey.set(key, row);
+        }
+      };
+      (Array.isArray(dataRows) ? dataRows : []).forEach(add);
+      (Array.isArray(displayRows) ? displayRows : []).forEach(add);
+      return [...byKey.values()];
     }
 
     function historicalNotamRowsForVisibleLaunches() {
@@ -2479,7 +2581,8 @@
         return historicalRelatedNotamRows(launch);
       }
       if (!launchToggle.checked || !upcomingLaunchesForNotamRange().includes(launch)) return [];
-      return relatedWarningRowsForLaunch(launch, filteredDataRows);
+      const associated = relatedWarningRowsForLaunch(launch, launchAssociationCandidateRows(filteredDataRows));
+      return associated.filter(row => filteredDataRows.some(visible => warningRowsMatch(row, visible)));
     }
 
     function selectedLaunchWarningSegments() {
@@ -2584,7 +2687,8 @@
     function relatedLaunchesForWarningRows(targetRows, rows, launches, includeHistoricalLaunches = false) {
       const targets = (Array.isArray(targetRows) ? targetRows : [targetRows]).filter(Boolean);
       const candidateRows = Array.isArray(rows) && rows.length ? rows : targets;
-      const includesHistoricalArchive = candidateRows.some(row => row && row.__historicalLaunchNotam);
+      const includesHistoricalArchive = [...candidateRows, ...targets]
+        .some(row => row && row.__historicalLaunchNotam);
       const launchList = launches === undefined
         ? [
             ...(typeof upcomingLaunchesForNotamRange === 'function' ? upcomingLaunchesForNotamRange() : upcomingLaunches),
@@ -2596,7 +2700,17 @@
       (launchList || []).forEach(launch => {
         const launchTs = Number(launch.ts);
         if (!Number.isFinite(launchTs)) return;
-        const warningRows = relatedWarningRowsForLaunch(launch, candidateRows);
+        let launchCandidates;
+        if (launch.isHistorical) {
+          const archiveRows = [...candidateRows, ...targets].filter(row => row.__historicalLaunchNotam);
+          const archiveByKey = new Map();
+          archiveRows.forEach(row => archiveByKey.set(historicalNotamMapIdentity(row), row));
+          launchCandidates = [...archiveByKey.values()];
+        } else {
+          launchCandidates = launchAssociationCandidateRows([...candidateRows, ...targets]
+            .filter(row => !row.__historicalLaunchNotam));
+        }
+        const warningRows = relatedWarningRowsForLaunch(launch, launchCandidates);
         if (!targets.some(target => warningRows.some(candidate => warningRowsMatch(candidate, target)))) return;
         const key = `${launch.mission || ''}:${launchTs}`;
         if (!seen.has(key)) {
@@ -4297,7 +4411,10 @@
               });
             }
             lMarker.bindPopup(() => {
-              const relatedWarnings = relatedWarningRowsForLaunch(launchRecord, filteredDataRows);
+              const relatedWarnings = relatedWarningRowsForLaunch(
+                launchRecord,
+                launchAssociationCandidateRows(filteredDataRows)
+              );
               const warningIds = [...new Set(relatedWarnings.map(row => row.notam_id || row.id).filter(Boolean))];
               const warningStatus = warningIds.length
                 ? `<div style="margin-top:5px;color:#b91c1c;"><b>${t('launch_related_warnings', { count: warningIds.length })}:</b><br/>${warningIds.map(escapeHtml).join(' · ')}</div>`
