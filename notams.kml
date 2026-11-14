@@ -420,7 +420,7 @@
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>-97.2,62.918056,0 -97.0,26.0,0 -96.416667,26.0,0 -96.483333,25.966667,0 -97.2,25.916667,0 -97.2,62.918056,0</coordinates>
+            <coordinates>-97.2,25.916667,0 -97.0,26.0,0 -96.416667,26.0,0 -96.483333,25.966667,0 -97.2,25.916667,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>

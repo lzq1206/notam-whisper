@@ -838,6 +838,12 @@ def fetch_global_notam_supplement():
             qcode = parsed_qcode
         polygon = feat.get('polygon', [])
         if polygon:
+            raw_polygons = _extract_raw_coordinate_rings(raw)
+            if _raw_ring_confirms_isolated_supplement_outlier(polygon, raw_polygons):
+                # Keep the authoritative raw E-field ring when a derived
+                # supplement coordinate has an isolated, uncorroborated point.
+                polygon = raw_polygons[0]
+                print(f"[global] Corrected isolated derived-geometry outlier for {notam_id} from raw E-field")
             lat = round(sum(point[0] for point in polygon) / len(polygon), 6)
             lon = round(sum(point[1] for point in polygon) / len(polygon), 6)
             radius = ''
@@ -1341,6 +1347,57 @@ def _extract_raw_coordinate_rings(raw):
             lon = _parse_coord_val(match.group(7), match.group(8))
         indexed_points.append(([lat, lon], match.start()))
     return _split_coordinate_rings(indexed_points)
+
+def _raw_ring_confirms_isolated_supplement_outlier(supplement_polygon, raw_polygons):
+    """Detect a derived coordinate corrupted by adjacent non-coordinate text.
+
+    The raw E-field is the source notice; supplement GEOMETRY/COORDINATES is
+    derived and can accidentally absorb digits from labels such as ``AREA-C6``.
+    Only replace a derived ring when one raw ring independently corroborates
+    every other derived vertex, while exactly one extra derived vertex is a
+    large geographic outlier. This deliberately conservative check avoids
+    replacing valid multi-region geometry with an incomplete raw parse.
+    """
+    if not isinstance(supplement_polygon, list) or len(raw_polygons or []) != 1:
+        return False
+    raw_ring = raw_polygons[0]
+    if not isinstance(raw_ring, list) or len(raw_ring) < 3:
+        return False
+    try:
+        source_points = [(float(point[0]), float(point[1])) for point in supplement_polygon]
+        raw_points = [(float(point[0]), float(point[1])) for point in raw_ring]
+    except (TypeError, ValueError, IndexError):
+        return False
+    if len(source_points) != len(raw_points) + 1:
+        return False
+
+    def distance_degrees(a, b):
+        dlon = (b[1] - a[1] + 180.0) % 360.0 - 180.0
+        mean_lat = math.radians((a[0] + b[0]) / 2.0)
+        return math.hypot(b[0] - a[0], dlon * math.cos(mean_lat))
+
+    tolerance_degrees = 0.02
+    unmatched_raw = [
+        point for point in raw_points
+        if min(distance_degrees(point, source) for source in source_points) > tolerance_degrees
+    ]
+    unmatched_source = [
+        point for point in source_points
+        if min(distance_degrees(point, raw) for raw in raw_points) > tolerance_degrees
+    ]
+    if unmatched_raw or len(unmatched_source) != 1:
+        return False
+
+    # Require the unmatched derived point to be far beyond ordinary adjacent
+    # vertex spacing. A valid broad corridor whose vertices are all repeated
+    # by the raw parser never enters this outlier-repair path.
+    edge_lengths = [
+        distance_degrees(raw_points[index], raw_points[(index + 1) % len(raw_points)])
+        for index in range(len(raw_points))
+    ]
+    typical_edge = sorted(edge_lengths)[len(edge_lengths) // 2]
+    outlier_distance = min(distance_degrees(unmatched_source[0], raw) for raw in raw_points)
+    return outlier_distance > max(5.0, typical_edge * 8.0)
 
 def csv_to_kml(csv_path, kml_path):
     rows = []
