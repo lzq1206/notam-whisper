@@ -2083,6 +2083,32 @@
           toTs - fromTs > 90 * minute || endTs - startTs > 90 * minute ||
           Math.abs(fromTs - startTs) > 2 * minute || Math.abs(toTs - endTs) > 2 * minute) return false;
 
+      return warningRectangleGeometryPointsToLaunch(row, launch);
+    }
+
+    function warningRectangleGeometryPointsToLaunch(row, launch) {
+      // Geometry is deliberately separable from B/C timestamp matching so a
+      // narrowly validated multi-zone QRDCA corridor can tolerate a few
+      // minutes of per-zone NOTAM scheduling drift without weakening the
+      // individual single-zone rule.
+      if (isMsiOrMaritime(row)) return false;
+      const qcode = String(row.qcode || '').toUpperCase();
+      const raw = String(row.raw || '').toUpperCase();
+      const launchText = launch?.vehicle
+        ? String(launch.vehicle).toUpperCase()
+        : [launch?.mission, launch?.name].filter(Boolean).join(' ').toUpperCase();
+      const provider = String(launchProviderName(launch)).toUpperCase();
+      const isChineseLongMarchProvider = /LONG\s+MARCH/.test(launchText) &&
+        /(?:CHINA\s+AEROSPACE|CASC)/.test(provider);
+      const isChineseLongMarchFallArea = qcode === 'QWMLW' &&
+        /AEROSPACE\s+FLT\s+ACT/.test(raw) &&
+        /FALL\s+AREA\s+OF\s+UNBURNED\s+DEBRIS/.test(raw) &&
+        /(?:CONDUCTED\s+BY\s+CHINA|CHINA\s+AEROSPACE)/.test(raw) &&
+        isChineseLongMarchProvider;
+      const isFlexibleLongRange = isChineseLongMarchProvider &&
+        (qcode === 'QRDCA' || isChineseLongMarchFallArea);
+      if (qcode !== 'QRDCA' && !isChineseLongMarchFallArea) return false;
+
       let corners;
       try { corners = JSON.parse(row.polygon || ''); } catch (error) { return false; }
       if (!Array.isArray(corners)) return false;
@@ -2267,7 +2293,12 @@
 
     function warningCorridorPairHasCompatibleEvidence(launch, first, second) {
       const firstClass = warningLaunchAssociationClass(first, launch);
-      if (!firstClass || firstClass !== warningLaunchAssociationClass(second, launch)) return false;
+      const secondClass = warningLaunchAssociationClass(second, launch);
+
+      if (!firstClass && !secondClass) {
+        return warningUnclassifiedQrdcaPairHasLaunchEvidence(launch, first, second);
+      }
+      if (!firstClass || firstClass !== secondClass) return false;
 
       const firstFrom = Date.parse(first.from_utc), secondFrom = Date.parse(second.from_utc);
       const firstTo = Date.parse(first.to_utc), secondTo = Date.parse(second.to_utc);
@@ -2292,6 +2323,46 @@
       return firstSchedule.some(a => secondSchedule.some(b =>
         clockDistance(a.start, b.start) <= 90 && clockDistance(a.end, b.end) <= 90
       ));
+    }
+
+    function warningUnclassifiedQrdcaPairHasLaunchEvidence(launch, first, second) {
+      // Some authorities publish one launch corridor as multiple generic
+      // QRDCA rectangles and omit the vehicle/activity phrase. Accept that
+      // only when both zones independently align with this launch, come from
+      // the same explicit source, and their short B/C windows closely bracket
+      // the published launch window. Geometry/time alone is not sufficient.
+      if (isMsiOrMaritime(first) || isMsiOrMaritime(second) ||
+          String(first.qcode || '').toUpperCase() !== 'QRDCA' ||
+          String(second.qcode || '').toUpperCase() !== 'QRDCA') return false;
+      const sourceFor = row => {
+        const match = String(row.raw || '').match(/\bSOURCE:\s*([A-Z0-9_-]+)/i);
+        return match ? match[1].toUpperCase() : '';
+      };
+      const source = sourceFor(first);
+      if (!source || source !== sourceFor(second)) return false;
+
+      const firstFrom = Date.parse(first.from_utc), secondFrom = Date.parse(second.from_utc);
+      const firstTo = Date.parse(first.to_utc), secondTo = Date.parse(second.to_utc);
+      const windowStart = Number(launch.windowStartTs), windowEnd = Number(launch.windowEndTs);
+      const launchTs = Number(launch.ts);
+      const minute = 60 * 1000;
+      if (![firstFrom, secondFrom, firstTo, secondTo, windowStart, windowEnd, launchTs].every(Number.isFinite) ||
+          windowEnd <= windowStart) return false;
+
+      const rows = [first, second];
+      const intervals = [[firstFrom, firstTo], [secondFrom, secondTo]];
+      for (const [fromTs, toTs] of intervals) {
+        const duration = toTs - fromTs;
+        const overlap = Math.min(toTs, windowEnd) - Math.max(fromTs, windowStart);
+        if (duration <= 0 || duration > 90 * minute ||
+            Math.abs(fromTs - windowStart) > 10 * minute ||
+            Math.abs(toTs - windowEnd) > 10 * minute ||
+            launchTs < fromTs || launchTs > toTs ||
+            overlap < Math.min(duration, windowEnd - windowStart) * 0.5) return false;
+      }
+      if (rows.some(row => !warningScheduleAllowsLaunch(row, launch) ||
+          !warningRectangleGeometryPointsToLaunch(row, launch))) return false;
+      return true;
     }
 
     function warningMultiRegionCorridorMatches(row, launch) {
