@@ -2284,7 +2284,11 @@
         return firstTo - firstFrom <= timingTolerance && secondTo - secondFrom <= timingTolerance;
       }
       if (!warningScheduleAllowsLaunch(first, launch) || !warningScheduleAllowsLaunch(second, launch)) return false;
-      const clockDistance = (a, b) => Math.min(Math.abs(a - b), 1440 - Math.abs(a - b));
+      const toMinutes = value => Math.floor(value / 100) * 60 + value % 100;
+      const clockDistance = (a, b) => {
+        const difference = Math.abs(toMinutes(a) - toMinutes(b));
+        return Math.min(difference, 1440 - difference);
+      };
       return firstSchedule.some(a => secondSchedule.some(b =>
         clockDistance(a.start, b.start) <= 90 && clockDistance(a.end, b.end) <= 90
       ));
