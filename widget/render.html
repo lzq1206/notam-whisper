@@ -50,6 +50,12 @@
       let layersByKind={};
       const windowStart=Date.now();
       const windowEnd=windowStart+7*86400000;
+      // Match the homepage's default UTC calendar-date filter exactly:
+      // today 00:00Z through the end of the date seven days from today.
+      const homepageDateStart=new Date();
+      homepageDateStart.setUTCHours(0,0,0,0);
+      const homepageDateStartTs=homepageDateStart.getTime();
+      const homepageDateEndTs=homepageDateStartTs+8*86400000-1;
       let timeline={minTs:Date.now(),maxTs:Date.now()+86400000};
       const failSoft = (kind, err) => { console.warn(kind, err || 'unavailable'); ready[kind] = true; finishIfReady(); };
       const finishIfReady = () => {
@@ -95,9 +101,20 @@
         return !Number.isFinite(start)||!Number.isFinite(end)||end-start<24*3600000;
       }
       function isMaritime(row) { return row.country==='Maritime'||row.fir==='MSI'; }
-      function overlapsNextSevenDays(row) {
-        const from=Date.parse(row.from_utc),to=Date.parse(row.to_utc);
-        return Number.isFinite(from)&&from<=windowEnd&&(!Number.isFinite(to)||to>=windowStart);
+      function matchesHomepageDefaultDateFilter(row) {
+        if (isMaritime(row)) {
+          const from=row.from_utc?Date.parse(row.from_utc):-Infinity;
+          const to=row.to_utc?Date.parse(row.to_utc):(row.from_utc?from+365*86400000:Infinity);
+          if (!Number.isFinite(from)&&!Number.isFinite(to)) return true;
+          return from<=homepageDateEndTs&&to>=homepageDateStartTs;
+        }
+        // Homepage's NOTAM/legacy filter includes notices whose start time
+        // falls in the selected date range; an earlier-starting notice does
+        // not remain visible merely because its validity interval overlaps it.
+        if (!row.from_utc) return true;
+        const from=Date.parse(row.from_utc);
+        if (!Number.isFinite(from)) return true;
+        return from>=homepageDateStartTs&&from<=homepageDateEndTs;
       }
       function twilightGlow(row) {
         const from=Date.parse(row.from_utc),to=Date.parse(row.to_utc);
@@ -235,7 +252,7 @@
             if(child.eachLayer) visit(child);
             const name=String(child.feature?.properties?.name||'').toUpperCase();
             const row=byName.get(name); if(typeof child.setStyle!=='function') return;
-            if(!row||!overlapsNextSevenDays(row)) { child.setStyle({opacity:0,fillOpacity:0,weight:0,interactive:false}); return; }
+            if(!row||!matchesHomepageDefaultDateFilter(row)) { child.setStyle({opacity:0,fillOpacity:0,weight:0,interactive:false}); return; }
             const color=isMaritime(row)?'#ff9900':colorByTime(Date.parse(row.from_utc));
             const glow=twilightGlow(row);
             child.setStyle({color,fillColor:color,fillOpacity:0.2,weight:glow?4:2,opacity:1});
@@ -245,7 +262,7 @@
         }
       }
       for (const [kind,path] of [['notams','../notams.kml'],['msi','../msi.kml']]) {
-        loadWarningCsv(kind).then(rows=>{ allWarnings.push(...rows.filter(overlapsNextSevenDays)); ready[kind==='msi'?'msiCsv':'notamCsv']=true; finishIfReady(); });
+        loadWarningCsv(kind).then(rows=>{ allWarnings.push(...rows.filter(matchesHomepageDefaultDateFilter)); ready[kind==='msi'?'msiCsv':'notamCsv']=true; finishIfReady(); });
         const pane=kind==='msi'?'msiPane':'notamPane';
         const warningRenderer=L.svg({pane});
         const layer=omnivore.kml(path + '?widget=' + Date.now(), null, L.geoJson(null,{pane,renderer:warningRenderer}));
