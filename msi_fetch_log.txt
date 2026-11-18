@@ -26729,3 +26729,43 @@ AttributeError: module 'datetime' has no attribute 'UTC'
 2026-11-18T07:41:25.010460 -   HTTP 503
 2026-11-18T07:41:27.328999 -   HTTP 503
 2026-11-18T07:41:31.655443 -   HTTP 503
+2026-11-18T17:18:33.707692 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-11-18T17:18:33.964033 -   HTTP 503
+2026-11-18T17:18:41.102113 -   HTTP 503
+2026-11-18T17:18:45.190516 -   HTTP 503
+2026-11-18T17:18:50.196408 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-11-18T17:18:50.415645 -   HTTP 503
+2026-11-18T17:18:52.527915 -   HTTP 503
+2026-11-18T17:18:57.743108 -   HTTP 503
+2026-11-18T17:19:02.746450 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-11-18T17:19:02.825681 -   HTTP 503
+2026-11-18T17:19:10.220711 -   HTTP 503
+2026-11-18T17:19:14.346710 -   HTTP 503
+2026-11-18T17:19:19.352623 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-11-18T17:19:19.473784 -   HTTP 503
+2026-11-18T17:19:21.589924 -   HTTP 503
+2026-11-18T17:19:25.910155 -   HTTP 503
+2026-11-18T17:19:30.915975 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-11-18T17:19:30.994618 -   HTTP 503
+2026-11-18T17:19:33.080345 -   HTTP 503
+2026-11-18T17:19:42.173290 -   HTTP 503
+2026-11-18T17:19:47.179100 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-11-18T17:19:48.357215 -   HTTP 503
+2026-11-18T17:19:50.641166 -   HTTP 503
+2026-11-18T17:19:55.215994 -   HTTP 503
+2026-11-18T17:20:00.221871 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-11-18T17:20:00.312356 -   HTTP 503
+2026-11-18T17:20:02.563405 -   HTTP 503
+2026-11-18T17:20:06.995888 -   HTTP 503
+2026-11-18T17:20:12.001754 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-11-18T17:20:17.123815 -   HTTP 503
+2026-11-18T17:20:19.325916 -   HTTP 503
+2026-11-18T17:20:23.457552 -   HTTP 503
+2026-11-18T17:20:28.461738 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-11-18T17:20:58.557205 -   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Read timed out. (read timeout=30)
+2026-11-18T17:21:30.792199 -   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Read timed out. (read timeout=30)
+2026-11-18T17:22:05.049467 -   Request error: HTTPSConnectionPool(host='msi.nga.mil', port=443): Read timed out. (read timeout=30)
+2026-11-18T17:22:10.054366 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-11-18T17:22:10.439918 -   HTTP 503
+2026-11-18T17:22:12.634210 -   HTTP 503
+2026-11-18T17:22:16.942946 -   HTTP 503
