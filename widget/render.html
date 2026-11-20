@@ -101,6 +101,45 @@
         return !Number.isFinite(start)||!Number.isFinite(end)||end-start<24*3600000;
       }
       function isMaritime(row) { return row.country==='Maritime'||row.fir==='MSI'; }
+      function hasExplicitDatedNotamSchedule(row,startTs,endTs) {
+        const raw=String(row?.raw||'').toUpperCase();
+        const dLine=raw.match(/\bD\)\s*(.*?)(?=\s+E\)|$)/s);
+        if(!dLine)return false;
+        const sourceStart=Date.parse(row.from_utc),sourceEnd=Date.parse(row.to_utc);
+        if(!Number.isFinite(sourceStart)||!Number.isFinite(sourceEnd)||sourceEnd<sourceStart)return false;
+        const activeStart=Math.max(sourceStart,startTs),activeEnd=Math.min(sourceEnd,endTs);
+        if(activeEnd<activeStart)return false;
+        // Expand only explicit calendar-day lists/ranges (e.g. "11 12 21-24").
+        // Continuous DAILY/weekday notices retain the homepage's start-date rule.
+        const schedule=dLine[1].replace(/\b\d{4}\s*(?:Z\s*)?(?:-|TO|\/)\s*\d{4}\s*Z?\b/g,' ');
+        const months={JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
+        const namedMonths=[...schedule.matchAll(/\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\b/g)].map(m=>months[m[1]]);
+        const dayRanges=[];
+        const pattern=/(?:^|[\s,])(\d{1,2})(?:\s*(?:-|THRU)\s*(\d{1,2}))?(?=$|[\s,])/g;
+        let match;
+        while((match=pattern.exec(schedule))){
+          const first=Number(match[1]),last=match[2]?Number(match[2]):first;
+          if(first>=1&&first<=31&&last>=first&&last<=31)dayRanges.push([first,last]);
+        }
+        if(!dayRanges.length)return false;
+        const from=new Date(activeStart),to=new Date(activeEnd);
+        let month=Date.UTC(from.getUTCFullYear(),from.getUTCMonth(),1);
+        const lastMonth=Date.UTC(to.getUTCFullYear(),to.getUTCMonth(),1);
+        while(month<=lastMonth){
+          const cursor=new Date(month),year=cursor.getUTCFullYear(),monthIndex=cursor.getUTCMonth();
+          if(!namedMonths.length||namedMonths.includes(monthIndex)){
+            for(const [first,last] of dayRanges){
+              for(let day=first;day<=last;day++){
+                const dayStart=Date.UTC(year,monthIndex,day);
+                if(new Date(dayStart).getUTCMonth()!==monthIndex)continue;
+                if(dayStart<=activeEnd&&dayStart+86400000-1>=activeStart)return true;
+              }
+            }
+          }
+          month=Date.UTC(year,monthIndex+1,1);
+        }
+        return false;
+      }
       function matchesHomepageDefaultDateFilter(row) {
         if (isMaritime(row)) {
           const from=row.from_utc?Date.parse(row.from_utc):-Infinity;
@@ -114,7 +153,8 @@
         if (!row.from_utc) return true;
         const from=Date.parse(row.from_utc);
         if (!Number.isFinite(from)) return true;
-        return from>=homepageDateStartTs&&from<=homepageDateEndTs;
+        return (from>=homepageDateStartTs&&from<=homepageDateEndTs)||
+          hasExplicitDatedNotamSchedule(row,homepageDateStartTs,homepageDateEndTs);
       }
       function twilightGlow(row) {
         const from=Date.parse(row.from_utc),to=Date.parse(row.to_utc);

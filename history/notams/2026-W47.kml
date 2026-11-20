@@ -473,5 +473,17 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
+    <Placemark>
+      <name>A7357/26</name>
+      <description>(A7357/26 NOTAMN Q)UAAA/QRPCA/IV/NBO/W/000/999/4610N07259E/027 A)UAAA B)2611110400 C)2611241000 D)11 12 21-24 0400-1000 E)PROHIBITED AREA ACTIVATED AREA BOUNDED BY: 462945N 0725247E - 462107N 0722547E - 460408N 0722348E - 455012N 0724507E - 454625N 0730646E - 455009N 0732308E - 461728N 0733444E - 462750N 0731806E - 462945N 0725247E. F)GND G)UNL)</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>72.879722,46.495833,0 72.429722,46.351944,0 72.396667,46.068889,0 72.751944,45.836667,0 73.112778,45.773611,0 73.385556,45.835833,0 73.578889,46.291111,0 73.301667,46.463889,0 72.879722,46.495833,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
   </Document>
 </kml>

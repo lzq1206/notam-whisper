@@ -3491,6 +3491,58 @@
       }
     }
 
+    function notamHasExplicitScheduledDateInRange(row, selectedStartTs, selectedEndTs) {
+      const raw = String(row?.raw || '').toUpperCase();
+      const dLine = raw.match(/\bD\)\s*(.*?)(?=\s+E\)|$)/s);
+      if (!dLine) return false;
+      const sourceStart = Date.parse(row.from_utc);
+      const sourceEnd = Date.parse(row.to_utc);
+      if (![sourceStart, sourceEnd].every(Number.isFinite) || sourceEnd < sourceStart) return false;
+      const activeStart = Math.max(sourceStart, selectedStartTs);
+      const activeEnd = Math.min(sourceEnd, selectedEndTs);
+      if (activeEnd < activeStart) return false;
+
+      // The D) list may name individual calendar days (e.g. "11 12 21-24")
+      // while B)/C) span a longer validity interval. Only explicit day lists
+      // are expanded here; DAILY/weekday recurrence keeps the existing filter.
+      const schedule = dLine[1].replace(/\b\d{4}\s*(?:Z\s*)?(?:-|TO|\/)\s*\d{4}\s*Z?\b/g, ' ');
+      const monthNumbers = { JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5, JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11 };
+      const namedMonths = [...schedule.matchAll(/\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\b/g)]
+        .map(match => monthNumbers[match[1]]);
+      const dayRanges = [];
+      const dayPattern = /(?:^|[\s,])(\d{1,2})(?:\s*(?:-|THRU)\s*(\d{1,2}))?(?=$|[\s,])/g;
+      let dayMatch;
+      while ((dayMatch = dayPattern.exec(schedule))) {
+        const first = Number(dayMatch[1]);
+        const last = dayMatch[2] ? Number(dayMatch[2]) : first;
+        if (first >= 1 && first <= 31 && last >= first && last <= 31) dayRanges.push([first, last]);
+      }
+      if (!dayRanges.length) return false;
+
+      const startDate = new Date(activeStart);
+      const endDate = new Date(activeEnd);
+      let monthCursor = Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), 1);
+      const lastMonth = Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), 1);
+      while (monthCursor <= lastMonth) {
+        const cursorDate = new Date(monthCursor);
+        const year = cursorDate.getUTCFullYear();
+        const month = cursorDate.getUTCMonth();
+        if (!namedMonths.length || namedMonths.includes(month)) {
+          for (const [first, last] of dayRanges) {
+            for (let day = first; day <= last; day++) {
+              const dayStart = Date.UTC(year, month, day);
+              const candidate = new Date(dayStart);
+              if (candidate.getUTCMonth() !== month) continue;
+              const dayEnd = dayStart + 86400000 - 1;
+              if (dayStart <= activeEnd && dayEnd >= activeStart) return true;
+            }
+          }
+        }
+        monthCursor = Date.UTC(year, month + 1, 1);
+      }
+      return false;
+    }
+
     async function applyFilter() {
       if (!dataRows.length) return;
       const s = startEl.value ? new Date(startEl.value + 'T00:00:00Z').getTime() : -Infinity;
@@ -3516,7 +3568,7 @@
         if (!r.from_utc) return true;
         const t = Date.parse(r.from_utc);
         if (!isFinite(t)) return true;
-        return t >= s && t <= e;
+        return (t >= s && t <= e) || notamHasExplicitScheduledDateInRange(r, s, e);
       });
       currentDateFilteredRows = filtered;
       renderRows(currentDateFilteredRows);

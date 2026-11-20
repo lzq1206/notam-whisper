@@ -78,6 +78,11 @@ RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 GLOBAL_SUPPLEMENT_URL = "https://raw.githubusercontent.com/Joey0609/notams/main/data_dict.json"
 GLOBAL_SUPPLEMENT_TYPES = {"launch", "missile", "reentry"}
 KAZAKHSTAN_NOTAM_URL = "https://notam.ans.kz/notam_en/"
+# Curated rocket-activity candidates can be retained independently of whether
+# the available launch feed supports assigning them to one specific mission.
+# A7357/26 was explicitly reviewed for website inclusion; its normal B/C
+# validity filter removes it from the active snapshot after expiry.
+KAZAKHSTAN_ROCKET_ACTIVITY_CANDIDATE_IDS = {"A7357/26"}
 FAA_TFR_LIST_URL = "https://tfr.faa.gov/tfrapi/getTfrList"
 FAA_TFR_DETAIL_URL = "https://tfr.faa.gov/tfrapi/getWebText"
 FAA_TFR_MAX_DETAILS = 20
@@ -443,10 +448,12 @@ def _passes_filters(notam):
         return False
     # UNL is an altitude, while QRDCA/QWMLW/QWELW are generic danger/activity
     # codes.  None is sufficient evidence of a launch by itself.  Accept only
-    # explicit aerospace-event language or an upstream source that already
-    # applied a launch-specific classifier.
+    # explicit aerospace-event language, an upstream source that already
+    # applied a launch-specific classifier, or a curated activity candidate.
     trusted_source = bool(notam.get('_trusted_launch_source'))
-    if not trusted_source and not any(pattern.search(raw_upper) for pattern in KEEP_PATTERNS):
+    rocket_activity_candidate = bool(notam.get('_rocket_activity_candidate'))
+    if (not trusted_source and not rocket_activity_candidate and
+            not any(pattern.search(raw_upper) for pattern in KEEP_PATTERNS)):
         return False
     from_str = notam.get('from', '')
     to_str = notam.get('to', '')
@@ -937,7 +944,7 @@ def _parse_kazakhstan_notam_blocks(payload):
     return blocks
 
 def fetch_kazakhstan_notams(launch_contexts=()):
-    """Fetch Kazakh official NOTAMs and retain only launch-correlated danger areas."""
+    """Fetch official KZ NOTAMs, separating activity retention from launch matching."""
     rows = []
     try:
         # The official host occasionally serves an incomplete certificate chain.
@@ -971,16 +978,39 @@ def fetch_kazakhstan_notams(launch_contexts=()):
             'radius': radius,
             'notamCode': qcode,
         }
-        launch_match = _correlate_silent_launch_notam(notam, launch_contexts)
-        if not launch_match or not _passes_filters(notam):
+        rocket_activity_candidate = notam_id in KAZAKHSTAN_ROCKET_ACTIVITY_CANDIDATE_IDS
+        if rocket_activity_candidate:
+            # The E-field boundary is authoritative map geometry; the Q-line
+            # centre/radius is only a locator and can be materially coarser.
+            raw_polygons = _extract_raw_coordinate_rings(raw)
+            if not raw_polygons:
+                print(f"[kazakhstan] Skip curated candidate without parseable E-field polygon: {notam_id}")
+                continue
+            notam['polygon'] = raw_polygons[0] if len(raw_polygons) == 1 else raw_polygons
+            points = [point for ring in raw_polygons for point in ring]
+            if points:
+                notam['latitude'] = round(sum(point[0] for point in points) / len(points), 6)
+                notam['longitude'] = round(sum(point[1] for point in points) / len(points), 6)
+                notam['radius'] = ''
+            # Do not run launch correlation as an admission gate for this
+            # curated candidate. Mission linkage remains a separate frontend
+            # result and must not determine whether the warning is published.
+            notam['_rocket_activity_candidate'] = True
+            launch_match = ''
+        else:
+            launch_match = _correlate_silent_launch_notam(notam, launch_contexts)
+        if (not launch_match and not rocket_activity_candidate) or not _passes_filters(notam):
             continue
-        print(f"[kazakhstan] Correlated {notam_id} with upcoming launch: {launch_match}")
+        if launch_match:
+            print(f"[kazakhstan] Correlated {notam_id} with upcoming launch: {launch_match}")
+        elif rocket_activity_candidate:
+            print(f"[kazakhstan] Retained curated rocket-activity candidate without mission linkage: {notam_id}")
         rows.append({
             'id': f"kazakhstan-{notam_id}",
             '_country': 'Kazakhstan',
             'notam': notam,
         })
-    print(f"[kazakhstan] Official launch-correlated NOTAMs: {len(rows)}")
+    print(f"[kazakhstan] Official NOTAMs retained (matched or curated activity candidates): {len(rows)}")
     return rows
 
 def fetch_faa_notams(launch_contexts=()):
