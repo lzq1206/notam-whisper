@@ -1268,17 +1268,33 @@
       const info = rocketPropellantLookup.get(normalizeRocketVehicleKey(vehicleName));
       const type = String(info?.type || '').toLowerCase();
       const fuel = String(info?.fuel || '');
-      // The whole-vehicle solid / solid-liquid category takes precedence over
-      // stage-level UDMH mentions in mixed configurations.
+      // The whole-vehicle solid / solid-liquid category takes precedence.
       if (type.includes('固体') || type.includes('固液') || type.includes('混合推进') || /solid.{0,12}liquid|liquid.{0,12}solid/i.test(type)) {
         return { level: 'strong', glowScale: 1.45 };
       }
-      const classificationFuel = fuel.replace(/[;；]\s*(?:如|若|可选|optional\b)[^;；]*/gi, '');
-      if (/偏?二甲肼|\bUDMH\b|unsymmetrical\s+dimethylhydrazine/i.test(classificationFuel)) {
-        return { level: 'weak', glowScale: 0.55 };
+      // Catalog fuel text lists the primary/core stages first. Some entries
+      // put a generic stage description in the first clause and its chemistry
+      // in the next clause, so consult that supporting clause only when the
+      // first has no explicit propellant; stop before an upper-stage or
+      // optional-configuration clause.
+      const fuelClauses = fuel.split(/[;；]/).map(clause => clause.trim()).filter(Boolean);
+      const hasFuelChemistry = text => /(液氧|\bLOX\b|liquid oxygen|煤油|\bRP\s*-?1\b|kerosene|液氢|\bLH2\b|liquid hydrogen|偏?二甲肼|\bUDMH\b|unsymmetrical\s+dimethylhydrazine|四氧化二氮|N[₂2]O[₄4]|液氧甲烷|液化天然气|液态甲烷|\bmethane\b)/i.test(text);
+      const primaryFuelClauses = fuelClauses.length ? [fuelClauses[0]] : [];
+      if (!hasFuelChemistry(primaryFuelClauses[0] || '')) {
+        for (const clause of fuelClauses.slice(1)) {
+          if (/(上面级|上级|upper\s+stage|可选|optional|如带|若带|如配置|可按任务加装)/i.test(clause)) break;
+          if (hasFuelChemistry(clause)) {
+            primaryFuelClauses.push(clause);
+            break;
+          }
+        }
       }
-      if (/(液氧|\bLOX\b|liquid oxygen)/i.test(classificationFuel) && /(煤油|\bRP\s*-?1\b|kerosene)/i.test(classificationFuel)) {
+      const primaryFuelSegment = primaryFuelClauses.join(' ');
+      if (/(液氧|\bLOX\b|liquid oxygen)/i.test(primaryFuelSegment) && /(煤油|\bRP\s*-?1\b|kerosene)/i.test(primaryFuelSegment)) {
         return { level: 'medium', glowScale: 1 };
+      }
+      if (/偏?二甲肼|\bUDMH\b|unsymmetrical\s+dimethylhydrazine/i.test(primaryFuelSegment)) {
+        return { level: 'weak', glowScale: 0.55 };
       }
       return { level: 'pending', glowScale: 1 };
     }
