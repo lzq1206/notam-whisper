@@ -568,6 +568,11 @@
         launch_unknown_vehicle: '未知',
         launch_vehicle_type: '火箭类型',
         launch_propellant_label: '燃料',
+        launch_cloud_potential_label: '此火箭晨昏火箭云潜力：',
+        launch_cloud_potential_weak: '弱',
+        launch_cloud_potential_medium: '中',
+        launch_cloud_potential_strong: '强',
+        launch_cloud_potential_pending: '待观察',
         launch_success: '✅ 成功',
         launch_failed: '❌ 失败',
         launch_result_unknown: '?',
@@ -657,6 +662,11 @@
         launch_unknown_vehicle: 'Unknown',
         launch_vehicle_type: 'Vehicle type',
         launch_propellant_label: 'Propellant',
+        launch_cloud_potential_label: 'Twilight rocket-cloud potential: ',
+        launch_cloud_potential_weak: 'Low',
+        launch_cloud_potential_medium: 'Medium',
+        launch_cloud_potential_strong: 'High',
+        launch_cloud_potential_pending: 'Unobserved',
         launch_success: '✅ Success',
         launch_failed: '❌ Failure',
         launch_result_unknown: '?',
@@ -1250,7 +1260,47 @@
       const info = rocketPropellantLookup.get(normalizeRocketVehicleKey(vehicleName));
       const type = info?.type || '未知';
       const fuel = info?.fuel || '推进剂资料暂不可用';
-      return `<div style="font-size:11px;color:#374151;margin:2px 0 4px;">${t('launch_vehicle_type')}: ${escapeHtml(type)}<br/>${t('launch_propellant_label')}: ${escapeHtml(fuel)}</div>`;
+      const potential = rocketCloudPotentialForVehicle(vehicleName);
+      return `<div style="font-size:11px;color:#374151;margin:2px 0 4px;">${t('launch_vehicle_type')}: ${escapeHtml(type)}<br/>${t('launch_propellant_label')}: ${escapeHtml(fuel)}<br/>${t('launch_cloud_potential_label')}${t(`launch_cloud_potential_${potential.level}`)}</div>`;
+    }
+
+    function rocketCloudPotentialForVehicle(vehicleName) {
+      const info = rocketPropellantLookup.get(normalizeRocketVehicleKey(vehicleName));
+      const type = String(info?.type || '').toLowerCase();
+      const fuel = String(info?.fuel || '');
+      // The whole-vehicle solid / solid-liquid category takes precedence over
+      // stage-level UDMH mentions in mixed configurations.
+      if (type.includes('固体') || type.includes('固液') || type.includes('混合推进') || /solid.{0,12}liquid|liquid.{0,12}solid/i.test(type)) {
+        return { level: 'strong', glowScale: 1.45 };
+      }
+      const classificationFuel = fuel.replace(/[;；]\s*(?:如|若|可选|optional\b)[^;；]*/gi, '');
+      if (/偏?二甲肼|\bUDMH\b|unsymmetrical\s+dimethylhydrazine/i.test(classificationFuel)) {
+        return { level: 'weak', glowScale: 0.55 };
+      }
+      if (/(液氧|\bLOX\b|liquid oxygen)/i.test(classificationFuel) && /(煤油|\bRP\s*-?1\b|kerosene)/i.test(classificationFuel)) {
+        return { level: 'medium', glowScale: 1 };
+      }
+      return { level: 'pending', glowScale: 1 };
+    }
+
+    function launchRocketCloudGlowScale(launch) {
+      return rocketCloudPotentialForVehicle(launch?.vehicle).glowScale;
+    }
+
+    function notamRocketCloudGlowScale(row, rows) {
+      const launchCandidates = [
+        ...(Array.isArray(upcomingLaunches) ? upcomingLaunches : []),
+        ...(launchToggle.checked && pastLaunchToggle.checked && typeof visiblePastLaunchesForMap === 'function'
+          ? visiblePastLaunchesForMap()
+          : [])
+      ];
+      const relatedLaunches = relatedLaunchesForWarningRows([row], rows, launchCandidates, true);
+      if (!relatedLaunches.length) return 1;
+      const potentialRank = { pending: 0, weak: 1, medium: 2, strong: 3 };
+      return relatedLaunches
+        .map(launch => rocketCloudPotentialForVehicle(launch?.vehicle))
+        .sort((first, second) => potentialRank[second.level] - potentialRank[first.level])[0]
+        .glowScale;
     }
 
     function getNotamLaunchDateRange(startValue, endValue) {
@@ -1332,14 +1382,22 @@
 
     function buildCesiumUpcomingLaunchIcon(launch, iconColor) {
       const safeColor = String(iconColor || 'yellow').replace(/[^#(),.%a-zA-Z0-9 -]/g, '');
+      const glowScale = launchRocketCloudGlowScale(launch);
+      const glowBlur = (3.5 * glowScale).toFixed(1);
+      const outerRadius = (19 + (glowScale - 1) * 8).toFixed(1);
+      const innerRadius = (18 + (glowScale - 1) * 8).toFixed(1);
+      const outerWidth = (7 * glowScale).toFixed(1);
+      const innerWidth = (3 * glowScale).toFixed(1);
+      const outerOpacity = Math.min(1, 0.95 * glowScale).toFixed(2);
+      const innerOpacity = Math.min(0.98, 0.9 * glowScale).toFixed(2);
       const glowMarkup = launch?.isLaunchGlow ? `
         <defs>
           <filter id="launch-icon-glow" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="3.5" />
+            <feGaussianBlur stdDeviation="${glowBlur}" />
           </filter>
         </defs>
-        <circle cx="24" cy="24" r="20" fill="none" stroke="#fff" stroke-width="7" opacity="0.95" filter="url(#launch-icon-glow)" />
-        <circle cx="24" cy="24" r="19" fill="none" stroke="#fff" stroke-width="3" opacity="0.9" />
+        <circle cx="24" cy="24" r="${outerRadius}" fill="none" stroke="#fff" stroke-width="${outerWidth}" opacity="${outerOpacity}" filter="url(#launch-icon-glow)" />
+        <circle cx="24" cy="24" r="${innerRadius}" fill="none" stroke="#fff" stroke-width="${innerWidth}" opacity="${innerOpacity}" />
       ` : '';
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
         ${glowMarkup}
@@ -1451,6 +1509,7 @@
           const warningHeight = isMaritime ? 100 : 140;
           const radiusNm = parseFloat(r.radius_nm || '0');
           const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
+          const glowScale = isMaritime ? 1 : notamRocketCloudGlowScale(r, rows);
           const directionLaunches = isMaritime ? [] : relatedLaunchesForWarningRows([r], rows, undefined, true);
           const solarSelection = isMaritime ? null : {
             id: r.id || r.notam_id || '',
@@ -1468,7 +1527,7 @@
               font: '8pt sans-serif',
               fillColor: color,
               outlineColor: isGlow ? Cesium.Color.WHITE : Cesium.Color.BLACK,
-              outlineWidth: isGlow ? 3 : 2,
+              outlineWidth: isGlow ? 3 * glowScale : 2,
               style: Cesium.LabelStyle.FILL_AND_OUTLINE,
               verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
               pixelOffset: new Cesium.Cartesian2(0, -10),
@@ -1509,7 +1568,7 @@
                      material: color.withAlpha(0.3),
                      outline: true,
                      outlineColor: isGlow ? Cesium.Color.WHITE : color,
-                     outlineWidth: isGlow ? 4 : 2,
+                     outlineWidth: isGlow ? 4 * glowScale : 2,
                      height: warningHeight
                    },
                    description: popup
@@ -1518,9 +1577,9 @@
                    addCesiumEntity({
                      polyline: {
                        positions: Cesium.Cartesian3.fromDegreesArray(flatPoints.concat([flatPoints[0], flatPoints[1]])),
-                       width: 8,
+                       width: 8 * glowScale,
                        material: new Cesium.PolylineGlowMaterialProperty({
-                          glowPower: 0.3,
+                          glowPower: Math.min(0.45, 0.3 * glowScale),
                           color: Cesium.Color.WHITE
                        }),
                        height: warningHeight + 10
@@ -1550,12 +1609,12 @@
               addCesiumEntity({
                 position: Cesium.Cartesian3.fromDegrees(lon, lat),
                 ellipse: {
-                  semiMinorAxis: radiusNm * 1852 + 500,
-                  semiMajorAxis: radiusNm * 1852 + 500,
-                  material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.1)),
+                  semiMinorAxis: radiusNm * 1852 + 500 * glowScale,
+                  semiMajorAxis: radiusNm * 1852 + 500 * glowScale,
+                  material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.1 * glowScale)),
                   outline: true,
-                  outlineColor: Cesium.Color.WHITE.withAlpha(0.5),
-                  outlineWidth: 10,
+                  outlineColor: Cesium.Color.WHITE.withAlpha(0.5 * glowScale),
+                  outlineWidth: 10 * glowScale,
                   height: warningHeight + 5
                 }
               }, solarSelection);
@@ -2913,13 +2972,14 @@
         const popup = buildNotamPopup(r, rows);
 
         const isGlow = isRocketCloudVisible(r.from_utc, r.to_utc, lat, lon, r.raw);
+        const glowScale = isMaritime ? 1 : notamRocketCloudGlowScale(r, rows);
         const warningPane = isMaritime ? 'msiPane' : 'notamPane';
         const pathOptions = {
           color, fillColor: color, fillOpacity: 0.2,
-          weight: isGlow ? 4 : 2,
+          weight: isGlow ? 4 * glowScale : 2,
           pane: warningPane,
           className: isGlow ? 'glow-path' : '',
-          shadowBlur: isGlow ? 12 : 0, 
+          shadowBlur: isGlow ? 12 * glowScale : 0,
           shadowColor: isGlow ? '#fff' : 'transparent'
         };
 
@@ -2940,16 +3000,16 @@
               if (segPts.length >= 3 && !isRoute) {
                 if (isGlow) {
                    // 2D Glow Layers (Double-Stroke for iOS compatibility)
-                   L.polygon(segPts, { pane: warningPane, color: '#fff', weight: 15, opacity: 0.1, fill: false, interactive: false }).addTo(group);
-                   L.polygon(segPts, { pane: warningPane, color: '#fff', weight: 8, opacity: 0.25, fill: false, interactive: false }).addTo(group);
+                   L.polygon(segPts, { pane: warningPane, color: '#fff', weight: 15 * glowScale, opacity: 0.1 * glowScale, fill: false, interactive: false }).addTo(group);
+                   L.polygon(segPts, { pane: warningPane, color: '#fff', weight: 8 * glowScale, opacity: 0.25 * glowScale, fill: false, interactive: false }).addTo(group);
                 }
                 shape = L.polygon(segPts, pathOptions);
               } else if (segPts.length >= 2) {
                 if (isGlow) {
-                   L.polyline(segPts, { pane: warningPane, color: '#fff', weight: 18, opacity: 0.12, interactive: false }).addTo(group);
-                   L.polyline(segPts, { pane: warningPane, color: '#fff', weight: 10, opacity: 0.3, interactive: false }).addTo(group);
+                   L.polyline(segPts, { pane: warningPane, color: '#fff', weight: 18 * glowScale, opacity: 0.12 * glowScale, interactive: false }).addTo(group);
+                   L.polyline(segPts, { pane: warningPane, color: '#fff', weight: 10 * glowScale, opacity: 0.3 * glowScale, interactive: false }).addTo(group);
                 }
-                shape = L.polyline(segPts, { ...pathOptions, weight: isGlow ? 5 : 3 });
+                shape = L.polyline(segPts, { ...pathOptions, weight: isGlow ? 5 * glowScale : 3 });
               }
               if (shape) {
                 shape.bindPopup(popup);
@@ -2967,12 +3027,12 @@
               L.circleMarker([lat, lon], { pane: warningPane, radius: 8, color: '#fff', opacity: 0.4, fill: false, interactive: false }).addTo(group);
             }
             shape = L.circleMarker([lat, lon], {
-              pane: warningPane, radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: isGlow ? 3 : 2
+              pane: warningPane, radius: 6, color, fillColor: color, fillOpacity: 0.8, weight: isGlow ? 3 * glowScale : 2
             });
           } else {
             if (isGlow) {
-              L.circle([lat, lon], { pane: warningPane, radius: radiusNm * 1852 + 500, color: '#fff', fill: false, weight: 12, opacity: 0.1, interactive: false }).addTo(group);
-              L.circle([lat, lon], { pane: warningPane, radius: radiusNm * 1852 + 200, color: '#fff', fill: false, weight: 6, opacity: 0.3, interactive: false }).addTo(group);
+              L.circle([lat, lon], { pane: warningPane, radius: radiusNm * 1852 + 500 * glowScale, color: '#fff', fill: false, weight: 12 * glowScale, opacity: 0.1 * glowScale, interactive: false }).addTo(group);
+              L.circle([lat, lon], { pane: warningPane, radius: radiusNm * 1852 + 200 * glowScale, color: '#fff', fill: false, weight: 6 * glowScale, opacity: 0.3 * glowScale, interactive: false }).addTo(group);
             }
             shape = L.circle([lat, lon], {
               ...pathOptions, radius: radiusNm * 1852
@@ -3881,8 +3941,12 @@
       const markerSize = WIDGET_MODE ? 14 : 24;
       const rocketSize = WIDGET_MODE ? 9 : 14;
       const borderSize = WIDGET_MODE ? 1.4 : 2;
+      const glowScale = launchRocketCloudGlowScale(launch);
+      const glowBlur = Math.round((WIDGET_MODE ? 7 : 15) * glowScale);
+      const glowSpread = Math.round((WIDGET_MODE ? 2 : 4) * glowScale);
+      const glowColor = glowScale < 1 ? 'rgba(255,255,255,0.55)' : '#fff';
       const launchGlowStyle = launch?.isLaunchGlow
-        ? `box-shadow: 0 0 ${WIDGET_MODE ? 7 : 15}px ${WIDGET_MODE ? 2 : 4}px #fff;`
+        ? `box-shadow: 0 0 ${glowBlur}px ${glowSpread}px ${glowColor};`
         : `border: ${borderSize}px solid #fff;`;
       const offset = Array.isArray(launch?.markerOffset) ? launch.markerOffset : [0, 0];
       return L.divIcon({
