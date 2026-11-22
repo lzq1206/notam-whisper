@@ -1392,7 +1392,7 @@
                   verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(offset[0], offset[1] + 16),
                   eyeOffset: new Cesium.Cartesian3(0, 0, 500)
                 },
-                description: `<b>🚀 ${escapeHtml(launch.vehicle)}</b><br/>${buildRocketPropellantDetailsMarkup(launch.vehicle)}${t('cesium_payload_label')}: ${escapeHtml(launch.payload || '')}<br/>${t('cesium_time_label')}: ${escapeHtml(launch.dateStr || '')}<br/>${t('cesium_result_label')}: ${escapeHtml(launch.success || '')}${historicalLaunchNotamMarkup(launch)}`
+                description: `<b>🚀 ${escapeHtml(launch.vehicle)}</b><br/>${buildRocketPropellantDetailsMarkup(launch.vehicle)}${buildLaunchOrbitDetailsLink(launch)}${t('cesium_payload_label')}: ${escapeHtml(launch.payload || '')}<br/>${t('cesium_time_label')}: ${escapeHtml(launch.dateStr || '')}<br/>${t('cesium_result_label')}: ${escapeHtml(launch.success || '')}${historicalLaunchNotamMarkup(launch)}`
               }, launchSolarSelection(launch));
             });
           }
@@ -2591,6 +2591,7 @@
         <div style="font-size:12px;color:#666;">${t('launch_past')}</div>
         <b style="color:#16a34a;">🚀 ${escapeHtml(launch.vehicle || t('launch_unknown_vehicle'))}</b><br/>
         ${buildRocketPropellantDetailsMarkup(launch.vehicle)}
+        ${buildLaunchOrbitDetailsLink(launch)}
         ${t('launch_payload_label')}: ${escapeHtml(launch.payload || '')}<br/>
         ${t('launch_site_label')}: ${escapeHtml(launch.siteName || launch.siteAbbr || '')}<br/>
         ${t('launch_time_label')}: ${escapeHtml(launch.dateStr || '')}<br/>
@@ -4356,8 +4357,25 @@
 
     const LONG_MARCH_6A_ORBIT_DETAILS_URL = 'https://exoplanet5.github.io/CZ-6A/';
 
+    const LONG_MARCH_6A_ORBIT_DETAILS_TARGET = Object.freeze({
+      mission: 'Long March 6A | Unknown Payload',
+      ts: Date.UTC(2026, 9, 23, 10, 15),
+      lat: 38.8583,
+      lon: 111.5802
+    });
+
+    function isLongMarch6AOrbitDetailsTarget(launch) {
+      if (String(launch?.mission || '') !== LONG_MARCH_6A_ORBIT_DETAILS_TARGET.mission) return false;
+      const ts = Number(launch?.ts);
+      const lat = Number(launch?.lat);
+      const lon = Number(launch?.lon);
+      return Number.isFinite(ts) && Math.abs(ts - LONG_MARCH_6A_ORBIT_DETAILS_TARGET.ts) <= 60_000
+        && Number.isFinite(lat) && Math.abs(lat - LONG_MARCH_6A_ORBIT_DETAILS_TARGET.lat) <= 0.01
+        && Number.isFinite(lon) && Math.abs(lon - LONG_MARCH_6A_ORBIT_DETAILS_TARGET.lon) <= 0.01;
+    }
+
     function buildLaunchOrbitDetailsLink(launch) {
-      if (String(launch?.mission || '') !== 'Long March 6A | Unknown Payload') return '';
+      if (!isLongMarch6AOrbitDetailsTarget(launch)) return '';
       return `<div style="margin-top:6px;font-size:11px;"><a href="${LONG_MARCH_6A_ORBIT_DETAILS_URL}" target="_blank" rel="noopener noreferrer">火箭具体轨道详情与各地轨迹预测请参考 Mickey 网站</a></div>`;
     }
 
