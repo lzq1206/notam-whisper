@@ -27089,3 +27089,43 @@ AttributeError: module 'datetime' has no attribute 'UTC'
 2026-11-21T21:43:07.299800 -   HTTP 503
 2026-11-21T21:43:09.561245 -   HTTP 503
 2026-11-21T21:43:13.661079 -   HTTP 503
+2026-11-22T07:00:04.370832 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt
+2026-11-22T07:00:04.782485 -   HTTP 503
+2026-11-22T07:00:06.911488 -   HTTP 503
+2026-11-22T07:00:11.102930 -   HTTP 503
+2026-11-22T07:00:16.108814 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt
+2026-11-22T07:00:17.290831 -   HTTP 503
+2026-11-22T07:00:19.366854 -   HTTP 503
+2026-11-22T07:00:23.574612 -   HTTP 503
+2026-11-22T07:00:28.579572 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt
+2026-11-22T07:00:28.876034 -   HTTP 503
+2026-11-22T07:00:31.015654 -   HTTP 503
+2026-11-22T07:00:35.303757 -   HTTP 503
+2026-11-22T07:00:40.309671 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt
+2026-11-22T07:00:40.393619 -   HTTP 503
+2026-11-22T07:00:42.520742 -   HTTP 503
+2026-11-22T07:00:47.640515 -   HTTP 503
+2026-11-22T07:00:52.646374 - Fetching TXT: https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt
+2026-11-22T07:00:52.989047 -   HTTP 503
+2026-11-22T07:00:55.317339 -   HTTP 503
+2026-11-22T07:00:59.399149 -   HTTP 503
+2026-11-22T07:01:04.404862 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html
+2026-11-22T07:01:04.586219 -   HTTP 503
+2026-11-22T07:01:06.819033 -   HTTP 503
+2026-11-22T07:01:10.970187 -   HTTP 503
+2026-11-22T07:01:15.976087 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html
+2026-11-22T07:01:16.092337 -   HTTP 503
+2026-11-22T07:01:19.300608 -   HTTP 503
+2026-11-22T07:01:52.479772 -   Request error: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))
+2026-11-22T07:01:57.484960 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html
+2026-11-22T07:01:58.170510 -   HTTP 503
+2026-11-22T07:02:00.466908 -   HTTP 503
+2026-11-22T07:02:04.711268 -   HTTP 503
+2026-11-22T07:02:09.717162 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html
+2026-11-22T07:02:09.852467 -   HTTP 503
+2026-11-22T07:02:11.983898 -   HTTP 503
+2026-11-22T07:02:16.321163 -   HTTP 503
+2026-11-22T07:02:21.326977 - Fetching HTML: https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html
+2026-11-22T07:02:21.534961 -   HTTP 503
+2026-11-22T07:02:23.636979 -   HTTP 503
+2026-11-22T07:02:29.107003 -   HTTP 503
