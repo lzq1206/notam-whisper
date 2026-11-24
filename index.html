@@ -568,11 +568,15 @@
         launch_unknown_vehicle: '未知',
         launch_vehicle_type: '火箭类型',
         launch_propellant_label: '燃料',
-        launch_cloud_potential_label: '此火箭晨昏火箭云潜力：',
+        launch_cloud_potential_label: '此燃料制造烟/云潜力：',
         launch_cloud_potential_weak: '弱',
         launch_cloud_potential_medium: '中',
         launch_cloud_potential_strong: '强',
         launch_cloud_potential_pending: '待观察',
+        launch_illumination_label: '光照条件：',
+        launch_illumination_yes: '有',
+        launch_illumination_no: '无',
+        launch_cloud_observation_note: '（是否有火箭云需结合燃料与光照条件共同观察）',
         launch_success: '✅ 成功',
         launch_failed: '❌ 失败',
         launch_result_unknown: '?',
@@ -662,11 +666,15 @@
         launch_unknown_vehicle: 'Unknown',
         launch_vehicle_type: 'Vehicle type',
         launch_propellant_label: 'Propellant',
-        launch_cloud_potential_label: 'Twilight rocket-cloud potential: ',
+        launch_cloud_potential_label: 'Fuel smoke/cloud potential: ',
         launch_cloud_potential_weak: 'Low',
         launch_cloud_potential_medium: 'Medium',
         launch_cloud_potential_strong: 'High',
         launch_cloud_potential_pending: 'Unobserved',
+        launch_illumination_label: 'Illumination condition: ',
+        launch_illumination_yes: 'Yes',
+        launch_illumination_no: 'No',
+        launch_cloud_observation_note: '(Rocket-cloud visibility should be assessed together with fuel and illumination conditions.)',
         launch_success: '✅ Success',
         launch_failed: '❌ Failure',
         launch_result_unknown: '?',
@@ -1255,13 +1263,14 @@
       return rocketPropellantLookup;
     }
 
-    function buildRocketPropellantDetailsMarkup(vehicleName) {
+    function buildRocketPropellantDetailsMarkup(vehicleName, launchRecord) {
       if (!vehicleName) return '';
       const info = rocketPropellantLookup.get(normalizeRocketVehicleKey(vehicleName));
       const type = info?.type || '未知';
       const fuel = info?.fuel || '推进剂资料暂不可用';
       const potential = rocketCloudPotentialForVehicle(vehicleName);
-      return `<div style="font-size:11px;color:#374151;margin:2px 0 4px;">${t('launch_vehicle_type')}: ${escapeHtml(type)}<br/>${t('launch_propellant_label')}: ${escapeHtml(fuel)}<br/>${t('launch_cloud_potential_label')}${t(`launch_cloud_potential_${potential.level}`)}</div>`;
+      const illumination = launchRecord?.isLaunchGlow === true ? 'yes' : 'no';
+      return `<div style="font-size:11px;color:#374151;margin:2px 0 4px;">${t('launch_vehicle_type')}: ${escapeHtml(type)}<br/>${t('launch_propellant_label')}: ${escapeHtml(fuel)}<br/>${t('launch_cloud_potential_label')}${t(`launch_cloud_potential_${potential.level}`)}<br/>${t('launch_illumination_label')}${t(`launch_illumination_${illumination}`)} ${t('launch_cloud_observation_note')}</div>`;
     }
 
     function rocketCloudPotentialForVehicle(vehicleName) {
@@ -1466,7 +1475,7 @@
                   verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(offset[0], offset[1] + 16),
                   eyeOffset: new Cesium.Cartesian3(0, 0, 500)
                 },
-                description: `<b>🚀 ${escapeHtml(launch.vehicle)}</b><br/>${buildRocketPropellantDetailsMarkup(launch.vehicle)}${buildLaunchOrbitDetailsLink(launch)}${t('cesium_payload_label')}: ${escapeHtml(launch.payload || '')}<br/>${t('cesium_time_label')}: ${escapeHtml(launch.dateStr || '')}<br/>${t('cesium_result_label')}: ${escapeHtml(launch.success || '')}${historicalLaunchNotamMarkup(launch)}`
+                description: `<b>🚀 ${escapeHtml(launch.vehicle)}</b><br/>${buildRocketPropellantDetailsMarkup(launch.vehicle, launch)}${buildLaunchOrbitDetailsLink(launch)}${t('cesium_payload_label')}: ${escapeHtml(launch.payload || '')}<br/>${t('cesium_time_label')}: ${escapeHtml(launch.dateStr || '')}<br/>${t('cesium_result_label')}: ${escapeHtml(launch.success || '')}${historicalLaunchNotamMarkup(launch)}`
               }, launchSolarSelection(launch));
             });
           }
@@ -1496,7 +1505,7 @@
                 verticalOrigin: Cesium.VerticalOrigin.TOP, pixelOffset: new Cesium.Cartesian2(offset[0], offset[1] + 16),
                 eyeOffset: new Cesium.Cartesian3(0, 0, -2000)
               },
-              description: `${buildLaunchImageMarkup(launch, launch.mission || t('launch_image_alt'))}${buildLaunchOrbitDetailsLink(launch)}<b>${escapeHtml(launch.mission || t('launch_unknown_mission'))}</b><br/>${launch.vehicle ? `${t('kml_vehicle')}: ${escapeHtml(launch.vehicle)}<br/>${buildRocketPropellantDetailsMarkup(launch.vehicle)}` : ''}${t('launch_time_label')}: ${escapeHtml(launch.dateStr)}${launch.windowStr ? `<br/>${t('launch_window_label')}: ${escapeHtml(launch.windowStr)}` : ''}`
+              description: `${buildLaunchImageMarkup(launch, launch.mission || t('launch_image_alt'))}${buildLaunchOrbitDetailsLink(launch)}<b>${escapeHtml(launch.mission || t('launch_unknown_mission'))}</b><br/>${launch.vehicle ? `${t('kml_vehicle')}: ${escapeHtml(launch.vehicle)}<br/>${buildRocketPropellantDetailsMarkup(launch.vehicle, launch)}` : ''}${t('launch_time_label')}: ${escapeHtml(launch.dateStr)}${launch.windowStr ? `<br/>${t('launch_window_label')}: ${escapeHtml(launch.windowStr)}` : ''}`
             }, launchSolarSelection(launch));
             rocketEntity.__launchDirectionRecord = launch;
           });
@@ -2665,7 +2674,7 @@
       return `
         <div style="font-size:12px;color:#666;">${t('launch_past')}</div>
         <b style="color:#16a34a;">🚀 ${escapeHtml(launch.vehicle || t('launch_unknown_vehicle'))}</b><br/>
-        ${buildRocketPropellantDetailsMarkup(launch.vehicle)}
+        ${buildRocketPropellantDetailsMarkup(launch.vehicle, launch)}
         ${buildLaunchOrbitDetailsLink(launch)}
         ${t('launch_payload_label')}: ${escapeHtml(launch.payload || '')}<br/>
         ${t('launch_site_label')}: ${escapeHtml(launch.siteName || launch.siteAbbr || '')}<br/>
@@ -4649,7 +4658,7 @@
                 <div style="font-size:12px;color:#666;">${t('launch_upcoming')}</div>
                 <b style="color:${escapeHtml(launchRecord.color || color)}">${escapeHtml(missionName)}</b><br/>
                 ${vehicleName ? `${t('kml_vehicle')}: ${escapeHtml(vehicleName)}<br/>` : ''}
-                ${buildRocketPropellantDetailsMarkup(vehicleName)}
+                ${buildRocketPropellantDetailsMarkup(vehicleName, launchRecord)}
                 ${t('launch_site_label')}: ${escapeHtml(locName)}${padName ? ' / ' + escapeHtml(padName) : ''}<br/>
                 ${t('launch_time_label')}: ${escapeHtml(dateStr)}<br/>
                 ${windowStr ? `${t('launch_window_label')}: ${escapeHtml(windowStr)}<br/>` : ''}
