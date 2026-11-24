@@ -577,6 +577,11 @@
         launch_illumination_yes: '有',
         launch_illumination_no: '无',
         launch_cloud_observation_note: '（是否有火箭云需结合燃料与光照条件共同观察）',
+        launch_cloud_condition_label: '火箭云条件（实验中）：',
+        launch_cloud_condition_good: '好',
+        launch_cloud_condition_medium: '中',
+        launch_cloud_condition_none: '无',
+        launch_cloud_condition_uncertain: '不确定',
         launch_success: '✅ 成功',
         launch_failed: '❌ 失败',
         launch_result_unknown: '?',
@@ -675,6 +680,11 @@
         launch_illumination_yes: 'Yes',
         launch_illumination_no: 'No',
         launch_cloud_observation_note: '(Rocket-cloud visibility should be assessed together with fuel and illumination conditions.)',
+        launch_cloud_condition_label: 'Rocket-cloud condition (experimental): ',
+        launch_cloud_condition_good: 'Good',
+        launch_cloud_condition_medium: 'Medium',
+        launch_cloud_condition_none: 'None',
+        launch_cloud_condition_uncertain: 'Uncertain',
         launch_success: '✅ Success',
         launch_failed: '❌ Failure',
         launch_result_unknown: '?',
@@ -1270,7 +1280,19 @@
       const fuel = info?.fuel || '推进剂资料暂不可用';
       const potential = rocketCloudPotentialForVehicle(vehicleName);
       const illumination = launchRecord?.isLaunchGlow === true ? 'yes' : 'no';
-      return `<div style="font-size:11px;color:#374151;margin:2px 0 4px;">${t('launch_vehicle_type')}: ${escapeHtml(type)}<br/>${t('launch_propellant_label')}: ${escapeHtml(fuel)}<br/>${t('launch_cloud_potential_label')}${t(`launch_cloud_potential_${potential.level}`)}<br/>${t('launch_illumination_label')}${t(`launch_illumination_${illumination}`)} ${t('launch_cloud_observation_note')}</div>`;
+      const cloudCondition = rocketCloudConditionForLaunch(launchRecord, potential);
+      return `<div style="font-size:11px;color:#374151;margin:2px 0 4px;">${t('launch_vehicle_type')}: ${escapeHtml(type)}<br/>${t('launch_propellant_label')}: ${escapeHtml(fuel)}<br/>${t('launch_cloud_potential_label')}${t(`launch_cloud_potential_${potential.level}`)}<br/>${t('launch_illumination_label')}${t(`launch_illumination_${illumination}`)} ${t('launch_cloud_observation_note')}<br/>${t('launch_cloud_condition_label')}${t(`launch_cloud_condition_${cloudCondition}`)}</div>`;
+    }
+
+    function rocketCloudConditionForLaunch(launchRecord, potential) {
+      if (launchRecord?.isLaunchGlow !== true) return 'none';
+      const conditionByPotential = {
+        strong: 'good',
+        medium: 'medium',
+        weak: 'none',
+        pending: 'uncertain'
+      };
+      return conditionByPotential[potential?.level] || 'uncertain';
     }
 
     function rocketCloudPotentialForVehicle(vehicleName) {
