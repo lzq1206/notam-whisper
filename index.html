@@ -573,10 +573,6 @@
         launch_cloud_potential_medium: '中',
         launch_cloud_potential_strong: '强',
         launch_cloud_potential_pending: '待观察',
-        launch_illumination_label: '光照条件：',
-        launch_illumination_yes: '有',
-        launch_illumination_no: '无',
-        launch_cloud_observation_note: '（是否有火箭云需结合燃料与光照条件共同观察）',
         launch_cloud_condition_label: '火箭云条件（实验中）：',
         launch_cloud_condition_good: '好',
         launch_cloud_condition_medium: '中',
@@ -676,10 +672,6 @@
         launch_cloud_potential_medium: 'Medium',
         launch_cloud_potential_strong: 'High',
         launch_cloud_potential_pending: 'Unobserved',
-        launch_illumination_label: 'Illumination condition: ',
-        launch_illumination_yes: 'Yes',
-        launch_illumination_no: 'No',
-        launch_cloud_observation_note: '(Rocket-cloud visibility should be assessed together with fuel and illumination conditions.)',
         launch_cloud_condition_label: 'Rocket-cloud condition (experimental): ',
         launch_cloud_condition_good: 'Good',
         launch_cloud_condition_medium: 'Medium',
@@ -1279,9 +1271,8 @@
       const type = info?.type || '未知';
       const fuel = info?.fuel || '推进剂资料暂不可用';
       const potential = rocketCloudPotentialForVehicle(vehicleName);
-      const illumination = launchRecord?.isLaunchGlow === true ? 'yes' : 'no';
       const cloudCondition = rocketCloudConditionForLaunch(launchRecord, potential);
-      return `<div style="font-size:11px;color:#374151;margin:2px 0 4px;">${t('launch_vehicle_type')}: ${escapeHtml(type)}<br/>${t('launch_propellant_label')}: ${escapeHtml(fuel)}<br/>${t('launch_cloud_potential_label')}${t(`launch_cloud_potential_${potential.level}`)}<br/>${t('launch_illumination_label')}${t(`launch_illumination_${illumination}`)} ${t('launch_cloud_observation_note')}<br/>${t('launch_cloud_condition_label')}${t(`launch_cloud_condition_${cloudCondition}`)}</div>`;
+      return `<div style="font-size:11px;color:#374151;margin:2px 0 4px;">${t('launch_vehicle_type')}: ${escapeHtml(type)}<br/>${t('launch_propellant_label')}: ${escapeHtml(fuel)}<br/>${t('launch_cloud_potential_label')}${t(`launch_cloud_potential_${potential.level}`)}<br/>${t('launch_cloud_condition_label')}${t(`launch_cloud_condition_${cloudCondition}`)}</div>`;
     }
 
     function rocketCloudConditionForLaunch(launchRecord, potential) {
