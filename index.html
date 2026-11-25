@@ -562,8 +562,8 @@
         shenzhou23_return_title: '【神舟二十三号返回】',
         shenzhou23_return_guide_label: '降落“火流星”观测指南参考：',
         shenzhou23_return_guide_link: '打开观测指南',
-        shenzhou23_return_projection_title: '轨道投影',
-        shenzhou23_return_projection_note: '轨道线只按该 TLE 传播投影；事件时间来自模型，不表示经验证的再入轨迹。',
+        shenzhou23_return_events_title: '返回事件（模型）',
+        shenzhou23_return_projection_note: 'TLE 地面投影显示在网站地图上；事件时间来自模型，不表示经验证的再入轨迹。',
         shenzhou23_return_site_label: '东风着陆场 · 神舟二十三号返回（模型）',
         shenzhou23_return_site_time: '预计着陆：2026-11-29 21:19:44 UTC',
         related_launch: '关联发射',
@@ -668,8 +668,8 @@
         shenzhou23_return_title: '[Shenzhou-23 return]',
         shenzhou23_return_guide_label: 'Landing “fireball” observation guide:',
         shenzhou23_return_guide_link: 'Open observation guide',
-        shenzhou23_return_projection_title: 'Ground-track projection',
-        shenzhou23_return_projection_note: 'The line is propagated from this TLE; event times are model outputs, not a verified reentry track.',
+        shenzhou23_return_events_title: 'Return events (model)',
+        shenzhou23_return_projection_note: 'The TLE ground projection is displayed on the website map; event times are model outputs, not a verified reentry track.',
         shenzhou23_return_site_label: 'Dongfeng landing site · Shenzhou-23 return (model)',
         shenzhou23_return_site_time: 'Estimated touchdown: 2026-11-29 21:19:44 UTC',
         related_launch: 'Related launch',
@@ -1544,32 +1544,6 @@
         const launchTimes = upcomingLaunchesForNotamRange().map(l => l.ts).filter(Number.isFinite);
         const { minTs, maxTs } = getTimelineBounds(rows, launchTimes);
 
-        const shenzhou23ReturnNotam = rows.find(isShenzhou23ReturnNotam);
-        if (shenzhou23ReturnNotam) {
-          const markerStyle = shenzhou23ReturnMarkerStyle(rows);
-          const markerColor = Cesium.Color.fromCssColorString(markerStyle.color) || Cesium.Color.BLUE;
-          addCesiumEntity({
-            position: Cesium.Cartesian3.fromDegrees(SHENZHOU23_RETURN_SITE.lon, SHENZHOU23_RETURN_SITE.lat),
-            billboard: {
-              image: buildCesiumShenzhou23ReturnIcon(markerStyle.color, markerStyle.isNight),
-              verticalOrigin: Cesium.VerticalOrigin.CENTER,
-              width: 38,
-              height: 38
-            },
-            label: {
-              text: `🛬 ${t('shenzhou23_return_site_label')}`,
-              font: 'bold 10pt sans-serif',
-              fillColor: markerColor,
-              outlineColor: Cesium.Color.BLACK,
-              outlineWidth: 2,
-              style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-              verticalOrigin: Cesium.VerticalOrigin.TOP,
-              pixelOffset: new Cesium.Cartesian2(0, 18)
-            },
-            description: buildNotamPopup(shenzhou23ReturnNotam, rows)
-          });
-        }
-
         rows.forEach(r => {
           try {
           const lat = parseFloat(r.lat), lon = parseFloat(r.lon);
@@ -1702,6 +1676,43 @@
           console.error('[Cesium] Entity Error:', err, r);
         }
       });
+
+        const shenzhou23ReturnNotam = rows.find(isShenzhou23ReturnNotam);
+        if (shenzhou23ReturnNotam) {
+          const markerStyle = shenzhou23ReturnMarkerStyle(rows);
+          const markerColor = Cesium.Color.fromCssColorString(markerStyle.color) || Cesium.Color.BLUE;
+          const returnPopup = buildNotamPopup(shenzhou23ReturnNotam, rows);
+          const trackDegrees = SHENZHOU23_RETURN_TLE_GROUNDTRACK.flatMap(([lat, lon]) => [lon, lat]);
+          addCesiumEntity({
+            polyline: {
+              positions: Cesium.Cartesian3.fromDegreesArray(trackDegrees),
+              width: 4,
+              material: markerColor.withAlpha(0.95),
+              clampToGround: true
+            },
+            description: returnPopup
+          });
+          addCesiumEntity({
+            position: Cesium.Cartesian3.fromDegrees(SHENZHOU23_RETURN_SITE.lon, SHENZHOU23_RETURN_SITE.lat),
+            billboard: {
+              image: buildCesiumShenzhou23ReturnIcon(markerStyle.color, markerStyle.isNight),
+              verticalOrigin: Cesium.VerticalOrigin.CENTER,
+              width: 38,
+              height: 38
+            },
+            label: {
+              text: `🛬 ${t('shenzhou23_return_site_label')}`,
+              font: 'bold 10pt sans-serif',
+              fillColor: markerColor,
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 2,
+              style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+              verticalOrigin: Cesium.VerticalOrigin.TOP,
+              pixelOffset: new Cesium.Cartesian2(0, 18)
+            },
+            description: returnPopup
+          });
+        }
 
         console.log(`[Cesium] Success: Rendered ${rows.length} rows, ${upcomingLaunchesForNotamRange().length} upcoming in the NOTAM date range, ${pastLaunches.length} past.`);
         if (cesiumViewer.entities.values.length > 0) {
@@ -2943,17 +2954,42 @@
       return `<div style="margin:3px 0 6px;">${t('shenzhou23_return_guide_label')} <a href="https://exoplanet5.github.io/shenzhou-reentry/" target="_blank" rel="noopener noreferrer">${t('shenzhou23_return_guide_link')}</a></div>`;
     }
 
-    // Static equirectangular ground projection generated with SGP4 from the
-    // supplied DEORBIT ELLIPSE TLE, 2026-11-29 20:33:35–21:04:16 UTC.
-    // It is deliberately a projection only: no altitude, animation, or
-    // inferred landing corridor is drawn.
+    // Static geographic ground projection generated with SGP4 from the
+    // supplied DEORBIT ELLIPSE TLE. The projected line is clipped at its
+    // closest pass to the modeled Dongfeng site and ends at that exact site
+    // coordinate; no altitude or animation is shown. Event times remain in
+    // the A6096 detail and are model outputs, not verified reentry telemetry.
     const SHENZHOU23_DEORBIT_TLE = Object.freeze({
       name: 'SHENZHOU-23 DEORBIT ELLIPSE (MODEL)',
       line1: '1 00000U 26113A   26333.85665509  .00000000  00000-0  00000-0 0    07',
       line2: '2 00000  41.4806  35.1131 0345912 144.6466 185.9649 16.43312419    00',
       t0: '2030Z'
     });
-    const SHENZHOU23_RETURN_TLE_PROJECTION_POINTS = '57.6,104.0 59.9,103.0 62.2,101.9 64.4,100.9 66.7,99.9 68.9,98.8 71.0,97.8 73.2,96.7 75.4,95.7 77.5,94.6 79.6,93.5 81.8,92.5 83.9,91.4 86.0,90.3 88.0,89.2 90.1,88.1 92.2,87.0 94.3,85.9 96.3,84.8 98.4,83.7 100.4,82.6 102.5,81.5 104.5,80.4 106.6,79.2 108.6,78.1 110.7,77.0 112.8,75.9 114.8,74.8 116.9,73.7 119.0,72.6 121.1,71.4 123.2,70.3 125.3,69.2 127.4,68.1 129.6,67.0 131.7,65.9 133.9,64.8 136.1,63.7 138.3,62.6 140.5,61.5 142.7,60.4 145.0,59.3 147.3,58.2 149.6,57.2 151.9,56.1 154.3,55.0 156.7,54.0 159.1,52.9 161.6,51.9 164.1,50.9 166.6,49.8 169.1,48.8 171.7,47.8 174.3,46.8 177.0,45.8 179.7,44.9 182.5,43.9 185.3,43.0 188.1,42.1 191.0,41.1 193.9,40.2 196.9,39.4 200.0,38.5 203.1,37.7 206.2,36.8 209.4,36.0 212.6,35.3 215.9,34.5 219.3,33.8 222.7,33.0 226.1,32.4 229.7,31.7 233.2,31.1 236.9,30.5 240.5,29.9 244.3,29.3 248.0,28.8 251.9,28.3 255.8,27.9 259.7,27.5 263.7,27.1 267.7,26.7 271.7,26.4 275.8,26.2 279.9,25.9 284.1,25.7 288.2,25.6 292.4,25.5 296.6,25.4 300.9,25.3 305.1,25.3 309.3,25.4 313.6,25.5 313.8,25.5';
+    const SHENZHOU23_RETURN_TLE_GROUNDTRACK = Object.freeze([
+      [-19.36044, -5.30326], [-18.57485, -4.31704], [-17.78301, -3.34034], [-16.98520, -2.37266],
+      [-16.18172, -1.41352], [-15.37284, -0.46244], [-14.55884, 0.48108], [-13.73997, 1.41751],
+      [-12.91651, 2.34733], [-12.08869, 3.27101], [-11.25678, 4.18904], [-10.42101, 5.10188],
+      [-9.58163, 6.01000], [-8.73887, 6.91387], [-7.89297, 7.81395], [-7.04415, 8.71071],
+      [-6.19265, 9.60462], [-5.33869, 10.49613], [-4.48250, 11.38570], [-3.62431, 12.27380],
+      [-2.76432, 13.16089], [-1.90278, 14.04743], [-1.03990, 14.93388], [-0.17591, 15.82071],
+      [0.68896, 16.70839], [1.55450, 17.59737], [2.42046, 18.48813], [3.28661, 19.38115],
+      [4.15273, 20.27691], [5.01856, 21.17587], [5.88388, 22.07853], [6.74842, 22.98538],
+      [7.61194, 23.89691], [8.47418, 24.81362], [9.33487, 25.73602], [10.19375, 26.66461],
+      [11.05053, 27.59992], [11.90493, 28.54247], [12.75666, 29.49278], [13.60542, 30.45141],
+      [14.45089, 31.41888], [15.29276, 32.39576], [16.13068, 33.38260], [16.96432, 34.37996],
+      [17.79333, 35.38843], [18.61733, 36.40858], [19.43595, 37.44099], [20.24880, 38.48627],
+      [21.05546, 39.54499], [21.85551, 40.61777], [22.64852, 41.70521], [23.43404, 42.80792],
+      [24.21159, 43.92650], [24.98068, 45.06156], [25.74083, 46.21371], [26.49149, 47.38354],
+      [27.23213, 48.57165], [27.96220, 49.77862], [28.68111, 51.00503], [29.38827, 52.25142],
+      [30.08306, 53.51834], [30.76485, 54.80629], [31.43298, 56.11576], [32.08678, 57.44721],
+      [32.72557, 58.80104], [33.34864, 60.17762], [33.95526, 61.57727], [34.54470, 63.00027],
+      [35.11620, 64.44681], [35.66901, 65.91703], [36.20235, 67.41099], [36.71545, 68.92867],
+      [37.20751, 70.46996], [37.67776, 72.03466], [38.12542, 73.62246], [38.54969, 75.23295],
+      [38.94981, 76.86561], [39.32503, 78.51982], [39.67460, 80.19480], [39.99780, 81.88969],
+      [40.29395, 83.60350], [40.56238, 85.33511], [40.80247, 87.08329], [41.01362, 88.84671],
+      [41.19531, 90.62390], [41.34703, 92.41332], [41.46836, 94.21333], [41.55891, 96.02221],
+      [41.61836, 97.83817], [41.64646, 99.65939], [41.64819, 100.75385], [41.65361, 100.75361]
+    ]);
     const SHENZHOU23_RETURN_SITE = Object.freeze({
       lat: 41.65361,
       lon: 100.75361,
@@ -2961,7 +2997,7 @@
       touchdownTs: Date.parse('2026-11-29T21:19:44Z')
     });
 
-    function shenzhou23ReturnProjectionMarkup(rows) {
+    function shenzhou23ReturnEventsMarkup(rows) {
       if (!(rows || []).some(isShenzhou23ReturnNotam)) return '';
       const events = [
         ['T+00:28:27', '20:59:22', 'Plasma blackout begins, 80 km'],
@@ -2973,25 +3009,11 @@
           <span style="color:#9aa4ae;">${elapsed}</span><span>${utc}</span><span>${label}</span>
         </div>`).join('');
       return `<section style="margin:7px 0;padding:8px;background:#101820;color:#e8eaed;border:1px solid #354552;border-radius:7px;max-width:460px;">
-        <div style="font:600 11px/1.4 monospace;color:#4fc3f7;margin-bottom:2px;">${t('shenzhou23_return_projection_title')}</div>
+        <div style="font:600 11px/1.4 monospace;color:#4fc3f7;margin-bottom:2px;">${t('shenzhou23_return_events_title')}</div>
         <div style="font:9px/1.35 monospace;color:#9aa4ae;margin-bottom:5px;">${escapeHtml(SHENZHOU23_DEORBIT_TLE.name)} · T0 ${SHENZHOU23_DEORBIT_TLE.t0} · TLE epoch 20:33:35 UTC</div>
-        <svg viewBox="0 0 360 150" role="img" aria-label="Shenzhou-23 deorbit TLE ground-track projection" style="display:block;width:100%;height:auto;max-height:180px;background:#07111a;border-radius:4px;">
-          <rect x="12" y="12" width="336" height="116" fill="#07111a" stroke="#40515e" stroke-width=".8" />
-          <g stroke="#70808c" stroke-width=".6" opacity=".32">
-            <path d="M69.9 12V128 M139.4 12V128 M209 12V128 M278.5 12V128 M348 12V128" />
-            <path d="M12 40.4H348 M12 79H348 M12 117.7H348" />
-          </g>
-          <g fill="#aab6bf" font-family="monospace" font-size="7" opacity=".8">
-            <text x="13" y="39">30°N</text><text x="13" y="78">0°</text><text x="13" y="116">30°S</text>
-            <text x="65" y="139">0°</text><text x="132" y="139">30°E</text><text x="202" y="139">60°E</text><text x="271" y="139">90°E</text><text x="337" y="139">120°E</text>
-          </g>
-          <polyline points="${SHENZHOU23_RETURN_TLE_PROJECTION_POINTS}" fill="none" stroke="#4fc3f7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 3px #4fc3f7)" />
-          <circle cx="57.6" cy="104" r="2.7" fill="#e8eaed" /><circle cx="313.8" cy="25.5" r="3" fill="#4fc3f7" />
-        </svg>
         <div style="display:grid;grid-template-columns:82px 62px minmax(0,1fr);gap:5px;margin-top:5px;font:9px/1.35 monospace;color:#4fc3f7;"><span>T+</span><span>UTC</span><span>EVENT</span></div>
         <div style="margin-top:6px;">${eventMarkup}</div>
         <div style="margin-top:6px;font:9px/1.35 sans-serif;color:#9aa4ae;">${t('shenzhou23_return_projection_note')}</div>
-        <div style="margin-top:6px;padding-top:5px;border-top:1px solid #354552;font:9px/1.4 sans-serif;color:#e8eaed;">🛬 ${t('shenzhou23_return_site_label')}<br/>${t('shenzhou23_return_site_time')}</div>
       </section>`;
     }
 
@@ -3070,7 +3092,7 @@
       return `
         <b>${escapeHtml(title)}</b><br/>
         ${shenzhou23ReturnGuideMarkup(overlapping)}
-        ${shenzhou23ReturnProjectionMarkup(overlapping)}
+        ${shenzhou23ReturnEventsMarkup(overlapping)}
         ${related.length ? `<div style="margin-top:3px;color:${relatedColor};"><b>🚀 ${t('related_launch')}:</b> ${related.map(launch => escapeHtml(launch.mission || launch.payload || launch.vehicle || '')).join(' / ')}</div>` : ''}
         ${isMaritime ? `<b style="color:#ff9900;">${t('maritime_navwarning')}</b><br/>` : ''}
         <div style="max-width:460px;max-height:320px;overflow:auto;">${cards}</div>
@@ -3234,14 +3256,29 @@
       const shenzhou23ReturnNotam = rows.find(isShenzhou23ReturnNotam);
       if (shenzhou23ReturnNotam) {
         const markerStyle = shenzhou23ReturnMarkerStyle(rows);
+        const returnPopup = buildNotamPopup(shenzhou23ReturnNotam, rows);
+        const trackLatLngs = SHENZHOU23_RETURN_TLE_GROUNDTRACK.map(([lat, lon]) => [lat, lon]);
+        const returnTrack = L.polyline(trackLatLngs, {
+          color: markerStyle.color,
+          weight: 3.5,
+          opacity: 0.96,
+          lineCap: 'round',
+          lineJoin: 'round',
+          className: 'shenzhou23-return-ground-track'
+        });
+        returnTrack.bindPopup(returnPopup);
+        returnTrack.addTo(group);
+        layers.push(returnTrack);
+        trackLatLngs.forEach(point => primaryBounds.extend(point));
         const returnMarker = L.marker(
           [SHENZHOU23_RETURN_SITE.lat, SHENZHOU23_RETURN_SITE.lon],
           { icon: buildShenzhou23ReturnLeafletIcon(markerStyle.color, markerStyle.isNight), zIndexOffset: 5000 }
         );
-        returnMarker.bindPopup(buildNotamPopup(shenzhou23ReturnNotam, rows));
+        returnMarker.bindPopup(returnPopup);
         returnMarker.bindTooltip(t('shenzhou23_return_site_label'), { direction: 'top', offset: [0, -16] });
         returnMarker.addTo(group);
         layers.push(returnMarker);
+        primaryBounds.extend([SHENZHOU23_RETURN_SITE.lat, SHENZHOU23_RETURN_SITE.lon]);
       }
 
       if (layers.length) {
