@@ -282,6 +282,78 @@
       </Polygon>
     </Placemark>
     <Placemark>
+      <name>B5735/26</name>
+      <description>B5735/26 NOTAMN  Q) NZZC/QRDCA/IV/BO /W /000/999/3913S17823E043  A) NZZC B) 2611262330 C) 2611270135  E) TEMPO DANGER AREA NZD025 (MAHIA EAST CAPE) IS PRESCRIBED AS FLW:   EXCLUDING THAT AREA CO-INCIDENT WITH NZR401, ALL THAT AIRSPACE   BOUNDED BY A LINE JOINING:  38 48 00.00 S 179 06 00.00 E  39 28 48.00 S 179 06 36.00 E  39 37 48.00 S 177 39 00.00 E  39 06 00.00 S 177 36 00.00 E  39 06 00.00 S 177 54 00.00 E  38 48 00.00 S 179 06 00.00 E  ACTIVITY: ROCKET LAUNCH  USING AGENCY: ROCKET LAB LIMIT</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>179.1,-38.8,0 179.11,-39.48,0 177.65,-39.63,0 177.6,-39.1,0 177.9,-39.1,0 179.1,-38.8,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B5736/26</name>
+      <description>B5736/26 NOTAMN  Q) NZZO/QRDCA/IV/BO /W /000/999/3810S17503W115  A) NZZO B) 2611262330 C) 2611270135  E) TEMPO DANGER AREA NZD026 (AUCKLAND OCEANIC FIR) IS PRESCRIBED AS  FLW: ALL THAT AIRSPACE BOUNDED BY A LINE JOINING:  37 00 00.00 S 173 12 00.00 W  38 36 00.00 S 172 48 00.00 W  39 18 00.00 S 176 57 00.00 W  37 42 00.00 S 177 18 00.00 W  37 00 00.00 S 173 12 00.00 W  ACTIVITY: ROCKET DEBRIS RETURN  USING AGENCY: ROCKET LAB LIMITED, RANGE CONTROL CENTRE,  TEL +64 28 255 11638  PRESCRIBED PURSUA</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-173.2,-37.0,0 -172.8,-38.6,0 -176.95,-39.3,0 -177.3,-37.7,0 -173.2,-37.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B5737/26</name>
+      <description>B5737/26 NOTAMN  Q) NZZO/QRDCA/IV/BO /W /000/999/3554S16308W141  A) NZZO B) 2611262330 C) 2611270135  E) TEMPO DANGER AREA NZD027 (AUCKLAND OCEANIC FIR) IS PRESCRIBED AS   FLW:ALL THAT AIRSPACE BOUNDED BY A LINE JOINING:  34 24 00.00 S 161 00 00.00 W  36 00 00.00 S 160 18 00.00 W  37 18 00.00 S 165 24 00.00 W  35 36 00.00 S 165 48 00.00 W  34 24 00.00 S 161 00 00.00 W  ACTIVITY: ROCKET DEBRIS RETURN  USING AGENCY: ROCKET LAB LIMITED, RANGE CONTROL CENTRE,  TEL +64 28 255 11638  PRESCRIBED PURSUA</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-161.0,-34.4,0 -160.3,-36.0,0 -165.4,-37.3,0 -165.8,-35.6,0 -161.0,-34.4,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B5739/26</name>
+      <description>B5739/26 NOTAMN  Q) NZZC/QRDCA/IV/BO /W /000/999/3913S17823E043  A) NZZC B) 2611272300 C) 2611280120  E) TEMPO DANGER AREA NZD025 (MAHIA EAST CAPE) IS PRESCRIBED AS FLW:   EXCLUDING THAT AREA CO-INCIDENT WITH NZR401, ALL THAT AIRSPACE   BOUNDED BY A LINE JOINING:  38 48 00.00 S 179 06 00.00 E  39 28 48.00 S 179 06 36.00 E  39 37 48.00 S 177 39 00.00 E  39 06 00.00 S 177 36 00.00 E  39 06 00.00 S 177 54 00.00 E  38 48 00.00 S 179 06 00.00 E  ACTIVITY: ROCKET LAUNCH  USING AGENCY: ROCKET LAB LIMIT</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>179.1,-38.8,0 179.11,-39.48,0 177.65,-39.63,0 177.6,-39.1,0 177.9,-39.1,0 179.1,-38.8,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B5740/26</name>
+      <description>B5740/26 NOTAMN  Q) NZZO/QRDCA/IV/BO /W /000/999/3810S17503W115  A) NZZO B) 2611272300 C) 2611280120  E) TEMPO DANGER AREA NZD026 (AUCKLAND OCEANIC FIR) IS PRESCRIBED AS  FLW: ALL THAT AIRSPACE BOUNDED BY A LINE JOINING:  37 00 00.00 S 173 12 00.00 W  38 36 00.00 S 172 48 00.00 W  39 18 00.00 S 176 57 00.00 W  37 42 00.00 S 177 18 00.00 W  37 00 00.00 S 173 12 00.00 W  ACTIVITY: ROCKET DEBRIS RETURN  USING AGENCY: ROCKET LAB LIMITED, RANGE CONTROL CENTRE,  TEL +64 28 255 11638  PRESCRIBED PURSUA</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-173.2,-37.0,0 -172.8,-38.6,0 -176.95,-39.3,0 -177.3,-37.7,0 -173.2,-37.0,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>B5741/26</name>
+      <description>B5741/26 NOTAMN  Q) NZZO/QRDCA/IV/BO /W /000/999/3554S16308W141  A) NZZO B) 2611272300 C) 2611280120  E) TEMPO DANGER AREA NZD027 (AUCKLAND OCEANIC FIR) IS PRESCRIBED AS   FLW:ALL THAT AIRSPACE BOUNDED BY A LINE JOINING:  34 24 00.00 S 161 00 00.00 W  36 00 00.00 S 160 18 00.00 W  37 18 00.00 S 165 24 00.00 W  35 36 00.00 S 165 48 00.00 W  34 24 00.00 S 161 00 00.00 W  ACTIVITY: ROCKET DEBRIS RETURN  USING AGENCY: ROCKET LAB LIMITED, RANGE CONTROL CENTRE,  TEL +64 28 255 11638  PRESCRIBED PURSUA</description>
+      <styleUrl>#polyStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-161.0,-34.4,0 -160.3,-36.0,0 -165.4,-37.3,0 -165.8,-35.6,0 -161.0,-34.4,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
       <name>W4084/26</name>
       <description>W4084/26 NOTAMN   Q)SCIZ/QXXXX/IV/BO/W/000/999/4552S10959W258  A)SCIZ B)2611280640 C)2612040955  D)NOV 28 BTN 0640-1118  29 BTN 0626-1104  30 BTN 0413-0851  DEC 01 BTN 0400-0838  02 BTN 0544-1022  03 BTN 0332-0810  04 BTN 0517-0955  E)ZONE ...D... IN WATERS OCEAN PACIFIC DUE TO SPACE VEHICLE RE-ENTRY  AND SPLASHDOWN ACTIVITY. THE AFFECTED AREA IS BOUNDED BY NXT GEO  COORD:   300000S/1215300W  300000S/1200000W  284300S/1200000W  382100S/1150400W  490900S/1072200W  590900S/0953400W  595800S/099050</description>
       <styleUrl>#polyStyle</styleUrl>
