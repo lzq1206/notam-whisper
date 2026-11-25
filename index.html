@@ -1697,8 +1697,8 @@
             billboard: {
               image: buildCesiumShenzhou23ReturnIcon(markerStyle.color, markerStyle.isNight),
               verticalOrigin: Cesium.VerticalOrigin.CENTER,
-              width: 38,
-              height: 38
+              width: 32,
+              height: 32
             },
             label: {
               text: `🛬 ${t('shenzhou23_return_site_label')}`,
@@ -3034,23 +3034,26 @@
 
     function buildShenzhou23ReturnLeafletIcon(color, isNight) {
       const glow = isNight
-        ? 'box-shadow:0 0 9px 3px rgba(255,255,255,.95),0 0 19px 7px rgba(255,255,255,.62);'
-        : 'box-shadow:0 0 0 2px rgba(255,255,255,.95);';
+        ? 'box-shadow:0 0 9px 3px rgba(255,43,43,.95),0 0 19px 7px rgba(255,43,43,.62);'
+        : 'border:2px solid #fff;';
+      const iconSize = WIDGET_MODE ? 18 : 28;
+      const markerSize = WIDGET_MODE ? 14 : 24;
+      const returnSize = WIDGET_MODE ? 9 : 14;
       return L.divIcon({
-        html: `<div title="${t('shenzhou23_return_site_label')}" style="width:30px;height:30px;border-radius:50%;background:${color};border:2px solid #fff;${glow}display:flex;align-items:center;justify-content:center;font-size:17px;line-height:1;">🛬</div>`,
+        html: `<div title="${t('shenzhou23_return_site_label')}" style="width:${markerSize}px;height:${markerSize}px;border-radius:50%;background:${color};${glow}display:flex;align-items:center;justify-content:center;font-size:${returnSize}px;line-height:1;">🛬</div>`,
         className: 'launch-upcoming-icon',
-        iconSize: [36, 36],
-        iconAnchor: [18, 18]
+        iconSize: [iconSize, iconSize],
+        iconAnchor: [iconSize / 2, iconSize / 2]
       });
     }
 
     function buildCesiumShenzhou23ReturnIcon(color, isNight) {
       const safeColor = String(color || '#2b5bff').replace(/[^#(),.%a-zA-Z0-9 -]/g, '');
       const glow = isNight ? `
-        <defs><filter id="return-site-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4" /></filter></defs>
-        <circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-width="8" opacity=".9" filter="url(#return-site-glow)" />
-        <circle cx="24" cy="24" r="20" fill="none" stroke="#fff" stroke-width="2.5" opacity=".95" />` : '';
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">${glow}<circle cx="24" cy="24" r="16" fill="${safeColor}" stroke="#fff" stroke-width="2"/><text x="24" y="31" font-size="18" text-anchor="middle">🛬</text></svg>`;
+        <defs><filter id="return-site-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.5" /></filter></defs>
+        <circle cx="24" cy="24" r="19" fill="none" stroke="#ff2b2b" stroke-width="7" opacity=".95" filter="url(#return-site-glow)" />
+        <circle cx="24" cy="24" r="18" fill="none" stroke="#ff2b2b" stroke-width="3" opacity=".9" />` : '';
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">${glow}<circle cx="24" cy="24" r="17" fill="${safeColor}" stroke="#fff" stroke-width="2"/><text x="24" y="31" font-size="20" text-anchor="middle">🛬</text></svg>`;
       return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
     }
 
