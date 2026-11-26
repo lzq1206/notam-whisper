@@ -2204,6 +2204,42 @@
       );
     }
 
+    function isKineticaChinaAerospaceDebrisNotice(row, launch) {
+      if (!row || !launch || isMsiOrMaritime(row)) return false;
+      const qcode = String(row.qcode || '').toUpperCase();
+      const raw = String(row.raw || '').toUpperCase();
+      const launchText = [launch.vehicle, launch.mission, launch.name].filter(Boolean).join(' ').toUpperCase();
+      const provider = String(launchProviderName(launch)).toUpperCase();
+      if (!/CAS\s+SPACE/.test(provider) || !/KINETICA\s+1/.test(launchText)) return false;
+
+      if (qcode === 'QRALW') {
+        return /UNBURNED\s+DEBRIS\s+EXPECTED\s+TO\s+FALL/.test(raw) &&
+          /AEROSPACE\s+FLT\s+ACT\s+BY\s+CHINA/.test(raw);
+      }
+      if (qcode === 'QWMLW') {
+        return /CHINESE\s+AEROSPACE\s+FLIGHT\s+ACTIVITIES/.test(raw) &&
+          /RECEIVED\s+FROM\s+CIVIL\s+AVIATION\s+ADMINISTRATION\s+OF\s+CHINA/.test(raw);
+      }
+      return false;
+    }
+
+    function warningKineticaDebrisWindowMatchesLaunch(row, launch) {
+      const fromTs = Date.parse(row && row.from_utc);
+      const toTs = Date.parse(row && row.to_utc);
+      const launchTs = Number(launch && launch.ts);
+      const windowStartTs = Number(launch && launch.windowStartTs);
+      const windowEndTs = Number(launch && launch.windowEndTs);
+      const minute = 60 * 1000;
+      if (![fromTs, toTs, launchTs, windowStartTs, windowEndTs].every(Number.isFinite) ||
+          toTs <= fromTs || windowEndTs <= windowStartTs || toTs - fromTs > 90 * minute ||
+          launchTs < fromTs || launchTs > toTs ||
+          fromTs < windowStartTs - 5 * minute || fromTs > windowStartTs + 5 * minute ||
+          toTs < windowEndTs || toTs > windowEndTs + 30 * minute) return false;
+      const windowDuration = windowEndTs - windowStartTs;
+      const overlap = Math.min(toTs, windowEndTs) - Math.max(fromTs, windowStartTs);
+      return overlap >= windowDuration * 0.75 && warningScheduleAllowsLaunch(row, launch);
+    }
+
     function warningRectanglePointsToLaunch(row, launch) {
       // Only infer a single downrange aviation warning when its short hazard
       // window and elongated rectangular axis both identify the same launch.
@@ -2217,6 +2253,11 @@
         ? String(launch.vehicle).toUpperCase()
         : [launch?.mission, launch?.name].filter(Boolean).join(' ').toUpperCase();
       const provider = String(launchProviderName(launch)).toUpperCase();
+      const isKineticaChinaDebris = isKineticaChinaAerospaceDebrisNotice(row, launch);
+      if (isKineticaChinaDebris) {
+        return warningKineticaDebrisWindowMatchesLaunch(row, launch) &&
+          warningRectangleGeometryPointsToLaunch(row, launch);
+      }
       const isChineseLongMarchProvider = /LONG\s+MARCH/.test(launchText) &&
         /(?:CHINA\s+AEROSPACE|CASC)/.test(provider);
       const isChineseLongMarchFallArea = qcode === 'QWMLW' &&
@@ -2262,9 +2303,10 @@
         /FALL\s+AREA\s+OF\s+UNBURNED\s+DEBRIS/.test(raw) &&
         /(?:CONDUCTED\s+BY\s+CHINA|CHINA\s+AEROSPACE)/.test(raw) &&
         isChineseLongMarchProvider;
+      const isKineticaChinaDebris = isKineticaChinaAerospaceDebrisNotice(row, launch);
       const isFlexibleLongRange = isChineseLongMarchProvider &&
         (qcode === 'QRDCA' || isChineseLongMarchFallArea);
-      if (qcode !== 'QRDCA' && !isChineseLongMarchFallArea) return false;
+      if (qcode !== 'QRDCA' && !isChineseLongMarchFallArea && !isKineticaChinaDebris) return false;
 
       let corners;
       try { corners = JSON.parse(row.polygon || ''); } catch (error) { return false; }
@@ -2300,13 +2342,53 @@
       const longLength = Math.max(pairA, pairB);
       const shortLength = Math.min(pairA, pairB);
       const minimumAspectRatio = isFlexibleLongRange ? 1 : 1.5;
-      if (longLength / shortLength < minimumAspectRatio || longLength > 150 || shortLength > 100 ||
+      const maximumLongLength = isKineticaChinaDebris ? 500 : 150;
+      if (longLength / shortLength < minimumAspectRatio || longLength > maximumLongLength || shortLength > 100 ||
           Math.max(lengths[0], lengths[2]) / Math.min(lengths[0], lengths[2]) > 1.3 ||
           Math.max(lengths[1], lengths[3]) / Math.min(lengths[1], lengths[3]) > 1.3) return false;
 
       const launchLat = Number.parseFloat(launch.lat);
       const launchLon = Number.parseFloat(launch.lon);
       if (![launchLat, launchLon].every(Number.isFinite)) return false;
+      if (isKineticaChinaDebris) {
+        const center = [centerLat, centerLon];
+        const pad = [launchLat, launchLon];
+        const centerDistanceKm = launchDistanceKm(centerLat, centerLon, launchLat, launchLon);
+        if (centerDistanceKm < 500 || centerDistanceKm > 8500) return false;
+
+        const toRadians = value => value * Math.PI / 180;
+        const initialBearing = (from, to) => {
+          const lat1 = toRadians(from[0]);
+          const lat2 = toRadians(to[0]);
+          const deltaLon = toRadians(to[1] - from[1]);
+          const y = Math.sin(deltaLon) * Math.cos(lat2);
+          const x = Math.cos(lat1) * Math.sin(lat2) -
+            Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLon);
+          return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+        };
+        const sphericalMidpoint = (first, second) => {
+          const lat1 = toRadians(first[0]), lon1 = toRadians(first[1]);
+          const lat2 = toRadians(second[0]), lon2 = toRadians(second[1]);
+          const bx = Math.cos(lat2) * Math.cos(lon2 - lon1);
+          const by = Math.cos(lat2) * Math.sin(lon2 - lon1);
+          const latitude = Math.atan2(Math.sin(lat1) + Math.sin(lat2),
+            Math.hypot(Math.cos(lat1) + bx, by));
+          const longitude = lon1 + Math.atan2(by, Math.cos(lat1) + bx);
+          return [latitude * 180 / Math.PI, longitude * 180 / Math.PI];
+        };
+        const lineAngleDifference = (first, second) => {
+          const difference = Math.abs(((first - second + 540) % 360) - 180);
+          return Math.min(difference, 180 - difference);
+        };
+        const arrivalCourse = (initialBearing(center, pad) + 180) % 360;
+        const shortEdgeIndexes = [(longIndex + 1) % 4, (longIndex + 3) % 4];
+        const axisBearings = shortEdgeIndexes.map(index => {
+          const midpoint = sphericalMidpoint(corners[index], corners[(index + 1) % 4]);
+          return initialBearing(center, midpoint);
+        });
+        return axisBearings.some(axis => lineAngleDifference(axis, arrivalCourse) <= 6);
+      }
+
       const launchPoint = toLocal([launchLat, launchLon]);
       const distanceKm = Math.hypot(...launchPoint);
       const candidateIndexes = isFlexibleLongRange && longLength / shortLength < 1.5
@@ -2430,6 +2512,7 @@
       const raw = String(row.raw || '').toUpperCase();
       const launchText = [launch.vehicle, launch.mission, launch.name].filter(Boolean).join(' ').toUpperCase();
       const provider = String(launchProviderName(launch)).toUpperCase();
+      if (isKineticaChinaAerospaceDebrisNotice(row, launch)) return 'china-kinetica-debris';
       const isChineseLongMarch = /LONG\s+MARCH/.test(launchText) && /(?:CHINA\s+AEROSPACE|CASC)/.test(provider);
       if (qcode === 'QWMLW' && isChineseLongMarch &&
           /AEROSPACE\s+FLT\s+ACT/.test(raw) &&
@@ -3992,8 +4075,12 @@
     }
 
     function isRouteGeometry(rawText) {
-      // Treat route/corridor NOTAM as line geometry instead of polygon fill.
-      return /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(rawText) && !/AREA\b|POLYGON\b|BOUNDED\b/i.test(rawText);
+      // Only geometry-bearing E-field text determines line vs polygon. Route
+      // availability remarks (e.g. RMK/ATS ROUTE ...) must not turn a debris
+      // area into an open path.
+      const geometryText = String(rawText || '').split(/\bRMK\s*\//i, 1)[0];
+      return /RTE\b|ROUTE\b|AWY\b|TRACK\b|CORRIDOR\b/i.test(geometryText) &&
+        !/AREA\b|POLYGON\b|BOUNDED\b/i.test(geometryText);
     }
 
     function coordinateSegmentsForRow(points, rawText, isMaritime, compact = true) {

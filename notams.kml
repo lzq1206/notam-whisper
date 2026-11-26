@@ -60,7 +60,7 @@
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
-            <coordinates>108.383333,5.866667,0 108.833333,5.75,0 109.1,6.816667,0 108.633333,6.933333,0 108.6,6.933333,0 108.383333,5.866667,0</coordinates>
+            <coordinates>108.6,6.933333,0 109.1,6.816667,0 108.833333,5.75,0 108.383333,5.866667,0 108.6,6.933333,0</coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>

@@ -846,11 +846,12 @@ def fetch_global_notam_supplement():
         polygon = feat.get('polygon', [])
         if polygon:
             raw_polygons = _extract_raw_coordinate_rings(raw)
-            if _raw_ring_confirms_isolated_supplement_outlier(polygon, raw_polygons):
-                # Keep the authoritative raw E-field ring when a derived
-                # supplement coordinate has an isolated, uncorroborated point.
+            if (_raw_ring_confirms_isolated_supplement_outlier(polygon, raw_polygons) or
+                    _raw_ring_confirms_near_closed_supplement(polygon, raw_polygons)):
+                # Keep the authoritative raw E-field ring when derived geometry
+                # has an isolated outlier or a rounded near-closure vertex.
                 polygon = raw_polygons[0]
-                print(f"[global] Corrected isolated derived-geometry outlier for {notam_id} from raw E-field")
+                print(f"[global] Corrected derived geometry for {notam_id} from raw E-field")
             lat = round(sum(point[0] for point in polygon) / len(polygon), 6)
             lon = round(sum(point[1] for point in polygon) / len(polygon), 6)
             radius = ''
@@ -1355,7 +1356,28 @@ def _split_coordinate_rings(indexed_points, max_gap=150):
 
     if len(current) >= 3:
         rings.append(current)
-    return rings
+    return [_normalize_near_closed_ring(ring) for ring in rings]
+
+def _normalize_near_closed_ring(points):
+    """Drop a near-duplicate terminal coordinate when it clearly closes a quad.
+
+    Some source E-fields repeat the first corner with a small rounding or
+    transcription offset instead of repeating it exactly. Only normalize a
+    five-point ring when the closing gap is both <=5 km and <=15% of either
+    adjacent boundary edge; preserve genuine fifth vertices otherwise.
+    """
+    if not isinstance(points, list) or len(points) != 5:
+        return points
+    first, second, penultimate, last = points[0], points[1], points[-2], points[-1]
+    closing_gap_km = _great_circle_distance_nm(first, last) * 1.852
+    adjacent_edges_km = [
+        _great_circle_distance_nm(first, second) * 1.852,
+        _great_circle_distance_nm(penultimate, first) * 1.852,
+    ]
+    shortest_edge_km = min(adjacent_edges_km)
+    if closing_gap_km <= 5 and shortest_edge_km > 0 and closing_gap_km <= shortest_edge_km * 0.15:
+        return points[:-1]
+    return points
 
 def _extract_raw_coordinate_rings(raw):
     """Extract one or more polygon rings from a raw ICAO NOTAM message."""
@@ -1428,6 +1450,40 @@ def _raw_ring_confirms_isolated_supplement_outlier(supplement_polygon, raw_polyg
     typical_edge = sorted(edge_lengths)[len(edge_lengths) // 2]
     outlier_distance = min(distance_degrees(unmatched_source[0], raw) for raw in raw_points)
     return outlier_distance > max(5.0, typical_edge * 8.0)
+
+def _raw_ring_confirms_near_closed_supplement(supplement_polygon, raw_polygons):
+    """Prefer the raw E-field quad over a supplement's fifth near-close point."""
+    if not isinstance(supplement_polygon, list) or len(raw_polygons or []) != 1:
+        return False
+    raw_ring = raw_polygons[0]
+    if not isinstance(raw_ring, list) or len(raw_ring) != 4 or len(supplement_polygon) != 5:
+        return False
+    try:
+        source_points = [(float(point[0]), float(point[1])) for point in supplement_polygon]
+        raw_points = [(float(point[0]), float(point[1])) for point in raw_ring]
+    except (TypeError, ValueError, IndexError):
+        return False
+
+    def distance_km(a, b):
+        return _great_circle_distance_nm(a, b) * 1.852
+
+    def distance_degrees(a, b):
+        dlon = (b[1] - a[1] + 180.0) % 360.0 - 180.0
+        mean_lat = math.radians((a[0] + b[0]) / 2.0)
+        return math.hypot(b[0] - a[0], dlon * math.cos(mean_lat))
+
+    tolerance_degrees = 0.02
+    if any(min(distance_degrees(point, source) for source in source_points) > tolerance_degrees
+           for point in raw_points):
+        return False
+    extra_points = [point for point in source_points
+                    if min(distance_degrees(point, raw) for raw in raw_points) > tolerance_degrees]
+    if len(extra_points) != 1 or distance_km(extra_points[0], raw_points[0]) > 5:
+        return False
+    adjacent_edges = [distance_km(raw_points[0], raw_points[1]),
+                      distance_km(raw_points[-1], raw_points[0])]
+    shortest_edge = min(adjacent_edges)
+    return shortest_edge > 0 and distance_km(extra_points[0], raw_points[0]) <= shortest_edge * 0.15
 
 def csv_to_kml(csv_path, kml_path):
     rows = []
